@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src", // Non-relativ 모듈 혹은 paths 옵션의 기준 디렉토리
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "react-native",
+    "lib": ["es6"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true,
+    "target": "esnext",
+    // custom
+    "strictNullChecks": true,
+    "importHelpers": true
+  },
+  "exclude": ["node_modules"]
+}
