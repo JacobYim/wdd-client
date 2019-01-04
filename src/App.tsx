@@ -1,17 +1,12 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
 import { Provider } from 'react-redux';
 
 import store from 'src/store';
-import Core from 'src/components/base/Core';
-import AppContainer from 'src/pages/AppContainer';
+import BaseContainer from './components/base/BaseContainer';
 
 const App: React.SFC<{}> = () => (
   <Provider store={store}>
-    <SafeAreaView>
-      <Core />
-      <AppContainer />
-    </SafeAreaView>
+    <BaseContainer />
   </Provider>
 );
 

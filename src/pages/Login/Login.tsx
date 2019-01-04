@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-import { views } from './Login.styles';
+import { views, texts } from './Login.styles';
 
 class Login extends Component {
   render() {
     return (
       <View style={views.container}>
-        <Text>Login Page</Text>
+        <Text style={texts.title}>Login Page</Text>
       </View>
     );
   }

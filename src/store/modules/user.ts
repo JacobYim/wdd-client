@@ -28,7 +28,6 @@ export const signUp = createAction(SIGNUP, signUpAPI);
 export const signOut = createAction(SIGNOUT);
 
 /* REDUCER */
-
 interface DefaultAction {
   payload: UserInterface;
 }
