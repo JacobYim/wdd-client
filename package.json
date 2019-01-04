@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@types/jest": "23.3.11",
+    "@types/node": "^10.12.18",
     "@types/react": "16.7.18",
     "@types/react-native": "0.57.24",
     "@types/react-navigation": "^3.0.1",
@@ -28,7 +31,7 @@
     "@types/react-test-renderer": "16.0.3",
     "@types/redux-actions": "^2.3.1",
     "babel-jest": "23.6.0",
-    "babel-plugin-styled-components": "^1.10.0",
+    "babel-plugin-module-resolver": "^3.1.1",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3",

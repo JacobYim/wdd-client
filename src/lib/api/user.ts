@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-import { UserInterface } from '../modules/user';
+import { UserInterface } from 'src/store/modules/user';
 
 interface SignInInterface {
   email: string;

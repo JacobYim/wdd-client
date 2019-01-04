@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { pender } from 'redux-pender';
 
-import { loadUserAPI, signInAPI, signUpAPI } from 'lib/api/user';
+import { loadUserAPI, signInAPI, signUpAPI } from 'src/lib/api/user';
 
 export interface UserInterface {
   readonly email: string;

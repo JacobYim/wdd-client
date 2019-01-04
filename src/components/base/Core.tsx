@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 
-import initAxios from 'lib/api/axios';
+import initAxios from 'src/lib/api/axios';
 
 interface Props {}
 
