@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { SafeAreaView, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import { loadUser } from 'src/store/modules/user';
-import { views } from './Core.styles';
 import initAxios from 'src/lib/api/axios';
 import { loadToken } from 'src/lib/storage/token';
 
@@ -39,11 +38,7 @@ class Core extends PureComponent<Props> {
   };
 
   render() {
-    return (
-      <SafeAreaView style={views.container}>
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
+    return <Text>Loading...</Text>;
   }
 }
 

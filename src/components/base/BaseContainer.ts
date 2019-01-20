@@ -5,7 +5,7 @@ import {
   createAppContainer,
 } from 'react-navigation';
 
-import CoreScreen from 'src/components/base/Core';
+import CoreScreen from './Core';
 
 import MapScreen from 'src/pages/Map';
 import LoginScreen from 'src/pages/Login';
@@ -14,9 +14,17 @@ const AppNavigator = createBottomTabNavigator({
   map: MapScreen,
 });
 
-const SessionNavigator = createStackNavigator({
-  login: LoginScreen,
-});
+const SessionNavigator = createStackNavigator(
+  {
+    login: {
+      screen: LoginScreen,
+      path: 'login',
+    },
+  },
+  {
+    headerMode: 'none',
+  }
+);
 
 export default createAppContainer(
   createSwitchNavigator(

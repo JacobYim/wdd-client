@@ -1,8 +1,11 @@
 export default {
   white: '#FFFFFF',
-  black: '#121212',
+  black: '#000000',
+  blackLight: '#333333',
+  red: '#FF6060',
   // gray
-  grayF2: '#F2F2F2',
+  gray: '#DADCDF',
+  grayLight: '#EFEFEF',
   // signature
-  blue: 'rgb(20, 115, 230)',
+  blue: '#127EFF',
 };
