@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { View, Text } from 'react-native';
 
-import { texts } from './Login.styles';
+import { views, texts } from './Login.styles';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
+import RoundButton from 'src/components/module/RoundButton';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -25,9 +26,16 @@ class Login extends Component<Props, State> {
     this.setState(state => ({ ...state, [name]: value }));
   };
 
+  handlePress = () => {};
+
+  handleSignUp = () => {};
+
   render() {
     return (
-      <PageContainer>
+      <PageContainer
+        bottom="비밀번호를 잊으셨나요?"
+        bottomBold="회원가입"
+        bottomPress={this.handleSignUp}>
         <TextInput
           label="이메일"
           name="email"
@@ -39,6 +47,11 @@ class Login extends Component<Props, State> {
           name="password"
           value={this.state.password}
           handleChange={this.handleChange}
+        />
+        <RoundButton
+          label="로그인"
+          active={true}
+          handlePress={this.handlePress}
         />
       </PageContainer>
     );

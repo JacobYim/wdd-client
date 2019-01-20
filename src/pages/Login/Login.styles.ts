@@ -1,11 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 export const views = StyleSheet.create({
-  container: {
-    display: 'flex',
+  wrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
   },
 });
 

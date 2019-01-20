@@ -26,11 +26,11 @@ export const inputs = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     // font styles
-    color: color.blackLight,
+    color: color.black33,
     fontSize: font.size.medium,
   },
   focused: { borderColor: color.blue },
-  unFocused: { borderColor: color.gray },
+  unFocused: { borderColor: color.grayDA },
 });
 
 export const views = StyleSheet.create({
