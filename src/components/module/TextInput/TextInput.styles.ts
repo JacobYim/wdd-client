@@ -17,7 +17,6 @@ export const texts = StyleSheet.create({
 export const inputs = StyleSheet.create({
   text: {
     // outer size
-    flex: 1,
     height: 41,
     // inner size
     display: 'flex',
@@ -36,10 +35,6 @@ export const inputs = StyleSheet.create({
 
 export const views = StyleSheet.create({
   container: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingVertical: 8,
   },
 });
