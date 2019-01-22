@@ -8,7 +8,9 @@ import {
 import CoreScreen from './Core';
 
 import MapScreen from 'src/pages/Map';
-import LoginScreen from 'src/pages/Login';
+
+import SignInScreen from 'src/pages/SignIn';
+import SignUpScreen from 'src/pages/SignUp';
 
 const AppNavigator = createBottomTabNavigator({
   map: MapScreen,
@@ -16,12 +18,17 @@ const AppNavigator = createBottomTabNavigator({
 
 const SessionNavigator = createStackNavigator(
   {
-    login: {
-      screen: LoginScreen,
-      path: 'login',
+    signIn: {
+      screen: SignInScreen,
+      path: 'signIn',
+    },
+    signUp: {
+      screen: SignUpScreen,
+      path: 'signUp',
     },
   },
   {
+    initialRouteName: 'signIn',
     headerMode: 'none',
   }
 );

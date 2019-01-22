@@ -9,24 +9,32 @@ interface Props {
   title?: string;
   subtitle?: string;
   // bottom
-  bottom?: string;
-  bottomBold?: string;
-  bottomPress?: () => void;
+  bottom?: {
+    text: string;
+    handlePress: () => void;
+    bold?: string;
+  };
+  // right
+  right?: {
+    text: string;
+    handlePress: () => void;
+  };
 }
 
-const PageContainer: React.SFC<Props> = ({
-  children,
-  bottom,
-  bottomBold,
-  bottomPress,
-}) => (
+const PageContainer: React.SFC<Props> = ({ children, bottom, right }) => (
   <SafeAreaView style={views.container}>
-    <View style={views.topWrapper} />
+    <View style={views.topWrapper}>
+      {right && (
+        <TouchableOpacity style={views.rightButton} onPress={right.handlePress}>
+          <Text style={texts.top}>{right.text}</Text>
+        </TouchableOpacity>
+      )}
+    </View>
     <View style={views.contentWrapper}>{children}</View>
-    {bottom && bottomPress && (
-      <TouchableOpacity style={views.bottomButton} onPress={bottomPress}>
-        <Text style={texts.bottom}>{bottom}</Text>
-        {bottomBold && <Text style={texts.bottomBold}> {bottomBold}</Text>}
+    {bottom && (
+      <TouchableOpacity style={views.bottomButton} onPress={bottom.handlePress}>
+        <Text style={texts.bottom}>{bottom.text}</Text>
+        {bottom.bold && <Text style={texts.bottomBold}> {bottom.bold}</Text>}
       </TouchableOpacity>
     )}
   </SafeAreaView>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { views, texts } from './Login.styles';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
@@ -12,30 +10,53 @@ interface Props {
 }
 
 interface State {
+  name: string;
   email: string;
   password: string;
+  passwordCheck: string;
 }
 
-class Login extends Component<Props, State> {
+class SignUp extends Component<Props, State> {
   state: State = {
+    name: '',
     email: '',
     password: '',
+    passwordCheck: '',
   };
 
   handleChange = ({ name, value }: HandleChangeText) => {
     this.setState(state => ({ ...state, [name]: value }));
   };
 
-  handlePress = () => {};
+  handleSignIn = () => {
+    const { navigation } = this.props;
+    navigation.goBack('signIn');
+  };
 
   handleSignUp = () => {};
+
+  handleSkip = () => {
+    const { navigation } = this.props;
+    navigation.navigate('app');
+  };
 
   render() {
     return (
       <PageContainer
-        bottom="비밀번호를 잊으셨나요?"
-        bottomBold="회원가입"
-        bottomPress={this.handleSignUp}>
+        bottom={{
+          text: '로그인 하기',
+          handlePress: this.handleSignIn,
+        }}
+        right={{
+          text: '건너뛰기',
+          handlePress: this.handleSkip,
+        }}>
+        <TextInput
+          label="이름"
+          name="name"
+          value={this.state.name}
+          handleChange={this.handleChange}
+        />
         <TextInput
           label="이메일"
           name="email"
@@ -48,14 +69,20 @@ class Login extends Component<Props, State> {
           value={this.state.password}
           handleChange={this.handleChange}
         />
+        <TextInput
+          label="비밀번호 확인"
+          name="passwordCheck"
+          value={this.state.passwordCheck}
+          handleChange={this.handleChange}
+        />
         <RoundButton
-          label="로그인"
+          label="회원가입"
           active={true}
-          handlePress={this.handlePress}
+          handlePress={this.handleSignUp}
         />
       </PageContainer>
     );
   }
 }
 
-export default Login;
+export default SignUp;
