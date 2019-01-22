@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { NavigationScreenProp } from 'react-navigation';
 
-import * as userActions from 'src/store/modules/user';
+import * as userActions from 'src/store/actions/user';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
-  UserActions: typeof userActions;
+  signIn: typeof userActions.signIn;
 }
 
 interface State {
@@ -29,9 +28,9 @@ class SignIn extends Component<Props, State> {
   };
 
   handleSignIn = () => {
-    const { UserActions } = this.props;
+    const { signIn } = this.props;
     const { email, password } = this.state;
-    UserActions.signIn({ email, password });
+    signIn({ email, password });
   };
 
   handleSignUp = () => {
@@ -80,7 +79,5 @@ class SignIn extends Component<Props, State> {
 
 export default connect(
   null,
-  dispatch => ({
-    UserActions: bindActionCreators(userActions, dispatch),
-  })
+  { signIn: userActions.signIn }
 )(SignIn);
