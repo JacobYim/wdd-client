@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { Text } from 'react-native';
+import { Image } from 'react-native';
 
 import { loadUser } from 'src/store/modules/user';
 import initAxios from 'src/lib/api/axios';
@@ -38,7 +38,12 @@ class Core extends PureComponent<Props> {
   };
 
   render() {
-    return <Text>Loading...</Text>;
+    return (
+      <Image
+        style={{ flex: 1, resizeMode: 'center' }}
+        source={require('src/lib/image/img_splash.jpg')}
+      />
+    );
   }
 }
 
