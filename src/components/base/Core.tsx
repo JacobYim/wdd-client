@@ -5,15 +5,13 @@ import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { Image } from 'react-native';
 
-import { loadUser } from 'src/store/modules/user';
+import * as userActions from 'src/store/modules/user';
 import initAxios from 'src/lib/api/axios';
 import { loadToken } from 'src/lib/storage/token';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
-  actions: {
-    loadUser: () => void;
-  };
+  UserActions: typeof userActions;
 }
 
 class Core extends PureComponent<Props> {
@@ -24,12 +22,12 @@ class Core extends PureComponent<Props> {
   }
 
   checkUser = async () => {
-    const { actions, navigation } = this.props;
+    const { UserActions, navigation } = this.props;
     const token = await loadToken();
 
     if (token) {
       axios.defaults.headers.common['authorization'] = token;
-      actions.loadUser();
+      UserActions.loadUser();
       navigation.navigate('app');
     } else {
       delete axios.defaults.headers.common['authorization'];
@@ -50,6 +48,6 @@ class Core extends PureComponent<Props> {
 export default connect(
   null,
   dispatch => ({
-    actions: bindActionCreators({ loadUser }, dispatch),
+    UserActions: bindActionCreators(userActions, dispatch),
   })
 )(Core);

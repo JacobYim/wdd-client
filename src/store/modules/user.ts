@@ -42,26 +42,23 @@ export default handleActions<UserInterface>(
   {
     ...pender({
       type: LOAD_USER,
-      onSuccess: (state, action: DefaultAction) => ({
-        ...state,
-        ...action.payload,
-      }),
+      onSuccess: (state, action: DefaultAction) => {
+        return action.payload;
+      },
     }),
     ...pender({
       type: SIGNIN,
-      onSuccess: (state, action: DefaultAction) => ({
-        ...state,
-        ...action.payload,
-      }),
+      onSuccess: (state, action: DefaultAction) => {
+        return action.payload;
+      },
     }),
     ...pender({
       type: SIGNUP,
-      onSuccess: (state, action: DefaultAction) => ({
-        ...state,
-        ...action.payload,
-      }),
+      onSuccess: (state, action: DefaultAction) => {
+        return action.payload;
+      },
     }),
-    [SIGNOUT]: (state, action) => ({ ...state, ...initialState }),
+    [SIGNOUT]: (state, action) => initialState,
   },
   initialState
 );
