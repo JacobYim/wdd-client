@@ -1,18 +1,7 @@
 import { handleActions } from 'redux-actions';
 
+import { UserInterface } from 'src/store/actions/user';
 import * as actions from 'src/store/actions/user';
-
-export interface UserInterface {
-  readonly email: string;
-  readonly name: string;
-  dogs: {
-    [id: string]: {
-      name: string;
-      thumbnail: string;
-    };
-  };
-  // places: string[]
-}
 
 const initialState: UserInterface = {
   email: '',

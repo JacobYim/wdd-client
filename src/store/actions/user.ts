@@ -1,5 +1,26 @@
-import { SignInInterface, SignUpInterface } from 'src/lib/api/user';
-import { UserInterface } from 'src/store/reducers/user';
+// *** INTERFACES
+export interface UserInterface {
+  readonly email: string;
+  readonly name: string;
+  dogs: {
+    [id: string]: {
+      name: string;
+      thumbnail: string;
+    };
+  };
+  // places: string[]
+}
+
+export interface SignInInterface {
+  email: string;
+  password: string;
+}
+
+export interface SignUpInterface extends SignInInterface {
+  name: string;
+  birth?: string;
+  gender?: string;
+}
 
 // *** CONSTS
 export const LOAD_USER = 'user/LOAD_USER';

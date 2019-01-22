@@ -1,16 +1,9 @@
 import axios from 'axios';
-import { UserInterface } from 'src/store/reducers/user';
-
-export interface SignInInterface {
-  email: string;
-  password: string;
-}
-
-export interface SignUpInterface extends SignInInterface {
-  name: string;
-  birth?: string;
-  gender?: string;
-}
+import {
+  UserInterface,
+  SignInInterface,
+  SignUpInterface,
+} from 'src/store/actions/user';
 
 export const loadUser = async () => {
   // *** Set token on headers before call

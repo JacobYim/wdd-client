@@ -1,8 +1,8 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { SignInInterface, SignUpInterface } from 'src/store/actions/user';
 import * as actions from 'src/store/actions/user';
-import * as api from 'src/lib/api/user';
-import { SignInInterface, SignUpInterface } from 'src/lib/api/user';
+import * as api from 'src/services/api/user';
 
 export function* loadUser() {
   try {

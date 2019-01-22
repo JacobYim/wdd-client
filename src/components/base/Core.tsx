@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { Image } from 'react-native';
 
 import * as userActions from 'src/store/actions/user';
-import initAxios from 'src/lib/api/axios';
-import { loadToken } from 'src/lib/storage/token';
+import initAxios from 'src/services/api/axios';
+import { loadToken } from 'src/services/storage/token';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
