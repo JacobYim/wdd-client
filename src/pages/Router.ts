@@ -5,26 +5,27 @@ import {
   createAppContainer,
 } from 'react-navigation';
 
-import CoreScreen from './Core';
+import CoreScreen from 'src/components/base/Core';
 
-import MapScreen from 'src/pages/Map';
-
-import SignInScreen from 'src/pages/SignIn';
-import SignUpScreen from 'src/pages/SignUp';
+import { Map as MapScreen } from 'src/pages/App';
+import { SignIn, SignUp } from 'src/pages/Session';
 
 const AppNavigator = createBottomTabNavigator({
-  map: MapScreen,
+  map: {
+    screen: MapScreen,
+    path: 'app',
+  },
 });
 
 const SessionNavigator = createStackNavigator(
   {
     signIn: {
-      screen: SignInScreen,
-      path: 'signIn',
+      screen: SignIn,
+      path: 'sign-in',
     },
     signUp: {
-      screen: SignUpScreen,
-      path: 'signUp',
+      screen: SignUp,
+      path: 'sign-up',
     },
   },
   {

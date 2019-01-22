@@ -30,7 +30,7 @@ class SignUp extends Component<Props, State> {
 
   handleSignIn = () => {
     const { navigation } = this.props;
-    navigation.goBack('signIn');
+    navigation.goBack(null);
   };
 
   handleSignUp = () => {};
