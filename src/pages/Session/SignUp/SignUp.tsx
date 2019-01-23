@@ -43,6 +43,7 @@ class SignUp extends Component<Props, State> {
   render() {
     return (
       <PageContainer
+        title="회원가입"
         bottom={{
           text: '로그인 하기',
           handlePress: this.handleSignIn,

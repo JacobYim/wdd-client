@@ -2,7 +2,7 @@ export default {
   white: '#FFFFFF',
   black: '#000000',
   black33: '#333333',
-  blackOpacity: '#0000001a',
+  blackOpacity: '#00000078',
   red: '#FF6060',
   // gray
   gary55: '#555555',

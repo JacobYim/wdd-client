@@ -16,24 +16,6 @@ const initialState: UserState = {
 
 export default handleActions<UserState, any>(
   {
-    // [actions.LOAD_USER]: (state, action) => {
-    //   console.log('REDUCER -> start load user');
-    //   return state;
-    // },
-    // [actions.SIGNIN]: (state, action) => {
-    //   console.log('REDUCER -> start sign in');
-    //   console.log(action.payload);
-    //   return state;
-    // },
-    // [actions.SIGNUP]: (state, action) => {
-    //   console.log('REDUCER -> start sign up');
-    //   console.log(action.payload);
-    //   return state;
-    // },
-    // [actions.SIGNOUT]: (state, action) => {
-    //   console.log('REDUCER -> start sign out');
-    //   return state;
-    // },
     [actions.SET_USER_REQUEST]: (state, action) =>
       produce(state, draft => {
         delete draft.error;

@@ -13,8 +13,9 @@ export const views = StyleSheet.create({
   topWrapper: {
     marginTop: 20,
     marginHorizontal: 16,
-    height: 28,
+    height: 26,
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
   },
   bottomButton: {
@@ -25,11 +26,14 @@ export const views = StyleSheet.create({
   rightButton: {
     marginLeft: 'auto',
   },
+  titleWrapper: {
+    marginVertical: 40,
+  },
 });
 
 export const texts = StyleSheet.create({
   top: {
-    color: color.black,
+    color: color.blackOpacity,
     fontSize: font.size.large,
   },
   bottom: {
@@ -39,5 +43,14 @@ export const texts = StyleSheet.create({
   bottomBold: {
     color: color.black33,
     fontSize: font.size.small,
+  },
+  title: {
+    fontSize: font.size.title,
+    color: color.black,
+  },
+  subtitle: {
+    marginTop: 10,
+    fontSize: font.size.medium,
+    color: color.black33,
   },
 });
