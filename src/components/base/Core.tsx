@@ -26,7 +26,7 @@ class Core extends PureComponent<Props> {
 
     if (token) {
       axios.defaults.headers.common['authorization'] = token;
-      loadUser();
+      await loadUser();
       navigation.navigate('app');
     } else {
       delete axios.defaults.headers.common['authorization'];

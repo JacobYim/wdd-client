@@ -1,4 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { NavigationActions } from 'react-navigation';
 
 import * as actions from 'src/store/actions/user';
 import * as api from 'src/services/api/user';
@@ -18,6 +19,7 @@ export function* signIn(action: ReturnType<typeof actions.signIn>) {
     yield put(actions.setUserRequest());
     const data = yield call(api.signIn, action.payload);
     yield put(actions.setUserSuccess(data));
+    yield put(NavigationActions.navigate({ routeName: 'app' }));
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
   }

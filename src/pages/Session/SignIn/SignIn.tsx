@@ -8,6 +8,7 @@ import * as userActions from 'src/store/actions/user';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
+import { validateEmail, validatePassword } from 'src/services/validate/string';
 import { views } from './SignIn.styles';
 
 interface ParamInterface {
@@ -34,13 +35,8 @@ class SignIn extends Component<Props, State> {
 
   mapEventToState = ({ name, value }: HandleChangeText) => {
     let valid: boolean;
-    if (name === 'email') {
-      valid = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
-        String(value).toLowerCase()
-      );
-    } else {
-      valid = value.length > 7;
-    }
+    if (name === 'email') valid = validateEmail(value);
+    else valid = validatePassword(value);
 
     return { value, valid } as ParamInterface;
   };
