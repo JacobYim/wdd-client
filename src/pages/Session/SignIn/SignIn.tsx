@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -6,6 +7,7 @@ import * as userActions from 'src/store/actions/user';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
+import { views } from './SignIn.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -55,6 +57,10 @@ class SignIn extends Component<Props, State> {
           text: '건너뛰기',
           handlePress: this.handleSkip,
         }}>
+        <Image
+          style={views.logo}
+          source={require('src/lib/icons/ic_logo.png')}
+        />
         <TextInput
           label="이메일"
           name="email"

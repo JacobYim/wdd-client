@@ -38,7 +38,7 @@ class Core extends PureComponent<Props> {
     return (
       <Image
         style={{ flex: 1, resizeMode: 'center' }}
-        source={require('src/lib/image/img_splash.jpg')}
+        source={require('src/lib/images/img_splash.jpg')}
       />
     );
   }

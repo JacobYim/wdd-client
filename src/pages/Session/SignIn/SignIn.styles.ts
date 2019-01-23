@@ -6,6 +6,13 @@ export const views = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
+  logo: {
+    height: 34,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: 40,
+    marginBottom: 64,
+  },
 });
 
 export const texts = StyleSheet.create({
