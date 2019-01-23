@@ -7,32 +7,36 @@ import * as api from 'src/services/api/user';
 export function* loadUser() {
   try {
     const data = yield call(api.loadUser);
-    yield put(actions.userSuccess(data));
+    yield put(actions.setUserSuccess(data));
   } catch (e) {
-    yield put(actions.userFailure(e));
+    yield put(actions.setUserFailure(e));
   }
 }
 
 export function* signIn(params: SignInInterface) {
   try {
     const data = yield call(api.signIn, params);
-    yield put(actions.userSuccess(data));
+    yield put(actions.setUserSuccess(data));
   } catch (e) {
-    yield put(actions.userFailure(e));
+    yield put(actions.setUserFailure(e));
   }
 }
 
 export function* signUp(params: SignUpInterface) {
   try {
     const data = yield call(api.signUp, params);
-    yield put(actions.userSuccess(data));
+    yield put(actions.setUserSuccess(data));
   } catch (e) {
-    yield put(actions.userFailure(e));
+    yield put(actions.setUserFailure(e));
   }
 }
 
 export function* signOut() {
-  yield;
+  try {
+    yield put(actions.removeUserSuccess());
+  } catch (e) {
+    yield put(actions.removeUserFailure(e));
+  }
 }
 
 export default function* root() {

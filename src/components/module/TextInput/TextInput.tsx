@@ -16,6 +16,7 @@ interface Props {
   value?: string;
   alert?: string;
   handleChange: (data: HandleChangeText) => void;
+  [x: string]: any;
 }
 
 interface State {
@@ -39,7 +40,7 @@ class TextInput extends Component<Props, State> {
   };
 
   render() {
-    const { label, value, alert } = this.props;
+    const { label, value, alert, ...options } = this.props;
     return (
       <View style={views.container}>
         <Text style={texts.label}>{label}</Text>
@@ -54,6 +55,7 @@ class TextInput extends Component<Props, State> {
             inputs.text,
             inputs[this.state.isFocus ? 'focused' : 'unFocused'],
           ]}
+          {...options}
         />
         {alert && <Text style={texts.alert}>{alert}</Text>}
       </View>

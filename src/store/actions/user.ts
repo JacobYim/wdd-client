@@ -28,9 +28,13 @@ export const SIGNIN = 'user/SIGNIN';
 export const SIGNUP = 'user/SIGNUP';
 export const SIGNOUT = 'user/SIGNOUT';
 
-export const USER_REQUEST = 'user/USER_REQUEST';
-export const USER_SUCCESS = 'user/USER_SUCCESS';
-export const USER_FAILURE = 'user/USER_FAILURE';
+export const SET_USER_REQUEST = 'user/SET_USER_REQUEST';
+export const SET_USER_SUCCESS = 'user/SET_USER_SUCCESS';
+export const SET_USER_FAILURE = 'user/SET_USER_FAILURE';
+
+export const REMOVE_USER_REQUEST = 'user/REMOVE_USER_REQUEST';
+export const REMOVE_USER_SUCCESS = 'user/REMOVE_USER_SUCCESS';
+export const REMOVE_USER_FAILURE = 'user/REMOVE_USER_FAILURE';
 
 // *** FUNCTIONS
 export const loadUser = () => ({ type: LOAD_USER });
@@ -38,9 +42,19 @@ export const signIn = (payload: SignInInterface) => ({ type: SIGNIN, payload });
 export const signUp = (payload: SignUpInterface) => ({ type: SIGNUP, payload });
 export const signOut = () => ({ type: SIGNOUT });
 
-export const userRequest = () => ({ type: USER_REQUEST });
-export const userSuccess = (payload: UserInterface) => ({
-  type: USER_SUCCESS,
+export const setUserRequest = () => ({ type: SET_USER_REQUEST });
+export const setUserSuccess = (payload: UserInterface) => ({
+  type: SET_USER_SUCCESS,
   payload,
 });
-export const userFailure = (error: Error) => ({ type: USER_FAILURE, error });
+export const setUserFailure = (error: Error) => ({
+  type: SET_USER_FAILURE,
+  error,
+});
+
+export const removeUserRequest = () => ({ type: REMOVE_USER_REQUEST });
+export const removeUserSuccess = () => ({ type: REMOVE_USER_SUCCESS });
+export const removeUserFailure = (error: Error) => ({
+  type: SET_USER_FAILURE,
+  error,
+});

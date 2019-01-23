@@ -25,12 +25,21 @@ export default handleActions<UserInterface>(
       console.log(action.payload);
       return state;
     },
-    [actions.USER_SUCCESS]: (state, action) => action.payload as UserInterface,
-    [actions.USER_FAILURE]: (state, action) => {
+    [actions.SIGNOUT]: (state, action) => {
+      console.log('REDUCER -> start sign out');
+      return state;
+    },
+    [actions.SET_USER_SUCCESS]: (state, action) =>
+      action.payload as UserInterface,
+    [actions.SET_USER_FAILURE]: (state, action) => {
       console.log(action.error);
       return state;
     },
-    [actions.SIGNOUT]: (state, action) => initialState,
+    [actions.REMOVE_USER_SUCCESS]: (state, action) => initialState,
+    [actions.REMOVE_USER_FAILURE]: (state, action) => {
+      console.log(action.error);
+      return state;
+    },
   },
   initialState
 );
