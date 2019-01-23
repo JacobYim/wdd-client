@@ -11,18 +11,18 @@ interface Props {
 }
 
 interface State {
-  shortcutActive: boolean;
+  agreeAll: boolean;
 }
 
 class Agreement extends Component<Props, State> {
   state: State = {
-    shortcutActive: false,
+    agreeAll: false,
   };
 
   handleShortcut = () => {
     this.setState(state =>
       produce(state, draft => {
-        draft.shortcutActive = !state.shortcutActive;
+        draft.agreeAll = !state.agreeAll;
       })
     );
   };
@@ -38,22 +38,27 @@ class Agreement extends Component<Props, State> {
   };
 
   render() {
-    const { shortcutActive } = this.state;
+    const { agreeAll } = this.state;
     return (
       <PageContainer
         title="약관동의"
         right={{ text: '취소', handlePress: this.handleCancel }}
-        bottom={{ text: '확인', handlePress: this.handleAgree, boxType: true }}>
+        bottom={{
+          text: '확인',
+          handlePress: this.handleAgree,
+          boxType: true,
+          disable: !agreeAll,
+        }}>
         <TouchableOpacity
           style={[
-            views.shortcut,
-            views[shortcutActive ? 'shortcutActive' : 'shortcutInactive'],
+            views.agreeAll,
+            views[agreeAll ? 'agreeAllActive' : 'agreeAllInactive'],
           ]}
           onPress={this.handleShortcut}>
           <Text
             style={[
-              texts.shortcut,
-              texts[shortcutActive ? 'shortcutActive' : 'shortcutInactive'],
+              texts.agreeAll,
+              texts[agreeAll ? 'agreeAllActive' : 'agreeAllInactive'],
             ]}>
             아래 약관에 모두 동의합니다.
           </Text>

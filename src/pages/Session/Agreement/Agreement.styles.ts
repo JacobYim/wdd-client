@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { font, color } from 'src/theme';
 
 export const views = StyleSheet.create({
-  shortcut: {
+  agreeAll: {
     width: '100%',
     height: 52,
     borderWidth: 1,
@@ -11,23 +11,23 @@ export const views = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
-  shortcutActive: {
+  agreeAllActive: {
     backgroundColor: color.blue,
     borderColor: color.blue,
   },
-  shortcutInactive: {
+  agreeAllInactive: {
     borderColor: color.grayDA,
   },
 });
 
 export const texts = StyleSheet.create({
-  shortcut: {
+  agreeAll: {
     fontSize: 16,
   },
-  shortcutActive: {
+  agreeAllActive: {
     color: color.white,
   },
-  shortcutInactive: {
+  agreeAllInactive: {
     color: color.gray66,
   },
 });

@@ -27,7 +27,12 @@ export const views = StyleSheet.create({
     height: '7.3%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  boxEnable: {
     backgroundColor: color.blue,
+  },
+  boxDisable: {
+    backgroundColor: color.grayEF,
   },
   rightButton: {
     marginLeft: 'auto',
@@ -51,8 +56,13 @@ export const texts = StyleSheet.create({
     fontSize: font.size.small,
   },
   bottomBox: {
-    color: color.white,
     fontSize: font.size.large,
+  },
+  boxEnable: {
+    color: color.white,
+  },
+  boxDisable: {
+    color: color.grayB1,
   },
   title: {
     fontSize: font.size.title,

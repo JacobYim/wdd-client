@@ -59,9 +59,25 @@ const PageContainer: React.SFC<Props> = ({
     </View>
     {bottom && (
       <TouchableOpacity
-        style={views[bottom.boxType ? 'bottomBox' : 'bottomText']}
-        onPress={bottom.handlePress}>
-        <Text style={texts[bottom.boxType ? 'bottomBox' : 'bottomText']}>
+        style={
+          bottom.boxType
+            ? [
+                views.bottomBox,
+                views[bottom.disable ? 'boxDisable' : 'boxEnable'],
+              ]
+            : views.bottomText
+        }
+        onPress={bottom.handlePress}
+        disabled={bottom.disable}>
+        <Text
+          style={
+            bottom.boxType
+              ? [
+                  texts.bottomBox,
+                  texts[bottom.disable ? 'boxDisable' : 'boxEnable'],
+                ]
+              : texts.bottomText
+          }>
           {bottom.text}
         </Text>
         {bottom.bold && <Text style={texts.bottomBold}> {bottom.bold}</Text>}
