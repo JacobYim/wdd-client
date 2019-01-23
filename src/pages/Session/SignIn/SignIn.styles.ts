@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 export const views = StyleSheet.create({
   wrapper: {
     flex: 1,
-    display: 'flex',
     flexDirection: 'column',
   },
   logo: {

@@ -19,7 +19,6 @@ export const inputs = StyleSheet.create({
     // outer size
     height: 41,
     // inner size
-    display: 'flex',
     alignItems: 'center',
     paddingHorizontal: 12,
     // border styles

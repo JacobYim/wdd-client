@@ -14,14 +14,20 @@ export const views = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 16,
     height: 26,
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
-  bottomButton: {
+  bottomText: {
     marginBottom: 24,
     flexDirection: 'row',
     alignSelf: 'center',
+  },
+  bottomBox: {
+    width: '100%',
+    height: '7.3%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: color.blue,
   },
   rightButton: {
     marginLeft: 'auto',
@@ -36,13 +42,17 @@ export const texts = StyleSheet.create({
     color: color.blackOpacity,
     fontSize: font.size.large,
   },
-  bottom: {
+  bottomText: {
     color: color.gary55,
     fontSize: font.size.small,
   },
   bottomBold: {
     color: color.black33,
     fontSize: font.size.small,
+  },
+  bottomBox: {
+    color: color.white,
+    fontSize: font.size.large,
   },
   title: {
     fontSize: font.size.title,

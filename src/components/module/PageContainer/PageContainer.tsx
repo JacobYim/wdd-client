@@ -22,6 +22,8 @@ interface Props {
     text: string;
     handlePress: () => void;
     bold?: string;
+    boxType?: boolean;
+    disable?: boolean;
   };
 }
 
@@ -56,8 +58,12 @@ const PageContainer: React.SFC<Props> = ({
       {children}
     </View>
     {bottom && (
-      <TouchableOpacity style={views.bottomButton} onPress={bottom.handlePress}>
-        <Text style={texts.bottom}>{bottom.text}</Text>
+      <TouchableOpacity
+        style={views[bottom.boxType ? 'bottomBox' : 'bottomText']}
+        onPress={bottom.handlePress}>
+        <Text style={texts[bottom.boxType ? 'bottomBox' : 'bottomText']}>
+          {bottom.text}
+        </Text>
         {bottom.bold && <Text style={texts.bottomBold}> {bottom.bold}</Text>}
       </TouchableOpacity>
     )}
