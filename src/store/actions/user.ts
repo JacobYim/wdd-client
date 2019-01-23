@@ -47,14 +47,14 @@ export const setUserSuccess = (payload: UserInterface) => ({
   type: SET_USER_SUCCESS,
   payload,
 });
-export const setUserFailure = (error: Error) => ({
+export const setUserFailure = (payload: Response) => ({
   type: SET_USER_FAILURE,
-  error,
+  payload,
 });
 
 export const removeUserRequest = () => ({ type: REMOVE_USER_REQUEST });
 export const removeUserSuccess = () => ({ type: REMOVE_USER_SUCCESS });
-export const removeUserFailure = (error: Error) => ({
+export const removeUserFailure = (payload: Error) => ({
   type: SET_USER_FAILURE,
-  error,
+  payload,
 });
