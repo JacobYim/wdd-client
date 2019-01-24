@@ -3,24 +3,61 @@ import { View, Text } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import PageContainer from 'src/components/module/PageContainer';
+import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
+import Selector from 'src/components/module/Selector';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
 }
 
-class SignUpMeta extends Component<Props> {
-  handleBack = () => {};
+interface State {
+  gender: 'M' | 'F' | 'none';
+  birth: string;
+}
 
-  handleCancel = () => {};
+class SignUpMeta extends Component<Props, State> {
+  state: State = {
+    gender: 'none',
+    birth: '2000.01.01',
+  };
+
+  navToBack = () => {
+    const { navigation } = this.props;
+    navigation.goBack(null);
+  };
+
+  navToSession = () => {
+    const { navigation } = this.props;
+    navigation.popToTop();
+  };
+
+  handleChange = async (payload: HandleChangeText) => {
+    await this.setState(state => ({
+      ...state,
+      [payload.name]: payload.value,
+    }));
+  };
 
   render() {
     return (
       <PageContainer
         title="환영합니다!"
         subtitle="고객님께 더 적절한 산책과 댕댕이를 위해 몇 가지 정보를 입력해주세요."
-        left={{ text: '이전', handlePress: this.handleBack }}
-        right={{ text: '취소', handlePress: this.handleCancel }}>
-        <View />
+        left={{ text: '이전', handlePress: this.navToBack }}
+        right={{ text: '취소', handlePress: this.navToSession }}
+        scrollEnabled={false}>
+        <Selector
+          name="gender"
+          label="성별"
+          list={[{ name: 'M', label: '남자' }, { name: 'F', label: '여자' }]}
+          handleChange={this.handleChange}
+        />
+        <TextInput
+          name="birth"
+          label="생년월일"
+          value={this.state.birth}
+          handleChange={this.handleChange}
+        />
       </PageContainer>
     );
   }

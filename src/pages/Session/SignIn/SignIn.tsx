@@ -41,16 +41,21 @@ class SignIn extends Component<Props, State> {
     return { value, valid } as ParamInterface;
   };
 
+  navToApp = () => {
+    const { navigation } = this.props;
+    navigation.navigate('app');
+  };
+
+  navToSignUp = () => {
+    const { navigation } = this.props;
+    navigation.navigate('signUp');
+  };
+
   handleChange = async (payload: HandleChangeText) => {
     await this.setState(state => ({
       ...state,
       [payload.name]: this.mapEventToState(payload),
     }));
-  };
-
-  navToApp = () => {
-    const { navigation } = this.props;
-    navigation.navigate('app');
   };
 
   handleSignIn = () => {
@@ -70,29 +75,20 @@ class SignIn extends Component<Props, State> {
       );
   };
 
-  handleSignUp = () => {
-    const { navigation } = this.props;
-    navigation.navigate('signUp');
-  };
-
-  handleSkip = () => {
-    const { navigation } = this.props;
-    navigation.navigate('app');
-  };
-
   render() {
     const { email, password } = this.state;
     return (
       <PageContainer
         bottom={{
-          text: '비밀번호를 잊으셨나요?',
+          text: '우동댕이 처음이신가요?',
           bold: '회원가입',
-          handlePress: this.handleSignUp,
+          handlePress: this.navToSignUp,
         }}
         right={{
           text: '건너뛰기',
-          handlePress: this.handleSkip,
-        }}>
+          handlePress: this.navToApp,
+        }}
+        scrollEnabled={false}>
         <Image
           style={views.logo}
           source={require('src/lib/icons/ic_logo.png')}

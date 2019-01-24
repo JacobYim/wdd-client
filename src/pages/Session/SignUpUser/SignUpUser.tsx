@@ -35,6 +35,16 @@ class SignUpUser extends Component<Props, State> {
     passwordCheck: { value: '', valid: false },
   };
 
+  navToSession = () => {
+    const { navigation } = this.props;
+    navigation.popToTop();
+  };
+
+  navToMeta = () => {
+    const { navigation } = this.props;
+    navigation.navigate('signUpMeta');
+  };
+
   mapEventToState = ({ name, value }: HandleChangeText) => {
     let valid: boolean;
     if (name === 'name') valid = value.length > 0;
@@ -50,16 +60,6 @@ class SignUpUser extends Component<Props, State> {
       ...state,
       [payload.name]: this.mapEventToState(payload),
     }));
-  };
-
-  handleSignIn = () => {
-    const { navigation } = this.props;
-    navigation.popToTop();
-  };
-
-  navToMeta = () => {
-    const { navigation } = this.props;
-    navigation.navigate('signUpMeta');
   };
 
   handleSignUp = () => {
@@ -101,12 +101,13 @@ class SignUpUser extends Component<Props, State> {
         title="회원가입"
         bottom={{
           text: '로그인 하기',
-          handlePress: this.handleSignIn,
+          handlePress: this.navToSession,
         }}
         right={{
           text: '건너뛰기',
           handlePress: this.handleSkip,
-        }}>
+        }}
+        scrollEnabled={false}>
         <TextInput
           label="이름"
           name="name"

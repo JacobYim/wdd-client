@@ -8,11 +8,11 @@ export const views = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    marginHorizontal: 40,
+    marginHorizontal: '10.7%',
   },
   topWrapper: {
     marginTop: 20,
-    marginHorizontal: 16,
+    marginHorizontal: '4%',
     height: 26,
     flexDirection: 'row',
     alignItems: 'center',
@@ -24,7 +24,7 @@ export const views = StyleSheet.create({
   },
   bottomBox: {
     width: '100%',
-    height: '7.3%',
+    height: 48,
     justifyContent: 'center',
     alignItems: 'center',
   },

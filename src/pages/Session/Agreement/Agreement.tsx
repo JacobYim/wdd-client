@@ -48,7 +48,8 @@ class Agreement extends Component<Props, State> {
           handlePress: this.handleAgree,
           boxType: true,
           disable: !agreeAll,
-        }}>
+        }}
+        scrollEnabled={false}>
         <TouchableOpacity
           style={[
             views.agreeAll,

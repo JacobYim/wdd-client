@@ -1,5 +1,11 @@
 import React, { ReactNode } from 'react';
-import { SafeAreaView, TouchableOpacity, Text, View } from 'react-native';
+import {
+  SafeAreaView,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  View,
+} from 'react-native';
 import { views, texts } from './PageContainer.styles';
 
 interface Props {
@@ -25,6 +31,7 @@ interface Props {
     boxType?: boolean;
     disable?: boolean;
   };
+  [x: string]: any;
 }
 
 const PageContainer: React.SFC<Props> = ({
@@ -34,6 +41,7 @@ const PageContainer: React.SFC<Props> = ({
   left,
   right,
   bottom,
+  ...scrollOptions
 }) => (
   <SafeAreaView style={views.container}>
     <View style={views.topWrapper}>
@@ -48,7 +56,7 @@ const PageContainer: React.SFC<Props> = ({
         </TouchableOpacity>
       )}
     </View>
-    <View style={views.contentWrapper}>
+    <ScrollView style={views.contentWrapper} {...scrollOptions}>
       {title && (
         <View style={views.titleWrapper}>
           <Text style={texts.title}>{title}</Text>
@@ -56,7 +64,7 @@ const PageContainer: React.SFC<Props> = ({
         </View>
       )}
       {children}
-    </View>
+    </ScrollView>
     {bottom && (
       <TouchableOpacity
         style={
