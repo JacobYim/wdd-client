@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import { NavigationScreenProp } from 'react-navigation';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
+import * as userActions from 'src/store/actions/user';
 import PageContainer from 'src/components/module/PageContainer';
 import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  updateMeta: typeof userActions.updateMeta;
 }
 
 interface State {
@@ -15,7 +18,7 @@ interface State {
   birth: Date;
 }
 
-class SignUpMeta extends Component<Props, State> {
+class UpdateMeta extends Component<Props, State> {
   state: State = {
     gender: '',
     birth: moment()
@@ -33,7 +36,22 @@ class SignUpMeta extends Component<Props, State> {
     navigation.popToTop();
   };
 
-  navToNext = () => {};
+  navToNext = () => {
+    const { navigation } = this.props;
+    navigation.navigate({ routeName: 'updateDog' });
+  };
+
+  submit = () => {
+    const { updateMeta } = this.props;
+    const { gender, birth } = this.state;
+    updateMeta(
+      {
+        gender,
+        birth: moment(birth).format('YYYY.MM.DD'),
+      },
+      this.navToNext
+    );
+  };
 
   handleGenderChange = ({ name, value }: HandleChangeSelector) => {
     this.setState(state => ({ ...state, [name]: value }));
@@ -53,7 +71,7 @@ class SignUpMeta extends Component<Props, State> {
         bottom={{
           text: '다음',
           boxType: true,
-          handlePress: this.navToNext,
+          handlePress: this.submit,
           disable: !this.state.gender || !this.state.birth,
         }}
         scrollEnabled={false}>
@@ -74,4 +92,9 @@ class SignUpMeta extends Component<Props, State> {
   }
 }
 
-export default SignUpMeta;
+export default connect(
+  null,
+  {
+    updateMeta: userActions.updateMeta,
+  }
+)(UpdateMeta);

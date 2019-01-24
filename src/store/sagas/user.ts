@@ -14,18 +14,18 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
   try {
     yield put(actions.setUserRequest());
     // *** GET TOKEN FROM STORAGE
-    const { token, saveExist } = yield call(getUserStorage);
+    const { token, nextStep } = yield call(getUserStorage);
     yield call(setHeader, token);
     // *** GET DATA FROM API
     const data = yield call(api.getUser);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
-    if (!saveExist) yield call(action.navigate.success);
+    if (!nextStep) yield call(action.navigate.success);
     else
       Alert.alert('회원가입이 진행중입니다.', '이어서 하시겠습니까?', [
         {
           text: '예',
-          onPress: action.navigate.pending,
+          onPress: () => action.navigate.pending(nextStep),
         },
         {
           text: '나중에',
@@ -46,7 +46,7 @@ function* signIn(action: ReturnType<typeof actions.signIn>) {
     yield put(actions.setUserRequest());
     const data = yield call(api.signIn, action.payload);
     yield put(actions.setUserSuccess(data));
-    yield call(setUserStorage, { token: data.token, saveExist: false });
+    yield call(setUserStorage, { token: data.token });
     // *** NAVIGATE
     yield call(action.navigate);
   } catch (e) {
@@ -59,7 +59,7 @@ function* signUp(action: ReturnType<typeof actions.signUp>) {
     yield put(actions.setUserRequest());
     const data = yield call(api.signUp, action.payload);
     yield put(actions.setUserSuccess(data));
-    yield call(setUserStorage, { token: data.token, saveExist: true });
+    yield call(setUserStorage, { token: data.token, nextStep: 'updateMeta' });
     // *** NAVIGATE
     yield call(action.navigate);
   } catch (e) {
@@ -75,9 +75,24 @@ function* signOut(action: ReturnType<typeof actions.signOut>) {
   yield call(action.navigate);
 }
 
+function* updateMeta(action: ReturnType<typeof actions.updateMeta>) {
+  console.log(action);
+  try {
+    yield put(actions.setUserRequest());
+    const data = yield call(api.updateMeta, action.payload);
+    yield put(actions.setUserSuccess(data));
+    yield call(setUserStorage, { token: data.token, nextStep: 'updateDog' });
+    // *** NAVIGATE
+    yield call(action.navigate);
+  } catch (e) {
+    yield put(actions.setUserFailure(e.response));
+  }
+}
+
 export default function* root() {
   yield takeEvery(actions.AUTO_SIGNIN, autoSignIn);
   yield takeEvery(actions.SIGNIN, signIn);
   yield takeEvery(actions.SIGNUP, signUp);
   yield takeEvery(actions.SIGNOUT, signOut);
+  yield takeEvery(actions.UPDATE_META, updateMeta);
 }

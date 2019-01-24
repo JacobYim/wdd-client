@@ -27,7 +27,7 @@ interface State {
   passwordCheck: ParamInterface;
 }
 
-class SignUpUser extends Component<Props, State> {
+class SignUp extends Component<Props, State> {
   state: State = {
     name: { value: '', valid: false },
     email: { value: '', valid: false },
@@ -42,7 +42,7 @@ class SignUpUser extends Component<Props, State> {
 
   navToMeta = () => {
     const { navigation } = this.props;
-    navigation.navigate('signUpMeta');
+    navigation.navigate('updateMeta');
   };
 
   mapEventToState = ({ name, value }: HandleChangeText) => {
@@ -156,4 +156,4 @@ class SignUpUser extends Component<Props, State> {
 export default connect(
   null,
   { signUp: userActions.signUp }
-)(SignUpUser);
+)(SignUp);

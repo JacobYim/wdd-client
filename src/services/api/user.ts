@@ -3,6 +3,7 @@ import {
   UserInterface,
   SignInInterface,
   SignUpInterface,
+  UpdateMetaInterface,
 } from 'src/store/actions/user';
 
 export const getUser = async () => {
@@ -18,5 +19,10 @@ export const signIn = async (body: SignInInterface) => {
 
 export const signUp = async (body: SignUpInterface) => {
   const response = await axios.post('/signup', body);
+  return response.data as UserInterface;
+};
+
+export const updateMeta = async (body: UpdateMetaInterface) => {
+  const response = await axios.patch('/user', body);
   return response.data as UserInterface;
 };

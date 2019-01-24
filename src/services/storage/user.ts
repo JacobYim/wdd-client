@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 
 interface UserStorage {
   token: string;
-  saveExist: boolean;
+  nextStep?: string;
 }
 
 // *** KEY

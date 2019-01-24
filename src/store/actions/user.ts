@@ -20,11 +20,17 @@ export interface SignUpInterface extends SignInInterface {
   name: string;
 }
 
+export interface UpdateMetaInterface {
+  birth: string;
+  gender: string;
+}
+
 // *** CONSTS
 export const AUTO_SIGNIN = 'user/AUTO_SIGNIN';
 export const SIGNIN = 'user/SIGNIN';
 export const SIGNUP = 'user/SIGNUP';
 export const SIGNOUT = 'user/SIGNOUT';
+export const UPDATE_META = 'user/UPDATE_META';
 
 export const SET_USER_REQUEST = 'user/SET_USER_REQUEST';
 export const SET_USER_SUCCESS = 'user/SET_USER_SUCCESS';
@@ -38,7 +44,7 @@ type Navigate = () => void;
 export const autoSignIn = (navigate: {
   success: Navigate;
   failure: Navigate;
-  pending: Navigate;
+  pending: (nextStep: string) => void;
 }) => ({
   type: AUTO_SIGNIN,
   navigate,
@@ -54,6 +60,14 @@ export const signUp = (payload: SignUpInterface, navigate: Navigate) => ({
   navigate,
 });
 export const signOut = (navigate: Navigate) => ({ type: SIGNOUT, navigate });
+export const updateMeta = (
+  payload: UpdateMetaInterface,
+  navigate: Navigate
+) => ({
+  type: UPDATE_META,
+  payload,
+  navigate,
+});
 
 export const setUserRequest = () => ({ type: SET_USER_REQUEST });
 export const setUserSuccess = (payload: UserInterface) => ({

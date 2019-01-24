@@ -22,7 +22,7 @@ class Core extends PureComponent<Props> {
     autoSignIn({
       success: this.navToApp,
       failure: this.navToSession,
-      pending: this.navToSignUpMeta,
+      pending: this.navToSave,
     });
   }
 
@@ -36,13 +36,13 @@ class Core extends PureComponent<Props> {
     navigation.navigate('session');
   };
 
-  navToSignUpMeta = () => {
+  navToSave = (routeName: string) => {
     const { navigation } = this.props;
     navigation.navigate({
       routeName: 'session',
       action: NavigationActions.navigate({
         routeName: 'signUp',
-        action: NavigationActions.navigate({ routeName: 'signUpMeta' }),
+        action: NavigationActions.navigate({ routeName }),
       }),
     });
   };
