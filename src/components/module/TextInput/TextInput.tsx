@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 
 import { HandleChangeText } from './index';
-import { inputs, views, texts } from './TextInput.styles';
+import { inputs, texts } from './TextInput.styles';
+import ModuleContainer from 'src/components/module/ModuleContainer';
 
 interface Props {
   label: string;
@@ -42,8 +43,7 @@ class TextInput extends Component<Props, State> {
   render() {
     const { label, value, alert, ...options } = this.props;
     return (
-      <View style={views.container}>
-        <Text style={texts.label}>{label}</Text>
+      <ModuleContainer label={label}>
         <Input
           value={value}
           multiline={false}
@@ -58,7 +58,7 @@ class TextInput extends Component<Props, State> {
           {...options}
         />
         {alert && <Text style={texts.alert}>{alert}</Text>}
-      </View>
+      </ModuleContainer>
     );
   }
 }

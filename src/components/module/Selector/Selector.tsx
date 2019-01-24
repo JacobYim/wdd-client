@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
 import { HandleChangeSelector } from './index';
-import { views, texts } from './Selector.styles';
+import { views } from './Selector.styles';
+import ModuleContainer from 'src/components/module/ModuleContainer';
 import ToggleBox from './ToggleBox';
 
 interface Data {
@@ -34,8 +35,7 @@ class Selector extends Component<Props, State> {
   render() {
     const { label, list } = this.props;
     return (
-      <View style={views.container}>
-        <Text style={texts.label}>{label}</Text>
+      <ModuleContainer label={label}>
         <View style={views.boxWrapper}>
           {list.map(data => (
             <ToggleBox
@@ -47,7 +47,7 @@ class Selector extends Component<Props, State> {
             />
           ))}
         </View>
-      </View>
+      </ModuleContainer>
     );
   }
 }

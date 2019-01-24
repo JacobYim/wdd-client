@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import PageContainer from 'src/components/module/PageContainer';
@@ -11,14 +10,14 @@ interface Props {
 }
 
 interface State {
-  gender: 'M' | 'F' | 'none';
+  gender: 'M' | 'F' | '';
   birth: string;
 }
 
 class SignUpMeta extends Component<Props, State> {
   state: State = {
-    gender: 'none',
-    birth: '2000.01.01',
+    gender: '',
+    birth: '',
   };
 
   navToBack = () => {
@@ -30,6 +29,8 @@ class SignUpMeta extends Component<Props, State> {
     const { navigation } = this.props;
     navigation.popToTop();
   };
+
+  navToNext = () => {};
 
   handleChange = async (payload: HandleChangeText) => {
     await this.setState(state => ({
@@ -45,6 +46,12 @@ class SignUpMeta extends Component<Props, State> {
         subtitle="고객님께 더 적절한 산책과 댕댕이를 위해 몇 가지 정보를 입력해주세요."
         left={{ text: '이전', handlePress: this.navToBack }}
         right={{ text: '취소', handlePress: this.navToSession }}
+        bottom={{
+          text: '다음',
+          boxType: true,
+          handlePress: this.navToNext,
+          disable: !this.state.gender || !this.state.birth,
+        }}
         scrollEnabled={false}>
         <Selector
           name="gender"

@@ -2,11 +2,6 @@ import { StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
 export const texts = StyleSheet.create({
-  label: {
-    color: color.black,
-    fontSize: font.size.small,
-    marginBottom: 4,
-  },
   alert: {
     color: color.red,
     fontSize: font.size.small,
@@ -30,10 +25,4 @@ export const inputs = StyleSheet.create({
   },
   focused: { borderColor: color.blue },
   unFocused: { borderColor: color.grayDA },
-});
-
-export const views = StyleSheet.create({
-  container: {
-    paddingVertical: 8,
-  },
 });
