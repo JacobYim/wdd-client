@@ -48,7 +48,7 @@ class SignIn extends Component<Props, State> {
     }));
   };
 
-  moveToApp = () => {
+  navToApp = () => {
     const { navigation } = this.props;
     navigation.navigate('app');
   };
@@ -58,7 +58,7 @@ class SignIn extends Component<Props, State> {
     const { email, password } = this.state;
 
     if (email.valid && password.valid)
-      signIn({ email: email.value, password: password.value }, this.moveToApp);
+      signIn({ email: email.value, password: password.value }, this.navToApp);
     else
       this.setState(state =>
         produce(state, draft => {

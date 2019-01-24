@@ -57,7 +57,7 @@ class SignUpUser extends Component<Props, State> {
     navigation.popToTop();
   };
 
-  moveNextPage = () => {
+  navToMeta = () => {
     const { navigation } = this.props;
     navigation.navigate('signUpMeta');
   };
@@ -73,7 +73,7 @@ class SignUpUser extends Component<Props, State> {
           email: email.value,
           password: password.value,
         },
-        this.moveNextPage
+        this.navToMeta
       );
     else
       this.setState(state =>

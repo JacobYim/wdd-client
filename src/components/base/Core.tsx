@@ -4,37 +4,29 @@ import { NavigationScreenProp } from 'react-navigation';
 import { Image } from 'react-native';
 
 import * as userActions from 'src/store/actions/user';
-import configAxios, { setToken, removeToken } from 'src/services/api/axios';
+import configAxios from 'src/services/api/axios';
 import { loadToken } from 'src/services/storage/token';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
-  loadUser: typeof userActions.loadUser;
+  autoSignIn: typeof userActions.autoSignIn;
 }
 
 class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
-    this.AutoSignin();
+    props.autoSignIn({ success: this.navToApp, failure: this.navToSession });
   }
 
-  moveToApp = () => {
+  navToApp = () => {
     const { navigation } = this.props;
     navigation.navigate('app');
   };
 
-  AutoSignin = async () => {
-    const { loadUser, navigation } = this.props;
-    try {
-      const token = await loadToken();
-      if (!token) throw 'NO_TOKEN';
-      setToken(token);
-      await loadUser(this.moveToApp);
-    } catch (e) {
-      removeToken();
-      navigation.navigate('session');
-    }
+  navToSession = () => {
+    const { navigation } = this.props;
+    navigation.navigate('session');
   };
 
   render() {
@@ -49,5 +41,5 @@ class Core extends PureComponent<Props> {
 
 export default connect(
   null,
-  { loadUser: userActions.loadUser }
+  { autoSignIn: userActions.autoSignIn }
 )(Core);

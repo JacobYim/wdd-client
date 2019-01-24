@@ -21,7 +21,7 @@ export interface SignUpInterface extends SignInInterface {
 }
 
 // *** CONSTS
-export const LOAD_USER = 'user/LOAD_USER';
+export const AUTO_SIGNIN = 'user/AUTO_SIGNIN';
 export const SIGNIN = 'user/SIGNIN';
 export const SIGNUP = 'user/SIGNUP';
 export const SIGNOUT = 'user/SIGNOUT';
@@ -35,7 +35,13 @@ export const REMOVE_USER = 'user/REMOVE_USER';
 // *** FUNCTIONS
 type Navigate = () => void;
 
-export const loadUser = (navigate: Navigate) => ({ type: LOAD_USER, navigate });
+export const autoSignIn = (navigate: {
+  success: Navigate;
+  failure: Navigate;
+}) => ({
+  type: AUTO_SIGNIN,
+  navigate,
+});
 export const signIn = (payload: SignInInterface, navigate: Navigate) => ({
   type: SIGNIN,
   payload,
@@ -46,7 +52,7 @@ export const signUp = (payload: SignUpInterface, navigate: Navigate) => ({
   payload,
   navigate,
 });
-export const signOut = () => ({ type: SIGNOUT });
+export const signOut = (navigate: Navigate) => ({ type: SIGNOUT, navigate });
 
 export const setUserRequest = () => ({ type: SET_USER_REQUEST });
 export const setUserSuccess = (payload: UserInterface) => ({
