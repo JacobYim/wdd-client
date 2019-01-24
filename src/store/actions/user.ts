@@ -38,6 +38,7 @@ type Navigate = () => void;
 export const autoSignIn = (navigate: {
   success: Navigate;
   failure: Navigate;
+  pending: Navigate;
 }) => ({
   type: AUTO_SIGNIN,
   navigate,

@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, NavigationActions } from 'react-navigation';
 import { Image } from 'react-native';
 
 import * as userActions from 'src/store/actions/user';
 import configAxios from 'src/services/api/axios';
-import { loadToken } from 'src/services/storage/token';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -16,7 +15,11 @@ class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
-    props.autoSignIn({ success: this.navToApp, failure: this.navToSession });
+    props.autoSignIn({
+      success: this.navToApp,
+      failure: this.navToSession,
+      pending: this.navToSignUpMeta,
+    });
   }
 
   navToApp = () => {
@@ -27,6 +30,14 @@ class Core extends PureComponent<Props> {
   navToSession = () => {
     const { navigation } = this.props;
     navigation.navigate('session');
+  };
+
+  navToSignUpMeta = () => {
+    const { navigation } = this.props;
+    navigation.navigate({
+      routeName: 'session',
+      action: NavigationActions.navigate({ routeName: 'signUp' }),
+    });
   };
 
   render() {

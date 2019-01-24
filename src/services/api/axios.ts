@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export function setToken(token: string) {
+export function setHeader(token: string) {
   axios.defaults.headers.common['authorization'] = token;
 }
 
-export function removeToken() {
+export function removeHeader() {
   delete axios.defaults.headers.common['authorization'];
 }
 

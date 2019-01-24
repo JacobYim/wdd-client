@@ -5,7 +5,7 @@ import {
   SignUpInterface,
 } from 'src/store/actions/user';
 
-export const loadUser = async () => {
+export const getUser = async () => {
   // *** Set token on headers before call
   const response = await axios.get('/user');
   return response.data as UserInterface;
