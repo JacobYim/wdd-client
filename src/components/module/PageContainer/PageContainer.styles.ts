@@ -71,6 +71,6 @@ export const texts = StyleSheet.create({
   subtitle: {
     marginTop: 10,
     fontSize: font.size.medium,
-    color: color.black33,
+    color: color.black33Opacity,
   },
 });

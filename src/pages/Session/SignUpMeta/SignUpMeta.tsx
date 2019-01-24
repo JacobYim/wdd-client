@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { NavigationScreenProp } from 'react-navigation';
 
 import PageContainer from 'src/components/module/PageContainer';
@@ -17,7 +18,9 @@ interface State {
 class SignUpMeta extends Component<Props, State> {
   state: State = {
     gender: '',
-    birth: new Date(),
+    birth: moment()
+      .subtract(20, 'years')
+      .toDate(),
   };
 
   navToBack = () => {
