@@ -15,7 +15,11 @@ class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
-    props.autoSignIn({
+  }
+
+  componentDidMount() {
+    const { autoSignIn } = this.props;
+    autoSignIn({
       success: this.navToApp,
       failure: this.navToSession,
       pending: this.navToSignUpMeta,
@@ -36,7 +40,10 @@ class Core extends PureComponent<Props> {
     const { navigation } = this.props;
     navigation.navigate({
       routeName: 'session',
-      action: NavigationActions.navigate({ routeName: 'signUp' }),
+      action: NavigationActions.navigate({
+        routeName: 'signUp',
+        action: NavigationActions.navigate({ routeName: 'signUpMeta' }),
+      }),
     });
   };
 

@@ -25,15 +25,11 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
       Alert.alert('회원가입이 진행중입니다.', '이어서 하시겠습니까?', [
         {
           text: '예',
-          onPress: function*() {
-            yield call(action.navigate.pending);
-          },
+          onPress: action.navigate.pending,
         },
         {
           text: '나중에',
-          onPress: function*() {
-            yield call(action.navigate.success);
-          },
+          onPress: action.navigate.success,
           style: 'cancel',
         },
       ]);
