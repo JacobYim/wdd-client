@@ -41,7 +41,7 @@ class UpdateMeta extends Component<Props, State> {
     navigation.navigate({ routeName: 'updateDog' });
   };
 
-  submit = () => {
+  handleSubmit = () => {
     const { updateMeta } = this.props;
     const { gender, birth } = this.state;
     updateMeta(
@@ -71,7 +71,7 @@ class UpdateMeta extends Component<Props, State> {
         bottom={{
           text: '다음',
           boxType: true,
-          handlePress: this.submit,
+          handlePress: this.handleSubmit,
           disable: !this.state.gender || !this.state.birth,
         }}
         scrollEnabled={false}>

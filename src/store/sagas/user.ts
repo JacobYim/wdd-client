@@ -76,7 +76,6 @@ function* signOut(action: ReturnType<typeof actions.signOut>) {
 }
 
 function* updateMeta(action: ReturnType<typeof actions.updateMeta>) {
-  console.log(action);
   try {
     yield put(actions.setUserRequest());
     const data = yield call(api.updateMeta, action.payload);

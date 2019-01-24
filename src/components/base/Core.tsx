@@ -15,11 +15,7 @@ class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
-  }
-
-  componentDidMount() {
-    const { autoSignIn } = this.props;
-    autoSignIn({
+    props.autoSignIn({
       success: this.navToApp,
       failure: this.navToSession,
       pending: this.navToSave,
@@ -50,7 +46,7 @@ class Core extends PureComponent<Props> {
   render() {
     return (
       <Image
-        style={{ flex: 1, resizeMode: 'center' }}
+        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
         source={require('src/lib/images/img_splash.jpg')}
       />
     );
