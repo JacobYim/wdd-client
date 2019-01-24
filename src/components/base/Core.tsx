@@ -1,11 +1,10 @@
-import axios from 'axios';
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { Image } from 'react-native';
 
 import * as userActions from 'src/store/actions/user';
-import initAxios from 'src/services/api/axios';
+import configAxios, { setToken, removeToken } from 'src/services/api/axios';
 import { loadToken } from 'src/services/storage/token';
 
 interface Props {
@@ -16,20 +15,24 @@ interface Props {
 class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
-    initAxios();
-    this.checkUser();
+    configAxios();
+    this.AutoSignin();
   }
 
-  checkUser = async () => {
-    const { loadUser, navigation } = this.props;
-    const token = await loadToken();
+  moveToApp = () => {
+    const { navigation } = this.props;
+    navigation.navigate('app');
+  };
 
-    if (token) {
-      axios.defaults.headers.common['authorization'] = token;
-      await loadUser();
-      navigation.navigate('app');
-    } else {
-      delete axios.defaults.headers.common['authorization'];
+  AutoSignin = async () => {
+    const { loadUser, navigation } = this.props;
+    try {
+      const token = await loadToken();
+      if (!token) throw 'NO_TOKEN';
+      setToken(token);
+      await loadUser(this.moveToApp);
+    } catch (e) {
+      removeToken();
       navigation.navigate('session');
     }
   };

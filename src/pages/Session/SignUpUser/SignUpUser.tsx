@@ -27,7 +27,7 @@ interface State {
   passwordCheck: ParamInterface;
 }
 
-class SignUp extends Component<Props, State> {
+class SignUpUser extends Component<Props, State> {
   state: State = {
     name: { value: '', valid: false },
     email: { value: '', valid: false },
@@ -57,16 +57,24 @@ class SignUp extends Component<Props, State> {
     navigation.popToTop();
   };
 
+  moveNextPage = () => {
+    const { navigation } = this.props;
+    navigation.navigate('signUpMeta');
+  };
+
   handleSignUp = () => {
     const { signUp } = this.props;
     const { name, email, password, passwordCheck } = this.state;
 
     if (name.valid && email.valid && password.valid && passwordCheck.valid)
-      signUp({
-        name: name.value,
-        email: email.value,
-        password: password.value,
-      });
+      signUp(
+        {
+          name: name.value,
+          email: email.value,
+          password: password.value,
+        },
+        this.moveNextPage
+      );
     else
       this.setState(state =>
         produce(state, draft => {
@@ -147,4 +155,4 @@ class SignUp extends Component<Props, State> {
 export default connect(
   null,
   { signUp: userActions.signUp }
-)(SignUp);
+)(SignUpUser);

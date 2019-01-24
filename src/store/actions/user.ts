@@ -18,8 +18,6 @@ export interface SignInInterface {
 
 export interface SignUpInterface extends SignInInterface {
   name: string;
-  birth?: string;
-  gender?: string;
 }
 
 // *** CONSTS
@@ -32,14 +30,22 @@ export const SET_USER_REQUEST = 'user/SET_USER_REQUEST';
 export const SET_USER_SUCCESS = 'user/SET_USER_SUCCESS';
 export const SET_USER_FAILURE = 'user/SET_USER_FAILURE';
 
-export const REMOVE_USER_REQUEST = 'user/REMOVE_USER_REQUEST';
-export const REMOVE_USER_SUCCESS = 'user/REMOVE_USER_SUCCESS';
-export const REMOVE_USER_FAILURE = 'user/REMOVE_USER_FAILURE';
+export const REMOVE_USER = 'user/REMOVE_USER';
 
 // *** FUNCTIONS
-export const loadUser = () => ({ type: LOAD_USER });
-export const signIn = (payload: SignInInterface) => ({ type: SIGNIN, payload });
-export const signUp = (payload: SignUpInterface) => ({ type: SIGNUP, payload });
+type Navigate = () => void;
+
+export const loadUser = (navigate: Navigate) => ({ type: LOAD_USER, navigate });
+export const signIn = (payload: SignInInterface, navigate: Navigate) => ({
+  type: SIGNIN,
+  payload,
+  navigate,
+});
+export const signUp = (payload: SignUpInterface, navigate: Navigate) => ({
+  type: SIGNUP,
+  payload,
+  navigate,
+});
 export const signOut = () => ({ type: SIGNOUT });
 
 export const setUserRequest = () => ({ type: SET_USER_REQUEST });
@@ -52,9 +58,4 @@ export const setUserFailure = (payload: Response) => ({
   payload,
 });
 
-export const removeUserRequest = () => ({ type: REMOVE_USER_REQUEST });
-export const removeUserSuccess = () => ({ type: REMOVE_USER_SUCCESS });
-export const removeUserFailure = (payload: Error) => ({
-  type: SET_USER_FAILURE,
-  payload,
-});
+export const removeUser = () => ({ type: REMOVE_USER });

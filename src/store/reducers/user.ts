@@ -25,10 +25,7 @@ export default handleActions<UserState, any>(
       produce(state, draft => {
         draft.error = action.payload;
       }),
-    [actions.REMOVE_USER_SUCCESS]: (state, action) => initialState,
-    [actions.REMOVE_USER_FAILURE]: (state, action) => {
-      return state;
-    },
+    [actions.REMOVE_USER]: (state, action) => initialState,
   },
   initialState
 );

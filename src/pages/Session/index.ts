@@ -5,7 +5,8 @@ import {
 
 import SignInScreen from './SignIn';
 import AgreementScreen from './Agreement';
-import SignUpScreen from './SignUp';
+import SignUpUserScreen from './SignUpUser';
+import SignUpMetaScreen from './SignUpMeta';
 
 const SignUpNavigator = createMaterialTopTabNavigator(
   {
@@ -14,8 +15,12 @@ const SignUpNavigator = createMaterialTopTabNavigator(
       path: 'sign-up/agreement',
     },
     signUpUser: {
-      screen: SignUpScreen,
+      screen: SignUpUserScreen,
       path: 'sign-up/user',
+    },
+    signUpMeta: {
+      screen: SignUpMetaScreen,
+      path: 'sign-up/meta',
     },
   },
   {

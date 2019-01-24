@@ -48,12 +48,17 @@ class SignIn extends Component<Props, State> {
     }));
   };
 
+  moveToApp = () => {
+    const { navigation } = this.props;
+    navigation.navigate('app');
+  };
+
   handleSignIn = () => {
     const { signIn } = this.props;
     const { email, password } = this.state;
 
     if (email.valid && password.valid)
-      signIn({ email: email.value, password: password.value });
+      signIn({ email: email.value, password: password.value }, this.moveToApp);
     else
       this.setState(state =>
         produce(state, draft => {
