@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
+import { color } from 'src/theme';
 
 export const views = StyleSheet.create({
-  boxWrapper: {
-    flexDirection: 'row',
-    marginHorizontal: -4,
+  datePicker: {
+    backgroundColor: color.white,
   },
 });

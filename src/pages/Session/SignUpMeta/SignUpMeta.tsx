@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import PageContainer from 'src/components/module/PageContainer';
-import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
-import Selector from 'src/components/module/Selector';
+import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
+import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -11,13 +11,13 @@ interface Props {
 
 interface State {
   gender: 'M' | 'F' | '';
-  birth: string;
+  birth: Date;
 }
 
 class SignUpMeta extends Component<Props, State> {
   state: State = {
     gender: '',
-    birth: '',
+    birth: new Date(),
   };
 
   navToBack = () => {
@@ -32,11 +32,12 @@ class SignUpMeta extends Component<Props, State> {
 
   navToNext = () => {};
 
-  handleChange = async (payload: HandleChangeText) => {
-    await this.setState(state => ({
-      ...state,
-      [payload.name]: payload.value,
-    }));
+  handleGenderChange = ({ name, value }: HandleChangeSelector) => {
+    this.setState(state => ({ ...state, [name]: value }));
+  };
+
+  handleDateChange = ({ name, value }: HandleChangeDate) => {
+    this.setState(state => ({ ...state, [name]: value }));
   };
 
   render() {
@@ -57,13 +58,13 @@ class SignUpMeta extends Component<Props, State> {
           name="gender"
           label="성별"
           list={[{ name: 'M', label: '남자' }, { name: 'F', label: '여자' }]}
-          handleChange={this.handleChange}
+          handleChange={this.handleGenderChange}
         />
-        <TextInput
+        <DateInput
           name="birth"
           label="생년월일"
           value={this.state.birth}
-          handleChange={this.handleChange}
+          handleChange={this.handleDateChange}
         />
       </PageContainer>
     );
