@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
-import { NavigationScreenProp, NavigationActions } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { Image } from 'react-native';
 
 import * as userActions from 'src/store/actions/user';
@@ -15,33 +15,8 @@ class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
-    props.autoSignIn({
-      success: this.navToApp,
-      failure: this.navToSession,
-      pending: this.navToSave,
-    });
+    props.autoSignIn(this.props.navigation);
   }
-
-  navToApp = () => {
-    const { navigation } = this.props;
-    navigation.navigate('app');
-  };
-
-  navToSession = () => {
-    const { navigation } = this.props;
-    navigation.navigate('session');
-  };
-
-  navToSave = (routeName: string) => {
-    const { navigation } = this.props;
-    navigation.navigate({
-      routeName: 'session',
-      action: NavigationActions.navigate({
-        routeName: 'signUp',
-        action: NavigationActions.navigate({ routeName }),
-      }),
-    });
-  };
 
   render() {
     return (

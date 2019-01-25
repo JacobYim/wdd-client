@@ -1,4 +1,5 @@
 import { ShortenDogInterface, DogInterface } from './dog';
+import { NavigationScreenProp } from 'react-navigation';
 
 // *** INTERFACES
 export interface UserInterface {
@@ -44,34 +45,33 @@ export const SET_USER_FAILURE = 'user/SET_USER_FAILURE';
 export const REMOVE_USER = 'user/REMOVE_USER';
 
 // *** FUNCTIONS
-type Navigate = () => void;
+type Navigation = NavigationScreenProp<any>;
 
-export const autoSignIn = (navigate: {
-  success: Navigate;
-  failure: Navigate;
-  pending: (nextStep: string) => void;
-}) => ({
+export const autoSignIn = (navigation: Navigation) => ({
   type: AUTO_SIGNIN,
-  navigate,
+  navigation,
 });
-export const signIn = (payload: SignInInterface, navigate: Navigate) => ({
+export const signIn = (payload: SignInInterface, navigation: Navigation) => ({
   type: SIGNIN,
   payload,
-  navigate,
+  navigation,
 });
-export const signUp = (payload: SignUpInterface, navigate: Navigate) => ({
+export const signUp = (payload: SignUpInterface, navigation: Navigation) => ({
   type: SIGNUP,
   payload,
-  navigate,
+  navigation,
 });
-export const signOut = (navigate: Navigate) => ({ type: SIGNOUT, navigate });
+export const signOut = (navigation: Navigation) => ({
+  type: SIGNOUT,
+  navigation,
+});
 export const createMeta = (
   payload: CreateMetaInterface,
-  navigate: Navigate
+  navigation: Navigation
 ) => ({
   type: UPDATE_META,
   payload,
-  navigate,
+  navigation,
 });
 
 export const setUserRequest = () => ({ type: SET_USER_REQUEST });

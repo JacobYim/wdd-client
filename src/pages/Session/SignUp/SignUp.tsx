@@ -16,7 +16,7 @@ interface ParamInterface {
 }
 
 interface Props {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: NavigationScreenProp<any>;
   signUp: typeof userActions.signUp;
 }
 
@@ -40,11 +40,6 @@ class SignUp extends Component<Props, State> {
     navigation.popToTop();
   };
 
-  navToMeta = () => {
-    const { navigation } = this.props;
-    navigation.navigate('createMeta');
-  };
-
   mapEventToState = ({ name, value }: HandleChangeText) => {
     let valid: boolean;
     if (name === 'name') valid = value.length > 0;
@@ -63,7 +58,7 @@ class SignUp extends Component<Props, State> {
   };
 
   handleSignUp = () => {
-    const { signUp } = this.props;
+    const { signUp, navigation } = this.props;
     const { name, email, password, passwordCheck } = this.state;
 
     if (name.valid && email.valid && password.valid && passwordCheck.valid)
@@ -73,7 +68,7 @@ class SignUp extends Component<Props, State> {
           email: email.value,
           password: password.value,
         },
-        this.navToMeta
+        navigation
       );
     else
       this.setState(state =>

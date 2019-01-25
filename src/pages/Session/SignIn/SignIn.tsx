@@ -18,7 +18,7 @@ interface ParamInterface {
 }
 
 interface Props {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: NavigationScreenProp<any>;
   signIn: typeof userActions.signIn;
 }
 
@@ -59,11 +59,11 @@ class SignIn extends Component<Props, State> {
   };
 
   handleSignIn = () => {
-    const { signIn } = this.props;
+    const { signIn, navigation } = this.props;
     const { email, password } = this.state;
 
     if (email.valid && password.valid)
-      signIn({ email: email.value, password: password.value }, this.navToApp);
+      signIn({ email: email.value, password: password.value }, navigation);
     else
       this.setState(state =>
         produce(state, draft => {

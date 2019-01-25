@@ -36,20 +36,15 @@ class CreateMeta extends Component<Props, State> {
     navigation.popToTop();
   };
 
-  navToNext = () => {
-    const { navigation } = this.props;
-    navigation.navigate({ routeName: 'createDog' });
-  };
-
   handleSubmit = () => {
-    const { createMeta } = this.props;
+    const { createMeta, navigation } = this.props;
     const { gender, birth } = this.state;
     createMeta(
       {
         gender,
         birth: moment(birth).format('YYYY.MM.DD'),
       },
-      this.navToNext
+      navigation
     );
   };
 

@@ -1,4 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { NavigationActions } from 'react-navigation';
 import { Alert } from 'react-native';
 
 import { setHeader, removeHeader } from 'src/services/api/axios';
@@ -21,16 +22,23 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     const data = yield call(api.getUser);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
-    if (!nextStep) yield call(action.navigate.success);
+    if (!nextStep) yield call(action.navigation.navigate, 'app');
     else
       Alert.alert('회원가입이 진행중입니다.', '이어서 하시겠습니까?', [
         {
           text: '예',
-          onPress: () => action.navigate.pending(nextStep),
+          onPress: () =>
+            action.navigation.navigate({
+              routeName: 'session',
+              action: NavigationActions.navigate({
+                routeName: 'signUp',
+                action: NavigationActions.navigate({ routeName: nextStep }),
+              }),
+            }),
         },
         {
           text: '나중에',
-          onPress: action.navigate.success,
+          onPress: () => action.navigation.navigate('app'),
           style: 'cancel',
         },
       ]);
@@ -38,7 +46,7 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     yield put(actions.setUserFailure(e.response));
     yield call(removeHeader);
     // *** NAVIGATE
-    yield call(action.navigate.failure);
+    yield call(action.navigation.navigate, 'session');
   }
 }
 
@@ -52,7 +60,7 @@ function* signIn(action: ReturnType<typeof actions.signIn>) {
     yield call(setHeader, token);
     yield call(setUserStorage, { token });
     // *** NAVIGATE
-    yield call(action.navigate);
+    yield call(action.navigation.navigate, 'app');
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
   }
@@ -65,10 +73,11 @@ function* signUp(action: ReturnType<typeof actions.signUp>) {
     yield put(actions.setUserSuccess(data));
     // *** SET TOKEN
     const { token } = data;
+    const nextStep = 'createMeta';
     yield call(setHeader, token);
-    yield call(setUserStorage, { token, nextStep: 'createMeta' });
+    yield call(setUserStorage, { token, nextStep });
     // *** NAVIGATE
-    yield call(action.navigate);
+    yield call(action.navigation.navigate, nextStep);
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
   }
@@ -79,7 +88,7 @@ function* signOut(action: ReturnType<typeof actions.signOut>) {
   yield call(removeHeader);
   yield call(removeUserStorage);
   // *** NAVIGATE
-  yield call(action.navigate);
+  yield call(action.navigation.navigate, 'session');
 }
 
 function* createMeta(action: ReturnType<typeof actions.createMeta>) {
@@ -87,9 +96,10 @@ function* createMeta(action: ReturnType<typeof actions.createMeta>) {
     yield put(actions.setUserRequest());
     const data = yield call(api.createMeta, action.payload);
     yield put(actions.setUserSuccess(data));
-    yield call(updateUserStorage, { nextStep: 'createDog' });
+    const nextStep = 'createDog';
+    yield call(updateUserStorage, { nextStep });
     // *** NAVIGATE
-    yield call(action.navigate);
+    yield call(action.navigation.navigate, nextStep);
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
   }

@@ -12,14 +12,9 @@ interface Props {
 }
 
 class Map extends Component<Props> {
-  navToSession = () => {
-    const { navigation } = this.props;
-    navigation.navigate('session');
-  };
-
   handleSignOut = () => {
-    const { signOut } = this.props;
-    signOut(this.navToSession);
+    const { signOut, navigation } = this.props;
+    signOut(navigation);
   };
 
   render() {

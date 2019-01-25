@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
+import * as actions from 'src/store/actions/dog';
 import { views } from './CreateDog.styles';
 import PageContainer from 'src/components/module/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
@@ -9,6 +11,7 @@ import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  createDog: typeof actions.createDog;
 }
 
 interface State {
@@ -46,7 +49,8 @@ class CreateDog extends Component<Props, State> {
   };
 
   handleSubmit = () => {
-    const { name, race, gender } = this.state;
+    const { createDog } = this.props;
+    createDog(this.state);
   };
 
   render() {
@@ -97,4 +101,7 @@ class CreateDog extends Component<Props, State> {
   }
 }
 
-export default CreateDog;
+export default connect(
+  null,
+  { createDog: actions.createDog }
+)(CreateDog);
