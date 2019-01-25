@@ -2,8 +2,8 @@ import { NavigationScreenProp } from 'react-navigation';
 
 // *** INTERFACES
 export interface DogInterface extends ShortenDogInterface {
-  readonly id: string; // PK
-  readonly user: string; // FK
+  id: string; // PK
+  user: string; // FK
   feeds: string[];
   getLikes: string[];
   gender: 'M' | 'F' | 'N';

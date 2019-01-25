@@ -51,6 +51,7 @@ class TextInput extends Component<Props, State> {
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           autoCapitalize="none"
+          autoCorrect={false}
           style={[
             inputs.text,
             inputs[this.state.isFocus ? 'focused' : 'unFocused'],
