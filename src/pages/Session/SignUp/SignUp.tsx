@@ -35,11 +35,6 @@ class SignUp extends Component<Props, State> {
     passwordCheck: { value: '', valid: false },
   };
 
-  navToSession = () => {
-    const { navigation } = this.props;
-    navigation.popToTop();
-  };
-
   mapEventToState = ({ name, value }: HandleChangeText) => {
     let valid: boolean;
     if (name === 'name') valid = value.length > 0;
@@ -84,23 +79,19 @@ class SignUp extends Component<Props, State> {
       );
   };
 
-  handleSkip = () => {
-    const { navigation } = this.props;
-    navigation.navigate('app');
-  };
-
   render() {
+    const { navigation } = this.props;
     const { name, email, password, passwordCheck } = this.state;
     return (
       <PageContainer
         title="회원가입"
         bottom={{
           text: '로그인 하기',
-          handlePress: this.navToSession,
+          handlePress: () => navigation.popToTop(),
         }}
         right={{
           text: '건너뛰기',
-          handlePress: this.handleSkip,
+          handlePress: () => navigation.navigate('app'),
         }}
         scrollEnabled={false}>
         <TextInput

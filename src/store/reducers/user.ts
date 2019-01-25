@@ -1,6 +1,8 @@
 import produce from 'immer';
 import { handleActions } from 'redux-actions';
 
+import { removeHeader } from 'src/services/api/axios';
+import { removeUserStorage } from 'src/services/storage/user';
 import { UserInterface } from 'src/store/actions/user';
 import { DogInterface } from 'src/store/actions/dog';
 import * as actions from 'src/store/actions/user';
@@ -30,10 +32,15 @@ export default handleActions<UserState, any>(
         delete draft.error;
       }),
     [actions.SET_USER_SUCCESS]: (state, action) => action.payload,
-    [actions.SET_USER_FAILURE]: (state, action) =>
-      produce(state, draft => {
+    [actions.SET_USER_FAILURE]: (state, action) => {
+      if (action.payload && action.payload.data.name === 'JsonWebTokenError') {
+        removeHeader();
+        removeUserStorage();
+      }
+      return produce(state, draft => {
         draft.error = action.payload;
-      }),
+      });
+    },
     [actions.REMOVE_USER]: (state, action) => initialState,
     // *** HANDLE DOG ACTIONS
     [dogActions.SET_DOG_REQUEST]: (state, action) =>

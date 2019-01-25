@@ -29,36 +29,23 @@ class CreateDog extends Component<Props, State> {
     gender: '',
   };
 
-  navToBack = () => {
-    const { navigation } = this.props;
-    navigation.goBack(null);
-  };
-
-  navToSession = () => {
-    const { navigation } = this.props;
-    navigation.popToTop();
-  };
-
-  navToNext = () => {
-    const { navigation } = this.props;
-    navigation.navigate('tutorial');
-  };
-
   handleChange = ({ name, value }: HandleChangeText | HandleChangeSelector) => {
     this.setState(state => ({ ...state, [name]: value }));
   };
 
   handleSubmit = () => {
-    const { createDog } = this.props;
-    createDog(this.state);
+    const { createDog, navigation } = this.props;
+    createDog(this.state, navigation);
   };
 
   render() {
+    const { navigation } = this.props;
     const { name, race, gender } = this.state;
+
     return (
       <PageContainer
-        left={{ text: '이전', handlePress: this.navToBack }}
-        right={{ text: '취소', handlePress: this.navToSession }}
+        left={{ text: '이전', handlePress: () => navigation.goBack(null) }}
+        right={{ text: '취소', handlePress: () => navigation.popToTop() }}
         bottom={{
           text: '다음',
           boxType: true,

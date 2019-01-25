@@ -19,16 +19,6 @@ class Agreement extends Component<Props, State> {
     agreeAll: false,
   };
 
-  navToSession = () => {
-    const { navigation } = this.props;
-    navigation.popToTop();
-  };
-
-  navToSignUp = () => {
-    const { navigation } = this.props;
-    navigation.navigate('signUpUser');
-  };
-
   handleShortcut = () => {
     this.setState(state =>
       produce(state, draft => {
@@ -38,14 +28,16 @@ class Agreement extends Component<Props, State> {
   };
 
   render() {
+    const { navigation } = this.props;
     const { agreeAll } = this.state;
+
     return (
       <PageContainer
         title="약관동의"
-        right={{ text: '취소', handlePress: this.navToSession }}
+        right={{ text: '취소', handlePress: () => navigation.popToTop() }}
         bottom={{
           text: '확인',
-          handlePress: this.navToSignUp,
+          handlePress: () => navigation.navigate('signUpUser'),
           boxType: true,
           disable: !agreeAll,
         }}

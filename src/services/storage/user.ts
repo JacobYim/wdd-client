@@ -30,6 +30,11 @@ export async function updateUserStorage(payload: SoftStorageInterface) {
   setUserStorage(updateData);
 }
 
+export async function removeNextStep() {
+  const { token } = await getUserStorage();
+  setUserStorage({ token });
+}
+
 export function removeUserStorage() {
   AsyncStorage.removeItem(USER);
 }

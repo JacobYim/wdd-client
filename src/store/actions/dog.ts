@@ -1,3 +1,5 @@
+import { NavigationScreenProp } from 'react-navigation';
+
 // *** INTERFACES
 export interface DogInterface extends ShortenDogInterface {
   readonly id: string; // PK
@@ -19,17 +21,22 @@ export interface ShortenDogInterface {
 // *** CONSTS
 export const GET_DOG = 'dog/GET_DOG';
 export const CREATE_DOG = 'dog/CREATE_DOG';
-// export const UPDATE_DOG = 'dog/UPDATE_DOG';
 
 export const SET_DOG_REQUEST = 'dog/SET_DOG_REQUEST';
 export const SET_DOG_SUCCESS = 'dog/SET_DOG_SUCCESS';
 export const SET_DOG_FAILURE = 'dog/SET_DOG_FAILURE';
 
 // *** FUNCTIONS
+type Navigation = NavigationScreenProp<any>;
+
 export const getDog = (payload: { id: string }) => ({ type: GET_DOG, payload });
-export const createDog = (payload: ShortenDogInterface) => ({
+export const createDog = (
+  payload: ShortenDogInterface,
+  navigation?: Navigation
+) => ({
   type: CREATE_DOG,
   payload,
+  navigation,
 });
 
 export const setDogRequest = () => ({ type: SET_DOG_REQUEST });

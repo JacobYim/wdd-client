@@ -8,6 +8,7 @@ import AgreementScreen from './Agreement';
 import SignUpScreen from './SignUp';
 import CreateMetaScreen from './CreateMeta';
 import CreateDogScreen from './CreateDog';
+import TutorialScreen from './Tutorial';
 
 const SignUpNavigator = createMaterialTopTabNavigator(
   {
@@ -26,6 +27,10 @@ const SignUpNavigator = createMaterialTopTabNavigator(
     createDog: {
       screen: CreateDogScreen,
       path: 'sign-up/dog',
+    },
+    tutorial: {
+      screen: TutorialScreen,
+      path: 'sign-up/complete',
     },
   },
   {

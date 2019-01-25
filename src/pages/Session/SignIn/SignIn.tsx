@@ -41,16 +41,6 @@ class SignIn extends Component<Props, State> {
     return { value, valid } as ParamInterface;
   };
 
-  navToApp = () => {
-    const { navigation } = this.props;
-    navigation.navigate('app');
-  };
-
-  navToSignUp = () => {
-    const { navigation } = this.props;
-    navigation.navigate('signUp');
-  };
-
   handleChange = async (payload: HandleChangeText) => {
     await this.setState(state => ({
       ...state,
@@ -76,17 +66,19 @@ class SignIn extends Component<Props, State> {
   };
 
   render() {
+    const { navigation } = this.props;
     const { email, password } = this.state;
+
     return (
       <PageContainer
         bottom={{
           text: '우동댕이 처음이신가요?',
           bold: '회원가입',
-          handlePress: this.navToSignUp,
+          handlePress: () => navigation.navigate('signUp'),
         }}
         right={{
           text: '건너뛰기',
-          handlePress: this.navToApp,
+          handlePress: () => navigation.navigate('app'),
         }}
         scrollEnabled={false}>
         <Image
