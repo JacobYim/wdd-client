@@ -27,7 +27,8 @@ interface Props {
   bottom?: {
     text: string;
     handlePress: () => void;
-    bold?: string;
+    diffText?: string;
+    handleDiffPress?: () => void;
     boxType?: boolean;
     disable?: boolean;
   };
@@ -66,7 +67,7 @@ const PageContainer: React.SFC<Props> = ({
       {children}
     </ScrollView>
     {bottom && (
-      <TouchableOpacity
+      <View
         style={
           bottom.boxType
             ? [
@@ -74,22 +75,28 @@ const PageContainer: React.SFC<Props> = ({
                 views[bottom.disable ? 'boxDisable' : 'boxEnable'],
               ]
             : views.bottomText
-        }
-        onPress={bottom.handlePress}
-        disabled={bottom.disable}>
-        <Text
-          style={
-            bottom.boxType
-              ? [
-                  texts.bottomBox,
-                  texts[bottom.disable ? 'boxDisable' : 'boxEnable'],
-                ]
-              : texts.bottomText
-          }>
-          {bottom.text}
-        </Text>
-        {bottom.bold && <Text style={texts.bottomBold}> {bottom.bold}</Text>}
-      </TouchableOpacity>
+        }>
+        <TouchableOpacity
+          onPress={bottom.handlePress}
+          disabled={bottom.disable}>
+          <Text
+            style={
+              bottom.boxType
+                ? [
+                    texts.bottomBox,
+                    texts[bottom.disable ? 'boxDisable' : 'boxEnable'],
+                  ]
+                : texts.bottomText
+            }>
+            {bottom.text}
+          </Text>
+        </TouchableOpacity>
+        {bottom.diffText && bottom.handleDiffPress && (
+          <TouchableOpacity onPress={bottom.handleDiffPress}>
+            <Text style={texts.bottomDiff}> {bottom.diffText}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     )}
   </SafeAreaView>
 );

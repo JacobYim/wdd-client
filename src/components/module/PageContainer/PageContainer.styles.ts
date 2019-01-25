@@ -51,7 +51,7 @@ export const texts = StyleSheet.create({
     color: color.gary55,
     fontSize: font.size.small,
   },
-  bottomBold: {
+  bottomDiff: {
     color: color.black33,
     fontSize: font.size.small,
   },

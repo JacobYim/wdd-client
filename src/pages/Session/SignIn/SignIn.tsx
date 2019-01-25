@@ -72,9 +72,10 @@ class SignIn extends Component<Props, State> {
     return (
       <PageContainer
         bottom={{
-          text: '우동댕이 처음이신가요?',
-          bold: '회원가입',
-          handlePress: () => navigation.navigate('signUp'),
+          text: '비밀번호를 잊으셨나요?',
+          handlePress: () => {},
+          diffText: '회원가입 하기',
+          handleDiffPress: () => navigation.navigate('signUp'),
         }}
         right={{
           text: '건너뛰기',
