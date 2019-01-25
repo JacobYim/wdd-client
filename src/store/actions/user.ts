@@ -1,14 +1,19 @@
+import { ShortenDogInterface, DogInterface } from './dog';
+
 // *** INTERFACES
 export interface UserInterface {
-  readonly email: string;
-  readonly name: string;
+  readonly email: string; // PK
+  readonly lastLogin: string;
+  name: string;
+  birth: string;
+  gender: 'M' | 'F' | '';
+  status: 'ACTIVE' | 'PAUSED' | 'TERMINATED' | '';
   dogs: {
-    [id: string]: {
-      name: string;
-      thumbnail: string;
-    };
+    [id: string]: ShortenDogInterface | DogInterface;
   };
-  // places: string[]
+  places: {
+    [id: string]: ShortenDogInterface;
+  };
 }
 
 export interface SignInInterface {
@@ -20,7 +25,7 @@ export interface SignUpInterface extends SignInInterface {
   name: string;
 }
 
-export interface UpdateMetaInterface {
+export interface CreateMetaInterface {
   birth: string;
   gender: string;
 }
@@ -60,8 +65,8 @@ export const signUp = (payload: SignUpInterface, navigate: Navigate) => ({
   navigate,
 });
 export const signOut = (navigate: Navigate) => ({ type: SIGNOUT, navigate });
-export const updateMeta = (
-  payload: UpdateMetaInterface,
+export const createMeta = (
+  payload: CreateMetaInterface,
   navigate: Navigate
 ) => ({
   type: UPDATE_META,

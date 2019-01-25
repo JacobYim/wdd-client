@@ -5,6 +5,7 @@ import { setHeader, removeHeader } from 'src/services/api/axios';
 import {
   getUserStorage,
   setUserStorage,
+  updateUserStorage,
   removeUserStorage,
 } from 'src/services/storage/user';
 import * as actions from 'src/store/actions/user';
@@ -46,7 +47,10 @@ function* signIn(action: ReturnType<typeof actions.signIn>) {
     yield put(actions.setUserRequest());
     const data = yield call(api.signIn, action.payload);
     yield put(actions.setUserSuccess(data));
-    yield call(setUserStorage, { token: data.token });
+    // *** SET TOKEN
+    const { token } = data;
+    yield call(setHeader, token);
+    yield call(setUserStorage, { token });
     // *** NAVIGATE
     yield call(action.navigate);
   } catch (e) {
@@ -59,7 +63,10 @@ function* signUp(action: ReturnType<typeof actions.signUp>) {
     yield put(actions.setUserRequest());
     const data = yield call(api.signUp, action.payload);
     yield put(actions.setUserSuccess(data));
-    yield call(setUserStorage, { token: data.token, nextStep: 'updateMeta' });
+    // *** SET TOKEN
+    const { token } = data;
+    yield call(setHeader, token);
+    yield call(setUserStorage, { token, nextStep: 'createMeta' });
     // *** NAVIGATE
     yield call(action.navigate);
   } catch (e) {
@@ -75,12 +82,12 @@ function* signOut(action: ReturnType<typeof actions.signOut>) {
   yield call(action.navigate);
 }
 
-function* updateMeta(action: ReturnType<typeof actions.updateMeta>) {
+function* createMeta(action: ReturnType<typeof actions.createMeta>) {
   try {
     yield put(actions.setUserRequest());
-    const data = yield call(api.updateMeta, action.payload);
+    const data = yield call(api.createMeta, action.payload);
     yield put(actions.setUserSuccess(data));
-    yield call(setUserStorage, { token: data.token, nextStep: 'updateDog' });
+    yield call(updateUserStorage, { nextStep: 'createDog' });
     // *** NAVIGATE
     yield call(action.navigate);
   } catch (e) {
@@ -93,5 +100,5 @@ export default function* root() {
   yield takeEvery(actions.SIGNIN, signIn);
   yield takeEvery(actions.SIGNUP, signUp);
   yield takeEvery(actions.SIGNOUT, signOut);
-  yield takeEvery(actions.UPDATE_META, updateMeta);
+  yield takeEvery(actions.UPDATE_META, createMeta);
 }

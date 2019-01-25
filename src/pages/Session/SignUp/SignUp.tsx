@@ -42,7 +42,7 @@ class SignUp extends Component<Props, State> {
 
   navToMeta = () => {
     const { navigation } = this.props;
-    navigation.navigate('updateMeta');
+    navigation.navigate('createMeta');
   };
 
   mapEventToState = ({ name, value }: HandleChangeText) => {

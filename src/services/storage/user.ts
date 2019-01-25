@@ -1,5 +1,10 @@
 import { AsyncStorage } from 'react-native';
 
+interface SoftStorageInterface {
+  token?: string;
+  nextStep?: string;
+}
+
 interface UserStorage {
   token: string;
   nextStep?: string;
@@ -17,6 +22,12 @@ export async function getUserStorage() {
 
 export function setUserStorage(payload: UserStorage) {
   AsyncStorage.setItem(USER, JSON.stringify(payload));
+}
+
+export async function updateUserStorage(payload: SoftStorageInterface) {
+  const data = await getUserStorage();
+  const updateData = { ...data, ...payload };
+  setUserStorage(updateData);
 }
 
 export function removeUserStorage() {

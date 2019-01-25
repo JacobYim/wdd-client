@@ -10,7 +10,7 @@ import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
-  updateMeta: typeof userActions.updateMeta;
+  createMeta: typeof userActions.createMeta;
 }
 
 interface State {
@@ -18,7 +18,7 @@ interface State {
   birth: Date;
 }
 
-class UpdateMeta extends Component<Props, State> {
+class CreateMeta extends Component<Props, State> {
   state: State = {
     gender: '',
     birth: moment()
@@ -38,13 +38,13 @@ class UpdateMeta extends Component<Props, State> {
 
   navToNext = () => {
     const { navigation } = this.props;
-    navigation.navigate({ routeName: 'updateDog' });
+    navigation.navigate({ routeName: 'createDog' });
   };
 
   handleSubmit = () => {
-    const { updateMeta } = this.props;
+    const { createMeta } = this.props;
     const { gender, birth } = this.state;
-    updateMeta(
+    createMeta(
       {
         gender,
         birth: moment(birth).format('YYYY.MM.DD'),
@@ -95,6 +95,6 @@ class UpdateMeta extends Component<Props, State> {
 export default connect(
   null,
   {
-    updateMeta: userActions.updateMeta,
+    createMeta: userActions.createMeta,
   }
-)(UpdateMeta);
+)(CreateMeta);

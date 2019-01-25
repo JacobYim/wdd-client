@@ -3,7 +3,7 @@ import {
   UserInterface,
   SignInInterface,
   SignUpInterface,
-  UpdateMetaInterface,
+  CreateMetaInterface,
 } from 'src/store/actions/user';
 
 export const getUser = async () => {
@@ -22,7 +22,7 @@ export const signUp = async (body: SignUpInterface) => {
   return response.data as UserInterface;
 };
 
-export const updateMeta = async (body: UpdateMetaInterface) => {
+export const createMeta = async (body: CreateMetaInterface) => {
   const response = await axios.patch('/user', body);
   return response.data as UserInterface;
 };

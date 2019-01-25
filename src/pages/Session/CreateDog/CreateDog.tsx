@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { views } from './UpdateDog.styles';
+import { views } from './CreateDog.styles';
 import PageContainer from 'src/components/module/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
@@ -13,13 +13,15 @@ interface Props {
 
 interface State {
   name: string;
+  thumbnail: string;
   race: string;
   gender: 'M' | 'F' | 'N' | '';
 }
 
-class UpdateDog extends Component<Props, State> {
+class CreateDog extends Component<Props, State> {
   state: State = {
     name: '',
+    thumbnail: '',
     race: '',
     gender: '',
   };
@@ -95,4 +97,4 @@ class UpdateDog extends Component<Props, State> {
   }
 }
 
-export default UpdateDog;
+export default CreateDog;
