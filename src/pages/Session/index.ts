@@ -4,11 +4,14 @@ import {
 } from 'react-navigation';
 
 import SignInScreen from './SignIn';
+
 import AgreementScreen from './Agreement';
 import SignUpScreen from './SignUp';
 import CreateMetaScreen from './CreateMeta';
 import CreateDogScreen from './CreateDog';
 import TutorialScreen from './Tutorial';
+
+import ForgotPasswordScreen from './ForgotPassword';
 
 const SignUpNavigator = createMaterialTopTabNavigator(
   {
@@ -43,6 +46,23 @@ const SignUpNavigator = createMaterialTopTabNavigator(
   }
 );
 
+const ForgotPasswordNavigator = createMaterialTopTabNavigator(
+  {
+    enterEmail: {
+      screen: ForgotPasswordScreen,
+      path: 'forgot-password/email',
+    },
+  },
+  {
+    initialRouteName: 'enterEmail',
+    animationEnabled: true,
+    swipeEnabled: false,
+    tabBarOptions: {
+      style: { display: 'none' },
+    },
+  }
+);
+
 export default createStackNavigator(
   {
     signIn: {
@@ -50,6 +70,7 @@ export default createStackNavigator(
       path: 'sign-in',
     },
     signUp: SignUpNavigator,
+    forgotPassword: ForgotPasswordNavigator,
   },
   {
     initialRouteName: 'signIn',

@@ -73,7 +73,7 @@ class SignIn extends Component<Props, State> {
       <PageContainer
         bottom={{
           text: '비밀번호를 잊으셨나요?',
-          handlePress: () => {},
+          handlePress: () => navigation.navigate('forgotPassword'),
           diffText: '회원가입 하기',
           handleDiffPress: () => navigation.navigate('signUp'),
         }}
