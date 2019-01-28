@@ -1,0 +1,9 @@
+{
+  "bucketName": "wdd-client-file",
+  "authPolicyName": "s3_amplify_1b1c6dfb",
+  "unauthPolicyName": "s3_amplify_1b1c6dfb",
+  "authRoleName": "ddlient-20190128180322-authRole",
+  "unauthRoleName": "ddlient-20190128180322-unauthRole",
+  "authPermissions": "rw",
+  "unauthPermissions": "r"
+}
