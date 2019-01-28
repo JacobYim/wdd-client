@@ -2,7 +2,9 @@ import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { Image } from 'react-native';
+import Amplify from 'aws-amplify';
 
+import awsconfig from 'src/aws-exports';
 import * as userActions from 'src/store/actions/user';
 import configAxios from 'src/services/api/axios';
 
@@ -15,6 +17,7 @@ class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
+    Amplify.configure(awsconfig);
     props.autoSignIn(this.props.navigation);
   }
 

@@ -8,9 +8,8 @@ export const views = StyleSheet.create({
   },
   thumbnailButton: {},
   thumbnail: {
-    width: 130,
-    height: 130,
-    marginVertical: -20,
-    resizeMode: 'cover',
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
   },
 });
