@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -33,6 +34,21 @@ class CreateDog extends Component<Props, State> {
     this.setState(state => ({ ...state, [name]: value }));
   };
 
+  selectPhoto = () => {
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, res => {
+      console.log('Response: ', res);
+    });
+  };
+
   handleSubmit = () => {
     const { createDog, navigation } = this.props;
     createDog(this.state, navigation);
@@ -54,10 +70,15 @@ class CreateDog extends Component<Props, State> {
         }}
         scrollEnabled={false}>
         <View style={views.thumbnailWrapper}>
-          <TouchableOpacity style={views.thumbnailButton}>
+          <TouchableOpacity
+            style={views.thumbnailButton}
+            onPress={this.selectPhoto}>
             <Image
               style={views.thumbnail}
-              source={require('src/lib/icons/ic_thumbnail.png')}
+              source={
+                this.state.thumbnail ||
+                require('src/lib/icons/ic_thumbnail.png')
+              }
             />
           </TouchableOpacity>
         </View>
