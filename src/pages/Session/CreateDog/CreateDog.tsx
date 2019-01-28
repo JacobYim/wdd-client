@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import produce from 'immer';
 import { connect } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
+import { Storage } from 'aws-amplify';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -19,6 +22,7 @@ interface State {
   thumbnail: string;
   race: string;
   gender: 'M' | 'F' | 'N' | '';
+  thumbnailFile?: any;
 }
 
 class CreateDog extends Component<Props, State> {
@@ -33,14 +37,56 @@ class CreateDog extends Component<Props, State> {
     this.setState(state => ({ ...state, [name]: value }));
   };
 
-  handleSubmit = () => {
+  selectPhoto = () => {
+    const options = {
+      title: '프로필 선택',
+      customButtons: [{ name: 'default', title: '기본 이미지' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, res => {
+      if (res.didCancel || res.error) return;
+      if (res.customButton)
+        this.setState(state =>
+          produce(state, draft => {
+            delete draft.thumbnailFile;
+            draft.thumbnail = '';
+          })
+        );
+
+      this.setState(state =>
+        produce(state, draft => {
+          draft.thumbnail = res.uri;
+          draft.thumbnailFile = res.data;
+        })
+      );
+    });
+  };
+
+  handleSubmit = async () => {
     const { createDog, navigation } = this.props;
-    createDog(this.state, navigation);
+    const file = this.state.thumbnailFile;
+    if (file) {
+      const result = (await Storage.put(
+        `${this.state.name}/thumbnail.png`,
+        file,
+        {
+          contentType: 'image/png',
+        }
+      )) as { key: string };
+      await this.setState({ thumbnail: result.key });
+    }
+    const { thumbnailFile, ...state } = this.state;
+
+    createDog(state, navigation);
   };
 
   render() {
     const { navigation } = this.props;
-    const { name, race, gender } = this.state;
+    const { name, race, gender, thumbnail } = this.state;
 
     return (
       <PageContainer
@@ -54,17 +100,24 @@ class CreateDog extends Component<Props, State> {
         }}
         scrollEnabled={false}>
         <View style={views.thumbnailWrapper}>
-          <TouchableOpacity style={views.thumbnailButton}>
+          <TouchableOpacity
+            style={views.thumbnailButton}
+            activeOpacity={0.7}
+            onPress={this.selectPhoto}>
             <Image
               style={views.thumbnail}
-              source={require('src/lib/icons/ic_thumbnail.png')}
+              source={
+                thumbnail
+                  ? { uri: thumbnail }
+                  : require('src/lib/icons/ic_thumbnail.png')
+              }
             />
           </TouchableOpacity>
         </View>
         <TextInput
           name="name"
           label="이름"
-          value={this.state.name}
+          value={name}
           handleChange={this.handleChange}
         />
         <TextInput

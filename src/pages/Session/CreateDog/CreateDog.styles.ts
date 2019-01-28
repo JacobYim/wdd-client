@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+const thumbnailSize = 100;
+
 export const views = StyleSheet.create({
   thumbnailWrapper: {
     marginTop: 40,
@@ -8,9 +10,9 @@ export const views = StyleSheet.create({
   },
   thumbnailButton: {},
   thumbnail: {
-    width: 130,
-    height: 130,
-    marginVertical: -20,
+    width: thumbnailSize,
+    height: thumbnailSize,
+    borderRadius: thumbnailSize / 2,
     resizeMode: 'cover',
   },
 });

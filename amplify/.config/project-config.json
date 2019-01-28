@@ -1,0 +1,20 @@
+{
+  "projectName": "WddClient",
+  "projectPath": "/Users/jiwoonwon/Documents/woodongdang/WddClient",
+  "defaultEditor": "code",
+  "frontendHandler": {
+    "javascript": "/Users/jiwoonwon/.nvm/versions/node/v8.9.4/lib/node_modules/@aws-amplify/cli/node_modules/amplify-frontend-javascript"
+  },
+  "javascript": {
+    "framework": "react-native",
+    "config": {
+      "SourceDir": "/src",
+      "DistributionDir": "/src",
+      "BuildCommand": "npm run-script build",
+      "StartCommand": "npm run-script start"
+    }
+  },
+  "providers": {
+    "awscloudformation": "/Users/jiwoonwon/.nvm/versions/node/v8.9.4/lib/node_modules/@aws-amplify/cli/node_modules/amplify-provider-awscloudformation"
+  }
+}
