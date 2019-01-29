@@ -152,7 +152,9 @@ class CreateDog extends Component<Props, State> {
             label="품종"
             handleFocus={this.toggleSearch}
             value={this.state.race}
-            handleChange={() => {}}
+            handleChange={() => {
+              /* Useless listener */
+            }}
           />
           <Selector
             name="gender"

@@ -12,6 +12,7 @@ import CreateDogScreen from './CreateDog';
 import TutorialScreen from './Tutorial';
 
 import ForgotPasswordScreen from './ForgotPassword';
+import ChangePasswordScreen from './ChangePassword';
 
 const SignUpNavigator = createMaterialTopTabNavigator(
   {
@@ -51,6 +52,10 @@ const ForgotPasswordNavigator = createMaterialTopTabNavigator(
     enterEmail: {
       screen: ForgotPasswordScreen,
       path: 'forgot-password/email',
+    },
+    changePassword: {
+      screen: ChangePasswordScreen,
+      path: 'forgot-password/change',
     },
   },
   {
