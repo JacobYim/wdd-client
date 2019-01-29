@@ -23,6 +23,7 @@ interface Props {
     text: string;
     handlePress: () => void;
   };
+  center?: string;
   // bottom
   bottom?: {
     text: string;
@@ -41,11 +42,17 @@ const PageContainer: React.FC<Props> = ({
   subtitle,
   left,
   right,
+  center,
   bottom,
   ...scrollOptions
 }) => (
   <SafeAreaView style={views.container}>
     <View style={views.topWrapper}>
+      {center && (
+        <View style={views.center}>
+          <Text style={texts.center}>{center}</Text>
+        </View>
+      )}
       {left && (
         <TouchableOpacity onPress={left.handlePress} activeOpacity={0.7}>
           <Text style={texts.top}>{left.text}</Text>

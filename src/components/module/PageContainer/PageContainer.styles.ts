@@ -34,6 +34,11 @@ export const views = StyleSheet.create({
   boxDisable: {
     backgroundColor: color.grayEF,
   },
+  center: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   rightButton: {
     marginLeft: 'auto',
   },
@@ -45,6 +50,10 @@ export const views = StyleSheet.create({
 export const texts = StyleSheet.create({
   top: {
     color: color.blackOpacity,
+    fontSize: font.size.large,
+  },
+  center: {
+    color: color.black,
     fontSize: font.size.large,
   },
   bottomText: {
