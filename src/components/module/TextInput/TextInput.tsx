@@ -48,7 +48,7 @@ class TextInput extends Component<Props, State> {
           value={value}
           multiline={false}
           onChangeText={this.handleChangeWithName}
-          onFocus={this.handleFocus}
+          onFocus={options.handleFocus || this.handleFocus}
           onBlur={this.handleBlur}
           autoCapitalize="none"
           autoCorrect={false}
