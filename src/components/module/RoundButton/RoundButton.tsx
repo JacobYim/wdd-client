@@ -13,6 +13,7 @@ const RoundButton: React.FC<Props> = ({ label, active, handlePress }) => (
   <TouchableOpacity
     style={[views.button, views[active ? 'active' : 'inactive']]}
     onPress={handlePress}
+    activeOpacity={0.7}
     disabled={!active}>
     <Text style={[texts.label, texts[active ? 'active' : 'inactive']]}>
       {label}

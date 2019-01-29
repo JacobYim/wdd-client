@@ -47,12 +47,15 @@ const PageContainer: React.FC<Props> = ({
   <SafeAreaView style={views.container}>
     <View style={views.topWrapper}>
       {left && (
-        <TouchableOpacity onPress={left.handlePress}>
+        <TouchableOpacity onPress={left.handlePress} activeOpacity={0.7}>
           <Text style={texts.top}>{left.text}</Text>
         </TouchableOpacity>
       )}
       {right && (
-        <TouchableOpacity style={views.rightButton} onPress={right.handlePress}>
+        <TouchableOpacity
+          style={views.rightButton}
+          onPress={right.handlePress}
+          activeOpacity={0.7}>
           <Text style={texts.top}>{right.text}</Text>
         </TouchableOpacity>
       )}
@@ -66,38 +69,41 @@ const PageContainer: React.FC<Props> = ({
       )}
       {children}
     </ScrollView>
-    {bottom && (
-      <View
-        style={
-          bottom.boxType
-            ? [
-                views.bottomBox,
-                views[bottom.disable ? 'boxDisable' : 'boxEnable'],
-              ]
-            : views.bottomText
-        }>
+    {bottom &&
+      (bottom.boxType ? (
         <TouchableOpacity
+          style={[
+            views.bottomBox,
+            views[bottom.disable ? 'boxDisable' : 'boxEnable'],
+          ]}
           onPress={bottom.handlePress}
+          activeOpacity={0.7}
           disabled={bottom.disable}>
           <Text
-            style={
-              bottom.boxType
-                ? [
-                    texts.bottomBox,
-                    texts[bottom.disable ? 'boxDisable' : 'boxEnable'],
-                  ]
-                : texts.bottomText
-            }>
+            style={[
+              texts.bottomBox,
+              texts[bottom.disable ? 'boxDisable' : 'boxEnable'],
+            ]}>
             {bottom.text}
           </Text>
         </TouchableOpacity>
-        {bottom.diffText && bottom.handleDiffPress && (
-          <TouchableOpacity onPress={bottom.handleDiffPress}>
-            <Text style={texts.bottomDiff}> {bottom.diffText}</Text>
+      ) : (
+        <View style={views.bottomText}>
+          <TouchableOpacity
+            onPress={bottom.handlePress}
+            disabled={bottom.disable}
+            activeOpacity={0.7}>
+            <Text style={texts.bottomText}>{bottom.text}</Text>
           </TouchableOpacity>
-        )}
-      </View>
-    )}
+          {bottom.diffText && bottom.handleDiffPress && (
+            <TouchableOpacity
+              onPress={bottom.handleDiffPress}
+              activeOpacity={0.7}>
+              <Text style={texts.bottomDiff}> {bottom.diffText}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      ))}
   </SafeAreaView>
 );
 

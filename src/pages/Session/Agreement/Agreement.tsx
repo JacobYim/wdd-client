@@ -47,6 +47,7 @@ class Agreement extends Component<Props, State> {
             views.agreeAll,
             views[agreeAll ? 'agreeAllActive' : 'agreeAllInactive'],
           ]}
+          activeOpacity={0.7}
           onPress={this.handleShortcut}>
           <Text
             style={[

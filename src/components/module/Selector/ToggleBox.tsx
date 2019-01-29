@@ -18,6 +18,7 @@ const ToggleBox: React.FC<Props> = ({ active, name, handlePress, label }) => {
   return (
     <TouchableOpacity
       style={[views.box, views[active ? 'boxActive' : 'boxInactive']]}
+      activeOpacity={0.7}
       onPress={handlePressWithValue}>
       <Text style={[texts.box, texts[active ? 'boxActive' : 'boxInactive']]}>
         {label}
