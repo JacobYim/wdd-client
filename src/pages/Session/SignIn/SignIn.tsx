@@ -30,27 +30,40 @@ interface State {
 }
 
 class SignIn extends Component<Props, State> {
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { error } = nextProps.user;
-    if (error)
-      return produce(prevState, draft => {
-        switch (error.status) {
-          case 403:
-            draft.password.alert = error.data.message;
-            break;
-          case 404:
-            draft.email.alert = error.data.message;
-            break;
-        }
-      });
-
-    return null;
-  }
-
   state: State = {
     email: { value: '', valid: false },
     password: { value: '', valid: false },
   };
+
+  getSnapshotBeforeUpdate(prevProps: Props) {
+    const { error } = this.props.user;
+    const prevError = prevProps.user.error;
+    if (error && (!prevError || error.status !== prevError.status))
+      return error;
+    return null;
+  }
+
+  componentDidUpdate(
+    props: Props,
+    state: State,
+    snapshot: Props['user']['error'] | null
+  ) {
+    if (snapshot)
+      this.setState(state =>
+        produce(state, draft => {
+          delete draft.email.alert;
+          delete draft.password.alert;
+          switch (snapshot.status) {
+            case 403:
+              draft.password.alert = snapshot.data.message;
+              break;
+            case 404:
+              draft.email.alert = snapshot.data.message;
+              break;
+          }
+        })
+      );
+  }
 
   mapEventToState = ({ name, value }: HandleChangeText) => {
     let valid: boolean;
