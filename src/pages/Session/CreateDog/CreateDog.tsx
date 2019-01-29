@@ -100,10 +100,7 @@ class CreateDog extends Component<Props, State> {
         }}
         scrollEnabled={false}>
         <View style={views.thumbnailWrapper}>
-          <TouchableOpacity
-            style={views.thumbnailButton}
-            activeOpacity={0.7}
-            onPress={this.selectPhoto}>
+          <TouchableOpacity activeOpacity={0.7} onPress={this.selectPhoto}>
             <Image
               style={views.thumbnail}
               source={
@@ -111,6 +108,10 @@ class CreateDog extends Component<Props, State> {
                   ? { uri: thumbnail }
                   : require('src/lib/icons/ic_thumbnail.png')
               }
+            />
+            <Image
+              style={views.edit}
+              source={require('src/lib/icons/ic_edit.png')}
             />
           </TouchableOpacity>
         </View>
