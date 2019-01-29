@@ -35,7 +35,7 @@ interface Props {
   [x: string]: any;
 }
 
-const PageContainer: React.SFC<Props> = ({
+const PageContainer: React.FC<Props> = ({
   children,
   title,
   subtitle,

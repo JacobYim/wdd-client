@@ -9,7 +9,7 @@ interface Props {
   handlePress: () => void;
 }
 
-const RoundButton: React.SFC<Props> = ({ label, active, handlePress }) => (
+const RoundButton: React.FC<Props> = ({ label, active, handlePress }) => (
   <TouchableOpacity
     style={[views.button, views[active ? 'active' : 'inactive']]}
     onPress={handlePress}

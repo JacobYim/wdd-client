@@ -6,7 +6,7 @@ interface Props {
   navigation: NavigationScreenProp<Props>;
 }
 
-const Tutorial: React.SFC<Props> = ({ navigation }: Props) => (
+const Tutorial: React.FC<Props> = ({ navigation }: Props) => (
   <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center' }}>
     <Text>튜토리얼 페이지입니다.</Text>
     <Button

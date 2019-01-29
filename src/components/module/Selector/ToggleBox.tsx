@@ -10,7 +10,7 @@ interface Props {
   active: boolean;
 }
 
-const ToggleBox: React.SFC<Props> = ({ active, name, handlePress, label }) => {
+const ToggleBox: React.FC<Props> = ({ active, name, handlePress, label }) => {
   function handlePressWithValue() {
     handlePress(name);
   }

@@ -5,7 +5,7 @@ import { Props } from './index';
 import { views, texts } from './DateInput.styles';
 import ModuleContainer from 'src/components/module/ModuleContainer';
 
-const DateInput: React.SFC<Props> = ({ label, name, value, handleChange }) => {
+const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
   const handleChangeWithName = (str: string, value: Date) => {
     handleChange({ name, value });
   };

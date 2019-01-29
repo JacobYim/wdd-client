@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { AxiosResponse } from 'axios';
 import { handleActions } from 'redux-actions';
 
 import { removeHeader } from 'src/services/api/axios';
@@ -8,9 +9,9 @@ import { DogInterface } from 'src/store/actions/dog';
 import * as actions from 'src/store/actions/user';
 import * as dogActions from 'src/store/actions/dog';
 
-interface UserState extends UserInterface {
-  error?: Response;
-  dogError?: Response;
+export interface UserState extends UserInterface {
+  error?: AxiosResponse;
+  dogError?: AxiosResponse;
 }
 
 const initialState: UserState = {

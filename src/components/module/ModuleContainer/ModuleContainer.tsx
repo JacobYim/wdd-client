@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode;
 }
 
-const ModuleContainer: React.SFC<Props> = ({ label, children }) => (
+const ModuleContainer: React.FC<Props> = ({ label, children }) => (
   <View style={views.container}>
     <Text style={texts.label}>{label}</Text>
     {children}

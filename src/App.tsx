@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configStore from 'src/store';
 import Router from 'src/pages/Router';
 
-const App: React.SFC<{}> = () => {
+const App: React.FC<{}> = () => {
   const store = configStore();
 
   return (

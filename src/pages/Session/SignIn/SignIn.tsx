@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { NavigationScreenProp } from 'react-navigation';
 
 import * as userActions from 'src/store/actions/user';
+import { ReducerState } from 'src/store/reducers';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
@@ -19,6 +20,7 @@ interface ParamInterface {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  user: ReducerState['user'];
   signIn: typeof userActions.signIn;
 }
 
@@ -28,6 +30,23 @@ interface State {
 }
 
 class SignIn extends Component<Props, State> {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const { error } = nextProps.user;
+    if (error)
+      return produce(prevState, draft => {
+        switch (error.status) {
+          case 403:
+            draft.password.alert = error.data.message;
+            break;
+          case 404:
+            draft.email.alert = error.data.message;
+            break;
+        }
+      });
+
+    return null;
+  }
+
   state: State = {
     email: { value: '', valid: false },
     password: { value: '', valid: false },
@@ -115,6 +134,8 @@ class SignIn extends Component<Props, State> {
 }
 
 export default connect(
-  null,
+  (state: ReducerState) => ({
+    user: state.user,
+  }),
   { signIn: userActions.signIn }
 )(SignIn);
