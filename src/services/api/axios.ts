@@ -9,8 +9,7 @@ export function removeHeader() {
 }
 
 export default function configAxios() {
-  axios.defaults.baseURL =
-    process.env.NODE_ENV === 'production'
-      ? 'https://ec2-13-209-98-100.ap-northeast-2.compute.amazonaws.com'
-      : 'http://localhost';
+  axios.defaults.baseURL = __DEV__
+    ? 'http://localhost:8080'
+    : 'http://ec2-13-209-98-100.ap-northeast-2.compute.amazonaws.com';
 }
