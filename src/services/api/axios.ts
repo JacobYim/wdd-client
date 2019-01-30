@@ -11,6 +11,6 @@ export function removeHeader() {
 export default function configAxios() {
   axios.defaults.baseURL =
     process.env.NODE_ENV === 'production'
-      ? 'https://api.dangdang.com'
-      : 'http://localhost:8080';
+      ? 'https://ec2-13-209-98-100.ap-northeast-2.compute.amazonaws.com'
+      : 'http://localhost';
 }
