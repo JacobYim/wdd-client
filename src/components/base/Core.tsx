@@ -1,45 +1,31 @@
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { Image } from 'react-native';
+import Amplify from 'aws-amplify';
 
-import * as userActions from 'src/store/modules/user';
-import initAxios from 'src/lib/api/axios';
-import { loadToken } from 'src/lib/storage/token';
+import awsconfig from 'src/aws-exports';
+import * as userActions from 'src/store/actions/user';
+import configAxios from 'src/services/api/axios';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
-  UserActions: typeof userActions;
+  autoSignIn: typeof userActions.autoSignIn;
 }
 
 class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
-    initAxios();
-    this.checkUser();
+    configAxios();
+    Amplify.configure(awsconfig);
+    props.autoSignIn(this.props.navigation);
   }
-
-  checkUser = async () => {
-    const { UserActions, navigation } = this.props;
-    const token = await loadToken();
-
-    if (token) {
-      axios.defaults.headers.common['authorization'] = token;
-      UserActions.loadUser();
-      navigation.navigate('app');
-    } else {
-      delete axios.defaults.headers.common['authorization'];
-      navigation.navigate('session');
-    }
-  };
 
   render() {
     return (
       <Image
-        style={{ flex: 1, resizeMode: 'center' }}
-        source={require('src/lib/image/img_splash.jpg')}
+        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+        source={require('src/lib/images/img_splash.jpg')}
       />
     );
   }
@@ -47,7 +33,5 @@ class Core extends PureComponent<Props> {
 
 export default connect(
   null,
-  dispatch => ({
-    UserActions: bindActionCreators(userActions, dispatch),
-  })
+  { autoSignIn: userActions.autoSignIn }
 )(Core);

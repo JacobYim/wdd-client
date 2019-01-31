@@ -1,6 +1,17 @@
 import { createStore, applyMiddleware } from 'redux';
-import penderMiddleware from 'redux-pender';
-import reducers from './modules';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
 
-const store = createStore(reducers, applyMiddleware(penderMiddleware()));
-export default store;
+import reducer from './reducers';
+import rootSaga from './sagas';
+
+export default function configStore() {
+  const sagaMiddleware = createSagaMiddleware();
+  const middleware = [sagaMiddleware];
+  const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(...middleware))
+  );
+  sagaMiddleware.run(rootSaga);
+  return store;
+}

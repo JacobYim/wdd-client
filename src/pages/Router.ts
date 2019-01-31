@@ -1,38 +1,8 @@
-import {
-  createBottomTabNavigator,
-  createSwitchNavigator,
-  createStackNavigator,
-  createAppContainer,
-} from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
 import CoreScreen from 'src/components/base/Core';
-
-import { Map as MapScreen } from 'src/pages/App';
-import { SignIn, SignUp } from 'src/pages/Session';
-
-const AppNavigator = createBottomTabNavigator({
-  map: {
-    screen: MapScreen,
-    path: 'app',
-  },
-});
-
-const SessionNavigator = createStackNavigator(
-  {
-    signIn: {
-      screen: SignIn,
-      path: 'sign-in',
-    },
-    signUp: {
-      screen: SignUp,
-      path: 'sign-up',
-    },
-  },
-  {
-    initialRouteName: 'signIn',
-    headerMode: 'none',
-  }
-);
+import AppNavigator from './App';
+import SessionNavigator from './Session';
 
 export default createAppContainer(
   createSwitchNavigator(

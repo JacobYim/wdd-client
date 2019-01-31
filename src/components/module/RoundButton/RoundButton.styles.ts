@@ -5,7 +5,6 @@ const btnHeight = 50;
 
 export const views = StyleSheet.create({
   button: {
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 28,

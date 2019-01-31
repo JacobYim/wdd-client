@@ -4,19 +4,27 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'",
     "test": "jest"
   },
   "dependencies": {
+    "@types/react-native-datepicker": "^1.7.0",
+    "aws-amplify": "^1.1.19",
+    "aws-amplify-react-native": "^2.1.7",
     "axios": "^0.18.0",
-    "immer": "^1.10.5",
+    "hangul-js": "^0.2.5",
+    "immer": "^1.12.0",
+    "moment": "^2.24.0",
     "react": "^16.7.0",
     "react-native": "0.57.8",
+    "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^1.0.12",
+    "react-native-image-picker": "^0.28.0",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
-    "redux-pender": "^2.0.12",
+    "redux-saga": "^1.0.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
@@ -33,6 +41,7 @@
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "^16.7.0",
+    "redux-devtools-extension": "^2.13.7",
     "typescript": "^3.2.4"
   },
   "jest": {

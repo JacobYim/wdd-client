@@ -1,0 +1,51 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "ddlient-20190128180322-authRole",
+			"UnauthRoleArn": "arn:aws:iam::367420475204:role/ddlient-20190128180322-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::367420475204:role/ddlient-20190128180322-authRole",
+			"Region": "ap-northeast-2",
+			"DeploymentBucketName": "ddlient-20190128180322-deployment",
+			"UnauthRoleName": "ddlient-20190128180322-unauthRole",
+			"StackName": "ddlient-20190128180322",
+			"StackId": "arn:aws:cloudformation:ap-northeast-2:367420475204:stack/ddlient-20190128180322/90984030-22db-11e9-8192-0644e4d921a4"
+		}
+	},
+	"auth": {
+		"cognito460c0a48": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/ddlient-20190128180322-deployment/amplify-cfn-templates/auth/cognito460c0a48-cloudformation-template.yml",
+				"logicalId": "authcognito460c0a48"
+			},
+			"lastPushTimeStamp": "2019-01-28T14:39:51.560Z",
+			"output": {
+				"AppClientSecret": "1hjk064ocn2p09li5d979ugu9b8igfpj7hc5rj9te10li91u62o8",
+				"UserPoolId": "ap-northeast-2_7gSBHlM5o",
+				"AppClientIDWeb": "3fvh6b2rec72k8cak4v16f3luc",
+				"AppClientID": "5p6tkf30fhvkscsb4gnuvh17mk",
+				"IdentityPoolId": "ap-northeast-2:8a333684-da29-4ec9-bd2d-77f38d44b5a2",
+				"IdentityPoolName": "cognito460c0a48_identitypool_460c0a48",
+				"UserPoolName": "cognito460c0a48_userpool_460c0a48"
+			},
+			"lastPushDirHash": "62e7JUwSjugnW/clujDBLWKRKMA="
+		}
+	},
+	"storage": {
+		"WddClient": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/ddlient-20190128180322-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+				"logicalId": "storageWddClient"
+			},
+			"lastPushTimeStamp": "2019-01-28T14:39:51.567Z",
+			"output": {
+				"BucketName": "wdd-client-file",
+				"Region": "ap-northeast-2"
+			},
+			"lastPushDirHash": "fXMYJ6DsfbliSHYEi8uX+orZ1UU="
+		}
+	}
+}

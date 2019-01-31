@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 
 import { HandleChangeText } from './index';
-import { inputs, views, texts } from './TextInput.styles';
+import { inputs, texts } from './TextInput.styles';
+import ModuleContainer from 'src/components/module/ModuleContainer';
 
 interface Props {
   label: string;
@@ -16,6 +17,7 @@ interface Props {
   value?: string;
   alert?: string;
   handleChange: (data: HandleChangeText) => void;
+  [x: string]: any;
 }
 
 interface State {
@@ -39,24 +41,25 @@ class TextInput extends Component<Props, State> {
   };
 
   render() {
-    const { label, value, alert } = this.props;
+    const { label, value, alert, ...options } = this.props;
     return (
-      <View style={views.container}>
-        <Text style={texts.label}>{label}</Text>
+      <ModuleContainer label={label}>
         <Input
           value={value}
           multiline={false}
           onChangeText={this.handleChangeWithName}
-          onFocus={this.handleFocus}
+          onFocus={options.handleFocus || this.handleFocus}
           onBlur={this.handleBlur}
           autoCapitalize="none"
+          autoCorrect={false}
           style={[
             inputs.text,
             inputs[this.state.isFocus ? 'focused' : 'unFocused'],
           ]}
+          {...options}
         />
         {alert && <Text style={texts.alert}>{alert}</Text>}
-      </View>
+      </ModuleContainer>
     );
   }
 }
