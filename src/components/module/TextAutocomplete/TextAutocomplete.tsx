@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { Modal, View, TextInput } from 'react-native';
+import { Modal, ScrollView, TextInput } from 'react-native';
 import * as Hangul from 'hangul-js';
-
-import Input, { HandleChangeText } from 'src/components/module/TextInput';
+// Styles
 import { color } from 'src/theme';
-import { inputs } from './TextAutocomplete.styles';
+import { inputs, views } from './TextAutocomplete.styles';
+// Components
 import PageContainer from 'src/components/module/PageContainer';
+import Input, { HandleChangeText } from 'src/components/module/TextInput';
+import TextBox from './TextBox';
 
 interface Props {
   label: string;
   name: string;
   data: string[];
   handleChange: (data: HandleChangeText) => void;
+  defalutData?: string[];
 }
 
 interface State {
@@ -38,19 +41,26 @@ class Search extends Component<Props, State> {
     });
   };
 
+  handleTextChange = (value: string) => {
+    const autocomplete = this.getAutocomplete(value);
+    this.setState({ value, autocomplete });
+  };
+
+  handleTextPress = async (value: string) => {
+    await this.setState({ value });
+    this.handleSubmit();
+  };
+
   handleSubmit = () => {
     const { name, handleChange } = this.props;
     handleChange({ name, value: this.state.value.trim() });
     this.toggleModal();
   };
 
-  handleTextChange = (value: string) => {
-    const autocomplete = this.getAutocomplete(value);
-    this.setState({ value, autocomplete });
-  };
-
   render() {
-    const { name, label } = this.props;
+    const { name, label, defalutData = [] } = this.props;
+    const autocomplete = this.state.autocomplete.concat(defalutData);
+
     return (
       <>
         <Modal
@@ -59,7 +69,9 @@ class Search extends Component<Props, State> {
           visible={this.state.showModal}
           onRequestClose={this.toggleModal}>
           <PageContainer
-            right={{ text: '취소', handlePress: this.toggleModal }}>
+            right={{ text: '취소', handlePress: this.toggleModal }}
+            scrollEnabled={false}
+            narrow>
             <TextInput
               value={this.state.value}
               placeholder={`${label}을 입력해주세요`}
@@ -70,9 +82,19 @@ class Search extends Component<Props, State> {
               multiline={false}
               autoCorrect={false}
               autoFocus={true}
+              clearButtonMode="while-editing"
               autoCapitalize="none"
               returnKeyType="done"
             />
+            <ScrollView style={views.autocompleteWrapper}>
+              {autocomplete.map(item => (
+                <TextBox
+                  value={item}
+                  handlePress={this.handleTextPress}
+                  key={item}
+                />
+              ))}
+            </ScrollView>
           </PageContainer>
         </Modal>
         <Input

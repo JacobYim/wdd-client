@@ -139,6 +139,7 @@ class CreateDog extends Component<Props, State> {
             name="breed"
             label="품종"
             data={breeds}
+            defalutData={['믹스', '알 수 없음']}
             handleChange={this.handleChange}
           />
           <Selector

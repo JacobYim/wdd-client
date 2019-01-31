@@ -5,8 +5,7 @@ export const inputs = StyleSheet.create({
   text: {
     // outer size
     width: '100%',
-    marginTop: 8,
-    marginBottom: 20,
+    marginVertical: 8,
     // inner size
     paddingVertical: 12,
     // border styles
@@ -18,4 +17,8 @@ export const inputs = StyleSheet.create({
   },
 });
 
-export const views = StyleSheet.create({});
+export const views = StyleSheet.create({
+  autocompleteWrapper: {
+    flex: 1,
+  },
+});
