@@ -6,7 +6,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import PageContainer from 'src/components/module/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import RoundButton from 'src/components/module/RoundButton';
-import { validateEmail } from 'src/services/validate/string';
+import { validateEmail } from 'src/lib/validates/string';
 
 interface ParamInterface {
   value: string;

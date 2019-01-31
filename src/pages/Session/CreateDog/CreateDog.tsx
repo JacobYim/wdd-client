@@ -25,7 +25,7 @@ interface State {
   // ShortenDogInterface
   name: string;
   thumbnail: string;
-  race: string;
+  breed: string;
   gender: 'M' | 'F' | 'N' | '';
   // Options
   showSearch: boolean;
@@ -36,7 +36,7 @@ class CreateDog extends Component<Props, State> {
   state: State = {
     name: '',
     thumbnail: '',
-    race: '',
+    breed: '',
     gender: '',
     showSearch: false,
   };
@@ -50,7 +50,7 @@ class CreateDog extends Component<Props, State> {
   };
 
   handleSearchSubmit = (value: string) => {
-    this.setState({ race: value });
+    this.setState({ breed: value });
   };
 
   handleImagePicker = () => {
@@ -102,7 +102,7 @@ class CreateDog extends Component<Props, State> {
 
   render() {
     const { navigation } = this.props;
-    const { name, race, gender, thumbnail, showSearch } = this.state;
+    const { name, breed, gender, thumbnail, showSearch } = this.state;
 
     return (
       <>
@@ -120,7 +120,7 @@ class CreateDog extends Component<Props, State> {
             text: '다음',
             boxType: true,
             handlePress: this.handleSubmit,
-            disable: !name || !race || !gender,
+            disable: !name || !breed || !gender,
           }}
           scrollEnabled={false}>
           <View style={views.thumbnailWrapper}>
@@ -148,10 +148,10 @@ class CreateDog extends Component<Props, State> {
             handleChange={this.handleChange}
           />
           <TextInput
-            name="race"
+            name="breed"
             label="품종"
             handleFocus={this.toggleSearch}
-            value={this.state.race}
+            value={this.state.breed}
             handleChange={() => {
               /* Useless listener */
             }}

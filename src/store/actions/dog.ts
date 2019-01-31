@@ -15,7 +15,7 @@ export interface DogInterface extends ShortenDogInterface {
 export interface ShortenDogInterface {
   name: string;
   thumbnail: string;
-  race: string;
+  breed: string;
 }
 
 // *** CONSTS

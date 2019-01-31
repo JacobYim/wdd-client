@@ -7,7 +7,7 @@ import * as userActions from 'src/store/actions/user';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
-import { validateEmail, validatePassword } from 'src/services/validate/string';
+import { validateEmail, validatePassword } from 'src/lib/validates/string';
 
 interface ParamInterface {
   value: string;
@@ -92,8 +92,7 @@ class SignUp extends Component<Props, State> {
         right={{
           text: '건너뛰기',
           handlePress: () => navigation.navigate('app'),
-        }}
-        scrollEnabled={false}>
+        }}>
         <TextInput
           label="이름"
           name="name"
