@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
-import produce from 'immer';
-import { connect } from 'react-redux';
-import ImagePicker from 'react-native-image-picker';
-import { Storage } from 'aws-amplify';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-
+// Redux
+import { connect } from 'react-redux';
 import * as actions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
+// Style
 import { views } from './CreateDog.styles';
+// Components
 import PageContainer from 'src/components/module/PageContainer';
-import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import withLoading, { LoadingProps } from 'src/components/module/withLoading';
-import Search from 'src/components/module/Search';
+import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
+import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
+// Other
+import { Storage } from 'aws-amplify';
+import ImagePicker from 'react-native-image-picker';
+import produce from 'immer';
+import breeds from 'src/lib/consts/breeds.json';
 
 interface Props extends LoadingProps {
   navigation: NavigationScreenProp<any>;
@@ -28,7 +32,6 @@ interface State {
   breed: string;
   gender: 'M' | 'F' | 'N' | '';
   // Options
-  showSearch: boolean;
   thumbnailFile?: any;
 }
 
@@ -38,19 +41,10 @@ class CreateDog extends Component<Props, State> {
     thumbnail: '',
     breed: '',
     gender: '',
-    showSearch: false,
-  };
-
-  toggleSearch = () => {
-    this.setState({ showSearch: !this.state.showSearch });
   };
 
   handleChange = ({ name, value }: HandleChangeText | HandleChangeSelector) => {
     this.setState(state => ({ ...state, [name]: value }));
-  };
-
-  handleSearchSubmit = (value: string) => {
-    this.setState({ breed: value });
   };
 
   handleImagePicker = () => {
@@ -94,7 +88,7 @@ class CreateDog extends Component<Props, State> {
       )) as { key: string };
       await this.setState({ thumbnail: result.key });
     }
-    const { thumbnailFile, showSearch, ...state } = this.state;
+    const { thumbnailFile, ...state } = this.state;
 
     await toggleLoading();
     createDog(state, navigation);
@@ -102,16 +96,10 @@ class CreateDog extends Component<Props, State> {
 
   render() {
     const { navigation } = this.props;
-    const { name, breed, gender, thumbnail, showSearch } = this.state;
+    const { name, breed, gender, thumbnail } = this.state;
 
     return (
       <>
-        <Search
-          placeholder="댕댕이의 품종을 입력해주세요."
-          visible={showSearch}
-          toggleSearch={this.toggleSearch}
-          handleSubmit={this.handleSearchSubmit}
-        />
         <PageContainer
           center="댕댕이 프로필 설정"
           left={{ text: '이전', handlePress: () => navigation.goBack(null) }}
@@ -147,14 +135,11 @@ class CreateDog extends Component<Props, State> {
             value={name}
             handleChange={this.handleChange}
           />
-          <TextInput
+          <TextAutocomplete
             name="breed"
             label="품종"
-            handleFocus={this.toggleSearch}
-            value={this.state.breed}
-            handleChange={() => {
-              /* Useless listener */
-            }}
+            data={breeds}
+            handleChange={this.handleChange}
           />
           <Selector
             name="gender"
