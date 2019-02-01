@@ -22,3 +22,8 @@ export const updateUser = async (body: actions.UpdateInterface) => {
   const response = await axios.patch('/user', body);
   return response.data as actions.UserInterface;
 };
+
+export const forgotPassword = async (body: { email: string }) => {
+  const response = await axios.post('/forgot-password', body);
+  return response.data as { message: string };
+};

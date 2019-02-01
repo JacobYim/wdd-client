@@ -45,6 +45,7 @@ export const SIGNIN = 'user/SIGNIN';
 export const SIGNUP = 'user/SIGNUP';
 export const SIGNOUT = 'user/SIGNOUT';
 export const CREATE_META = 'user/CREATE_META';
+export const FORGOT_PASSWORD = 'user/FORGOT_PASSWORD';
 export const CHANGE_PASSWORD = 'user/CHANGE_PASSWORD';
 
 export const SET_USER_REQUEST = 'user/SET_USER_REQUEST';
@@ -78,6 +79,14 @@ export const createMeta = (
   payload: { birth: string; gender: string },
   navigation: Navigation
 ) => ({ type: CREATE_META, payload, navigation });
+export const forgotPassword = (
+  payload: { email: string },
+  navigation: Navigation
+) => ({
+  type: FORGOT_PASSWORD,
+  payload,
+  navigation,
+});
 export const changePassword = (
   payload: { password: string; token: string },
   navigation: Navigation

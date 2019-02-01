@@ -109,6 +109,17 @@ function* createMeta(action: ReturnType<typeof actions.createMeta>) {
   }
 }
 
+function* forgotPassword(action: ReturnType<typeof actions.forgotPassword>) {
+  try {
+    // *** API
+    yield call(api.forgotPassword, action.payload);
+    // *** NAVIGATE
+    yield call(action.navigation.navigate, 'sendEmail');
+  } catch (e) {
+    yield put(actions.setUserFailure(e.response));
+  }
+}
+
 function* changePassword(action: ReturnType<typeof actions.changePassword>) {
   try {
     // *** SET TOKEN
@@ -132,5 +143,6 @@ export default function* root() {
   yield takeEvery(actions.SIGNUP, signUp);
   yield takeEvery(actions.SIGNOUT, signOut);
   yield takeEvery(actions.CREATE_META, createMeta);
+  yield takeEvery(actions.FORGOT_PASSWORD, forgotPassword);
   yield takeEvery(actions.CHANGE_PASSWORD, changePassword);
 }
