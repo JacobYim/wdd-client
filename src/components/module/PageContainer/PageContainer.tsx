@@ -97,19 +97,19 @@ const PageContainer: React.FC<Props> = ({
         </TouchableOpacity>
       ) : (
         <View style={views.bottomText}>
+          {bottom.diffText && bottom.handleDiffPress && (
+            <TouchableOpacity
+              onPress={bottom.handleDiffPress}
+              activeOpacity={0.7}>
+              <Text style={texts.bottomDiff}>{bottom.diffText} </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={bottom.handlePress}
             disabled={bottom.disable}
             activeOpacity={0.7}>
             <Text style={texts.bottomText}>{bottom.text}</Text>
           </TouchableOpacity>
-          {bottom.diffText && bottom.handleDiffPress && (
-            <TouchableOpacity
-              onPress={bottom.handleDiffPress}
-              activeOpacity={0.7}>
-              <Text style={texts.bottomDiff}> {bottom.diffText}</Text>
-            </TouchableOpacity>
-          )}
         </View>
       ))}
   </SafeAreaView>

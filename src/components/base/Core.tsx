@@ -18,7 +18,11 @@ class Core extends PureComponent<Props> {
     super(props);
     configAxios();
     Amplify.configure(awsconfig);
-    props.autoSignIn(this.props.navigation);
+  }
+
+  componentDidMount() {
+    const { autoSignIn, navigation } = this.props;
+    autoSignIn(navigation);
   }
 
   render() {
