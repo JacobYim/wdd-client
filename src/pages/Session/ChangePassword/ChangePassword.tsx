@@ -86,7 +86,9 @@ class ChangePassword extends Component<Props, State> {
           name="passwordCheck"
           value={passwordCheck.value}
           secureTextEntry={true}
+          returnKeyType="send"
           handleChange={this.handleChange}
+          onSubmitEditing={this.handleSubmit}
         />
         <RoundButton
           label="비밀번호 변경"
