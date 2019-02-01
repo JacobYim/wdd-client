@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-
+// Redux
+import { connect } from 'react-redux';
+import * as actions from 'src/store/actions/user';
+// Components
 import PageContainer from 'src/components/module/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import RoundButton from 'src/components/module/RoundButton';
+// Other
 import { validatePassword } from 'src/lib/validates/string';
 
 interface ParamInterface {
@@ -15,6 +18,7 @@ interface ParamInterface {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  changePassword: typeof actions.changePassword;
 }
 
 interface State {
@@ -49,20 +53,12 @@ class ChangePassword extends Component<Props, State> {
   };
 
   handleSubmit = () => {
-    // TODO: HANDLE CHANGE PASSWORD ON API
-    const { navigation } = this.props;
-    Alert.alert(
-      '추후에 비밀번호 변경을 추가할 계획입니다.',
-      '확인을 눌러 진행하세요.',
-      [
-        { text: '예', onPress: () => navigation.navigate('signIn') },
-        {
-          text: '아니오',
-          onPress: () => {},
-          style: 'cancel',
-        },
-      ]
-    );
+    const { changePassword, navigation } = this.props;
+    const token = navigation.getParam('token', null);
+    if (token) {
+      const { password } = this.state;
+      changePassword({ password: password.value, token }, navigation);
+    }
   };
 
   render() {
@@ -102,4 +98,7 @@ class ChangePassword extends Component<Props, State> {
   }
 }
 
-export default ChangePassword;
+export default connect(
+  null,
+  { changePassword: actions.changePassword }
+)(ChangePassword);

@@ -14,11 +14,11 @@ import * as api from 'src/services/api/user';
 
 function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
   try {
-    yield put(actions.setUserRequest());
     // *** GET TOKEN FROM STORAGE
     const { token, nextStep } = yield call(getUserStorage);
     yield call(setHeader, token);
-    // *** GET DATA FROM API
+    // *** API
+    yield put(actions.setUserRequest());
     const data = yield call(api.getUser);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
@@ -51,6 +51,7 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
 
 function* signIn(action: ReturnType<typeof actions.signIn>) {
   try {
+    // *** API
     yield put(actions.setUserRequest());
     const data = yield call(api.signIn, action.payload);
     yield put(actions.setUserSuccess(data));
@@ -67,13 +68,15 @@ function* signIn(action: ReturnType<typeof actions.signIn>) {
 
 function* signUp(action: ReturnType<typeof actions.signUp>) {
   try {
+    // *** API
     yield put(actions.setUserRequest());
     const data = yield call(api.signUp, action.payload);
     yield put(actions.setUserSuccess(data));
     // *** SET TOKEN
     const { token } = data;
-    const nextStep = 'createMeta';
     yield call(setHeader, token);
+    // *** SAVE STEP ON STORAGE
+    const nextStep = 'createMeta';
     yield call(setUserStorage, { token, nextStep });
     // *** NAVIGATE
     yield call(action.navigation.navigate, nextStep);
@@ -92,13 +95,32 @@ function* signOut(action: ReturnType<typeof actions.signOut>) {
 
 function* createMeta(action: ReturnType<typeof actions.createMeta>) {
   try {
+    // *** API
     yield put(actions.setUserRequest());
-    const data = yield call(api.createMeta, action.payload);
+    const data = yield call(api.updateUser, action.payload);
     yield put(actions.setUserSuccess(data));
+    // *** SAVE STEP ON STORAGE
     const nextStep = 'createDog';
     yield call(updateUserStorage, { nextStep });
     // *** NAVIGATE
     yield call(action.navigation.navigate, nextStep);
+  } catch (e) {
+    yield put(actions.setUserFailure(e.response));
+  }
+}
+
+function* changePassword(action: ReturnType<typeof actions.changePassword>) {
+  try {
+    // *** SET TOKEN
+    const { token } = action.payload;
+    yield call(setHeader, token);
+    yield call(setUserStorage, { token });
+    // *** API
+    yield put(actions.setUserRequest());
+    const data = yield call(api.updateUser, action.payload);
+    yield put(actions.setUserSuccess(data));
+    // *** NAVIGATE
+    yield call(action.navigation.navigate, 'app');
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
   }
@@ -109,5 +131,6 @@ export default function* root() {
   yield takeEvery(actions.SIGNIN, signIn);
   yield takeEvery(actions.SIGNUP, signUp);
   yield takeEvery(actions.SIGNOUT, signOut);
-  yield takeEvery(actions.UPDATE_META, createMeta);
+  yield takeEvery(actions.CREATE_META, createMeta);
+  yield takeEvery(actions.CHANGE_PASSWORD, changePassword);
 }

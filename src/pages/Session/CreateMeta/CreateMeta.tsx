@@ -28,14 +28,12 @@ class CreateMeta extends Component<Props, State> {
 
   handleSubmit = () => {
     const { createMeta, navigation } = this.props;
-    const { gender, birth } = this.state;
-    createMeta(
-      {
-        gender,
-        birth: moment(birth).format('YYYY.MM.DD'),
-      },
-      navigation
-    );
+    const payload = {
+      gender: this.state.gender,
+      birth: moment(this.state.birth).format('YYYY.MM.DD'),
+    };
+
+    createMeta(payload, navigation);
   };
 
   handleGenderChange = ({ name, value }: HandleChangeSelector) => {
