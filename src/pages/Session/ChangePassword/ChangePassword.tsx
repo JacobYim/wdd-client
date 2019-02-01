@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { TextInput as Input } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 // Redux
 import { connect } from 'react-redux';
@@ -27,6 +28,11 @@ interface State {
 }
 
 class ChangePassword extends Component<Props, State> {
+  private inputs = {
+    password: React.createRef<Input>(),
+    passwordCheck: React.createRef<Input>(),
+  };
+
   state: State = {
     password: {
       value: '',
@@ -76,6 +82,8 @@ class ChangePassword extends Component<Props, State> {
           name="password"
           value={password.value}
           secureTextEntry={true}
+          returnKeyType="next"
+          inputs={this.inputs}
           handleChange={this.handleChange}
         />
         <TextInput
@@ -84,6 +92,7 @@ class ChangePassword extends Component<Props, State> {
           value={passwordCheck.value}
           secureTextEntry={true}
           returnKeyType="send"
+          inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSubmit}
         />
