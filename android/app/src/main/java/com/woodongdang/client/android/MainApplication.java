@@ -1,4 +1,4 @@
-package com.wddclient;
+package com.woodongdang.client.android;
 
 import android.app.Application;
 

@@ -1,28 +1,29 @@
 import axios from 'axios';
-import {
-  UserInterface,
-  SignInInterface,
-  SignUpInterface,
-  CreateMetaInterface,
-} from 'src/store/actions/user';
+import * as actions from 'src/store/actions/user';
 
 export const getUser = async () => {
   // *** Set token on headers before call
   const response = await axios.get('/user');
-  return response.data as UserInterface;
+  return response.data as actions.UserInterface;
 };
 
-export const signIn = async (body: SignInInterface) => {
+export const signIn = async (body: actions.SignInInterface) => {
   const response = await axios.post('/signin', body);
-  return response.data as UserInterface;
+  return response.data as actions.SignInInterface;
 };
 
-export const signUp = async (body: SignUpInterface) => {
+export const signUp = async (body: actions.SignUpInterface) => {
   const response = await axios.post('/signup', body);
-  return response.data as UserInterface;
+  return response.data as actions.UserInterface;
 };
 
-export const createMeta = async (body: CreateMetaInterface) => {
+export const updateUser = async (body: actions.UpdateInterface) => {
+  // *** Set token on headers before call
   const response = await axios.patch('/user', body);
-  return response.data as UserInterface;
+  return response.data as actions.UserInterface;
+};
+
+export const forgotPassword = async (body: { email: string }) => {
+  const response = await axios.post('/forgot-password', body);
+  return response.data as { message: string };
 };
