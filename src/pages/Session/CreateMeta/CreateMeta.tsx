@@ -28,14 +28,12 @@ class CreateMeta extends Component<Props, State> {
 
   handleSubmit = () => {
     const { createMeta, navigation } = this.props;
-    const { gender, birth } = this.state;
-    createMeta(
-      {
-        gender,
-        birth: moment(birth).format('YYYY.MM.DD'),
-      },
-      navigation
-    );
+    const payload = {
+      gender: this.state.gender,
+      birth: moment(this.state.birth).format('YYYY.MM.DD'),
+    };
+
+    createMeta(payload, navigation);
   };
 
   handleGenderChange = ({ name, value }: HandleChangeSelector) => {
@@ -53,7 +51,7 @@ class CreateMeta extends Component<Props, State> {
       <PageContainer
         title="환영합니다!"
         subtitle="고객님께 더 적절한 산책과 댕댕이를 위해 몇 가지 정보를 입력해주세요."
-        left={{ text: '이전', handlePress: () => navigation.goBack(null) }}
+        left={{ navigation }}
         right={{ text: '취소', handlePress: () => navigation.popToTop() }}
         bottom={{
           text: '다음',

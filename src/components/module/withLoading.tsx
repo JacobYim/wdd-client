@@ -58,6 +58,7 @@ export default function withLoading<P extends LoadingProps>(
                 style={{
                   width: 100,
                   height: 100,
+                  resizeMode: 'contain',
                   transform: [{ rotate: spin }],
                 }}
               />

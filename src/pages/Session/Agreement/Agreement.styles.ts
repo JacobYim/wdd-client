@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { font, color } from 'src/theme';
+import { color } from 'src/theme';
 
 export const views = StyleSheet.create({
   agreeAll: {
@@ -17,6 +17,14 @@ export const views = StyleSheet.create({
   },
   agreeAllInactive: {
     borderColor: color.grayDA,
+  },
+  agreeIcon: {
+    position: 'absolute',
+    top: -50,
+    right: '7.3%',
+    width: 58,
+    height: 54,
+    resizeMode: 'contain',
   },
 });
 

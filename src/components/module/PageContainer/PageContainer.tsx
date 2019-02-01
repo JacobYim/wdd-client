@@ -1,10 +1,12 @@
 import React, { ReactNode } from 'react';
+import { NavigationScreenProp } from 'react-navigation';
 import {
   SafeAreaView,
   TouchableOpacity,
   Text,
   ScrollView,
   View,
+  Image,
 } from 'react-native';
 import { views, texts } from './PageContainer.styles';
 
@@ -16,8 +18,7 @@ interface Props {
   subtitle?: string;
   // top
   left?: {
-    text: string;
-    handlePress: () => void;
+    navigation: NavigationScreenProp<any>;
   };
   right?: {
     text: string;
@@ -34,9 +35,22 @@ interface Props {
     disable?: boolean;
   };
   // options
-  narrow?: boolean;
   [x: string]: any;
 }
+
+const NavbarLeft: React.FC<Props['left']> = ({ navigation }) => {
+  function navBack() {
+    navigation.goBack(null);
+  }
+  return (
+    <TouchableOpacity onPress={navBack} activeOpacity={0.7}>
+      <Image
+        style={views.backIcon}
+        source={require('src/lib/icons/ic_back.png')}
+      />
+    </TouchableOpacity>
+  );
+};
 
 const PageContainer: React.FC<Props> = ({
   children,
@@ -46,7 +60,6 @@ const PageContainer: React.FC<Props> = ({
   right,
   center,
   bottom,
-  narrow,
   ...scrollOptions
 }) => (
   <SafeAreaView style={views.container}>
@@ -56,11 +69,7 @@ const PageContainer: React.FC<Props> = ({
           <Text style={texts.center}>{center}</Text>
         </View>
       )}
-      {left && (
-        <TouchableOpacity onPress={left.handlePress} activeOpacity={0.7}>
-          <Text style={texts.top}>{left.text}</Text>
-        </TouchableOpacity>
-      )}
+      {left && <NavbarLeft navigation={left.navigation} />}
       {right && (
         <TouchableOpacity
           style={views.rightButton}
@@ -70,12 +79,7 @@ const PageContainer: React.FC<Props> = ({
         </TouchableOpacity>
       )}
     </View>
-    <ScrollView
-      style={[
-        views.contentWrapper,
-        views[narrow ? 'wrapperNarrow' : 'wrapperNormal'],
-      ]}
-      {...scrollOptions}>
+    <ScrollView style={views.contentWrapper} {...scrollOptions}>
       {title && (
         <View style={views.titleWrapper}>
           <Text style={texts.title}>{title}</Text>
@@ -104,19 +108,19 @@ const PageContainer: React.FC<Props> = ({
         </TouchableOpacity>
       ) : (
         <View style={views.bottomText}>
+          {bottom.diffText && bottom.handleDiffPress && (
+            <TouchableOpacity
+              onPress={bottom.handleDiffPress}
+              activeOpacity={0.7}>
+              <Text style={texts.bottomDiff}>{bottom.diffText} </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={bottom.handlePress}
             disabled={bottom.disable}
             activeOpacity={0.7}>
             <Text style={texts.bottomText}>{bottom.text}</Text>
           </TouchableOpacity>
-          {bottom.diffText && bottom.handleDiffPress && (
-            <TouchableOpacity
-              onPress={bottom.handleDiffPress}
-              activeOpacity={0.7}>
-              <Text style={texts.bottomDiff}> {bottom.diffText}</Text>
-            </TouchableOpacity>
-          )}
         </View>
       ))}
   </SafeAreaView>

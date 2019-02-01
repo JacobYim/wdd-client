@@ -14,24 +14,18 @@ import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 // Other
-import { Storage } from 'aws-amplify';
 import ImagePicker from 'react-native-image-picker';
 import produce from 'immer';
+import { uploadImage } from 'src/services/aws/s3';
 import breeds from 'src/lib/consts/breeds.json';
 
 interface Props extends LoadingProps {
   navigation: NavigationScreenProp<any>;
   createDog: typeof actions.createDog;
-  user: ReducerState['user'];
+  email: ReducerState['user']['email'];
 }
 
-interface State {
-  // ShortenDogInterface
-  name: string;
-  thumbnail: string;
-  breed: string;
-  gender: 'M' | 'F' | 'N' | '';
-  // Options
+interface State extends actions.ShortenDogInterface {
   thumbnailFile?: any;
 }
 
@@ -77,21 +71,17 @@ class CreateDog extends Component<Props, State> {
   };
 
   handleSubmit = async () => {
-    const { createDog, navigation, user, toggleLoading } = this.props;
-    const imgFile = this.state.thumbnailFile;
-    if (imgFile) {
-      await toggleLoading();
-      const result = (await Storage.put(
-        `${user.email}/dogs/${this.state.name}/thumbnail.png`,
-        imgFile,
-        { contentType: 'image/png' }
-      )) as { key: string };
-      await this.setState({ thumbnail: result.key });
-    }
-    const { thumbnailFile, ...state } = this.state;
+    const { createDog, navigation, email, toggleLoading } = this.props;
+    const thumbnail = await uploadImage({
+      table: 'dogs',
+      email,
+      name: this.state.name,
+      type: 'thumbnail',
+      file: this.state.thumbnailFile,
+    })(toggleLoading);
 
-    await toggleLoading();
-    createDog(state, navigation);
+    const { name, breed, gender } = this.state;
+    await createDog({ name, breed, gender, thumbnail }, navigation);
   };
 
   render() {
@@ -102,7 +92,7 @@ class CreateDog extends Component<Props, State> {
       <>
         <PageContainer
           center="댕댕이 프로필 설정"
-          left={{ text: '이전', handlePress: () => navigation.goBack(null) }}
+          left={{ navigation }}
           right={{ text: '취소', handlePress: () => navigation.popToTop() }}
           bottom={{
             text: '다음',
@@ -160,7 +150,7 @@ class CreateDog extends Component<Props, State> {
 
 export default connect(
   (state: ReducerState) => ({
-    user: state.user,
+    email: state.user.email,
   }),
   { createDog: actions.createDog }
 )(withLoading(CreateDog));

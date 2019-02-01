@@ -20,7 +20,7 @@ const initialState: UserState = {
   name: '',
   birth: '',
   gender: '',
-  status: '',
+  status: 'TERMINATED',
   dogs: {},
   places: {},
 };

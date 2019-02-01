@@ -1,4 +1,4 @@
-package com.wddclient;
+package com.woodongdang.client.android;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

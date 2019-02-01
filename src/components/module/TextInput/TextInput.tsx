@@ -1,4 +1,4 @@
-import React, { PureComponent as Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   View,
   Text,
@@ -8,15 +8,21 @@ import {
 } from 'react-native';
 
 import { HandleChangeText } from './index';
-import { inputs, texts } from './TextInput.styles';
+import { inputs as inputStyle, texts } from './TextInput.styles';
 import ModuleContainer from 'src/components/module/ModuleContainer';
+
+interface InputsInterface {
+  [key: string]: React.RefObject<Input>;
+}
 
 interface Props {
   label: string;
   name: string;
   value?: string;
   alert?: string;
+  inputs?: InputsInterface;
   handleChange: (data: HandleChangeText) => void;
+  returnKeyType?: 'next' | 'done' | 'send' | 'search';
   [x: string]: any;
 }
 
@@ -24,7 +30,7 @@ interface State {
   isFocus: boolean;
 }
 
-class TextInput extends Component<Props, State> {
+class TextInput extends PureComponent<Props, State> {
   state: State = { isFocus: false };
 
   handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -40,8 +46,31 @@ class TextInput extends Component<Props, State> {
     handleChange({ name, value });
   };
 
+  handleFocusNext = () => {
+    const { inputs, name } = this.props;
+    if (inputs) {
+      const keyArray = Object.keys(inputs);
+      keyArray.map((key, index) => {
+        if (key === name) {
+          // select next input
+          const { current } = inputs[keyArray[index + 1]];
+          if (current) current.focus();
+        }
+      });
+    }
+  };
+
   render() {
-    const { label, value, alert, ...options } = this.props;
+    const {
+      name,
+      label,
+      value,
+      alert,
+      inputs,
+      returnKeyType,
+      ...options
+    } = this.props;
+
     return (
       <ModuleContainer label={label}>
         <Input
@@ -50,13 +79,20 @@ class TextInput extends Component<Props, State> {
           onChangeText={this.handleChangeWithName}
           onFocus={options.handleFocus || this.handleFocus}
           onBlur={this.handleBlur}
+          returnKeyType={returnKeyType || 'default'}
           autoCapitalize="none"
           autoCorrect={false}
           style={[
-            inputs.text,
-            inputs[this.state.isFocus ? 'focused' : 'unFocused'],
+            inputStyle.text,
+            inputStyle[this.state.isFocus ? 'focused' : 'unFocused'],
           ]}
           {...options}
+          {...inputs && { ref: inputs[name] }}
+          {...(returnKeyType === 'next'
+            ? {
+                onSubmitEditing: this.handleFocusNext,
+              }
+            : {})}
         />
         {alert && <Text style={texts.alert}>{alert}</Text>}
       </ModuleContainer>

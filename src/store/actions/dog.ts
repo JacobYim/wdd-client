@@ -6,7 +6,6 @@ export interface DogInterface extends ShortenDogInterface {
   user: string; // FK
   feeds: string[];
   getLikes: string[];
-  gender: 'M' | 'F' | 'N';
   birth?: string; // YYYY.MM.DD
   weight?: number;
   info?: string;
@@ -16,6 +15,7 @@ export interface ShortenDogInterface {
   name: string;
   thumbnail: string;
   breed: string;
+  gender: 'M' | 'F' | 'N' | '';
 }
 
 // *** CONSTS

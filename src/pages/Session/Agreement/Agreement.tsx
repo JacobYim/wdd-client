@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import produce, { isDraft } from 'immer';
-import { TouchableOpacity, Text } from 'react-native';
+import produce from 'immer';
+import { TouchableOpacity, Text, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import PageContainer from 'src/components/module/PageContainer';
@@ -56,6 +56,10 @@ class Agreement extends Component<Props, State> {
             ]}>
             아래 약관에 모두 동의합니다.
           </Text>
+          <Image
+            style={views.agreeIcon}
+            source={require('src/lib/icons/ic_agree.png')}
+          />
         </TouchableOpacity>
       </PageContainer>
     );

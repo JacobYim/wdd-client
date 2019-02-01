@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import produce from 'immer';
-import { Image } from 'react-native';
+import { Image, TextInput as Input } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -30,6 +30,11 @@ interface State {
 }
 
 class SignIn extends Component<Props, State> {
+  private inputs = {
+    email: React.createRef<Input>(),
+    password: React.createRef<Input>(),
+  };
+
   state: State = {
     email: { value: '', valid: false },
     password: { value: '', valid: false },
@@ -104,10 +109,10 @@ class SignIn extends Component<Props, State> {
     return (
       <PageContainer
         bottom={{
-          text: '비밀번호를 잊으셨나요?',
-          handlePress: () => navigation.navigate('forgotPassword'),
-          diffText: '회원가입 하기',
-          handleDiffPress: () => navigation.navigate('signUp'),
+          text: '회원가입',
+          handlePress: () => navigation.navigate('signUp'),
+          diffText: '비밀번호를 잊으셨나요?',
+          handleDiffPress: () => navigation.navigate('forgotPassword'),
         }}
         right={{
           text: '건너뛰기',
@@ -124,6 +129,8 @@ class SignIn extends Component<Props, State> {
           value={email.value}
           alert={email.alert}
           keyboardType="email-address"
+          returnKeyType="next"
+          inputs={this.inputs}
           handleChange={this.handleChange}
         />
         <TextInput
@@ -133,6 +140,7 @@ class SignIn extends Component<Props, State> {
           alert={password.alert}
           secureTextEntry={true}
           returnKeyType="send"
+          inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSignIn}
         />

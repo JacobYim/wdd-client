@@ -4,13 +4,11 @@ import { color, font } from 'src/theme';
 
 export const views = StyleSheet.create({
   container: { flex: 1 },
-  contentWrapper: { flex: 1 },
-  wrapperNormal: { marginHorizontal: '10.7%' },
-  wrapperNarrow: { marginHorizontal: '5.3%' },
+  contentWrapper: { flex: 1, marginHorizontal: '5.3%' },
   topWrapper: {
-    marginTop: 20,
+    marginTop: 15,
     marginHorizontal: '4%',
-    height: 26,
+    height: 21,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -42,23 +40,29 @@ export const views = StyleSheet.create({
   titleWrapper: {
     marginVertical: 40,
   },
+  backIcon: {
+    width: 18,
+    height: 16,
+    resizeMode: 'contain',
+  },
 });
 
 export const texts = StyleSheet.create({
   top: {
     color: color.blackOpacity,
-    fontSize: font.size.large,
+    fontSize: 16,
   },
   center: {
     color: color.black,
     fontSize: font.size.large,
   },
   bottomText: {
-    color: color.gary55,
+    color: `${color.gary55}CC`,
     fontSize: font.size.small,
+    textDecorationLine: 'underline',
   },
   bottomDiff: {
-    color: color.black33,
+    color: `${color.black33}7F`,
     fontSize: font.size.small,
   },
   bottomBox: {

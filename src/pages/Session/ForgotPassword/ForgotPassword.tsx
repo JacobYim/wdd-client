@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
 import produce from 'immer';
+import { connect } from 'react-redux';
 import { NavigationScreenProp } from 'react-navigation';
 
+import * as userActions from 'src/store/actions/user';
+import { ReducerState } from 'src/store/reducers';
 import PageContainer from 'src/components/module/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import RoundButton from 'src/components/module/RoundButton';
@@ -16,6 +18,8 @@ interface ParamInterface {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  forgotPassword: typeof userActions.forgotPassword;
+  user: ReducerState['user'];
 }
 
 interface State {
@@ -30,6 +34,29 @@ class ForgotPassword extends Component<Props, State> {
     },
   };
 
+  getSnapshotBeforeUpdate(prevProps: Props) {
+    const { error } = this.props.user;
+    const prevError = prevProps.user.error;
+    if (error && (!prevError || error.status !== prevError.status))
+      return error;
+    return null;
+  }
+
+  componentDidUpdate(
+    props: Props,
+    state: State,
+    snapshot: Props['user']['error'] | null
+  ) {
+    if (snapshot)
+      this.setState(state =>
+        produce(state, draft => {
+          delete draft.email.alert;
+          if (snapshot.status === 404)
+            draft.email.alert = snapshot.data.message;
+        })
+      );
+  }
+
   mapEventToState = ({ value }: HandleChangeText) => {
     const valid = validateEmail(value);
     return { value, valid } as ParamInterface;
@@ -43,23 +70,10 @@ class ForgotPassword extends Component<Props, State> {
   };
 
   handleSendEmail = () => {
-    // TODO: REPLACE TO EMAIL VALIDATION
-    const { navigation } = this.props;
+    const { forgotPassword, navigation } = this.props;
     const { email } = this.state;
 
-    if (email.valid)
-      Alert.alert(
-        '추후에 이메일 인증을 추가할 계획입니다.',
-        '확인을 눌러 진행하세요.',
-        [
-          { text: '예', onPress: () => navigation.navigate('changePassword') },
-          {
-            text: '아니오',
-            onPress: () => {},
-            style: 'cancel',
-          },
-        ]
-      );
+    if (email.valid) forgotPassword({ email: email.value }, navigation);
     else
       this.setState(state =>
         produce(state, draft => {
@@ -76,7 +90,7 @@ class ForgotPassword extends Component<Props, State> {
       <PageContainer
         title="비밀번호를 잊으셨나요?"
         subtitle="가입 때 사용하신 이메일 주소를 입력해주세요."
-        left={{ text: '이전', handlePress: () => navigation.goBack(null) }}
+        left={{ navigation }}
         scrollEnabled={false}>
         <TextInput
           label="이메일 주소 입력"
@@ -97,4 +111,9 @@ class ForgotPassword extends Component<Props, State> {
   }
 }
 
-export default ForgotPassword;
+export default connect(
+  (state: ReducerState) => ({
+    user: state.user,
+  }),
+  { forgotPassword: userActions.forgotPassword }
+)(ForgotPassword);

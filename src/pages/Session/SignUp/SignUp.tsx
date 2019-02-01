@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { TextInput as Input } from 'react-native';
 import { connect } from 'react-redux';
 import produce from 'immer';
 import { NavigationScreenProp } from 'react-navigation';
@@ -28,6 +29,13 @@ interface State {
 }
 
 class SignUp extends Component<Props, State> {
+  private inputs = {
+    name: React.createRef<Input>(),
+    email: React.createRef<Input>(),
+    password: React.createRef<Input>(),
+    passwordCheck: React.createRef<Input>(),
+  };
+
   state: State = {
     name: { value: '', valid: false },
     email: { value: '', valid: false },
@@ -98,6 +106,8 @@ class SignUp extends Component<Props, State> {
           name="name"
           value={name.value}
           alert={name.alert}
+          returnKeyType="next"
+          inputs={this.inputs}
           handleChange={this.handleChange}
         />
         <TextInput
@@ -106,6 +116,8 @@ class SignUp extends Component<Props, State> {
           value={email.value}
           alert={email.alert}
           keyboardType="email-address"
+          returnKeyType="next"
+          inputs={this.inputs}
           handleChange={this.handleChange}
         />
         <TextInput
@@ -114,6 +126,8 @@ class SignUp extends Component<Props, State> {
           value={password.value}
           alert={password.alert}
           secureTextEntry={true}
+          returnKeyType="next"
+          inputs={this.inputs}
           handleChange={this.handleChange}
         />
         <TextInput
@@ -123,6 +137,7 @@ class SignUp extends Component<Props, State> {
           alert={passwordCheck.alert}
           secureTextEntry={true}
           returnKeyType="send"
+          inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSignUp}
         />
