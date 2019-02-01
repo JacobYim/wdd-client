@@ -4,9 +4,7 @@ import { color, font } from 'src/theme';
 
 export const views = StyleSheet.create({
   container: { flex: 1 },
-  contentWrapper: { flex: 1 },
-  wrapperNormal: { marginHorizontal: '10.7%' },
-  wrapperNarrow: { marginHorizontal: '5.3%' },
+  contentWrapper: { flex: 1, marginHorizontal: '5.3%' },
   topWrapper: {
     marginTop: 20,
     marginHorizontal: '4%',

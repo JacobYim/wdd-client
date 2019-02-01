@@ -34,7 +34,6 @@ interface Props {
     disable?: boolean;
   };
   // options
-  narrow?: boolean;
   [x: string]: any;
 }
 
@@ -46,7 +45,6 @@ const PageContainer: React.FC<Props> = ({
   right,
   center,
   bottom,
-  narrow,
   ...scrollOptions
 }) => (
   <SafeAreaView style={views.container}>
@@ -70,12 +68,7 @@ const PageContainer: React.FC<Props> = ({
         </TouchableOpacity>
       )}
     </View>
-    <ScrollView
-      style={[
-        views.contentWrapper,
-        views[narrow ? 'wrapperNarrow' : 'wrapperNormal'],
-      ]}
-      {...scrollOptions}>
+    <ScrollView style={views.contentWrapper} {...scrollOptions}>
       {title && (
         <View style={views.titleWrapper}>
           <Text style={texts.title}>{title}</Text>
