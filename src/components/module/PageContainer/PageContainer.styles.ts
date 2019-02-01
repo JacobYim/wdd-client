@@ -40,6 +40,11 @@ export const views = StyleSheet.create({
   titleWrapper: {
     marginVertical: 40,
   },
+  backIcon: {
+    width: 18,
+    height: 16,
+    resizeMode: 'contain',
+  },
 });
 
 export const texts = StyleSheet.create({

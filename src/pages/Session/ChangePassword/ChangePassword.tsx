@@ -69,10 +69,7 @@ class ChangePassword extends Component<Props, State> {
       <PageContainer
         title="비밀번호 변경"
         subtitle="새롭고 안전한 비밀번호를 재설정하세요."
-        left={{
-          text: '이전',
-          handlePress: () => navigation.navigate('signIn'),
-        }}
+        left={{ navigation }}
         scrollEnabled={false}>
         <TextInput
           label="새 비밀번호"

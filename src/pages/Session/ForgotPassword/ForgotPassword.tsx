@@ -90,7 +90,7 @@ class ForgotPassword extends Component<Props, State> {
       <PageContainer
         title="비밀번호를 잊으셨나요?"
         subtitle="가입 때 사용하신 이메일 주소를 입력해주세요."
-        left={{ text: '이전', handlePress: () => navigation.goBack(null) }}
+        left={{ navigation }}
         scrollEnabled={false}>
         <TextInput
           label="이메일 주소 입력"
