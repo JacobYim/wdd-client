@@ -9,7 +9,10 @@ export default createAppContainer(
     {
       core: CoreScreen,
       app: AppNavigator,
-      session: SessionNavigator,
+      session: {
+        screen: SessionNavigator,
+        path: 'session',
+      },
     },
     {
       initialRouteName: 'core',

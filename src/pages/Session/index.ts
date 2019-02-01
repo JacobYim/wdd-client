@@ -16,26 +16,11 @@ import ChangePasswordScreen from './ChangePassword';
 
 const SignUpNavigator = createMaterialTopTabNavigator(
   {
-    agreement: {
-      screen: AgreementScreen,
-      path: 'sign-up/agreement',
-    },
-    signUpUser: {
-      screen: SignUpScreen,
-      path: 'sign-up/user',
-    },
-    createMeta: {
-      screen: CreateMetaScreen,
-      path: 'sign-up/meta',
-    },
-    createDog: {
-      screen: CreateDogScreen,
-      path: 'sign-up/dog',
-    },
-    tutorial: {
-      screen: TutorialScreen,
-      path: 'sign-up/complete',
-    },
+    agreement: AgreementScreen,
+    signUpUser: SignUpScreen,
+    createMeta: CreateMetaScreen,
+    createDog: CreateDogScreen,
+    tutorial: TutorialScreen,
   },
   {
     initialRouteName: 'agreement',
@@ -49,17 +34,17 @@ const SignUpNavigator = createMaterialTopTabNavigator(
 
 const ForgotPasswordNavigator = createMaterialTopTabNavigator(
   {
-    enterEmail: {
+    init: {
       screen: ForgotPasswordScreen,
-      path: 'forgot-password/email',
+      path: 'check-email',
     },
     changePassword: {
       screen: ChangePasswordScreen,
-      path: 'forgot-password/change',
+      path: 'change-password/:token',
     },
   },
   {
-    initialRouteName: 'enterEmail',
+    initialRouteName: 'init',
     animationEnabled: true,
     swipeEnabled: false,
     tabBarOptions: {
@@ -70,12 +55,12 @@ const ForgotPasswordNavigator = createMaterialTopTabNavigator(
 
 export default createStackNavigator(
   {
-    signIn: {
-      screen: SignInScreen,
-      path: 'sign-in',
-    },
+    signIn: SignInScreen,
     signUp: SignUpNavigator,
-    forgotPassword: ForgotPasswordNavigator,
+    forgotPassword: {
+      screen: ForgotPasswordNavigator,
+      path: 'forgot-password',
+    },
   },
   {
     initialRouteName: 'signIn',
