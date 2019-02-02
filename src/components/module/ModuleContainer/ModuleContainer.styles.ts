@@ -11,6 +11,7 @@ export const texts = StyleSheet.create({
 
 export const views = StyleSheet.create({
   container: {
+    width: '99.8%',
     paddingVertical: 8,
   },
 });
