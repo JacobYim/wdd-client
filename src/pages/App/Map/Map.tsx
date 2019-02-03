@@ -12,7 +12,35 @@ interface Props {
   signOut: typeof userActions.signOut;
 }
 
-class Map extends Component<Props> {
+interface State {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
+class Map extends Component<Props, State> {
+  state: State = {
+    coords: {
+      // 서울시 서초구 양재동 255-7
+      latitude: 37.4734372,
+      longitude: 127.0405071,
+    },
+  };
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        this.setState({ coords: { latitude, longitude } });
+      },
+      error => {
+        throw error.message;
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }
+
   handleSignOut = () => {
     const { signOut, navigation } = this.props;
     signOut(navigation);
@@ -23,8 +51,7 @@ class Map extends Component<Props> {
       <View style={views.container}>
         <MapView
           initialRegion={{
-            latitude: 36.143099,
-            longitude: 128.392905,
+            ...this.state.coords,
             zoomLevel: 5,
           }}
           mapType={'Standard'}

@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'",
+    "dev": "./scripts/map-base-url.sh && npm run debug && npm start",
     "test": "jest"
   },
   "dependencies": {
