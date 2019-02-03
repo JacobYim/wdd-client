@@ -1,5 +1,5 @@
 {
-  "name": "wdd-client",
+  "name": "WddClient",
   "version": "0.0.2",
   "private": true,
   "scripts": {
@@ -15,8 +15,8 @@
     "hangul-js": "^0.2.5",
     "immer": "^2.0.0",
     "moment": "^2.24.0",
-    "react": "^16.7.0",
-    "react-native": "0.57.8",
+    "react": "^16.6.3",
+    "react-native": "^0.58.3",
     "react-native-datepicker": "^1.7.2",
     "react-native-daummap": "^0.2.8",
     "react-native-gesture-handler": "^1.0.12",
