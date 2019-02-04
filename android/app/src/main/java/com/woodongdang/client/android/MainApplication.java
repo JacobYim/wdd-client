@@ -3,6 +3,7 @@ package com.woodongdang.client.android;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.teamsf.daummap.DaumMapPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.amazonaws.RNAWSCognitoPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFusedLocationPackage(),
             new DaumMapPackage(),
             new ImagePickerPackage(),
             new RNAWSCognitoPackage(),

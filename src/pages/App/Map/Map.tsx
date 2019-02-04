@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import MapView from 'react-native-daummap';
+import Geolocation from 'react-native-geolocation-service';
 import { NavigationScreenProp } from 'react-navigation';
 
 import * as userActions from 'src/store/actions/user';
@@ -20,16 +21,20 @@ interface State {
 }
 
 class Map extends Component<Props, State> {
-  state: State = {
-    coords: {
-      // 서울시 서초구 양재동 255-7
-      latitude: 37.4734372,
-      longitude: 127.0405071,
-    },
-  };
+  constructor(props: Props) {
+    super(props);
+    Geolocation.requestAuthorization();
+    this.state = {
+      coords: {
+        // 서울시 서초구 양재동 255-7
+        latitude: 37.4734372,
+        longitude: 127.0405071,
+      },
+    };
+  }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
+    Geolocation.getCurrentPosition(
       position => {
         const { latitude, longitude } = position.coords;
         this.setState({ coords: { latitude, longitude } });
@@ -52,7 +57,7 @@ class Map extends Component<Props, State> {
         <MapView
           initialRegion={{
             ...this.state.coords,
-            zoomLevel: 5,
+            zoomLevel: 7,
           }}
           mapType={'Standard'}
           style={{ flex: 1, height: 300 }}
