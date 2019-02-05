@@ -59,6 +59,13 @@ export default handleActions<UserState, any>(
       }),
     [dogActions.SET_DOG_FAILURE]: (state, action) =>
       produce(state, draft => {
+        /**
+         * 400: BadRequest, 잘못된 파라미터 전송
+         * 401: NotAuthenticated, 로그인되어 있지 않음
+         * 403: Forbidden, 잘못된 토근 / 이미 존재하는 계정
+         * 404: NotFound, 잘못된 이메일(계정)
+         * 406: NotAcceptable, 비활성 계정
+         */
         draft.dogError = action.payload;
       }),
   },

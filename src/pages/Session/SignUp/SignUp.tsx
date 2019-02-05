@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import produce from 'immer';
 import { NavigationScreenProp } from 'react-navigation';
 
+import { ReducerState } from 'src/store/reducers';
 import * as userActions from 'src/store/actions/user';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/module/PageContainer';
@@ -18,6 +19,7 @@ interface ParamInterface {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  user: ReducerState['user'];
   signUp: typeof userActions.signUp;
 }
 
@@ -42,6 +44,33 @@ class SignUp extends Component<Props, State> {
     password: { value: '', valid: false },
     passwordCheck: { value: '', valid: false },
   };
+
+  getSnapshotBeforeUpdate(prevProps: Props) {
+    const { error } = this.props.user;
+    const prevError = prevProps.user.error;
+    if (error && (!prevError || error.status !== prevError.status))
+      return error;
+    return null;
+  }
+
+  componentDidUpdate(
+    props: Props,
+    state: State,
+    snapshot: Props['user']['error'] | null
+  ) {
+    if (snapshot)
+      this.setState(state =>
+        produce(state, draft => {
+          delete draft.email.alert;
+          delete draft.password.alert;
+          switch (snapshot.status) {
+            case 403:
+              draft.email.alert = snapshot.data.message;
+              break;
+          }
+        })
+      );
+  }
 
   mapEventToState = ({ name, value }: HandleChangeText) => {
     let valid: boolean;
@@ -154,6 +183,8 @@ class SignUp extends Component<Props, State> {
 }
 
 export default connect(
-  null,
+  (state: ReducerState) => ({
+    user: state.user,
+  }),
   { signUp: userActions.signUp }
 )(SignUp);

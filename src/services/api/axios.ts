@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from './base-url.json';
+import { BASE_URL } from 'src/lib/consts/base-url.json';
 
 export function setHeader(token: string) {
   axios.defaults.headers.common['authorization'] = token;
