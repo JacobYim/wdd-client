@@ -44,6 +44,7 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
       ]);
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
+    yield call(removeHeader);
     // *** NAVIGATE
     yield call(action.navigation.navigate, 'session');
   }

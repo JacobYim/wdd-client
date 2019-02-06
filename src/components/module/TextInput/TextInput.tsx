@@ -91,6 +91,7 @@ class TextInput extends PureComponent<Props, State> {
           {...(returnKeyType === 'next'
             ? {
                 onSubmitEditing: this.handleFocusNext,
+                blurOnSubmit: false,
               }
             : {})}
         />
