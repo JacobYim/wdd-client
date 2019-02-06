@@ -6,4 +6,5 @@ export const views = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  map: StyleSheet.absoluteFillObject,
 });
