@@ -2,6 +2,7 @@ package com.woodongdang.client.android;
 
 import android.app.Application;
 
+import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
             new RNFusedLocationPackage(),
             new ImagePickerPackage(),
             new RNAWSCognitoPackage(),

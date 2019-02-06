@@ -37,10 +37,6 @@ class Map extends Component<Props> {
   };
 
   render() {
-    // // 서울시 서초구 양재동 255-7
-    // latitude: 37.4734372,
-    // longitude: 127.0405071,
-    // zoomLevel: 2,
     return (
       <View style={views.container}>
         <MapView
