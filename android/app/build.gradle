@@ -138,7 +138,6 @@ android {
 
 dependencies {
     implementation project(':react-native-geolocation-service')
-    implementation project(':react-native-daummap')
     implementation project(':react-native-image-picker')
     implementation project(':amazon-cognito-identity-js')
     implementation project(':react-native-gesture-handler')

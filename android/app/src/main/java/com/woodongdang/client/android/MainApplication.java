@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
-import com.teamsf.daummap.DaumMapPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.amazonaws.RNAWSCognitoPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -29,7 +28,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNFusedLocationPackage(),
-            new DaumMapPackage(),
             new ImagePickerPackage(),
             new RNAWSCognitoPackage(),
             new RNGestureHandlerPackage()
