@@ -3,7 +3,7 @@ import DatePicker from 'react-native-datepicker';
 
 import { Props } from './index';
 import { views, texts } from './DateInput.styles';
-import ModuleContainer from 'src/components/module/ModuleContainer';
+import ModuleContainer from 'src/components/container/ModuleContainer';
 
 const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
   const handleChangeWithName = (str: string, value: Date) => {

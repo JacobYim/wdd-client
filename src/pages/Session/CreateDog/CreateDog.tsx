@@ -8,8 +8,8 @@ import { ReducerState } from 'src/store/reducers';
 // Style
 import { views } from './CreateDog.styles';
 // Components
-import PageContainer from 'src/components/module/PageContainer';
-import withLoading, { LoadingProps } from 'src/components/module/withLoading';
+import PageContainer from 'src/components/container/PageContainer';
+import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';

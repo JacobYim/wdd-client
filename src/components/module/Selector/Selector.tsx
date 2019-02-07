@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import { HandleChangeSelector } from './index';
 import { views } from './Selector.styles';
-import ModuleContainer from 'src/components/module/ModuleContainer';
+import ModuleContainer from 'src/components/container/ModuleContainer';
 import ToggleBox from './ToggleBox';
 
 interface Data {

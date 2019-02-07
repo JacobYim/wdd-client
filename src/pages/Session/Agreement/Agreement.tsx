@@ -3,7 +3,7 @@ import produce from 'immer';
 import { TouchableOpacity, Text, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
-import PageContainer from 'src/components/module/PageContainer';
+import PageContainer from 'src/components/container/PageContainer';
 import { views, texts } from './Agreement.styles';
 
 interface Props {
