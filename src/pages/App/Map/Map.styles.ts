@@ -7,4 +7,8 @@ export const views = StyleSheet.create({
     alignItems: 'center',
   },
   map: StyleSheet.absoluteFillObject,
+  curMarker: {
+    width: 40,
+    height: 40,
+  },
 });

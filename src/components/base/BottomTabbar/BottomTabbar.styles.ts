@@ -5,7 +5,7 @@ const circleSize = 60;
 
 export const views = StyleSheet.create({
   container: {
-    height: '8.1%',
+    height: '8.2%',
     backgroundColor: color.white,
     flexDirection: 'row',
   },
@@ -15,6 +15,7 @@ export const views = StyleSheet.create({
     alignItems: 'center',
   },
   tabButton: {
+    width: 80,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -37,8 +38,8 @@ export const views = StyleSheet.create({
     backgroundColor: color.red,
   },
   tabIcon: {
-    width: 36,
-    height: '46.2%',
+    width: '100%',
+    height: '56%',
     resizeMode: 'contain',
   },
   centerIcon: {

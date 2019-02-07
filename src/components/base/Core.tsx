@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { Image } from 'react-native';
+import { View, Image } from 'react-native';
 import Amplify from 'aws-amplify';
 
 import awsconfig from 'src/aws-exports';
@@ -27,10 +27,12 @@ class Core extends PureComponent<Props> {
 
   render() {
     return (
-      <Image
-        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-        source={require('src/lib/images/img_splash.jpg')}
-      />
+      <View style={{ flex: 1, backgroundColor: '#FFF' }}>
+        <Image
+          style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+          source={require('src/lib/images/img_splash.jpg')}
+        />
+      </View>
     );
   }
 }
