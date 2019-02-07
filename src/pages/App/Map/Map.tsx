@@ -19,17 +19,18 @@ class Map extends Component<Props> {
     Geolocation.requestAuthorization();
   }
 
-  // componentDidMount() {
-  //   Geolocation.getCurrentPosition(
-  //     position => {
-  //       const { latitude, longitude } = position.coords;
-  //     },
-  //     error => {
-  //       throw error.message;
-  //     },
-  //     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-  //   );
-  // }
+  componentDidMount() {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        console.log({ latitude, longitude });
+      },
+      error => {
+        throw error.message;
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }
 
   handleSignOut = () => {
     const { signOut, navigation } = this.props;
