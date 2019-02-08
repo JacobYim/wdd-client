@@ -6,6 +6,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Region } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { views } from './Map.styles';
+import ToggleMode, { MapMode } from './ToggleMode';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -13,11 +14,12 @@ interface Props {
 
 interface State {
   region: Region;
-  getCoords: boolean;
   trackCoords: {
     latitude: number;
     longitude: number;
   };
+  getCoords: boolean;
+  mapMode: MapMode;
 }
 
 const { width, height } = Dimensions.get('window');
@@ -38,11 +40,12 @@ class Map extends Component<Props, State> {
 
   state: State = {
     region: this.initRegion,
-    getCoords: false,
     trackCoords: {
       latitude: this.initRegion.latitude,
       longitude: this.initRegion.longitude,
     },
+    getCoords: false,
+    mapMode: 'map',
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -78,6 +81,10 @@ class Map extends Component<Props, State> {
     this.setState({ region });
   };
 
+  handleModeChange = (mapMode: MapMode) => {
+    this.setState({ mapMode });
+  };
+
   render() {
     const { trackCoords } = this.state;
 
@@ -100,7 +107,10 @@ class Map extends Component<Props, State> {
             />
           </Marker>
         </MapView>
-        <View style={views.toggleWrapper} />
+        <ToggleMode
+          mode={this.state.mapMode}
+          handlePress={this.handleModeChange}
+        />
       </SafeAreaView>
     );
   }
