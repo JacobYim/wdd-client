@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import React, { Component, createRef } from 'react';
+import { SafeAreaView, View, Image, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Region } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { views } from './Map.styles';
@@ -12,37 +12,55 @@ interface Props {
 }
 
 interface State {
-  coords: {
+  region: Region;
+  getCoords: boolean;
+  trackCoords: {
     latitude: number;
     longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
   };
 }
 
+const { width, height } = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
+
 class Map extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    Geolocation.requestAuthorization();
-    this.state = {
-      coords: {
-        // 우리동네댕댕이 HQ
-        latitude: 37.4734372,
-        longitude: 127.0405071,
-        // Delta
-        latitudeDelta: 0.015,
-        longitudeDelta: 0.0121,
-      },
-    };
+  private map = createRef<MapView>();
+  private watchID: number = 0;
+  private latDelta: number = 0.01;
+  private initRegion: Region = {
+    // 우리동네댕댕이 HQ
+    latitude: 37.4734372,
+    longitude: 127.0405071,
+    // Delta
+    latitudeDelta: this.latDelta,
+    longitudeDelta: this.latDelta * ASPECT_RATIO,
+  };
+
+  state: State = {
+    region: this.initRegion,
+    getCoords: false,
+    trackCoords: {
+      latitude: this.initRegion.latitude,
+      longitude: this.initRegion.longitude,
+    },
+  };
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const map = this.map.current;
+    if (prevState.getCoords !== this.state.getCoords && map) {
+      map.animateToRegion({ ...this.initRegion, ...this.state.trackCoords });
+    }
   }
 
   componentDidMount() {
-    Geolocation.getCurrentPosition(
+    Geolocation.requestAuthorization();
+    this.watchID = Geolocation.watchPosition(
       position => {
         const { latitude, longitude } = position.coords;
         this.setState({
           ...this.state,
-          coords: { ...this.state.coords, latitude, longitude },
+          getCoords: true,
+          trackCoords: { latitude, longitude },
         });
       },
       error => {
@@ -52,17 +70,28 @@ class Map extends Component<Props, State> {
     );
   }
 
+  componentWillUnmount() {
+    Geolocation.clearWatch(this.watchID);
+  }
+
+  handleRegionChange = (region: Region) => {
+    this.setState({ region });
+  };
+
   render() {
-    const { coords } = this.state;
-    const curCoords = {
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-    };
+    const { trackCoords } = this.state;
+
     return (
-      <View style={views.container}>
-        <MapView provider={PROVIDER_GOOGLE} style={views.map} region={coords}>
+      <SafeAreaView style={views.container}>
+        <MapView
+          ref={this.map}
+          provider={PROVIDER_GOOGLE}
+          style={views.map}
+          initialRegion={this.initRegion}
+          onRegionChange={this.handleRegionChange}>
+          {/* Tracking Marker */}
           <Marker
-            coordinate={curCoords}
+            coordinate={trackCoords}
             anchor={{ x: 0.5, y: 0.5 }}
             calloutAnchor={{ x: 0.5, y: 0.5 }}>
             <Image
@@ -71,7 +100,8 @@ class Map extends Component<Props, State> {
             />
           </Marker>
         </MapView>
-      </View>
+        <View style={views.toggleWrapper} />
+      </SafeAreaView>
     );
   }
 }

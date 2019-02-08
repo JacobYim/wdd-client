@@ -6,7 +6,7 @@
 
 ### 준비사항
 
-> ios는 MacOS와 Xcode가 설치되어 있는 환경에서만 실행 가능
+> iOS는 MacOS와 Xcode가 설치되어 있는 환경에서만 실행 가능
 
 1. `npm` 혹은 `yarn` 설치
 2. `cocoapod` 설치
@@ -18,8 +18,18 @@
 3. `~/wdd-client$ npm install`
 4. `~/wdd-client$ cd ios && pod install && cd ..`
 5. `~/wdd-client& npm run dev`
-6. 컴퓨터에 아이폰 혹은 안드로이드 연결
-7. `~/wdd-client$ react-native run-android` or `react-native run-ios`
+6. 서비스 실행
+
+- Android
+  1. 에뮬레이터 혹은 안드로이드 디바이스 연결
+  2. `~/wdd-client$ react-native run-android`
+- iOS
+  - 시뮬레이터
+    1. `~/wdd-client$ react-native run-ios`
+  - 아이폰 디바이스
+    1. 디바이스 연결
+    2. `~/wdd-client$ open ios/WddClient.xcworkspace`
+    3. Xcode에서 디바이스 선택 및 실행
 
 ### 사용 방법
 
