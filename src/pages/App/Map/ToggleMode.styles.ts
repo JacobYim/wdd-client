@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { color, font } from 'src/theme';
+import { color } from 'src/theme';
 
 const toggleHeight = 40;
 
