@@ -59,6 +59,7 @@ class Map extends Component<Props, State> {
 
   handleModeChange = (mapMode: MapMode) => {
     this.setState({ mapMode });
+    this.handleMoveToUser();
   };
 
   handleMoveToUser = async () => {

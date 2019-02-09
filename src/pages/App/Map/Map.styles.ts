@@ -29,8 +29,8 @@ export const views = StyleSheet.create({
     elevation: 2,
   },
   trackUserIcon: {
-    width: trackUserSize * 0.52,
-    height: trackUserSize * 0.52,
+    width: trackUserSize * 0.48,
+    height: trackUserSize * 0.48,
     resizeMode: 'contain',
   },
 });
