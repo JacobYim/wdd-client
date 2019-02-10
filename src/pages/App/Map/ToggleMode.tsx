@@ -22,7 +22,7 @@ interface State {
 
 const modes: ModeInterface[] = [
   { name: 'shop', label: '주변' },
-  { name: 'map', label: '지도' },
+  { name: 'map', label: '내위치' },
 ];
 
 class ToggleMode extends PureComponent<Props, State> {

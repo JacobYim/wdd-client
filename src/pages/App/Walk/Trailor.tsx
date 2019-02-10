@@ -21,7 +21,7 @@ class Trailor extends PureComponent<Props, State> {
     Animated.timing(this.state.opacity, {
       toValue: 0,
       duration: this.duration,
-      easing: Easing.inOut(Easing.ease),
+      easing: Easing.bezier(0.48, 0, 1, 1),
     }).start(() => {
       this.props.handleFinish();
     });
