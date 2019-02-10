@@ -5,7 +5,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as actions from 'src/store/actions/user';
 // Components
-import PageContainer from 'src/components/module/PageContainer';
+import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import RoundButton from 'src/components/module/RoundButton';
 // Other

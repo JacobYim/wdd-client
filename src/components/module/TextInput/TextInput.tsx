@@ -9,7 +9,7 @@ import {
 
 import { HandleChangeText } from './index';
 import { inputs as inputStyle, texts } from './TextInput.styles';
-import ModuleContainer from 'src/components/module/ModuleContainer';
+import ModuleContainer from 'src/components/container/ModuleContainer';
 
 interface InputsInterface {
   [key: string]: React.RefObject<Input>;

@@ -5,7 +5,7 @@ import * as Hangul from 'hangul-js';
 import { color } from 'src/theme';
 import { inputs, views } from './TextAutocomplete.styles';
 // Components
-import PageContainer from 'src/components/module/PageContainer';
+import PageContainer from 'src/components/container/PageContainer';
 import Input, { HandleChangeText } from 'src/components/module/TextInput';
 import TextBox from './TextBox';
 

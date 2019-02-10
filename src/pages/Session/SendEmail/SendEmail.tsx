@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
-import PageContainer from 'src/components/module/PageContainer';
+import PageContainer from 'src/components/container/PageContainer';
 
 interface Props {
   navigation: NavigationScreenProp<any>;

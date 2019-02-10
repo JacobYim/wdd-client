@@ -1,5 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, NavigationScreenProp } from 'react-navigation';
+import Geolocation from 'react-native-geolocation-service';
 import { Alert } from 'react-native';
 
 import { setHeader, removeHeader } from 'src/services/api/axios';
@@ -12,6 +13,13 @@ import {
 import * as actions from 'src/store/actions/user';
 import * as api from 'src/services/api/user';
 
+// HELPERS
+function* navigateToApp(navigation: NavigationScreenProp<any>) {
+  yield call(Geolocation.requestAuthorization);
+  yield call(navigation.navigate, 'app');
+}
+
+// SAGAS
 function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
   try {
     // *** GET TOKEN FROM STORAGE
@@ -22,23 +30,24 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     const data = yield call(api.getUser);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
-    if (!nextStep) yield call(action.navigation.navigate, 'app');
+    if (!nextStep) yield call(navigateToApp, action.navigation);
     else
       Alert.alert('회원가입이 진행중입니다.', '이어서 하시겠습니까?', [
         {
           text: '예',
-          onPress: () =>
+          onPress: () => {
             action.navigation.navigate({
               routeName: 'session',
               action: NavigationActions.navigate({
                 routeName: 'signUp',
                 action: NavigationActions.navigate({ routeName: nextStep }),
               }),
-            }),
+            });
+          },
         },
         {
           text: '나중에',
-          onPress: () => action.navigation.navigate('app'),
+          onPress: () => navigateToApp(action.navigation),
           style: 'cancel',
         },
       ]);
@@ -61,7 +70,7 @@ function* signIn(action: ReturnType<typeof actions.signIn>) {
     yield call(setHeader, token);
     yield call(setUserStorage, { token });
     // *** NAVIGATE
-    yield call(action.navigation.navigate, 'app');
+    yield call(navigateToApp, action.navigation);
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
   }
@@ -132,7 +141,7 @@ function* changePassword(action: ReturnType<typeof actions.changePassword>) {
     const data = yield call(api.updateUser, action.payload);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
-    yield call(action.navigation.navigate, 'app');
+    yield call(navigateToApp, action.navigation);
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
   }

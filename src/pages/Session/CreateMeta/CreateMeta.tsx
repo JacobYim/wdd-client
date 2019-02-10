@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import * as userActions from 'src/store/actions/user';
-import PageContainer from 'src/components/module/PageContainer';
+import PageContainer from 'src/components/container/PageContainer';
 import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 

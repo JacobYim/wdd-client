@@ -1,64 +1,88 @@
-import React, { Component } from 'react';
-import { View, Button } from 'react-native';
+import React, { Component, createRef } from 'react';
+import produce from 'immer';
+import { SafeAreaView, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import Geolocation from 'react-native-geolocation-service';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, {
+  PROVIDER_GOOGLE,
+  LatLng,
+  EventUserLocation,
+} from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
-import * as userActions from 'src/store/actions/user';
 import { views } from './Map.styles';
+import ToggleMode, { MapMode } from './ToggleMode';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
-  signOut: typeof userActions.signOut;
 }
 
-class Map extends Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    Geolocation.requestAuthorization();
-  }
+interface State {
+  mapMode: MapMode;
+  userLocation: LatLng;
+}
 
-  // componentDidMount() {
-  //   Geolocation.getCurrentPosition(
-  //     position => {
-  //       const { latitude, longitude } = position.coords;
-  //     },
-  //     error => {
-  //       throw error.message;
-  //     },
-  //     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-  //   );
-  // }
+const { width, height } = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
 
-  handleSignOut = () => {
-    const { signOut, navigation } = this.props;
-    signOut(navigation);
+class Map extends Component<Props, State> {
+  private map = createRef<MapView>();
+  private initLocation: LatLng = {
+    // 우리동네댕댕이 HQ
+    latitude: 37.4734372,
+    longitude: 127.0405071,
+  };
+
+  state: State = {
+    mapMode: 'map',
+    userLocation: this.initLocation,
+  };
+
+  trackLocation = (center?: LatLng) => {
+    const map = this.map.current;
+    if (map)
+      map.animateCamera(
+        { center: center || this.state.userLocation },
+        { duration: 160 }
+      );
+  };
+
+  handleModeChange = async (mapMode: MapMode) => {
+    if (mapMode === 'map') this.trackLocation();
+    this.setState({ mapMode });
+  };
+
+  handleLocationChange = (event: EventUserLocation) => {
+    const { latitude, longitude, speed } = event.nativeEvent.coordinate;
+    const userLocation = { latitude, longitude };
+
+    if (this.state.mapMode === 'map') this.trackLocation(userLocation);
+    this.setState({ userLocation });
   };
 
   render() {
+    const { mapMode } = this.state;
+    const isShopMode = mapMode === 'shop';
+
     return (
-      <View style={views.container}>
+      <SafeAreaView style={views.container}>
         <MapView
+          ref={this.map}
           provider={PROVIDER_GOOGLE}
           style={views.map}
-          region={{
-            // 서울시 서초구 양재동 255-7
-            latitude: 37.4734372,
-            longitude: 127.0405071,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
+          initialRegion={{
+            ...this.initLocation,
+            // Delta
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01 * ASPECT_RATIO,
           }}
+          showsUserLocation={true}
+          onUserLocationChange={this.handleLocationChange}
+          scrollEnabled={isShopMode}
         />
-        <Button title="로그아웃" onPress={this.handleSignOut} />
-      </View>
+        <ToggleMode mode={mapMode} handlePress={this.handleModeChange} />
+      </SafeAreaView>
     );
   }
 }
 
-export default connect(
-  null,
-  {
-    signOut: userActions.signOut,
-  }
-)(Map);
+export default connect()(Map);
