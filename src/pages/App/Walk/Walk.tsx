@@ -1,48 +1,57 @@
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View, Text } from 'react-native';
+import { withNavigation, NavigationScreenProp } from 'react-navigation';
+
 import Trailor from './Trailor';
-import { NavigationScreenProp } from 'react-navigation';
+import { views } from './Walk.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
 }
 
 interface State {
-  trailorIndex: number;
+  shouldMountDashboard: boolean;
+  walkTime: number;
+}
+
+function formatTime(time: number) {
+  const timeFormat = (time: number) => `${time < 10 ? '0' : ''}${time}`;
+  const minute = Math.floor(time / 60);
+  const second = time % 60;
+  return `${timeFormat(minute)}:${timeFormat(second)}`;
 }
 
 class Walk extends Component<Props, State> {
-  private trailors = [
-    require('src/lib/images/img_count_3.jpg'),
-    require('src/lib/images/img_count_2.jpg'),
-    require('src/lib/images/img_count_1.jpg'),
-    require('src/lib/images/img_count_0.jpg'),
-  ];
-
   state: State = {
-    trailorIndex: 0,
+    shouldMountDashboard: false,
+    walkTime: 0,
   };
 
-  handleAnimationFinish = () => {
-    this.setState({ trailorIndex: this.state.trailorIndex + 1 });
+  handleTrailorEnd = () => {
+    this.setState({ shouldMountDashboard: true });
   };
 
-  renderTrailors = (image: any, index: number) =>
-    this.state.trailorIndex === index && (
-      <Trailor
-        image={image}
-        key={index}
-        handleFinish={this.handleAnimationFinish}
-      />
-    );
+  handleDashboardMount = () => {
+    setInterval(() => {
+      this.setState({ walkTime: this.state.walkTime + 1 });
+    }, 1000);
+  };
 
   render() {
+    const { shouldMountDashboard, walkTime } = this.state;
+
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}>
-        {this.trailors.map(this.renderTrailors)}
+      <SafeAreaView style={views.container}>
+        {shouldMountDashboard ? (
+          <View style={views.dashboard} onLayout={this.handleDashboardMount}>
+            <Text>{formatTime(walkTime)}</Text>
+          </View>
+        ) : (
+          <Trailor onFinish={this.handleTrailorEnd} />
+        )}
       </SafeAreaView>
     );
   }
 }
 
-export default Walk;
+export default withNavigation(Walk);
