@@ -46,7 +46,7 @@ const NavbarLeft: React.FC<Props['left']> = ({ navigation }) => {
     <TouchableOpacity onPress={navBack} activeOpacity={0.7}>
       <Image
         style={views.backIcon}
-        source={require('src/lib/icons/ic_back.png')}
+        source={require('src/assets/icons/ic_back.png')}
       />
     </TouchableOpacity>
   );

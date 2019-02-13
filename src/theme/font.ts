@@ -5,4 +5,9 @@ export default {
     large: 18,
     title: 32,
   },
+  family: {
+    NanumSquareRegular: 'NanumSquareRegular',
+    NanumSquareBold: 'NanumSquareBold',
+    NanumSquareExtraBold: 'NanumSquareExtraBold',
+  },
 };

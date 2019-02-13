@@ -9,7 +9,7 @@ import * as userActions from 'src/store/actions/user';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/container/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
-import { validateEmail, validatePassword } from 'src/lib/validates/string';
+import { validateEmail, validatePassword } from 'src/assets/validates/string';
 
 interface ParamInterface {
   value: string;

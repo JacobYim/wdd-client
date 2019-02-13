@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { color } from 'src/theme';
+import { color, font } from 'src/theme';
 
 export const views = StyleSheet.create({
   container: {
@@ -10,5 +10,13 @@ export const views = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+});
+
+export const fonts = StyleSheet.create({
+  walkTime: {
+    color: color.blue,
+    fontSize: 68,
+    fontFamily: font.family.NanumSquareExtraBold,
   },
 });

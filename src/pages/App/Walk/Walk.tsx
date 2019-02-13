@@ -3,7 +3,7 @@ import { SafeAreaView, View, Text } from 'react-native';
 import { withNavigation, NavigationScreenProp } from 'react-navigation';
 
 import Trailor from './Trailor';
-import { views } from './Walk.styles';
+import { views, fonts } from './Walk.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -44,7 +44,7 @@ class Walk extends Component<Props, State> {
       <SafeAreaView style={views.container}>
         {shouldMountDashboard ? (
           <View style={views.dashboard} onLayout={this.handleDashboardMount}>
-            <Text>{formatTime(walkTime)}</Text>
+            <Text style={fonts.walkTime}>{formatTime(walkTime)}</Text>
           </View>
         ) : (
           <Trailor onFinish={this.handleTrailorEnd} />

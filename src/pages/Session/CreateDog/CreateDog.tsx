@@ -17,7 +17,7 @@ import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 import ImagePicker from 'react-native-image-picker';
 import produce from 'immer';
 import { uploadImage } from 'src/services/aws/s3';
-import breeds from 'src/lib/consts/breeds.json';
+import breeds from 'src/assets/consts/breeds.json';
 
 interface Props extends LoadingProps {
   navigation: NavigationScreenProp<any>;
@@ -110,12 +110,12 @@ class CreateDog extends Component<Props, State> {
                 source={
                   thumbnail
                     ? { uri: thumbnail }
-                    : require('src/lib/icons/ic_thumbnail.png')
+                    : require('src/assets/icons/ic_thumbnail.png')
                 }
               />
               <Image
                 style={views.edit}
-                source={require('src/lib/icons/ic_edit.png')}
+                source={require('src/assets/icons/ic_edit.png')}
               />
             </TouchableOpacity>
           </View>

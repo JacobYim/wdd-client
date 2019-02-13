@@ -54,7 +54,7 @@ export default function withLoading<P extends LoadingProps>(
                 alignItems: 'center',
               }}>
               <Animated.Image
-                source={require('src/lib/icons/logo_img.png')}
+                source={require('src/assets/icons/logo_img.png')}
                 style={{
                   width: 100,
                   height: 100,
