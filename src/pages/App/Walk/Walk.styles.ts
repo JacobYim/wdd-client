@@ -17,6 +17,6 @@ export const fonts = StyleSheet.create({
   walkTime: {
     color: color.blue,
     fontSize: 68,
-    fontFamily: font.family.NanumSquareExtraBold,
+    fontFamily: font.family.NanumSquareRoundEB,
   },
 });

@@ -6,8 +6,8 @@ export default {
     title: 32,
   },
   family: {
-    NanumSquareRegular: 'NanumSquareRegular',
-    NanumSquareBold: 'NanumSquareBold',
-    NanumSquareExtraBold: 'NanumSquareExtraBold',
+    NanumSquareRoundR: 'NanumSquareRoundR',
+    NanumSquareRoundB: 'NanumSquareRoundB',
+    NanumSquareRoundEB: 'NanumSquareRoundEB',
   },
 };
