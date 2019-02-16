@@ -9,26 +9,12 @@ interface PinInterface extends LatLng {
 
 export interface WalkInterface {
   status: Status;
-  info: {
-    time: number; // seconds
-    distance: number; // km
-    steps: number;
-    kcal: number;
-  };
+  distance: number;
   pins: PinInterface[];
-}
-
-export interface UpdateTimeInterface {
-  time: number;
-}
-
-export interface UpdatePinInterface {
-  pin: PinInterface;
 }
 
 // *** CONSTS
 export const UPDATE_STATUS = 'walk/UPDATE_STATUS';
-export const UPDATE_TIME = 'walk/UPDATE_TIME';
 export const UPDATE_PIN = 'walk/UPDATE_PIN';
 
 export const SET_WALK_REQUEST = 'walk/SET_WALK_REQUEST';
@@ -40,11 +26,7 @@ export const updateStatus = (payload: Status) => ({
   type: UPDATE_STATUS,
   payload,
 });
-export const updateTime = (payload: UpdateTimeInterface) => ({
-  type: UPDATE_TIME,
-  payload,
-});
-export const updatePin = (payload: UpdatePinInterface) => ({
+export const updatePin = (payload: PinInterface) => ({
   type: UPDATE_PIN,
   payload,
 });

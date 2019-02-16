@@ -3,11 +3,11 @@ import { View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationScreenProp } from 'react-navigation';
 
-import * as userActions from 'src/store/actions/user';
+import * as actions from 'src/store/actions/user';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
-  signOut: typeof userActions.signOut;
+  signOut: typeof actions.signOut;
 }
 
 const Profile: React.FC<Props> = ({ navigation, signOut }) => {
@@ -31,6 +31,6 @@ const Profile: React.FC<Props> = ({ navigation, signOut }) => {
 export default connect(
   null,
   {
-    signOut: userActions.signOut,
+    signOut: actions.signOut,
   }
 )(Profile);

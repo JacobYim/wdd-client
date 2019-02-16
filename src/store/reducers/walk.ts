@@ -7,12 +7,7 @@ export interface WalkState extends WalkInterface {}
 
 const initialState: WalkState = {
   status: 'READY',
-  info: {
-    time: 0,
-    distance: 0.0,
-    steps: 0,
-    kcal: 0,
-  },
+  distance: 0.0,
   pins: [],
 };
 

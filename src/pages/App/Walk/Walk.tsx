@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import produce from 'immer';
 import {
   SafeAreaView,
   View,
@@ -6,8 +8,13 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import Pedometer, {
+  PedometerInterface,
+} from '@JWWon/react-native-universal-pedometer';
 import { NavigationScreenProp } from 'react-navigation';
 
+import { ReducerState } from 'src/store/reducers';
+import * as actions from 'src/store/actions/walk';
 import Trailor from './Trailor';
 import { views, fonts, icons } from './Walk.styles';
 
@@ -18,65 +25,102 @@ interface GpsInfoInterface {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  walk: ReducerState['walk'];
+  updateStatus: typeof actions.updateStatus;
 }
 
 interface State {
   shouldMountDashboard: boolean;
-  walkTime: number;
-  distance: number;
-  step: number;
-  kcal: number;
+  info: {
+    time: number; // seconds
+    steps: number;
+    kcal: number;
+  };
 }
 
-function formatTime(time: number) {
-  const timeFormat = (time: number) => `${time < 10 ? '0' : ''}${time}`;
+const timeFormat = (time: number) => `${time < 10 ? '0' : ''}${time}`;
+function convertSecToTime(time: number) {
   const minute = Math.floor(time / 60);
   const second = time % 60;
   return `${timeFormat(minute)}:${timeFormat(second)}`;
 }
 
 class Walk extends Component<Props, State> {
+  private startTime: Date & any;
   private counter: NodeJS.Timeout & any;
 
   state: State = {
     shouldMountDashboard: false,
-    walkTime: 0,
-    distance: 0,
-    step: 0,
-    kcal: 0,
+    info: {
+      time: 0,
+      steps: 0,
+      kcal: 0,
+    },
   };
 
-  startCountTime = () =>
-    setInterval(() => {
-      this.setState({ walkTime: this.state.walkTime + 1 });
+  componentWillUnmount() {
+    const { updateStatus } = this.props;
+    updateStatus('FINISH');
+    clearInterval(this.counter);
+    Pedometer.stopPedometerUpdates();
+  }
+
+  startCountTime = () => {
+    this.counter = setInterval(() => {
+      this.setState(state =>
+        produce(state, draft => {
+          draft.info.time = state.info.time + 1;
+        })
+      );
     }, 1000);
+  };
+
+  startPedometer = (date: Date) => {
+    Pedometer.startPedometerUpdatesFromDate(date.getTime(), listener => {
+      const { numberOfSteps } = listener as PedometerInterface;
+      if (numberOfSteps)
+        this.setState(state =>
+          produce(state, draft => {
+            draft.info.steps = numberOfSteps;
+          })
+        );
+    });
+  };
 
   navToMap = () => {
     const { navigation } = this.props;
     navigation.navigate('map');
   };
 
-  handleTrailorEnd = () => {
+  trailorWillUnmount = () => {
     this.setState({ shouldMountDashboard: true });
   };
 
-  handleDashboardMount = () => {
-    if (!this.counter) this.counter = this.startCountTime();
+  dashboardDidMount = async () => {
+    const { updateStatus } = this.props;
+    if (!this.startTime) {
+      this.startTime = new Date();
+      await updateStatus('WALKING');
+      this.startCountTime();
+      this.startPedometer(this.startTime);
+    }
   };
 
   render() {
-    const { shouldMountDashboard, walkTime, distance, step, kcal } = this.state;
+    const { distance } = this.props.walk;
+    const { shouldMountDashboard, info } = this.state;
+
     const gpsInfoList: GpsInfoInterface[] = [
       { value: distance, unit: 'Km' },
-      { value: step, unit: '걸음' },
-      { value: kcal, unit: 'Kcal' },
+      { value: info.steps, unit: '걸음' },
+      { value: info.kcal, unit: 'Kcal' },
     ];
 
     return (
       <SafeAreaView style={views.container}>
         {shouldMountDashboard ? (
           <>
-            <View style={views.topWrapper} onLayout={this.handleDashboardMount}>
+            <View style={views.topWrapper} onLayout={this.dashboardDidMount}>
               <View style={views.topButtonWrapper}>
                 <TouchableOpacity activeOpacity={0.7} onPress={this.navToMap}>
                   <Image
@@ -91,7 +135,7 @@ class Walk extends Component<Props, State> {
                   />
                 </TouchableOpacity>
               </View>
-              <Text style={fonts.walkTime}>{formatTime(walkTime)}</Text>
+              <Text style={fonts.walkTime}>{convertSecToTime(info.time)}</Text>
             </View>
             <View style={views.bottomWrapper}>
               <View style={views.whiteBackground} />
@@ -130,11 +174,18 @@ class Walk extends Component<Props, State> {
             </View>
           </>
         ) : (
-          <Trailor onFinish={this.handleTrailorEnd} />
+          <Trailor onFinish={this.trailorWillUnmount} />
         )}
       </SafeAreaView>
     );
   }
 }
 
-export default Walk;
+export default connect(
+  (state: ReducerState) => ({
+    walk: state.walk,
+  }),
+  {
+    updateStatus: actions.updateStatus,
+  }
+)(Walk);

@@ -18,22 +18,14 @@ function* updateStatus(action: ReturnType<typeof actions.updateStatus>) {
   }
 }
 
-function* updateTime(action: ReturnType<typeof actions.updateTime>) {
-  try {
-    yield put(actions.setWalkRequest());
-    const walk: ReturnType<typeof getWalk> = yield select(getWalk);
-    walk.info = { ...walk.info, ...action.payload };
-    yield put(actions.setWalkSuccess(walk));
-  } catch (e) {
-    yield put(actions.setWalkFailure(e));
-  }
-}
-
 function* updatePin(action: ReturnType<typeof actions.updatePin>) {
   try {
     yield put(actions.setWalkRequest());
     const walk: ReturnType<typeof getWalk> = yield select(getWalk);
-    // TODO: handle updating distance due to pinpoint
+    if (walk.status === 'WALKING') {
+      // TODO: handle updating distance due to pinpoint
+      walk.pins.push(action.payload);
+    }
     yield put(actions.setWalkSuccess(walk));
   } catch (e) {
     yield put(actions.setWalkFailure(e));
@@ -42,6 +34,5 @@ function* updatePin(action: ReturnType<typeof actions.updatePin>) {
 
 export default function* root() {
   yield takeEvery(actions.UPDATE_STATUS, updateStatus);
-  yield takeEvery(actions.UPDATE_TIME, updateTime);
   yield takeEvery(actions.UPDATE_PIN, updatePin);
 }

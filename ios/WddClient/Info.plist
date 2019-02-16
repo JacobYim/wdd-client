@@ -64,6 +64,8 @@
 	<string>사용자에 앨범에 사진을 저장합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>사진 선택을 위해 사용자의 앨범에 접근합니다.</string>
+  <key>NSMotionUsageDescription</key>
+  <string>정확한 걸음 수 측정을 위해 권한이 필요합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>fonts/NanumSquareRoundR.ttf</string>

@@ -145,6 +145,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@JWWon_react-native-universal-pedometer')
     implementation(project(':react-native-maps')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-maps'
