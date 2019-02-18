@@ -27,6 +27,7 @@ interface Props {
   navigation: NavigationScreenProp<any>;
   walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
+  updatePin: typeof actions.updatePin;
 }
 
 interface State {
@@ -35,6 +36,7 @@ interface State {
     time: number; // seconds
     steps: number;
     kcal: number;
+    distance: number;
   };
 }
 
@@ -55,6 +57,7 @@ class Walk extends Component<Props, State> {
       time: 0,
       steps: 0,
       kcal: 0,
+      distance: 0,
     },
   };
 
@@ -77,11 +80,13 @@ class Walk extends Component<Props, State> {
 
   startPedometer = (date: Date) => {
     Pedometer.startPedometerUpdatesFromDate(date.getTime(), listener => {
-      const { numberOfSteps } = listener as PedometerInterface;
+      const { numberOfSteps, distance } = listener as PedometerInterface;
       if (numberOfSteps)
         this.setState(state =>
           produce(state, draft => {
             draft.info.steps = numberOfSteps;
+            draft.info.distance = Math.round(distance / 10) / 1e2;
+            draft.info.kcal = Math.floor(numberOfSteps / 28.5);
           })
         );
     });
@@ -106,12 +111,21 @@ class Walk extends Component<Props, State> {
     }
   };
 
+  handlePressPee = () => {
+    const { updatePin } = this.props;
+    updatePin({ type: 'pee' });
+  };
+
+  handlePressPoo = () => {
+    const { updatePin } = this.props;
+    updatePin({ type: 'poo' });
+  };
+
   render() {
-    const { distance } = this.props.walk;
     const { shouldMountDashboard, info } = this.state;
 
     const gpsInfoList: GpsInfoInterface[] = [
-      { value: distance, unit: 'Km' },
+      { value: info.distance, unit: 'Km' },
       { value: info.steps, unit: '걸음' },
       { value: info.kcal, unit: 'Kcal' },
     ];
@@ -142,7 +156,8 @@ class Walk extends Component<Props, State> {
               <View style={views.bottomButtonWrapper}>
                 <TouchableOpacity
                   style={views.peePooButton}
-                  activeOpacity={0.7}>
+                  activeOpacity={0.7}
+                  onPress={this.handlePressPoo}>
                   <Image
                     source={require('src/assets/icons/ic_poo.png')}
                     style={icons.peePoo}
@@ -156,7 +171,8 @@ class Walk extends Component<Props, State> {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={views.peePooButton}
-                  activeOpacity={0.7}>
+                  activeOpacity={0.7}
+                  onPress={this.handlePressPee}>
                   <Image
                     source={require('src/assets/icons/ic_pee.png')}
                     style={icons.peePoo}
@@ -187,5 +203,6 @@ export default connect(
   }),
   {
     updateStatus: actions.updateStatus,
+    updatePin: actions.updatePin,
   }
 )(Walk);

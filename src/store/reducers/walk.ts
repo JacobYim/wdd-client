@@ -7,7 +7,6 @@ export interface WalkState extends WalkInterface {}
 
 const initialState: WalkState = {
   status: 'READY',
-  distance: 0.0,
   pins: [],
 };
 

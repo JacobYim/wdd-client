@@ -1,4 +1,6 @@
-import { select, put, takeEvery } from 'redux-saga/effects';
+import Geolocation from 'react-native-geolocation-service';
+import { GeolocationReturnType } from 'react-native';
+import { select, put, call, takeEvery } from 'redux-saga/effects';
 
 import { ReducerState } from 'src/store/reducers';
 import * as actions from 'src/store/actions/walk';
@@ -19,12 +21,22 @@ function* updateStatus(action: ReturnType<typeof actions.updateStatus>) {
 }
 
 function* updatePin(action: ReturnType<typeof actions.updatePin>) {
+  const pin = { ...action.payload } as actions.PinInterface;
+  const callback = ({ coords }: GeolocationReturnType) => {
+    pin.latitude = coords.latitude;
+    pin.longitude = coords.longitude;
+  };
+
   try {
     yield put(actions.setWalkRequest());
     const walk: ReturnType<typeof getWalk> = yield select(getWalk);
     if (walk.status === 'WALKING') {
-      // TODO: handle updating distance due to pinpoint
-      walk.pins.push(action.payload);
+      if (
+        typeof pin.latitude === undefined ||
+        typeof pin.longitude === undefined
+      )
+        yield call(Geolocation.getCurrentPosition, callback);
+      yield call(walk.pins.push, pin);
     }
     yield put(actions.setWalkSuccess(walk));
   } catch (e) {

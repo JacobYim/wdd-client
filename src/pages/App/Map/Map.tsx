@@ -1,5 +1,4 @@
 import React, { Component, createRef } from 'react';
-import produce from 'immer';
 import { SafeAreaView, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, {
