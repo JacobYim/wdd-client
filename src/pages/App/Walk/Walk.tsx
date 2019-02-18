@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Geolocation from 'react-native-geolocation-service';
 import produce from 'immer';
 import {
   SafeAreaView,
@@ -111,14 +112,12 @@ class Walk extends Component<Props, State> {
     }
   };
 
-  handlePressPee = () => {
+  handlePress = (type: actions.PinInterface['type']) => {
     const { updatePin } = this.props;
-    updatePin({ type: 'pee' });
-  };
-
-  handlePressPoo = () => {
-    const { updatePin } = this.props;
-    updatePin({ type: 'poo' });
+    Geolocation.getCurrentPosition(({ coords }) => {
+      const { latitude, longitude } = coords;
+      updatePin({ type, latitude, longitude });
+    });
   };
 
   render() {
@@ -157,7 +156,7 @@ class Walk extends Component<Props, State> {
                 <TouchableOpacity
                   style={views.peePooButton}
                   activeOpacity={0.7}
-                  onPress={this.handlePressPoo}>
+                  onPress={() => this.handlePress('poo')}>
                   <Image
                     source={require('src/assets/icons/ic_poo.png')}
                     style={icons.peePoo}
@@ -172,7 +171,7 @@ class Walk extends Component<Props, State> {
                 <TouchableOpacity
                   style={views.peePooButton}
                   activeOpacity={0.7}
-                  onPress={this.handlePressPee}>
+                  onPress={() => this.handlePress('pee')}>
                   <Image
                     source={require('src/assets/icons/ic_pee.png')}
                     style={icons.peePoo}

@@ -2,17 +2,9 @@ import { LatLng } from 'react-native-maps';
 
 // *** INTERFACES
 type Status = 'READY' | 'WALKING' | 'FINISH';
-type PinType = 'check' | 'pee' | 'poo';
 
-interface PinUpdateInterface {
-  type: PinType;
-  latitude?: LatLng['latitude'];
-  longitude?: LatLng['longitude'];
-}
-
-export interface PinInterface extends PinUpdateInterface {
-  latitude: LatLng['latitude'];
-  longitude: LatLng['longitude'];
+export interface PinInterface extends LatLng {
+  type: 'check' | 'pee' | 'poo';
 }
 
 export interface WalkInterface {
@@ -33,7 +25,7 @@ export const updateStatus = (payload: Status) => ({
   type: UPDATE_STATUS,
   payload,
 });
-export const updatePin = (payload: PinUpdateInterface) => ({
+export const updatePin = (payload: PinInterface) => ({
   type: UPDATE_PIN,
   payload,
 });
