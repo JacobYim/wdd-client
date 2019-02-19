@@ -1,5 +1,12 @@
 import React, { Component, createRef } from 'react';
-import { SafeAreaView, Dimensions } from 'react-native';
+import produce from 'immer';
+import {
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  GestureResponderEvent,
+} from 'react-native';
 import { connect } from 'react-redux';
 import MapView, {
   PROVIDER_GOOGLE,
@@ -8,16 +15,15 @@ import MapView, {
 } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { views } from './Map.styles';
-import ToggleMode, { MapMode } from './ToggleMode';
+import { views, icons } from './Map.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
 }
 
 interface State {
-  mapMode: MapMode;
   userLocation: LatLng;
+  trackUser: boolean;
 }
 
 const { width, height } = Dimensions.get('window');
@@ -30,56 +36,77 @@ class Map extends Component<Props, State> {
     latitude: 37.4734372,
     longitude: 127.0405071,
   };
+  private initDelta = {
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01 * ASPECT_RATIO,
+  };
 
   state: State = {
-    mapMode: 'map',
     userLocation: this.initLocation,
+    trackUser: true,
   };
 
-  trackLocation = (center?: LatLng) => {
+  moveCameraToUser = (center: LatLng, activate: boolean) => {
     const map = this.map.current;
-    if (map)
-      map.animateCamera(
-        { center: center || this.state.userLocation },
-        { duration: 160 }
-      );
+    if (map && activate)
+      map.animateToRegion({ ...center, ...this.initDelta }, 240);
   };
 
-  handleModeChange = async (mapMode: MapMode) => {
-    if (mapMode === 'map') this.trackLocation();
-    this.setState({ mapMode });
+  handleDragMapStart = (e: GestureResponderEvent) => {
+    if (e.target === 13) {
+      // e.stopPropagation();
+      if (this.state.trackUser) this.setState({ trackUser: false });
+    }
+  };
+
+  handlePressTrackButton = () => {
+    this.setState(state =>
+      produce(state, draft => {
+        draft.trackUser = !state.trackUser;
+        this.moveCameraToUser(state.userLocation, draft.trackUser);
+      })
+    );
   };
 
   handleLocationChange = (event: EventUserLocation) => {
-    const { latitude, longitude, speed } = event.nativeEvent.coordinate;
-    const userLocation = { latitude, longitude };
-
-    if (this.state.mapMode === 'map') this.trackLocation(userLocation);
-    this.setState({ userLocation });
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    this.setState(state =>
+      produce(state, draft => {
+        draft.userLocation = { latitude, longitude };
+        this.moveCameraToUser(draft.userLocation, state.trackUser);
+      })
+    );
   };
 
   render() {
-    const { mapMode } = this.state;
-    const isShopMode = mapMode === 'shop';
+    const { trackUser } = this.state;
 
     return (
-      <SafeAreaView style={views.container}>
+      <ScrollView
+        contentContainerStyle={views.container}
+        onTouchStart={this.handleDragMapStart}
+        scrollEnabled={false}>
         <MapView
           ref={this.map}
           provider={PROVIDER_GOOGLE}
           style={views.map}
           initialRegion={{
             ...this.initLocation,
-            // Delta
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01 * ASPECT_RATIO,
+            ...this.initDelta,
           }}
           showsUserLocation={true}
           onUserLocationChange={this.handleLocationChange}
-          scrollEnabled={isShopMode}
         />
-        <ToggleMode mode={mapMode} handlePress={this.handleModeChange} />
-      </SafeAreaView>
+        <TouchableOpacity
+          style={views.trackUserButton}
+          activeOpacity={1}
+          onPress={this.handlePressTrackButton}>
+          <Image
+            style={[{ opacity: trackUser ? 1 : 0.4 }, icons.trackUser]}
+            source={require('src/assets/icons/ic_location.png')}
+          />
+        </TouchableOpacity>
+      </ScrollView>
     );
   }
 }
