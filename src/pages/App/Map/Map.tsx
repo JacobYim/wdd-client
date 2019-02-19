@@ -7,7 +7,6 @@ import {
   Image,
   GestureResponderEvent,
 } from 'react-native';
-import { connect } from 'react-redux';
 import MapView, {
   PROVIDER_GOOGLE,
   LatLng,
@@ -68,8 +67,8 @@ class Map extends Component<Props, State> {
     );
   };
 
-  handleLocationChange = (event: EventUserLocation) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate;
+  handleLocationChange = (e: EventUserLocation) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
     this.setState(state =>
       produce(state, draft => {
         draft.userLocation = { latitude, longitude };
@@ -111,4 +110,4 @@ class Map extends Component<Props, State> {
   }
 }
 
-export default connect()(Map);
+export default Map;

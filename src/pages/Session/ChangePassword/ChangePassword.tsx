@@ -9,7 +9,7 @@ import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import RoundButton from 'src/components/module/RoundButton';
 // Other
-import { validatePassword } from 'src/assets/validates/string';
+import { validatePassword } from 'src/assets/functions/validate';
 
 interface ParamInterface {
   value: string;

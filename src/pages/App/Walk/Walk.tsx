@@ -12,12 +12,13 @@ import {
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
+import { LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { ReducerState } from 'src/store/reducers';
-import * as actions from 'src/store/actions/walk';
 import Trailor from './Trailor';
+import { distance } from 'src/assets/functions/calcutate';
 import { views, fonts, icons } from './Walk.styles';
+import * as actions from 'src/store/actions/walk';
 
 interface GpsInfoInterface {
   unit: string;
@@ -26,13 +27,13 @@ interface GpsInfoInterface {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
-  walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
   updatePin: typeof actions.updatePin;
 }
 
 interface State {
   shouldMountDashboard: boolean;
+  userLocation: LatLng;
   info: {
     time: number; // seconds
     steps: number;
@@ -49,11 +50,12 @@ function convertSecToTime(time: number) {
 }
 
 class Walk extends Component<Props, State> {
-  private startTime: Date & any;
+  private timestamp: Date & any;
   private counter: NodeJS.Timeout & any;
 
   state: State = {
     shouldMountDashboard: false,
+    userLocation: { latitude: 37.4734372, longitude: 127.0405071 },
     info: {
       time: 0,
       steps: 0,
@@ -69,7 +71,7 @@ class Walk extends Component<Props, State> {
     Pedometer.stopPedometerUpdates();
   }
 
-  startCountTime = () => {
+  startCounter = () => {
     this.counter = setInterval(() => {
       this.setState(state =>
         produce(state, draft => {
@@ -79,17 +81,34 @@ class Walk extends Component<Props, State> {
     }, 1000);
   };
 
-  startPedometer = (date: Date) => {
-    Pedometer.startPedometerUpdatesFromDate(date.getTime(), listener => {
-      const { numberOfSteps, distance } = listener as PedometerInterface;
-      if (numberOfSteps)
-        this.setState(state =>
-          produce(state, draft => {
-            draft.info.steps = numberOfSteps;
-            draft.info.distance = Math.round(distance / 10) / 1e2;
-            draft.info.kcal = Math.floor(numberOfSteps / 28.5);
-          })
-        );
+  watchPedometer = () => {
+    this.timestamp = new Date();
+    Pedometer.startPedometerUpdatesFromDate(
+      this.timestamp.getTime(),
+      listener => {
+        const { numberOfSteps, distance } = listener as PedometerInterface;
+        if (numberOfSteps)
+          this.setState(state =>
+            produce(state, draft => {
+              draft.info.steps = numberOfSteps;
+              draft.info.distance = Math.round(distance / 10) / 1e2;
+              draft.info.kcal = Math.floor(numberOfSteps / 28.5);
+            })
+          );
+      }
+    );
+  };
+
+  watchLocation = () => {
+    const { updatePin } = this.props;
+    Geolocation.watchPosition(({ coords }) => {
+      const { latitude, longitude, speed } = coords;
+      const location = { latitude, longitude };
+      if (distance(this.state.userLocation, location) > 0.05) {
+        // 0.05km 이상 떨어진 핀포인트만 체크
+        this.setState({ userLocation: location });
+        updatePin({ type: 'check', ...location });
+      }
     });
   };
 
@@ -103,16 +122,17 @@ class Walk extends Component<Props, State> {
   };
 
   dashboardDidMount = async () => {
-    const { updateStatus } = this.props;
-    if (!this.startTime) {
-      this.startTime = new Date();
+    if (!this.timestamp) {
+      const { updateStatus } = this.props;
       await updateStatus('WALKING');
-      this.startCountTime();
-      this.startPedometer(this.startTime);
+
+      this.startCounter();
+      this.watchPedometer();
+      this.watchLocation();
     }
   };
 
-  handlePress = (type: actions.PinInterface['type']) => {
+  handleIconPress = (type: actions.PinInterface['type']) => {
     const { updatePin } = this.props;
     Geolocation.getCurrentPosition(({ coords }) => {
       const { latitude, longitude } = coords;
@@ -122,7 +142,6 @@ class Walk extends Component<Props, State> {
 
   render() {
     const { shouldMountDashboard, info } = this.state;
-
     const gpsInfoList: GpsInfoInterface[] = [
       { value: info.distance, unit: 'Km' },
       { value: info.steps, unit: '걸음' },
@@ -156,7 +175,7 @@ class Walk extends Component<Props, State> {
                 <TouchableOpacity
                   style={views.peePooButton}
                   activeOpacity={0.7}
-                  onPress={() => this.handlePress('poo')}>
+                  onPress={() => this.handleIconPress('poo')}>
                   <Image
                     source={require('src/assets/icons/ic_poo.png')}
                     style={icons.peePoo}
@@ -171,7 +190,7 @@ class Walk extends Component<Props, State> {
                 <TouchableOpacity
                   style={views.peePooButton}
                   activeOpacity={0.7}
-                  onPress={() => this.handlePress('pee')}>
+                  onPress={() => this.handleIconPress('pee')}>
                   <Image
                     source={require('src/assets/icons/ic_pee.png')}
                     style={icons.peePoo}
@@ -197,9 +216,7 @@ class Walk extends Component<Props, State> {
 }
 
 export default connect(
-  (state: ReducerState) => ({
-    walk: state.walk,
-  }),
+  null,
   {
     updateStatus: actions.updateStatus,
     updatePin: actions.updatePin,
