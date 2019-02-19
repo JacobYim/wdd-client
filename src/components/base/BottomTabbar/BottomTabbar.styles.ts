@@ -31,10 +31,10 @@ export const views = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  notWalking: {
+  inActive: {
     backgroundColor: color.blue,
   },
-  walking: {
+  active: {
     backgroundColor: color.red,
   },
   tabIcon: {
