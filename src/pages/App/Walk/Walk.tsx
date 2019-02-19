@@ -16,12 +16,12 @@ import { LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
 import Trailor from './Trailor';
-import { distance } from 'src/assets/functions/calcutate';
+import { calcDistance } from 'src/assets/functions/calcutate';
 import { views, fonts, icons } from './Walk.styles';
 import * as actions from 'src/store/actions/walk';
 
 interface GpsInfoInterface {
-  unit: string;
+  unit: 'Km' | '걸음' | 'Kcal';
   value: number;
 }
 
@@ -33,12 +33,15 @@ interface Props {
 
 interface State {
   shouldMountDashboard: boolean;
-  userLocation: LatLng;
   info: {
     time: number; // seconds
     steps: number;
     kcal: number;
     distance: number;
+  };
+  current?: {
+    location: LatLng;
+    speed: number;
   };
 }
 
@@ -55,7 +58,6 @@ class Walk extends Component<Props, State> {
 
   state: State = {
     shouldMountDashboard: false,
-    userLocation: { latitude: 37.4734372, longitude: 127.0405071 },
     info: {
       time: 0,
       steps: 0,
@@ -86,12 +88,11 @@ class Walk extends Component<Props, State> {
     Pedometer.startPedometerUpdatesFromDate(
       this.timestamp.getTime(),
       listener => {
-        const { numberOfSteps, distance } = listener as PedometerInterface;
+        const { numberOfSteps } = listener as PedometerInterface;
         if (numberOfSteps)
           this.setState(state =>
             produce(state, draft => {
               draft.info.steps = numberOfSteps;
-              draft.info.distance = Math.round(distance / 10) / 1e2;
               draft.info.kcal = Math.floor(numberOfSteps / 28.5);
             })
           );
@@ -103,11 +104,33 @@ class Walk extends Component<Props, State> {
     const { updatePin } = this.props;
     Geolocation.watchPosition(({ coords }) => {
       const { latitude, longitude, speed } = coords;
-      const location = { latitude, longitude };
-      if (distance(this.state.userLocation, location) > 0.05) {
-        // 0.05km 이상 떨어진 핀포인트만 체크
-        this.setState({ userLocation: location });
-        updatePin({ type: 'check', ...location });
+      const { current } = this.state;
+      const newLocation = { latitude, longitude };
+
+      if (current) {
+        const distance = calcDistance(current.location, newLocation);
+        if (distance > 0.005) {
+          // 5m 이상 떨어진 핀포인트만 업데이트
+          updatePin({ type: 'check', ...newLocation });
+          this.setState(state =>
+            produce(state, draft => {
+              draft.current = {
+                speed: speed || 0,
+                location: newLocation,
+              };
+              draft.info.distance += distance;
+            })
+          );
+        }
+      } else {
+        // 첫 Callback
+        updatePin({ type: 'check', ...newLocation });
+        this.setState({
+          current: {
+            speed: speed || 0,
+            location: newLocation,
+          },
+        });
       }
     });
   };
@@ -200,7 +223,9 @@ class Walk extends Component<Props, State> {
               <View style={views.gpsInfoWrapper}>
                 {gpsInfoList.map(item => (
                   <View style={views.gpsSingleInfo} key={item.unit}>
-                    <Text style={fonts.gpsInfoValue}>{item.value}</Text>
+                    <Text style={fonts.gpsInfoValue}>
+                      {item.unit === 'Km' ? item.value.toFixed(2) : item.value}
+                    </Text>
                     <Text style={fonts.gpsInfoUnit}>{item.unit}</Text>
                   </View>
                 ))}

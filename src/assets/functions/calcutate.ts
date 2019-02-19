@@ -1,6 +1,6 @@
 import { LatLng } from 'react-native-maps';
 
-export function distance(pos_x: LatLng, pos_y: LatLng) {
+export function calcDistance(pos_x: LatLng, pos_y: LatLng) {
   const p = 0.017453292519943295; // Math.PI / 180
   const c = Math.cos;
   const a =
