@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  GestureResponderEvent,
 } from 'react-native';
 import Pedometer, {
   PedometerInterface,
@@ -47,15 +48,30 @@ interface State {
 }
 
 const timeFormat = (time: number) => `${time < 10 ? '0' : ''}${time}`;
+
 function convertSecToTime(time: number) {
   const minute = Math.floor(time / 60);
   const second = time % 60;
   return `${timeFormat(minute)}:${timeFormat(second)}`;
 }
 
+const MarkerButton: React.FC<{
+  type: actions.UpdateWalkInterface['type'];
+  icon: NodeRequire;
+  onPress: (type: actions.UpdateWalkInterface['type']) => void;
+}> = ({ type, icon, onPress }) => (
+  <TouchableOpacity
+    style={views.peePooButton}
+    activeOpacity={0.7}
+    onPress={() => onPress(type)}>
+    <Image source={icon} style={icons.peePoo} />
+  </TouchableOpacity>
+);
+
 class Walk extends Component<Props, State> {
   private timestamp: Date & any;
   private counter: NodeJS.Timeout & any;
+  private statusTimeout: NodeJS.Timeout & any;
 
   state: State = {
     shouldMountDashboard: false,
@@ -73,7 +89,6 @@ class Walk extends Component<Props, State> {
 
   componentDidUpdate() {
     const { status } = this.props.walk;
-
     if (status !== this.state.status.store) {
       switch (status) {
         case 'WALKING':
@@ -113,6 +128,16 @@ class Walk extends Component<Props, State> {
     }
   }
 
+  trailorWillUnmount = () => {
+    this.setState({ shouldMountDashboard: true });
+  };
+
+  dashboardDidMount = () => {
+    const { walk, updateStatus } = this.props;
+    if (!this.timestamp) this.timestamp = new Date();
+    if (walk.status === 'READY') updateStatus('WALKING');
+  };
+
   startCounter = () =>
     setInterval(() => {
       this.setState(state =>
@@ -142,29 +167,29 @@ class Walk extends Component<Props, State> {
     navigation.navigate('map');
   };
 
-  trailorWillUnmount = () => {
-    this.setState({ shouldMountDashboard: true });
+  handleStatusLongPress = (e: GestureResponderEvent) => {
+    const { updateStatus, navigation } = this.props;
+    updateStatus('FINISH');
+    this.statusTimeout = setTimeout(() => {
+      navigation.navigate('map');
+    }, 1600);
   };
 
-  dashboardDidMount = () => {
-    const { walk, updateStatus } = this.props;
-    if (!this.timestamp) this.timestamp = new Date();
-    if (walk.status === 'READY') updateStatus('WALKING');
-  };
-
-  handleStatusPress = () => {
+  handleStatusPressOut = () => {
     const { walk, updateStatus } = this.props;
     switch (walk.status) {
       case 'WALKING':
+      case 'FINISH':
         updateStatus('PAUSE');
         break;
       case 'PAUSE':
         updateStatus('WALKING');
         break;
     }
+    clearTimeout(this.statusTimeout);
   };
 
-  handleIconPress = (type: actions.UpdateWalkInterface['type']) => {
+  handleMarkerPress = (type: actions.UpdateWalkInterface['type']) => {
     const { updateWalk } = this.props;
     Geolocation.getCurrentPosition(({ coords }) => {
       const { latitude, longitude, speed } = coords;
@@ -211,33 +236,26 @@ class Walk extends Component<Props, State> {
             <View style={views.bottomWrapper}>
               <View style={views.whiteBackground} />
               <View style={views.bottomButtonWrapper}>
-                <TouchableOpacity
-                  style={views.peePooButton}
-                  activeOpacity={0.7}
-                  onPress={() => this.handleIconPress('poo')}>
-                  <Image
-                    source={require('src/assets/icons/ic_poo.png')}
-                    style={icons.peePoo}
-                  />
-                </TouchableOpacity>
+                <MarkerButton
+                  type="poo"
+                  icon={require('src/assets/icons/ic_poo.png')}
+                  onPress={this.handleMarkerPress}
+                />
                 <TouchableOpacity
                   style={[
                     views.statusButton,
                     { backgroundColor: status.color },
                   ]}
-                  onPress={this.handleStatusPress}
+                  onLongPress={this.handleStatusLongPress}
+                  onPressOut={this.handleStatusPressOut}
                   activeOpacity={0.7}>
                   <Image source={status.icon} style={icons.status} />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={views.peePooButton}
-                  activeOpacity={0.7}
-                  onPress={() => this.handleIconPress('pee')}>
-                  <Image
-                    source={require('src/assets/icons/ic_pee.png')}
-                    style={icons.peePoo}
-                  />
-                </TouchableOpacity>
+                <MarkerButton
+                  type="pee"
+                  icon={require('src/assets/icons/ic_pee.png')}
+                  onPress={this.handleMarkerPress}
+                />
               </View>
               <View style={views.gpsInfoWrapper}>
                 {gpsInfoList.map(item => (

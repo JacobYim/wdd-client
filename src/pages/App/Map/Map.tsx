@@ -45,6 +45,7 @@ const extLocation = ({
 
 class Map extends Component<Props, State> {
   private map = createRef<MapView>();
+  private watchLocation: number = -1;
   private initLocation: LatLng = {
     // 우리동네댕댕이 HQ
     latitude: 37.4734372,
@@ -65,7 +66,7 @@ class Map extends Component<Props, State> {
 
   componentDidMount() {
     const { updateWalk } = this.props;
-    Geolocation.watchPosition(
+    this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
         const { walk } = this.props;
         const { trackUser, current: previous } = this.state;
@@ -99,6 +100,10 @@ class Map extends Component<Props, State> {
         distanceFilter: 5 /* active on everty 0.05km */,
       }
     );
+  }
+
+  componentWillUnmount() {
+    Geolocation.clearWatch(this.watchLocation);
   }
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
