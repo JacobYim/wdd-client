@@ -11,6 +11,8 @@ export interface WalkState extends WalkInterface {
 const initialState: WalkState = {
   status: 'READY',
   pins: [],
+  distance: 0,
+  speed: 0,
 };
 
 export default handleActions<WalkState, any>(

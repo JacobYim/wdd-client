@@ -1,5 +1,7 @@
 import React, { Component, createRef } from 'react';
 import produce from 'immer';
+import Geolocation from 'react-native-geolocation-service';
+import { connect } from 'react-redux';
 import {
   ScrollView,
   TouchableOpacity,
@@ -7,26 +9,39 @@ import {
   Image,
   GestureResponderEvent,
 } from 'react-native';
-import MapView, {
-  PROVIDER_GOOGLE,
-  LatLng,
-  EventUserLocation,
-} from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
+import { calcDistance } from 'src/assets/functions/calcutate';
+import { ReducerState } from 'src/store/reducers';
+import * as actions from 'src/store/actions/walk';
 import { views, icons } from './Map.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  updateWalk: typeof actions.updateWalk;
+  walk: ReducerState['walk'];
 }
 
 interface State {
-  userLocation: LatLng;
   trackUser: boolean;
+  current: {
+    latitude: number;
+    longitude: number;
+    speed: number;
+  };
 }
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
+const extLocation = ({
+  latitude,
+  longitude,
+}: {
+  latitude: number;
+  longitude: number;
+  [x: string]: any;
+}): LatLng => ({ latitude, longitude });
 
 class Map extends Component<Props, State> {
   private map = createRef<MapView>();
@@ -36,14 +51,53 @@ class Map extends Component<Props, State> {
     longitude: 127.0405071,
   };
   private initDelta = {
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01 * ASPECT_RATIO,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005 * ASPECT_RATIO,
   };
 
   state: State = {
-    userLocation: this.initLocation,
     trackUser: true,
+    current: {
+      ...this.initLocation,
+      speed: 0,
+    },
   };
+
+  componentDidMount() {
+    const { updateWalk, walk } = this.props;
+
+    Geolocation.watchPosition(
+      ({ coords }) => {
+        const { trackUser, current: previous } = this.state;
+        const { latitude, longitude, speed } = coords;
+        const current = { latitude, longitude, speed: speed || 0 };
+        this.moveCameraToUser(extLocation(current), trackUser);
+
+        if (walk.status === 'WALKING') {
+          const pinInfo: actions.UpdateWalkInterface = {
+            ...current,
+            type: 'none',
+            addDistance: 0,
+          };
+          if (walk.pins.length > 0) {
+            const distance = calcDistance(
+              extLocation(previous),
+              extLocation(current)
+            );
+            pinInfo.addDistance = distance;
+          }
+          updateWalk(pinInfo);
+        }
+
+        this.setState({ current });
+      },
+      () => {},
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 5 /* active on everty 0.05km */,
+      }
+    );
+  }
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
     const map = this.map.current;
@@ -61,18 +115,9 @@ class Map extends Component<Props, State> {
   handlePressTrackButton = () => {
     this.setState(state =>
       produce(state, draft => {
+        const { latitude, longitude } = state.current;
         draft.trackUser = !state.trackUser;
-        this.moveCameraToUser(state.userLocation, draft.trackUser);
-      })
-    );
-  };
-
-  handleLocationChange = (e: EventUserLocation) => {
-    const { latitude, longitude } = e.nativeEvent.coordinate;
-    this.setState(state =>
-      produce(state, draft => {
-        draft.userLocation = { latitude, longitude };
-        this.moveCameraToUser(draft.userLocation, state.trackUser);
+        this.moveCameraToUser({ latitude, longitude }, draft.trackUser);
       })
     );
   };
@@ -94,7 +139,6 @@ class Map extends Component<Props, State> {
             ...this.initDelta,
           }}
           showsUserLocation={true}
-          onUserLocationChange={this.handleLocationChange}
         />
         <TouchableOpacity
           style={views.trackUserButton}
@@ -110,4 +154,11 @@ class Map extends Component<Props, State> {
   }
 }
 
-export default Map;
+export default connect(
+  (state: ReducerState) => ({
+    walk: state.walk,
+  }),
+  {
+    updateWalk: actions.updateWalk,
+  }
+)(Map);

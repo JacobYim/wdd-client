@@ -16,7 +16,7 @@ import { LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
 import Trailor from './Trailor';
-import { calcDistance } from 'src/assets/functions/calcutate';
+import { ReducerState } from 'src/store/reducers';
 import { views, fonts, icons } from './Walk.styles';
 import * as actions from 'src/store/actions/walk';
 
@@ -27,8 +27,9 @@ interface GpsInfoInterface {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
-  updatePin: typeof actions.updatePin;
+  updateWalk: typeof actions.updateWalk;
 }
 
 interface State {
@@ -37,11 +38,6 @@ interface State {
     time: number; // seconds
     steps: number;
     kcal: number;
-    distance: number;
-  };
-  current?: {
-    location: LatLng;
-    speed: number;
   };
 }
 
@@ -62,7 +58,6 @@ class Walk extends Component<Props, State> {
       time: 0,
       steps: 0,
       kcal: 0,
-      distance: 0,
     },
   };
 
@@ -100,41 +95,6 @@ class Walk extends Component<Props, State> {
     );
   };
 
-  watchLocation = () => {
-    const { updatePin } = this.props;
-    Geolocation.watchPosition(({ coords }) => {
-      const { latitude, longitude, speed } = coords;
-      const { current } = this.state;
-      const newLocation = { latitude, longitude };
-
-      if (current) {
-        const distance = calcDistance(current.location, newLocation);
-        if (distance > 0.005) {
-          // 5m 이상 떨어진 핀포인트만 업데이트
-          updatePin({ type: 'check', ...newLocation });
-          this.setState(state =>
-            produce(state, draft => {
-              draft.current = {
-                speed: speed || 0,
-                location: newLocation,
-              };
-              draft.info.distance += distance;
-            })
-          );
-        }
-      } else {
-        // 첫 Callback
-        updatePin({ type: 'check', ...newLocation });
-        this.setState({
-          current: {
-            speed: speed || 0,
-            location: newLocation,
-          },
-        });
-      }
-    });
-  };
-
   navToMap = () => {
     const { navigation } = this.props;
     navigation.navigate('map');
@@ -151,22 +111,28 @@ class Walk extends Component<Props, State> {
 
       this.startCounter();
       this.watchPedometer();
-      this.watchLocation();
     }
   };
 
-  handleIconPress = (type: actions.PinInterface['type']) => {
-    const { updatePin } = this.props;
+  handleIconPress = (type: actions.UpdateWalkInterface['type']) => {
+    const { updateWalk } = this.props;
     Geolocation.getCurrentPosition(({ coords }) => {
-      const { latitude, longitude } = coords;
-      updatePin({ type, latitude, longitude });
+      const { latitude, longitude, speed } = coords;
+      updateWalk({
+        type,
+        latitude,
+        longitude,
+        speed: speed || 0,
+        addDistance: 0,
+      });
     });
   };
 
   render() {
+    const { distance } = this.props.walk;
     const { shouldMountDashboard, info } = this.state;
     const gpsInfoList: GpsInfoInterface[] = [
-      { value: info.distance, unit: 'Km' },
+      { value: distance, unit: 'Km' },
       { value: info.steps, unit: '걸음' },
       { value: info.kcal, unit: 'Kcal' },
     ];
@@ -241,9 +207,11 @@ class Walk extends Component<Props, State> {
 }
 
 export default connect(
-  null,
+  (state: ReducerState) => ({
+    walk: state.walk,
+  }),
   {
     updateStatus: actions.updateStatus,
-    updatePin: actions.updatePin,
+    updateWalk: actions.updateWalk,
   }
 )(Walk);
