@@ -12,12 +12,12 @@ import {
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
-import { LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
 import Trailor from './Trailor';
 import { ReducerState } from 'src/store/reducers';
 import { views, fonts, icons } from './Walk.styles';
+import { color } from 'src/theme';
 import * as actions from 'src/store/actions/walk';
 
 interface GpsInfoInterface {
@@ -34,6 +34,11 @@ interface Props {
 
 interface State {
   shouldMountDashboard: boolean;
+  status: {
+    store: ReducerState['walk']['status'];
+    icon: NodeRequire;
+    color: string;
+  };
   info: {
     time: number; // seconds
     steps: number;
@@ -54,6 +59,11 @@ class Walk extends Component<Props, State> {
 
   state: State = {
     shouldMountDashboard: false,
+    status: {
+      store: 'READY',
+      icon: require('src/assets/icons/ic_pause.png'),
+      color: color.redLight,
+    },
     info: {
       time: 0,
       steps: 0,
@@ -61,25 +71,58 @@ class Walk extends Component<Props, State> {
     },
   };
 
-  componentWillUnmount() {
-    const { updateStatus } = this.props;
-    updateStatus('FINISH');
-    clearInterval(this.counter);
-    Pedometer.stopPedometerUpdates();
+  componentDidUpdate() {
+    const { status } = this.props.walk;
+
+    if (status !== this.state.status.store) {
+      switch (status) {
+        case 'WALKING':
+          this.counter = this.startCounter();
+          this.watchPedometer();
+          this.setState({
+            status: {
+              icon: require('src/assets/icons/ic_pause.png'),
+              color: color.redLight,
+              store: status,
+            },
+          });
+          return;
+        case 'PAUSE':
+          this.setState({
+            status: {
+              icon: require('src/assets/icons/ic_resume.png'),
+              color: color.blue,
+              store: status,
+            },
+          });
+          break;
+        case 'FINISH':
+          this.setState({
+            status: {
+              icon: require('src/assets/icons/ic_stop.png'),
+              color: color.redLight,
+              store: status,
+            },
+          });
+          break;
+        default:
+          return;
+      }
+      clearInterval(this.counter);
+      Pedometer.stopPedometerUpdates();
+    }
   }
 
-  startCounter = () => {
-    this.counter = setInterval(() => {
+  startCounter = () =>
+    setInterval(() => {
       this.setState(state =>
         produce(state, draft => {
           draft.info.time = state.info.time + 1;
         })
       );
     }, 1000);
-  };
 
-  watchPedometer = () => {
-    this.timestamp = new Date();
+  watchPedometer = () =>
     Pedometer.startPedometerUpdatesFromDate(
       this.timestamp.getTime(),
       listener => {
@@ -93,7 +136,6 @@ class Walk extends Component<Props, State> {
           );
       }
     );
-  };
 
   navToMap = () => {
     const { navigation } = this.props;
@@ -104,13 +146,21 @@ class Walk extends Component<Props, State> {
     this.setState({ shouldMountDashboard: true });
   };
 
-  dashboardDidMount = async () => {
-    if (!this.timestamp) {
-      const { updateStatus } = this.props;
-      await updateStatus('WALKING');
+  dashboardDidMount = () => {
+    const { walk, updateStatus } = this.props;
+    if (!this.timestamp) this.timestamp = new Date();
+    if (walk.status === 'READY') updateStatus('WALKING');
+  };
 
-      this.startCounter();
-      this.watchPedometer();
+  handleStatusPress = () => {
+    const { walk, updateStatus } = this.props;
+    switch (walk.status) {
+      case 'WALKING':
+        updateStatus('PAUSE');
+        break;
+      case 'PAUSE':
+        updateStatus('WALKING');
+        break;
     }
   };
 
@@ -130,7 +180,7 @@ class Walk extends Component<Props, State> {
 
   render() {
     const { distance } = this.props.walk;
-    const { shouldMountDashboard, info } = this.state;
+    const { shouldMountDashboard, info, status } = this.state;
     const gpsInfoList: GpsInfoInterface[] = [
       { value: distance, unit: 'Km' },
       { value: info.steps, unit: '걸음' },
@@ -170,11 +220,14 @@ class Walk extends Component<Props, State> {
                     style={icons.peePoo}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity style={views.walkButton} activeOpacity={0.7}>
-                  <Image
-                    source={require('src/assets/icons/ic_pause.png')}
-                    style={icons.walkStatus}
-                  />
+                <TouchableOpacity
+                  style={[
+                    views.statusButton,
+                    { backgroundColor: status.color },
+                  ]}
+                  onPress={this.handleStatusPress}
+                  activeOpacity={0.7}>
+                  <Image source={status.icon} style={icons.status} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={views.peePooButton}

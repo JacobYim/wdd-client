@@ -46,11 +46,10 @@ export const views = StyleSheet.create({
     borderRadius: whiteBackRadius,
     backgroundColor: color.white,
   },
-  walkButton: {
+  statusButton: {
     width: walkButton,
     height: walkButton,
     borderRadius: walkButton / 2,
-    backgroundColor: color.redLight,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -93,7 +92,7 @@ export const icons = StyleSheet.create({
   top: { width: 24, height: 24, resizeMode: 'contain' },
   topLeft: { alignSelf: 'flex-start' },
   topRight: { alignSelf: 'flex-end' },
-  walkStatus: {
+  status: {
     width: '43%',
     height: '43%',
     resizeMode: 'contain',

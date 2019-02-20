@@ -21,7 +21,10 @@ export default handleActions<WalkState, any>(
       produce(state, draft => {
         delete draft.error;
       }),
-    [actions.SET_WALK_SUCCESS]: (state, action) => action.payload,
+    [actions.SET_WALK_SUCCESS]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
     [actions.SET_WALK_FAILURE]: (state, action) =>
       produce(state, draft => {
         draft.error = action.payload;

@@ -1,7 +1,7 @@
 import { LatLng } from 'react-native-maps';
 
 // *** INTERFACES
-type Status = 'READY' | 'WALKING' | 'FINISH';
+type Status = 'READY' | 'WALKING' | 'PAUSE' | 'FINISH';
 type PinType = 'none' | 'pee' | 'poo';
 
 interface PinInterface extends LatLng {

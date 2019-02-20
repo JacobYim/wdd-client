@@ -64,14 +64,16 @@ class Map extends Component<Props, State> {
   };
 
   componentDidMount() {
-    const { updateWalk, walk } = this.props;
-
+    const { updateWalk } = this.props;
     Geolocation.watchPosition(
       ({ coords }) => {
+        const { walk } = this.props;
         const { trackUser, current: previous } = this.state;
-        const { latitude, longitude, speed } = coords;
-        const current = { latitude, longitude, speed: speed || 0 };
-        this.moveCameraToUser(extLocation(current), trackUser);
+        const current = {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          speed: coords.speed || 0,
+        };
 
         if (walk.status === 'WALKING') {
           const pinInfo: actions.UpdateWalkInterface = {
@@ -88,7 +90,7 @@ class Map extends Component<Props, State> {
           }
           updateWalk(pinInfo);
         }
-
+        this.moveCameraToUser(extLocation(current), trackUser);
         this.setState({ current });
       },
       () => {},
