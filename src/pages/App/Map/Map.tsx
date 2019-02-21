@@ -98,7 +98,7 @@ class Map extends Component<Props, State> {
               extLocation(previous),
               extLocation(current)
             );
-            if (pinInfo.addDistance > 0.01) updateWalk(pinInfo);
+            if (pinInfo.addDistance > 0.009) updateWalk(pinInfo);
           } else {
             updateWalk(pinInfo);
           }
@@ -110,6 +110,8 @@ class Map extends Component<Props, State> {
       {
         enableHighAccuracy: true,
         distanceFilter: 2, // Listen moving on every 2m
+        interval: 5000,
+        fastestInterval: 2000,
       }
     );
   };
