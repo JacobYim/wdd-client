@@ -117,6 +117,12 @@ class Walk extends Component<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    this.props.updateStatus('READY');
+    clearInterval(this.counter);
+    Pedometer.stopPedometerUpdates();
+  }
+
   trailorWillUnmount = () => {
     this.setState({ shouldMountDashboard: true });
   };

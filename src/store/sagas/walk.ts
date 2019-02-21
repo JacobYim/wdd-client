@@ -1,4 +1,4 @@
-import { select, put, call, takeEvery } from 'redux-saga/effects';
+import { select, put, takeEvery } from 'redux-saga/effects';
 
 import { ReducerState } from 'src/store/reducers';
 import * as actions from 'src/store/actions/walk';

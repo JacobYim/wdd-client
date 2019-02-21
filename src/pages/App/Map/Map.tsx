@@ -65,11 +65,20 @@ class Map extends Component<Props, State> {
   };
 
   componentDidMount() {
+    this.watchPosition();
+  }
+
+  componentWillUnmount() {
+    Geolocation.clearWatch(this.watchLocation);
+  }
+
+  watchPosition = () => {
+    if (this.watchLocation) Geolocation.clearWatch(this.watchLocation);
     const { updateWalk } = this.props;
     this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
         const { walk } = this.props;
-        const { trackUser, current: previous } = this.state;
+        const { trackUser } = this.state;
         const current = {
           latitude: coords.latitude,
           longitude: coords.longitude,
@@ -77,19 +86,22 @@ class Map extends Component<Props, State> {
         };
 
         if (walk.status === 'WALKING') {
+          const pinLength = walk.pins.length;
           const pinInfo: actions.UpdateWalkInterface = {
             ...current,
             type: 'none',
             addDistance: 0,
           };
-          if (walk.pins.length > 0) {
-            const distance = calcDistance(
+          if (pinLength > 0) {
+            const previous = walk.pins[pinLength - 1];
+            pinInfo.addDistance = calcDistance(
               extLocation(previous),
               extLocation(current)
             );
-            pinInfo.addDistance = distance;
+            if (pinInfo.addDistance > 0.01) updateWalk(pinInfo);
+          } else {
+            updateWalk(pinInfo);
           }
-          updateWalk(pinInfo);
         }
         this.moveCameraToUser(extLocation(current), trackUser);
         this.setState({ current });
@@ -97,19 +109,15 @@ class Map extends Component<Props, State> {
       () => {},
       {
         enableHighAccuracy: true,
-        distanceFilter: 5 /* active on everty 0.05km */,
+        distanceFilter: 2, // Listen moving on every 2m
       }
     );
-  }
-
-  componentWillUnmount() {
-    Geolocation.clearWatch(this.watchLocation);
-  }
+  };
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
     const map = this.map.current;
     if (map && activate)
-      map.animateToRegion({ ...center, ...this.initDelta }, 240);
+      map.animateToRegion({ ...center, ...this.initDelta }, 120);
   };
 
   handleDragMapStart = (e: GestureResponderEvent) => {
