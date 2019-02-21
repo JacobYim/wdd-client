@@ -15,7 +15,9 @@ import Pedometer, {
 } from '@JWWon/react-native-universal-pedometer';
 import { NavigationScreenProp } from 'react-navigation';
 
+import TopNavbar from 'src/components/module/TopNavbar';
 import Trailor from './Trailor';
+import MarkerButton from './MarkerButton';
 import { ReducerState } from 'src/store/reducers';
 import { views, fonts, icons } from './Walk.styles';
 import { color } from 'src/theme';
@@ -54,19 +56,6 @@ function convertSecToTime(time: number) {
   const second = time % 60;
   return `${timeFormat(minute)}:${timeFormat(second)}`;
 }
-
-const MarkerButton: React.FC<{
-  type: actions.UpdateWalkInterface['type'];
-  icon: NodeRequire;
-  onPress: (type: actions.UpdateWalkInterface['type']) => void;
-}> = ({ type, icon, onPress }) => (
-  <TouchableOpacity
-    style={views.peePooButton}
-    activeOpacity={0.7}
-    onPress={() => onPress(type)}>
-    <Image source={icon} style={icons.peePoo} />
-  </TouchableOpacity>
-);
 
 class Walk extends Component<Props, State> {
   private timestamp: Date & any;
@@ -179,28 +168,25 @@ class Walk extends Component<Props, State> {
     const { walk, updateStatus } = this.props;
     switch (walk.status) {
       case 'WALKING':
-      case 'FINISH':
         updateStatus('PAUSE');
         break;
       case 'PAUSE':
         updateStatus('WALKING');
         break;
     }
-    clearTimeout(this.statusTimeout);
+    if (this.statusTimeout) clearTimeout(this.statusTimeout);
   };
 
   handleMarkerPress = (type: actions.UpdateWalkInterface['type']) => {
     const { updateWalk } = this.props;
-    Geolocation.getCurrentPosition(({ coords }) => {
-      const { latitude, longitude, speed } = coords;
-      updateWalk({
-        type,
-        latitude,
-        longitude,
-        speed: speed || 0,
-        addDistance: 0,
-      });
-    });
+    Geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const { latitude, longitude, speed } = coords;
+        updateWalk({ type, latitude, longitude, speed, addDistance: 0 });
+      },
+      () => {},
+      { enableHighAccuracy: true }
+    );
   };
 
   render() {
@@ -217,20 +203,26 @@ class Walk extends Component<Props, State> {
         {shouldMountDashboard ? (
           <>
             <View style={views.topWrapper} onLayout={this.dashboardDidMount}>
-              <View style={views.topButtonWrapper}>
-                <TouchableOpacity activeOpacity={0.7} onPress={this.navToMap}>
-                  <Image
-                    style={[icons.top, icons.topLeft]}
-                    source={require('src/assets/icons/ic_map.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7}>
-                  <Image
-                    style={[icons.top, icons.topRight]}
-                    source={require('src/assets/icons/ic_camera.png')}
-                  />
-                </TouchableOpacity>
-              </View>
+              <TopNavbar
+                left={{
+                  handlePress: this.navToMap,
+                  view: (
+                    <Image
+                      style={icons.top}
+                      source={require('src/assets/icons/ic_map.png')}
+                    />
+                  ),
+                }}
+                right={{
+                  handlePress: () => {},
+                  view: (
+                    <Image
+                      style={icons.top}
+                      source={require('src/assets/icons/ic_camera.png')}
+                    />
+                  ),
+                }}
+              />
               <Text style={fonts.walkTime}>{convertSecToTime(info.time)}</Text>
             </View>
             <View style={views.bottomWrapper}>

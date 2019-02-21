@@ -23,7 +23,7 @@ function* updateWalk(action: ReturnType<typeof actions.updateWalk>) {
     const { speed, addDistance, latitude, longitude, type } = action.payload;
     yield put(actions.setWalkRequest());
     const walk: ReturnType<typeof getWalk> = yield select(getWalk);
-    walk.speed = speed;
+    walk.speed = speed || 0;
     walk.distance = walk.distance + addDistance;
     walk.pins.push({ latitude, longitude, type });
     yield put(actions.setWalkSuccess(walk));

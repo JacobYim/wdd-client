@@ -8,6 +8,8 @@ import {
   View,
   Image,
 } from 'react-native';
+
+import TopNavbar from 'src/components/module/TopNavbar';
 import { views, texts } from './PageContainer.styles';
 
 interface Props {
@@ -38,20 +40,6 @@ interface Props {
   [x: string]: any;
 }
 
-const NavbarLeft: React.FC<Props['left']> = ({ navigation }) => {
-  function navBack() {
-    navigation.goBack(null);
-  }
-  return (
-    <TouchableOpacity onPress={navBack} activeOpacity={0.7}>
-      <Image
-        style={views.backIcon}
-        source={require('src/assets/icons/ic_back.png')}
-      />
-    </TouchableOpacity>
-  );
-};
-
 const PageContainer: React.FC<Props> = ({
   children,
   title,
@@ -61,69 +49,76 @@ const PageContainer: React.FC<Props> = ({
   center,
   bottom,
   ...scrollOptions
-}) => (
-  <SafeAreaView style={views.container}>
-    <View style={views.topWrapper}>
-      {center && (
-        <View style={views.center}>
-          <Text style={texts.center}>{center}</Text>
-        </View>
-      )}
-      {left && <NavbarLeft navigation={left.navigation} />}
-      {right && (
-        <TouchableOpacity
-          style={views.rightButton}
-          onPress={right.handlePress}
-          activeOpacity={0.7}>
-          <Text style={texts.top}>{right.text}</Text>
-        </TouchableOpacity>
-      )}
-    </View>
-    <ScrollView style={views.contentWrapper} {...scrollOptions}>
-      {title && (
-        <View style={views.titleWrapper}>
-          <Text style={texts.title}>{title}</Text>
-          {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
-        </View>
-      )}
-      {children}
-    </ScrollView>
-    {bottom &&
-      (bottom.boxType ? (
-        <TouchableOpacity
-          style={[
-            views.bottomBox,
-            views[bottom.disable ? 'boxDisable' : 'boxEnable'],
-          ]}
-          onPress={bottom.handlePress}
-          activeOpacity={0.7}
-          disabled={bottom.disable}>
-          <Text
-            style={[
-              texts.bottomBox,
-              texts[bottom.disable ? 'boxDisable' : 'boxEnable'],
-            ]}>
-            {bottom.text}
-          </Text>
-        </TouchableOpacity>
-      ) : (
-        <View style={views.bottomText}>
-          {bottom.diffText && bottom.handleDiffPress && (
-            <TouchableOpacity
-              onPress={bottom.handleDiffPress}
-              activeOpacity={0.7}>
-              <Text style={texts.bottomDiff}>{bottom.diffText} </Text>
-            </TouchableOpacity>
-          )}
+}) => {
+  const navLeft = left
+    ? {
+        handlePress: () => {
+          left.navigation.goBack(null);
+        },
+        view: (
+          <Image
+            style={views.backIcon}
+            source={require('src/assets/icons/ic_back.png')}
+          />
+        ),
+      }
+    : undefined;
+  const navRight = right
+    ? {
+        handlePress: right.handlePress,
+        view: <Text style={texts.top}>{right.text}</Text>,
+      }
+    : undefined;
+
+  return (
+    <SafeAreaView style={views.container}>
+      <TopNavbar left={navLeft} center={center || undefined} right={navRight} />
+      <ScrollView style={views.contentWrapper} {...scrollOptions}>
+        {title && (
+          <View style={views.titleWrapper}>
+            <Text style={texts.title}>{title}</Text>
+            {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
+          </View>
+        )}
+        {children}
+      </ScrollView>
+      {bottom &&
+        (bottom.boxType ? (
           <TouchableOpacity
+            style={[
+              views.bottomBox,
+              views[bottom.disable ? 'boxDisable' : 'boxEnable'],
+            ]}
             onPress={bottom.handlePress}
-            disabled={bottom.disable}
-            activeOpacity={0.7}>
-            <Text style={texts.bottomText}>{bottom.text}</Text>
+            activeOpacity={0.7}
+            disabled={bottom.disable}>
+            <Text
+              style={[
+                texts.bottomBox,
+                texts[bottom.disable ? 'boxDisable' : 'boxEnable'],
+              ]}>
+              {bottom.text}
+            </Text>
           </TouchableOpacity>
-        </View>
-      ))}
-  </SafeAreaView>
-);
+        ) : (
+          <View style={views.bottomText}>
+            {bottom.diffText && bottom.handleDiffPress && (
+              <TouchableOpacity
+                onPress={bottom.handleDiffPress}
+                activeOpacity={0.7}>
+                <Text style={texts.bottomDiff}>{bottom.diffText} </Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              onPress={bottom.handlePress}
+              disabled={bottom.disable}
+              activeOpacity={0.7}>
+              <Text style={texts.bottomText}>{bottom.text}</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+    </SafeAreaView>
+  );
+};
 
 export default PageContainer;

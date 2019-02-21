@@ -9,7 +9,7 @@ import {
 
 import { HandleChangeText } from './index';
 import { inputs as inputStyle, texts } from './TextInput.styles';
-import ModuleContainer from 'src/components/container/ModuleContainer';
+import LabelWrapper from 'src/components/container/LabelWrapper';
 
 interface InputsInterface {
   [key: string]: React.RefObject<Input>;
@@ -72,7 +72,7 @@ class TextInput extends PureComponent<Props, State> {
     } = this.props;
 
     return (
-      <ModuleContainer label={label}>
+      <LabelWrapper label={label}>
         <Input
           value={value}
           multiline={false}
@@ -96,7 +96,7 @@ class TextInput extends PureComponent<Props, State> {
             : {})}
         />
         {alert && <Text style={texts.alert}>{alert}</Text>}
-      </ModuleContainer>
+      </LabelWrapper>
     );
   }
 }

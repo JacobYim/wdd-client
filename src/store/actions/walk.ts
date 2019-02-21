@@ -10,7 +10,7 @@ interface PinInterface extends LatLng {
 
 export interface UpdateWalkInterface extends PinInterface {
   addDistance: number;
-  speed: number;
+  speed: number | null;
 }
 
 export interface WalkInterface {

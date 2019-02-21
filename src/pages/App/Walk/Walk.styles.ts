@@ -24,13 +24,6 @@ export const views = StyleSheet.create({
     alignItems: 'center',
     zIndex: 0,
   },
-  topButtonWrapper: {
-    width: '100%',
-    paddingHorizontal: 20,
-    marginTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   bottomButtonWrapper: {
     width: '100%',
     paddingHorizontal: bottomPadding,
@@ -52,20 +45,6 @@ export const views = StyleSheet.create({
     borderRadius: walkButton / 2,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  peePooButton: {
-    width: peePooButton,
-    height: peePooButton,
-    marginTop: width * 0.088 - peePooButton / 2,
-    borderRadius: peePooButton / 2,
-    backgroundColor: color.blue,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: color.black,
-    shadowOpacity: 0.16,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 1,
   },
   gpsInfoWrapper: {
     width: '100%',
@@ -90,16 +69,9 @@ export const views = StyleSheet.create({
 
 export const icons = StyleSheet.create({
   top: { width: 24, height: 24, resizeMode: 'contain' },
-  topLeft: { alignSelf: 'flex-start' },
-  topRight: { alignSelf: 'flex-end' },
   status: {
     width: '43%',
     height: '43%',
-    resizeMode: 'contain',
-  },
-  peePoo: {
-    width: '52%',
-    height: '52%',
     resizeMode: 'contain',
   },
 });
