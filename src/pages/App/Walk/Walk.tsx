@@ -17,10 +17,10 @@ import { NavigationScreenProp } from 'react-navigation';
 
 import TopNavbar from 'src/components/module/TopNavbar';
 import Trailor from './Trailor';
+import StatusButton from './StatusButton';
 import MarkerButton from './MarkerButton';
 import { ReducerState } from 'src/store/reducers';
 import { views, fonts, icons } from './Walk.styles';
-import { color } from 'src/theme';
 import * as actions from 'src/store/actions/walk';
 
 interface GpsInfoInterface {
@@ -36,12 +36,7 @@ interface Props {
 }
 
 interface State {
-  shouldMountDashboard: boolean;
-  status: {
-    store: ReducerState['walk']['status'];
-    icon: NodeRequire;
-    color: string;
-  };
+  status: ReducerState['walk']['status'];
   info: {
     time: number; // seconds
     steps: number;
@@ -63,12 +58,7 @@ class Walk extends Component<Props, State> {
   private statusTimeout: NodeJS.Timeout & any;
 
   state: State = {
-    shouldMountDashboard: false,
-    status: {
-      store: 'READY',
-      icon: require('src/assets/icons/ic_pause.png'),
-      color: color.redLight,
-    },
+    status: 'READY',
     info: {
       time: 0,
       steps: 0,
@@ -78,42 +68,15 @@ class Walk extends Component<Props, State> {
 
   componentDidUpdate() {
     const { status } = this.props.walk;
-    if (status !== this.state.status.store) {
-      switch (status) {
-        case 'WALKING':
-          this.counter = this.startCounter();
-          this.watchPedometer();
-          this.setState({
-            status: {
-              icon: require('src/assets/icons/ic_pause.png'),
-              color: color.redLight,
-              store: status,
-            },
-          });
-          return;
-        case 'PAUSE':
-          this.setState({
-            status: {
-              icon: require('src/assets/icons/ic_resume.png'),
-              color: color.blue,
-              store: status,
-            },
-          });
-          break;
-        case 'FINISH':
-          this.setState({
-            status: {
-              icon: require('src/assets/icons/ic_stop.png'),
-              color: color.redLight,
-              store: status,
-            },
-          });
-          break;
-        default:
-          return;
+    if (status !== this.state.status) {
+      this.setState({ status });
+      if (status === 'WALKING') {
+        this.counter = this.startCounter();
+        this.watchPedometer();
+      } else {
+        clearInterval(this.counter);
+        Pedometer.stopPedometerUpdates();
       }
-      clearInterval(this.counter);
-      Pedometer.stopPedometerUpdates();
     }
   }
 
@@ -124,13 +87,9 @@ class Walk extends Component<Props, State> {
   }
 
   trailorWillUnmount = () => {
-    this.setState({ shouldMountDashboard: true });
-  };
-
-  dashboardDidMount = () => {
-    const { walk, updateStatus } = this.props;
+    const { updateStatus } = this.props;
     if (!this.timestamp) this.timestamp = new Date();
-    if (walk.status === 'READY') updateStatus('WALKING');
+    updateStatus('WALKING');
   };
 
   startCounter = () =>
@@ -162,7 +121,7 @@ class Walk extends Component<Props, State> {
     navigation.navigate('map');
   };
 
-  handleStatusLongPress = (e: GestureResponderEvent) => {
+  handleStatusLongPress = () => {
     const { updateStatus, navigation } = this.props;
     updateStatus('FINISH');
     this.statusTimeout = setTimeout(() => {
@@ -173,6 +132,7 @@ class Walk extends Component<Props, State> {
   handleStatusPressOut = () => {
     const { walk, updateStatus } = this.props;
     switch (walk.status) {
+      case 'FINISH':
       case 'WALKING':
         updateStatus('PAUSE');
         break;
@@ -196,8 +156,8 @@ class Walk extends Component<Props, State> {
   };
 
   render() {
-    const { distance } = this.props.walk;
-    const { shouldMountDashboard, info, status } = this.state;
+    const { distance, status } = this.props.walk;
+    const { info } = this.state;
     const gpsInfoList: GpsInfoInterface[] = [
       { value: distance, unit: 'Km' },
       { value: info.steps, unit: '걸음' },
@@ -206,9 +166,11 @@ class Walk extends Component<Props, State> {
 
     return (
       <SafeAreaView style={views.container}>
-        {shouldMountDashboard ? (
+        {status === 'READY' ? (
+          <Trailor onFinish={this.trailorWillUnmount} />
+        ) : (
           <>
-            <View style={views.topWrapper} onLayout={this.dashboardDidMount}>
+            <View style={views.topWrapper}>
               <TopNavbar
                 left={{
                   handlePress: this.navToMap,
@@ -239,16 +201,11 @@ class Walk extends Component<Props, State> {
                   icon={require('src/assets/icons/ic_poo.png')}
                   onPress={this.handleMarkerPress}
                 />
-                <TouchableOpacity
-                  style={[
-                    views.statusButton,
-                    { backgroundColor: status.color },
-                  ]}
+                <StatusButton
+                  status={status}
                   onLongPress={this.handleStatusLongPress}
                   onPressOut={this.handleStatusPressOut}
-                  activeOpacity={0.7}>
-                  <Image source={status.icon} style={icons.status} />
-                </TouchableOpacity>
+                />
                 <MarkerButton
                   type="pee"
                   icon={require('src/assets/icons/ic_pee.png')}
@@ -267,8 +224,6 @@ class Walk extends Component<Props, State> {
               </View>
             </View>
           </>
-        ) : (
-          <Trailor onFinish={this.trailorWillUnmount} />
         )}
       </SafeAreaView>
     );

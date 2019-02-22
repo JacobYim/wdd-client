@@ -2,10 +2,9 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { color, font } from 'src/theme';
 
 const { width } = Dimensions.get('window');
-const walkButton = width * 0.293;
-const peePooButton = 50;
+export const statuBtn = width * 0.293;
 const whiteBackRadius =
-  (Math.pow(width / 2, 2) + Math.pow(walkButton / 2, 2)) / walkButton;
+  (Math.pow(width / 2, 2) + Math.pow(statuBtn / 2, 2)) / statuBtn;
 const bottomPadding = width * 0.128;
 
 export const views = StyleSheet.create({
@@ -32,19 +31,12 @@ export const views = StyleSheet.create({
   },
   whiteBackground: {
     position: 'absolute',
-    top: walkButton / 2 - 2 * whiteBackRadius,
+    top: statuBtn / 2 - 2 * whiteBackRadius,
     left: width / 2 - whiteBackRadius,
     width: whiteBackRadius * 2,
     height: whiteBackRadius * 2,
     borderRadius: whiteBackRadius,
     backgroundColor: color.white,
-  },
-  statusButton: {
-    width: walkButton,
-    height: walkButton,
-    borderRadius: walkButton / 2,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   gpsInfoWrapper: {
     width: '100%',
@@ -69,11 +61,6 @@ export const views = StyleSheet.create({
 
 export const icons = StyleSheet.create({
   top: { width: 24, height: 24, resizeMode: 'contain' },
-  status: {
-    width: '43%',
-    height: '43%',
-    resizeMode: 'contain',
-  },
 });
 
 export const fonts = StyleSheet.create({
