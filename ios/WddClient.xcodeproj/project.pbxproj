@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -23,6 +24,10 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1EE99741B2B0C9AE054A4818 /* libPods-WddClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C07010584D0D7943131F998 /* libPods-WddClient.a */; };
+		48D4B6BF720447EDB143A9E1 /* libBMDPedometer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DA5C39149F4684882C5674 /* libBMDPedometer.a */; };
+		5535B8892213EBB1003C3BC8 /* NanumSquareRoundB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */; };
+		5535B88A2213EBB1003C3BC8 /* NanumSquareRoundR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */; };
+		5535B88B2213EBB1003C3BC8 /* NanumSquareRoundEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */; };
 		7BE83AF8E24E4C75B31B6307 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34234F54CB48401884AD9265 /* libRNGestureHandler.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -256,6 +261,13 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
+		555903CE2216A28F00BDDDF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 844442D81CB01D4A00E10B29;
+			remoteInfo = BMDPedometer;
+		};
 		55D464ED2207433200EFF5DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -331,6 +343,7 @@
 		00E356EE1AD99517003FC87E /* WddClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WddClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* WddClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WddClientTests.m; sourceTree = "<group>"; };
+		06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BMDPedometer.xcodeproj; path = "../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer.xcodeproj"; sourceTree = "<group>"; };
 		131B140406B044E9BC52EDFC /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -342,10 +355,15 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WddClient/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WddClient/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		21DA5C39149F4684882C5674 /* libBMDPedometer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBMDPedometer.a; sourceTree = "<group>"; };
 		225B96E05F8C4D2CF2D5FD4E /* libPods-WddClientTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WddClientTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FCFD0EA1BDC434CBCDEC3D1 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundR.ttf; path = ../src/assets/fonts/NanumSquareRoundR.ttf; sourceTree = "<group>"; };
 		34234F54CB48401884AD9265 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		50D1A7758822D3249F504E68 /* Pods-WddClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WddClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-WddClient/Pods-WddClient.release.xcconfig"; sourceTree = "<group>"; };
+		5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundB.ttf; sourceTree = "<group>"; };
+		5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundR.ttf; sourceTree = "<group>"; };
+		5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundEB.ttf; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7A4F252190FF492AAB86F41C /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
@@ -354,9 +372,11 @@
 		935B8A8294874C488BB51B12 /* RNAWSCognito.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNAWSCognito.xcodeproj; path = "../node_modules/amazon-cognito-identity-js/ios/RNAWSCognito.xcodeproj"; sourceTree = "<group>"; };
 		9D78A190941B4EE447858796 /* Pods-WddClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WddClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WddClient/Pods-WddClient.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		AE5E350CE91B45B8868713E7 /* NanumSquareRoundEB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundEB.ttf; path = ../src/assets/fonts/NanumSquareRoundEB.ttf; sourceTree = "<group>"; };
 		EA1E9D63749E47DBB053B909 /* libRNAWSCognito.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAWSCognito.a; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
+		F8B3C7E1F97E45B18E232F89 /* NanumSquareRoundB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundB.ttf; path = ../src/assets/fonts/NanumSquareRoundB.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +409,7 @@
 				F9CDAEA6061F4D419EA67270 /* libRNAWSCognito.a in Frameworks */,
 				F3140FCB2A8440F0B3F7D2D0 /* libRNImagePicker.a in Frameworks */,
 				1EE99741B2B0C9AE054A4818 /* libPods-WddClient.a in Frameworks */,
+				48D4B6BF720447EDB143A9E1 /* libBMDPedometer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +498,7 @@
 		13B07FAE1A68108700A75B9A /* WddClient */ = {
 			isa = PBXGroup;
 			children = (
+				5535B8852213EBB1003C3BC8 /* fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -531,13 +553,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		5535B8852213EBB1003C3BC8 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */,
+				5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */,
+				5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */,
+			);
+			name = fonts;
+			path = ../src/assets/fonts;
+			sourceTree = "<group>";
+		};
 		553E095F21FF4F3500006157 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
 				34234F54CB48401884AD9265 /* libRNGestureHandler.a */,
 				EA1E9D63749E47DBB053B909 /* libRNAWSCognito.a */,
 				131B140406B044E9BC52EDFC /* libRNImagePicker.a */,
-				22506527115D40379066E98D /* libAirMaps.a */,
+				21DA5C39149F4684882C5674 /* libBMDPedometer.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -562,6 +595,14 @@
 			isa = PBXGroup;
 			children = (
 				553E09DB21FF55B900006157 /* libRNImagePicker.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		555903CB2216A28F00BDDDF1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				555903CF2216A28F00BDDDF1 /* libBMDPedometer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -602,6 +643,7 @@
 				F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */,
 				935B8A8294874C488BB51B12 /* RNAWSCognito.xcodeproj */,
 				7A4F252190FF492AAB86F41C /* RNImagePicker.xcodeproj */,
+				06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -625,6 +667,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				553E095F21FF4F3500006157 /* Recovered References */,
 				41341D2EF819CB6848B0B41D /* Pods */,
+				D2278EAFE740445780BB8BA9 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -647,6 +690,16 @@
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D2278EAFE740445780BB8BA9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F8B3C7E1F97E45B18E232F89 /* NanumSquareRoundB.ttf */,
+				AE5E350CE91B45B8868713E7 /* NanumSquareRoundEB.ttf */,
+				2FCFD0EA1BDC434CBCDEC3D1 /* NanumSquareRoundR.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -720,6 +773,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 555903CB2216A28F00BDDDF1 /* Products */;
+					ProjectRef = 06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */;
+				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1007,6 +1064,13 @@
 			remoteRef = 553E09DA21FF55B900006157 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		555903CF2216A28F00BDDDF1 /* libBMDPedometer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBMDPedometer.a;
+			remoteRef = 555903CE2216A28F00BDDDF1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		55D464EE2207433200EFF5DD /* libjsi.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1086,6 +1150,9 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				5535B88A2213EBB1003C3BC8 /* NanumSquareRoundR.ttf in Resources */,
+				5535B8892213EBB1003C3BC8 /* NanumSquareRoundB.ttf in Resources */,
+				5535B88B2213EBB1003C3BC8 /* NanumSquareRoundEB.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1199,12 +1266,14 @@
 					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
+					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",
 				);
 				INFOPLIST_FILE = WddClientTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1227,12 +1296,14 @@
 					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
+					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",
 				);
 				INFOPLIST_FILE = WddClientTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1264,6 +1335,7 @@
 					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
+					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",
 				);
 				INFOPLIST_FILE = WddClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1297,6 +1369,7 @@
 					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
+					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",
 				);
 				INFOPLIST_FILE = WddClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

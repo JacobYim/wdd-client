@@ -58,7 +58,7 @@ class Agreement extends Component<Props, State> {
           </Text>
           <Image
             style={views.agreeIcon}
-            source={require('src/lib/icons/ic_agree.png')}
+            source={require('src/assets/icons/ic_agree.png')}
           />
         </TouchableOpacity>
       </PageContainer>

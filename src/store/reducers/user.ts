@@ -32,7 +32,10 @@ export default handleActions<UserState, any>(
       produce(state, draft => {
         delete draft.error;
       }),
-    [actions.SET_USER_SUCCESS]: (state, action) => action.payload,
+    [actions.SET_USER_SUCCESS]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
     [actions.SET_USER_FAILURE]: (state, action) => {
       if (action.payload && action.payload.data.name === 'JsonWebTokenError') {
         removeHeader();

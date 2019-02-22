@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import { HandleChangeSelector } from './index';
 import { views } from './Selector.styles';
-import ModuleContainer from 'src/components/container/ModuleContainer';
+import LabelWrapper from 'src/components/container/LabelWrapper';
 import ToggleBox from './ToggleBox';
 
 interface Data {
@@ -35,7 +35,7 @@ class Selector extends Component<Props, State> {
   render() {
     const { label, list } = this.props;
     return (
-      <ModuleContainer label={label}>
+      <LabelWrapper label={label}>
         <View style={views.boxWrapper}>
           {list.map(data => (
             <ToggleBox
@@ -47,7 +47,7 @@ class Selector extends Component<Props, State> {
             />
           ))}
         </View>
-      </ModuleContainer>
+      </LabelWrapper>
     );
   }
 }

@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { TabBarBottomProps, NavigationRoute } from 'react-navigation';
+import { connect } from 'react-redux';
 
+import { ReducerState } from 'src/store/reducers';
 import { views, texts } from './BottomTabbar.styles';
 
-interface Props extends TabBarBottomProps {}
+interface Props extends TabBarBottomProps {
+  walk: ReducerState['walk'];
+}
 
-const BottomNavbar: React.FC<Props> = ({ navigation }) => {
+const BottomNavbar: React.FC<Props> = ({ navigation, walk }) => {
   function navigate(route: NavigationRoute) {
     navigation.navigate(route.routeName);
   }
@@ -14,6 +18,7 @@ const BottomNavbar: React.FC<Props> = ({ navigation }) => {
   function renderTabs(route: NavigationRoute, index: number) {
     if (!route.params) return null;
     const navIndex = navigation.state.index;
+    const isActive = walk.status === 'WALKING';
 
     if (index === 1 || index === 2)
       return (
@@ -31,7 +36,7 @@ const BottomNavbar: React.FC<Props> = ({ navigation }) => {
     if ((index === 0 && navIndex !== 0) || (index === 3 && navIndex === 0))
       return (
         <TouchableOpacity
-          style={[views.centerTab, views.notWalking]}
+          style={[views.centerTab, isActive ? views.active : views.inActive]}
           key={route.routeName}
           onPress={() => navigate(route)}
           activeOpacity={0.94}>
@@ -47,4 +52,6 @@ const BottomNavbar: React.FC<Props> = ({ navigation }) => {
   ) : null;
 };
 
-export default BottomNavbar;
+export default connect((state: ReducerState) => ({
+  walk: state.walk,
+}))(BottomNavbar);

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { color } from 'src/theme';
 
-const trackUserSize = 60;
+const trackUserSize = 56;
 
 export const views = StyleSheet.create({
   container: {
@@ -15,8 +15,8 @@ export const views = StyleSheet.create({
   },
   trackUserButton: {
     position: 'absolute',
-    bottom: trackUserSize / 3,
-    right: trackUserSize / 3,
+    bottom: 16,
+    right: 16,
     width: trackUserSize,
     height: trackUserSize,
     justifyContent: 'center',
@@ -25,12 +25,15 @@ export const views = StyleSheet.create({
     backgroundColor: color.white,
     shadowColor: color.black,
     shadowOpacity: 0.18,
-    shadowRadius: 20,
+    shadowRadius: 6,
     elevation: 2,
   },
-  trackUserIcon: {
-    width: trackUserSize * 0.48,
-    height: trackUserSize * 0.48,
+});
+
+export const icons = StyleSheet.create({
+  trackUser: {
+    width: trackUserSize * 0.42,
+    height: trackUserSize * 0.42,
     resizeMode: 'contain',
   },
 });

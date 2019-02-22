@@ -101,8 +101,8 @@ android {
         applicationId "com.woodongdang.client.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "0.0.2"
+        versionCode 4
+        versionName "0.1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -145,6 +145,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@JWWon_react-native-universal-pedometer')
     implementation(project(':react-native-maps')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-maps'

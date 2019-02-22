@@ -3,7 +3,7 @@ import DatePicker from 'react-native-datepicker';
 
 import { Props } from './index';
 import { views, texts } from './DateInput.styles';
-import ModuleContainer from 'src/components/container/ModuleContainer';
+import LabelWrapper from 'src/components/container/LabelWrapper';
 
 const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
   const handleChangeWithName = (str: string, value: Date) => {
@@ -11,7 +11,7 @@ const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
   };
 
   return (
-    <ModuleContainer label={label}>
+    <LabelWrapper label={label}>
       <DatePicker
         style={views.datePicker}
         customStyles={{
@@ -27,7 +27,7 @@ const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
         showIcon={false}
         onDateChange={handleChangeWithName}
       />
-    </ModuleContainer>
+    </LabelWrapper>
   );
 };
 

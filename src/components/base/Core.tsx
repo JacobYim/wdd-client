@@ -30,7 +30,7 @@ class Core extends PureComponent<Props> {
       <View style={{ flex: 1, backgroundColor: '#FFF' }}>
         <Image
           style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-          source={require('src/lib/images/img_splash.jpg')}
+          source={require('src/assets/images/img_splash.jpg')}
         />
       </View>
     );

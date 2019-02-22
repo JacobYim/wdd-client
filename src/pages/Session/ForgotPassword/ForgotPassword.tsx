@@ -8,7 +8,7 @@ import { ReducerState } from 'src/store/reducers';
 import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import RoundButton from 'src/components/module/RoundButton';
-import { validateEmail } from 'src/lib/validates/string';
+import { validateEmail } from 'src/assets/functions/validate';
 
 interface ParamInterface {
   value: string;

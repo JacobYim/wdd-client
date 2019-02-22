@@ -9,7 +9,7 @@ import { ReducerState } from 'src/store/reducers';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/container/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
-import { validateEmail, validatePassword } from 'src/lib/validates/string';
+import { validateEmail, validatePassword } from 'src/assets/functions/validate';
 import { views } from './SignIn.styles';
 
 interface ParamInterface {
@@ -121,7 +121,7 @@ class SignIn extends Component<Props, State> {
         scrollEnabled={false}>
         <Image
           style={views.logo}
-          source={require('src/lib/icons/logo_text.png')}
+          source={require('src/assets/icons/logo_text.png')}
         />
         <TextInput
           label="이메일"

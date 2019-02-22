@@ -1,18 +1,18 @@
 import React, { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
-import { texts, views } from './ModuleContainer.styles';
+import { texts, views } from './LabelWrapper.styles';
 
 interface Props {
   label: string;
   children: ReactNode;
 }
 
-const ModuleContainer: React.FC<Props> = ({ label, children }) => (
+const LabelWrapper: React.FC<Props> = ({ label, children }) => (
   <View style={views.container}>
     <Text style={texts.label}>{label}</Text>
     {children}
   </View>
 );
 
-export default ModuleContainer;
+export default LabelWrapper;
