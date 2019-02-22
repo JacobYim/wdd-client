@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import produce from 'immer';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  GestureResponderEvent,
-} from 'react-native';
+import { SafeAreaView, View, Text, Image } from 'react-native';
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
@@ -55,7 +48,6 @@ function convertSecToTime(time: number) {
 class Walk extends Component<Props, State> {
   private timestamp: Date & any;
   private counter: NodeJS.Timeout & any;
-  private statusTimeout: NodeJS.Timeout & any;
 
   state: State = {
     status: 'READY',
@@ -81,9 +73,10 @@ class Walk extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.props.updateStatus('READY');
+    const { updateStatus } = this.props;
     clearInterval(this.counter);
     Pedometer.stopPedometerUpdates();
+    updateStatus('READY');
   }
 
   trailorWillUnmount = () => {
@@ -119,28 +112,6 @@ class Walk extends Component<Props, State> {
   navToMap = () => {
     const { navigation } = this.props;
     navigation.navigate('map');
-  };
-
-  handleStatusLongPress = () => {
-    const { updateStatus, navigation } = this.props;
-    updateStatus('FINISH');
-    this.statusTimeout = setTimeout(() => {
-      navigation.navigate('map');
-    }, 1600);
-  };
-
-  handleStatusPressOut = () => {
-    const { walk, updateStatus } = this.props;
-    switch (walk.status) {
-      case 'FINISH':
-      case 'WALKING':
-        updateStatus('PAUSE');
-        break;
-      case 'PAUSE':
-        updateStatus('WALKING');
-        break;
-    }
-    if (this.statusTimeout) clearTimeout(this.statusTimeout);
   };
 
   handleMarkerPress = (type: actions.UpdateWalkInterface['type']) => {
@@ -203,8 +174,7 @@ class Walk extends Component<Props, State> {
                 />
                 <StatusButton
                   status={status}
-                  onLongPress={this.handleStatusLongPress}
-                  onPressOut={this.handleStatusPressOut}
+                  updateStatus={this.props.updateStatus}
                 />
                 <MarkerButton
                   type="pee"
@@ -231,9 +201,7 @@ class Walk extends Component<Props, State> {
 }
 
 export default connect(
-  (state: ReducerState) => ({
-    walk: state.walk,
-  }),
+  ({ walk }: ReducerState) => ({ walk }),
   {
     updateStatus: actions.updateStatus,
     updateWalk: actions.updateWalk,
