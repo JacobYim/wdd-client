@@ -38,6 +38,9 @@ target 'WddClient' do
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 
+  # react-native-background-timer dependencies
+  pod 'react-native-background-timer', path: '../node_modules/react-native-background-timer'
+
   # target 'WddClientTests' do
   #   inherit! :search_paths
   #   # Pods for testing

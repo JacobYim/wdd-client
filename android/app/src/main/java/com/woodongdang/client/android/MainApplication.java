@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import com.ocetnik.timer.BackgroundTimerPackage;
 import com.emesonsantana.BMDPedometer.BMDPedometer;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new BackgroundTimerPackage(),
             new BMDPedometer(),
             new MapsPackage(),
             new RNFusedLocationPackage(),

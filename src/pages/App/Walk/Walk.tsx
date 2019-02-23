@@ -6,6 +6,7 @@ import { SafeAreaView, View, Text, Image } from 'react-native';
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
+import BackgroundTimer from 'react-native-background-timer';
 import { NavigationScreenProp } from 'react-navigation';
 
 import TopNavbar from 'src/components/module/TopNavbar';
@@ -47,7 +48,6 @@ function convertSecToTime(time: number) {
 
 class Walk extends Component<Props, State> {
   private timestamp: Date & any;
-  private counter: NodeJS.Timeout & any;
 
   state: State = {
     status: 'READY',
@@ -63,10 +63,10 @@ class Walk extends Component<Props, State> {
     if (status !== this.state.status) {
       this.setState({ status });
       if (status === 'WALKING') {
-        this.counter = this.startCounter();
+        this.startCounter();
         this.watchPedometer();
       } else {
-        clearInterval(this.counter);
+        BackgroundTimer.stopBackgroundTimer();
         Pedometer.stopPedometerUpdates();
       }
     }
@@ -74,7 +74,7 @@ class Walk extends Component<Props, State> {
 
   componentWillUnmount() {
     const { updateStatus } = this.props;
-    clearInterval(this.counter);
+    BackgroundTimer.stopBackgroundTimer();
     Pedometer.stopPedometerUpdates();
     updateStatus('READY');
   }
@@ -85,14 +85,15 @@ class Walk extends Component<Props, State> {
     updateStatus('WALKING');
   };
 
-  startCounter = () =>
-    setInterval(() => {
+  startCounter = () => {
+    BackgroundTimer.runBackgroundTimer(() => {
       this.setState(state =>
         produce(state, draft => {
           draft.info.time = state.info.time + 1;
         })
       );
     }, 1000);
+  };
 
   watchPedometer = () =>
     Pedometer.startPedometerUpdatesFromDate(
