@@ -48,7 +48,7 @@ class StatusButton extends PureComponent<Props> {
     const { updateStatus, navigation } = this.props;
     updateStatus('FINISH');
     this.timeout = setTimeout(() => {
-      navigation.navigate('map');
+      navigation.navigate('save');
     }, 1600);
   };
 

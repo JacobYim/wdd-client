@@ -12,7 +12,6 @@ interface State {
 
 class Trailor extends PureComponent<Props, State> {
   private images = [
-    require('src/assets/images/img_count_3.jpg'), // TODO: Fix bug
     require('src/assets/images/img_count_3.jpg'),
     require('src/assets/images/img_count_2.jpg'),
     require('src/assets/images/img_count_1.jpg'),

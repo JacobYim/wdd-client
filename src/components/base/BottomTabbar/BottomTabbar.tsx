@@ -11,45 +11,47 @@ interface Props extends TabBarBottomProps {
 }
 
 const BottomNavbar: React.FC<Props> = ({ navigation, walk }) => {
-  function navigate(route: NavigationRoute) {
+  function navToRoute(route: NavigationRoute) {
     navigation.navigate(route.routeName);
   }
 
   function renderTabs(route: NavigationRoute, index: number) {
     if (!route.params) return null;
-    const navIndex = navigation.state.index;
+    const isCurrentIndex = index === navigation.state.index;
     const isActive = walk.status === 'WALKING';
 
-    if (index === 1 || index === 2)
+    if (index > 0)
       return (
         <View style={views.tabWrapper} key={route.routeName}>
           <TouchableOpacity
             style={views.tabButton}
             activeOpacity={0.7}
-            onPress={() => navigate(route)}
-            disabled={index === navIndex}>
+            onPress={() => navToRoute(route)}
+            disabled={isCurrentIndex}>
             <Image style={views.tabIcon} source={route.params.icon} />
             <Text style={texts.tabLabel}>{route.params.label}</Text>
           </TouchableOpacity>
         </View>
       );
-    if ((index === 0 && navIndex !== 0) || (index === 3 && navIndex === 0))
-      return (
-        <TouchableOpacity
-          style={[views.centerTab, isActive ? views.active : views.inActive]}
-          key={route.routeName}
-          onPress={() => navigate(route)}
-          activeOpacity={0.94}>
-          <Image style={views.centerIcon} source={route.params.icon} />
-        </TouchableOpacity>
-      );
+
+    const { navigate, icon } = route.params[isCurrentIndex ? 'stack' : 'tab'];
+
+    return (
+      <TouchableOpacity
+        style={[views.centerTab, isActive ? views.active : views.inActive]}
+        key={route.routeName}
+        onPress={() => navigation.dispatch(navigate)}
+        activeOpacity={0.94}>
+        <Image style={views.centerIcon} source={icon} />
+      </TouchableOpacity>
+    );
   }
 
-  return navigation.state.index !== 3 ? (
+  return (
     <View style={views.container}>
       {navigation.state.routes.map(renderTabs)}
     </View>
-  ) : null;
+  );
 };
 
 export default connect((state: ReducerState) => ({

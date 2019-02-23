@@ -73,16 +73,16 @@ class Walk extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    const { updateStatus } = this.props;
     BackgroundTimer.stopBackgroundTimer();
     Pedometer.stopPedometerUpdates();
-    updateStatus('READY');
   }
 
   trailorWillUnmount = () => {
     const { updateStatus } = this.props;
-    if (!this.timestamp) this.timestamp = new Date();
-    updateStatus('WALKING');
+    if (!this.timestamp) {
+      this.timestamp = new Date();
+      updateStatus('WALKING');
+    }
   };
 
   startCounter = () => {
