@@ -10,23 +10,33 @@ const getWalk = (state: ReducerState) => state.walk;
 function* updateStatus(action: ReturnType<typeof actions.updateStatus>) {
   try {
     yield put(actions.setWalkRequest());
-    const walk: ReturnType<typeof getWalk> = yield select(getWalk);
-    walk.status = action.payload;
-    yield put(actions.setWalkSuccess(walk));
+    const { status: prevStatus }: ReturnType<typeof getWalk> = yield select(
+      getWalk
+    );
+    const status = action.payload;
+    const payload = { status } as ReducerState['walk'];
+    if (prevStatus === 'READY' && status === 'WALKING')
+      payload.createdAt = new Date();
+    yield put(actions.setWalkSuccess(payload));
   } catch (e) {
     yield put(actions.setWalkFailure(e));
   }
 }
 
-function* updateWalk(action: ReturnType<typeof actions.updateWalk>) {
+function* pushPin(action: ReturnType<typeof actions.pushPin>) {
   try {
     const { speed, addDistance, latitude, longitude, type } = action.payload;
     yield put(actions.setWalkRequest());
-    const walk: ReturnType<typeof getWalk> = yield select(getWalk);
-    walk.speed = speed || 0;
-    walk.distance = walk.distance + addDistance;
-    walk.pins.push({ latitude, longitude, type });
-    yield put(actions.setWalkSuccess(walk));
+    const { distance, pins }: ReturnType<typeof getWalk> = yield select(
+      getWalk
+    );
+    pins.push({ latitude, longitude, type });
+    const updateData = {
+      speed: speed || 0,
+      distance: distance + addDistance,
+      pins,
+    };
+    yield put(actions.setWalkSuccess(updateData));
   } catch (e) {
     yield put(actions.setWalkFailure(e));
   }
@@ -34,5 +44,5 @@ function* updateWalk(action: ReturnType<typeof actions.updateWalk>) {
 
 export default function* root() {
   yield takeEvery(actions.UPDATE_STATUS, updateStatus);
-  yield takeEvery(actions.UPDATE_WALK, updateWalk);
+  yield takeEvery(actions.PUSH_PIN, pushPin);
 }

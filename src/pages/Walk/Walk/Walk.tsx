@@ -17,7 +17,7 @@ import { ReducerState } from 'src/store/reducers';
 import { views, fonts, icons } from './Walk.styles';
 import * as actions from 'src/store/actions/walk';
 
-interface GpsInfoInterface {
+interface WalkInfoInterface {
   unit: 'Km' | '걸음' | 'Kcal';
   value: number;
 }
@@ -26,16 +26,13 @@ interface Props {
   navigation: NavigationScreenProp<any>;
   walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
-  updateWalk: typeof actions.updateWalk;
+  updateSeconds: typeof actions.updateSeconds;
+  updateSteps: typeof actions.updateSteps;
+  pushPin: typeof actions.pushPin;
 }
 
 interface State {
   status: ReducerState['walk']['status'];
-  info: {
-    time: number; // seconds
-    steps: number;
-    kcal: number;
-  };
 }
 
 const timeFormat = (time: number) => `${time < 10 ? '0' : ''}${time}`;
@@ -47,24 +44,24 @@ function convertSecToTime(time: number) {
 }
 
 class Walk extends Component<Props, State> {
-  private timestamp: Date & any;
-
   state: State = {
-    status: 'READY',
-    info: {
-      time: 0,
-      steps: 0,
-      kcal: 0,
-    },
+    status: this.props.walk.status,
   };
 
   componentDidUpdate() {
-    const { status } = this.props.walk;
+    const { updateSteps, updateSeconds } = this.props;
+    const { status, createdAt } = this.props.walk;
     if (status !== this.state.status) {
       this.setState({ status });
       if (status === 'WALKING') {
-        this.startCounter();
-        this.watchPedometer();
+        BackgroundTimer.runBackgroundTimer(updateSeconds, 1000);
+        Pedometer.startPedometerUpdatesFromDate(
+          createdAt.getTime(),
+          listener => {
+            const { numberOfSteps } = listener as PedometerInterface;
+            if (numberOfSteps) updateSteps(numberOfSteps);
+          }
+        );
       } else {
         BackgroundTimer.stopBackgroundTimer();
         Pedometer.stopPedometerUpdates();
@@ -72,43 +69,10 @@ class Walk extends Component<Props, State> {
     }
   }
 
-  componentWillUnmount() {
-    BackgroundTimer.stopBackgroundTimer();
-    Pedometer.stopPedometerUpdates();
-  }
-
   trailorWillUnmount = () => {
     const { updateStatus } = this.props;
-    if (!this.timestamp) {
-      this.timestamp = new Date();
-      updateStatus('WALKING');
-    }
+    updateStatus('WALKING');
   };
-
-  startCounter = () => {
-    BackgroundTimer.runBackgroundTimer(() => {
-      this.setState(state =>
-        produce(state, draft => {
-          draft.info.time = state.info.time + 1;
-        })
-      );
-    }, 1000);
-  };
-
-  watchPedometer = () =>
-    Pedometer.startPedometerUpdatesFromDate(
-      this.timestamp.getTime(),
-      listener => {
-        const { numberOfSteps } = listener as PedometerInterface;
-        if (numberOfSteps)
-          this.setState(state =>
-            produce(state, draft => {
-              draft.info.steps = numberOfSteps;
-              draft.info.kcal = Math.floor(numberOfSteps / 28.5);
-            })
-          );
-      }
-    );
 
   navToMap = () => {
     const { navigation } = this.props;
@@ -116,11 +80,11 @@ class Walk extends Component<Props, State> {
   };
 
   handleMarkerPress = (type: actions.UpdateWalkInterface['type']) => {
-    const { updateWalk } = this.props;
+    const { pushPin } = this.props;
     Geolocation.getCurrentPosition(
       ({ coords }) => {
         const { latitude, longitude, speed } = coords;
-        updateWalk({ type, latitude, longitude, speed, addDistance: 0 });
+        pushPin({ type, latitude, longitude, speed, addDistance: 0 });
       },
       () => {},
       { enableHighAccuracy: true }
@@ -128,12 +92,11 @@ class Walk extends Component<Props, State> {
   };
 
   render() {
-    const { distance, status } = this.props.walk;
-    const { info } = this.state;
-    const gpsInfoList: GpsInfoInterface[] = [
+    const { distance, status, seconds, steps } = this.props.walk;
+    const gpsInfoList: WalkInfoInterface[] = [
       { value: distance, unit: 'Km' },
-      { value: info.steps, unit: '걸음' },
-      { value: info.kcal, unit: 'Kcal' },
+      { value: steps, unit: '걸음' },
+      { value: Math.floor(steps / 28.5), unit: 'Kcal' },
     ];
 
     return (
@@ -163,7 +126,7 @@ class Walk extends Component<Props, State> {
                   ),
                 }}
               />
-              <Text style={fonts.walkTime}>{convertSecToTime(info.time)}</Text>
+              <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>
             </View>
             <View style={views.bottomWrapper}>
               <View style={views.whiteBackground} />
@@ -205,6 +168,8 @@ export default connect(
   ({ walk }: ReducerState) => ({ walk }),
   {
     updateStatus: actions.updateStatus,
-    updateWalk: actions.updateWalk,
+    updateSeconds: actions.updateSeconds,
+    updateSteps: actions.updateSteps,
+    pushPin: actions.pushPin,
   }
 )(Walk);

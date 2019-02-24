@@ -10,13 +10,24 @@ export interface WalkState extends WalkInterface {
 
 const initialState: WalkState = {
   status: 'READY',
-  pins: [],
+  createdAt: new Date(),
   distance: 0,
   speed: 0,
+  pins: [],
+  seconds: 0,
+  steps: 0,
 };
 
 export default handleActions<WalkState, any>(
   {
+    [actions.UPDATE_SECONDS]: (state, action) =>
+      produce(state, draft => {
+        draft.seconds += 1;
+      }),
+    [actions.UPDATE_STEPS]: (state, action) =>
+      produce(state, draft => {
+        draft.steps = action.payload;
+      }),
     [actions.SET_WALK_REQUEST]: (state, action) =>
       produce(state, draft => {
         delete draft.error;

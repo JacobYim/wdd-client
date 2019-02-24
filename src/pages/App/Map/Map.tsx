@@ -19,7 +19,7 @@ import { views, icons } from './Map.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
-  updateWalk: typeof actions.updateWalk;
+  pushPin: typeof actions.pushPin;
   walk: ReducerState['walk'];
 }
 
@@ -74,7 +74,7 @@ class Map extends Component<Props, State> {
 
   watchPosition = () => {
     if (this.watchLocation) Geolocation.clearWatch(this.watchLocation);
-    const { updateWalk } = this.props;
+    const { pushPin } = this.props;
     this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
         const { walk } = this.props;
@@ -98,9 +98,9 @@ class Map extends Component<Props, State> {
               extLocation(previous),
               extLocation(current)
             );
-            if (pinInfo.addDistance > 0.009) updateWalk(pinInfo);
+            if (pinInfo.addDistance > 0.009) pushPin(pinInfo);
           } else {
-            updateWalk(pinInfo);
+            pushPin(pinInfo);
           }
         }
         this.moveCameraToUser(extLocation(current), trackUser);
@@ -176,6 +176,6 @@ export default connect(
     walk: state.walk,
   }),
   {
-    updateWalk: actions.updateWalk,
+    pushPin: actions.pushPin,
   }
 )(Map);
