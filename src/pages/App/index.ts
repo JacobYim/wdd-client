@@ -1,28 +1,15 @@
 import {
   createBottomTabNavigator,
   createStackNavigator,
-  createSwitchNavigator,
   NavigationActions,
 } from 'react-navigation';
 import { Animated, Easing } from 'react-native';
 
 import MapScreen from './Map';
 import WddScreen from './Wdd';
-import WalkScreen from './Walk';
-import WalkSaveScreen from './SaveWalk';
 import ProfileScreen from './Profile';
+import WalkNavigator from 'src/pages/Walk';
 import BottomTabbar from 'src/components/base/BottomTabbar';
-
-const WalkNavigator = createSwitchNavigator(
-  {
-    dashboard: WalkScreen,
-    save: WalkSaveScreen,
-  },
-  {
-    initialRouteName: 'dashboard',
-    backBehavior: 'initialRoute',
-  }
-);
 
 const MapNavigator = createStackNavigator(
   {
