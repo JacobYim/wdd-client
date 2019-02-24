@@ -2,9 +2,9 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { color, font } from 'src/theme';
 
 const { width } = Dimensions.get('window');
-export const statuBtn = width * 0.293;
+export const statusBtn = width * 0.293;
 const whiteBackRadius =
-  (Math.pow(width / 2, 2) + Math.pow(statuBtn / 2, 2)) / statuBtn;
+  (Math.pow(width / 2, 2) + Math.pow(statusBtn / 2, 2)) / statusBtn;
 const bottomPadding = width * 0.128;
 
 export const views = StyleSheet.create({
@@ -31,7 +31,7 @@ export const views = StyleSheet.create({
   },
   whiteBackground: {
     position: 'absolute',
-    top: statuBtn / 2 - 2 * whiteBackRadius,
+    top: statusBtn / 2 - 2 * whiteBackRadius,
     left: width / 2 - whiteBackRadius,
     width: whiteBackRadius * 2,
     height: whiteBackRadius * 2,
