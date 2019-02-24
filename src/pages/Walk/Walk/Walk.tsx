@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
-import produce from 'immer';
 import { SafeAreaView, View, Text, Image } from 'react-native';
 import Pedometer, {
   PedometerInterface,

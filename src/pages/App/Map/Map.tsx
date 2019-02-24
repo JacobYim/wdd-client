@@ -25,6 +25,7 @@ interface Props {
 
 interface State {
   trackUser: boolean;
+  statusChanged: boolean;
   current: {
     latitude: number;
     longitude: number;
@@ -58,11 +59,17 @@ class Map extends Component<Props, State> {
 
   state: State = {
     trackUser: true,
+    statusChanged: true,
     current: {
       ...this.initLocation,
       speed: 0,
     },
   };
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.walk.status !== this.props.walk.status)
+      this.setState({ statusChanged: true });
+  }
 
   componentDidMount() {
     this.watchPosition();
@@ -73,12 +80,11 @@ class Map extends Component<Props, State> {
   }
 
   watchPosition = () => {
-    if (this.watchLocation) Geolocation.clearWatch(this.watchLocation);
     const { pushPin } = this.props;
     this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
         const { walk } = this.props;
-        const { trackUser } = this.state;
+        const { trackUser, statusChanged } = this.state;
         const current = {
           latitude: coords.latitude,
           longitude: coords.longitude,
@@ -92,15 +98,16 @@ class Map extends Component<Props, State> {
             type: 'none',
             addDistance: 0,
           };
-          if (pinLength > 0) {
+          if (statusChanged) {
+            pushPin(pinInfo);
+            this.setState({ statusChanged: false });
+          } else {
             const previous = walk.pins[pinLength - 1];
             pinInfo.addDistance = calcDistance(
               extLocation(previous),
               extLocation(current)
             );
             if (pinInfo.addDistance > 0.009) pushPin(pinInfo);
-          } else {
-            pushPin(pinInfo);
           }
         }
         this.moveCameraToUser(extLocation(current), trackUser);
