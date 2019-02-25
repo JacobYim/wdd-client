@@ -38,7 +38,7 @@ class SaveWalk extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.setState({
-      peePooPins: this.props.walk.pins.filter(pin => pin.type !== 'none'),
+      peePooPins: this.props.walk.pins.filter(pin => pin.type !== undefined),
     });
   }
 

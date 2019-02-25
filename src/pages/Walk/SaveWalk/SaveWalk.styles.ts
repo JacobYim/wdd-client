@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { color } from 'src/theme';
 
-const pinSize = 8;
+const pinSize = 10;
 
 export const views = StyleSheet.create({
   container: {
@@ -16,18 +16,18 @@ export const icons = StyleSheet.create({
     width: pinSize,
     height: pinSize,
     borderRadius: pinSize / 2,
-    elevation: 2,
+    elevation: 4,
     shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 6,
+    shadowRadius: 12,
     shadowColor: color.black,
     shadowOpacity: 0.1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   pinInside: {
-    width: pinSize - 2,
-    height: pinSize - 2,
-    borderRadius: (pinSize - 2) / 2,
+    width: pinSize - 3,
+    height: pinSize - 3,
+    borderRadius: (pinSize - 3) / 2,
     backgroundColor: color.blue,
   },
   end: {

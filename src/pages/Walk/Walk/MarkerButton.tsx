@@ -5,9 +5,8 @@ import { UpdateWalkInterface } from 'src/store/actions/walk';
 import { color } from 'src/theme';
 
 interface Props {
-  type: UpdateWalkInterface['type'];
   icon: NodeRequire;
-  onPress: (type: UpdateWalkInterface['type']) => void;
+  onPress: () => void;
 }
 
 const { width } = Dimensions.get('window');
@@ -35,11 +34,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const MarkerButton: React.FC<Props> = ({ type, icon, onPress }) => (
+const MarkerButton: React.FC<Props> = ({ icon, onPress }) => (
   <TouchableOpacity
     style={styles.wrapper}
     activeOpacity={0.7}
-    onPress={() => onPress(type)}>
+    onPress={onPress}>
     <Image source={icon} style={styles.icon} />
   </TouchableOpacity>
 );

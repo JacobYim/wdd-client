@@ -32,7 +32,7 @@ function* updateStatus(action: ReturnType<typeof actions.updateStatus>) {
 
 function* pushPin(action: ReturnType<typeof actions.pushPin>) {
   try {
-    const { speed, addDistance, latitude, longitude, type } = action.payload;
+    const { speed, addDistance, latitude, longitude } = action.payload;
     yield put(actions.setWalkRequest());
     const { distance, pins }: ReturnType<typeof getWalk> = yield select(
       getWalk
@@ -40,9 +40,21 @@ function* pushPin(action: ReturnType<typeof actions.pushPin>) {
     const updateData = {
       speed: speed || 0,
       distance: distance + addDistance,
-      pins: [...pins, { latitude, longitude, type }],
+      pins: [...pins, { latitude, longitude }],
     };
     yield put(actions.setWalkSuccess(updateData));
+  } catch (e) {
+    yield put(actions.setWalkFailure(e));
+  }
+}
+
+function* updateLatestPin(action: ReturnType<typeof actions.updateLatestPin>) {
+  try {
+    const type = action.payload;
+    yield put(actions.setWalkRequest());
+    const { pins }: ReturnType<typeof getWalk> = yield select(getWalk);
+    pins[pins.length - 1].type = type;
+    yield put(actions.setWalkSuccess({ pins }));
   } catch (e) {
     yield put(actions.setWalkFailure(e));
   }
@@ -51,4 +63,5 @@ function* pushPin(action: ReturnType<typeof actions.pushPin>) {
 export default function* root() {
   yield takeEvery(actions.UPDATE_STATUS, updateStatus);
   yield takeEvery(actions.PUSH_PIN, pushPin);
+  yield takeEvery(actions.UPDATE_LATEST_PIN, updateLatestPin);
 }

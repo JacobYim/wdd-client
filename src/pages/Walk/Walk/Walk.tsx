@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Geolocation from 'react-native-geolocation-service';
 import { SafeAreaView, View, Text, Image } from 'react-native';
 import Pedometer, {
   PedometerInterface,
@@ -27,7 +26,7 @@ interface Props {
   updateStatus: typeof actions.updateStatus;
   updateSeconds: typeof actions.updateSeconds;
   updateSteps: typeof actions.updateSteps;
-  pushPin: typeof actions.pushPin;
+  updateLatestPin: typeof actions.updateLatestPin;
 }
 
 interface State {
@@ -78,19 +77,8 @@ class Walk extends Component<Props, State> {
     navigation.navigate('map');
   };
 
-  handleMarkerPress = (type: actions.UpdateWalkInterface['type']) => {
-    const { pushPin } = this.props;
-    Geolocation.getCurrentPosition(
-      ({ coords }) => {
-        const { latitude, longitude, speed } = coords;
-        pushPin({ type, latitude, longitude, speed, addDistance: 0 });
-      },
-      () => {},
-      { enableHighAccuracy: true }
-    );
-  };
-
   render() {
+    const { updateLatestPin } = this.props;
     const { distance, status, seconds, steps } = this.props.walk;
     const gpsInfoList: WalkInfoInterface[] = [
       { value: distance, unit: 'Km' },
@@ -131,18 +119,16 @@ class Walk extends Component<Props, State> {
               <View style={views.whiteBackground} />
               <View style={views.bottomButtonWrapper}>
                 <MarkerButton
-                  type="poo"
                   icon={require('src/assets/icons/ic_poo.png')}
-                  onPress={this.handleMarkerPress}
+                  onPress={() => updateLatestPin('poo')}
                 />
                 <StatusButton
                   status={status}
                   updateStatus={this.props.updateStatus}
                 />
                 <MarkerButton
-                  type="pee"
                   icon={require('src/assets/icons/ic_pee.png')}
-                  onPress={this.handleMarkerPress}
+                  onPress={() => updateLatestPin('pee')}
                 />
               </View>
               <View style={views.gpsInfoWrapper}>
@@ -169,6 +155,6 @@ export default connect(
     updateStatus: actions.updateStatus,
     updateSeconds: actions.updateSeconds,
     updateSteps: actions.updateSteps,
-    pushPin: actions.pushPin,
+    updateLatestPin: actions.updateLatestPin,
   }
 )(Walk);

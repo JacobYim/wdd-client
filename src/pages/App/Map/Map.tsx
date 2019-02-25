@@ -95,7 +95,6 @@ class Map extends Component<Props, State> {
           const pinLength = walk.pins.length;
           const pinInfo: actions.UpdateWalkInterface = {
             ...current,
-            type: 'none',
             addDistance: 0,
           };
           if (statusChanged) {
