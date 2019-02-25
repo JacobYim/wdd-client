@@ -15,9 +15,16 @@ function* updateStatus(action: ReturnType<typeof actions.updateStatus>) {
     );
     const status = action.payload;
     const payload = { status } as ReducerState['walk'];
-    if (prevStatus === 'READY' && status === 'WALKING')
-      payload.createdAt = new Date();
-    yield put(actions.setWalkSuccess(payload));
+    switch (status) {
+      case 'READY':
+        yield put(actions.clearWalk());
+        break;
+      case 'WALKING':
+        if (prevStatus === 'READY') payload.createdAt = new Date();
+      default:
+        yield put(actions.setWalkSuccess(payload));
+        break;
+    }
   } catch (e) {
     yield put(actions.setWalkFailure(e));
   }
@@ -30,12 +37,12 @@ function* pushPin(action: ReturnType<typeof actions.pushPin>) {
     const { distance, pins }: ReturnType<typeof getWalk> = yield select(
       getWalk
     );
-    pins.push({ latitude, longitude, type });
     const updateData = {
       speed: speed || 0,
       distance: distance + addDistance,
-      pins,
+      pins: [...pins, { latitude, longitude, type }],
     };
+    console.log('pushPin', updateData);
     yield put(actions.setWalkSuccess(updateData));
   } catch (e) {
     yield put(actions.setWalkFailure(e));

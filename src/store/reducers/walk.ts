@@ -40,6 +40,7 @@ export default handleActions<WalkState, any>(
       produce(state, draft => {
         draft.error = action.payload;
       }),
+    [actions.CLEAR_WALK]: (state, action) => ({ ...initialState, pins: [] }),
   },
   initialState
 );

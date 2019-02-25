@@ -42,6 +42,8 @@ export const SET_WALK_REQUEST = 'walk/SET_WALK_REQUEST';
 export const SET_WALK_SUCCESS = 'walk/SET_WALK_SUCCESS';
 export const SET_WALK_FAILURE = 'walk/SET_WALK_FAILURE';
 
+export const CLEAR_WALK = 'walk/CLEAR_WALK';
+
 // *** FUNCTIONS
 export const updateStatus = (payload: Status) => ({
   type: UPDATE_STATUS,
@@ -66,3 +68,5 @@ export const setWalkFailure = (payload: Error) => ({
   type: SET_WALK_FAILURE,
   payload,
 });
+
+export const clearWalk = () => ({ type: CLEAR_WALK });
