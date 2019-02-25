@@ -127,7 +127,7 @@ class SignUp extends Component<Props, State> {
           handlePress: () => navigation.popToTop(),
         }}
         right={{
-          text: '건너뛰기',
+          view: '건너뛰기',
           handlePress: () => navigation.navigate('app'),
         }}>
         <TextInput

@@ -4,15 +4,17 @@ import { color } from 'src/theme';
 const pinSize = 10;
 
 export const views = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: color.white,
+  container: { flex: 1 },
+  absolute: StyleSheet.absoluteFillObject,
+  pin: {
+    width: 36,
+    height: 46.6,
+    alignItems: 'center',
   },
-  map: StyleSheet.absoluteFillObject,
 });
 
 export const icons = StyleSheet.create({
-  pin: {
+  marker: {
     width: pinSize,
     height: pinSize,
     borderRadius: pinSize / 2,
@@ -24,16 +26,24 @@ export const icons = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  pinInside: {
-    width: pinSize - 3,
-    height: pinSize - 3,
-    borderRadius: (pinSize - 3) / 2,
-    backgroundColor: color.blue,
-  },
   end: {
     backgroundColor: '#7168AB',
   },
   mid: {
     backgroundColor: color.white,
+  },
+  close: {
+    width: 16,
+    height: 16,
+  },
+  pin: {
+    width: '100%',
+    height: '100%',
+  },
+  pinType: {
+    marginTop: 7.8,
+    width: 19.2,
+    height: 19.2,
+    resizeMode: 'contain',
   },
 });

@@ -115,7 +115,7 @@ class SignIn extends Component<Props, State> {
           handleDiffPress: () => navigation.navigate('forgotPassword'),
         }}
         right={{
-          text: '건너뛰기',
+          view: '건너뛰기',
           handlePress: () => navigation.navigate('app'),
         }}
         scrollEnabled={false}>

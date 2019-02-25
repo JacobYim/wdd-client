@@ -18,12 +18,13 @@ interface Props {
   // title
   title?: string;
   subtitle?: string;
+  titleNarrow?: boolean;
   // top
   left?: {
     navigation: NavigationScreenProp<any>;
   };
   right?: {
-    text: string;
+    view: string | ReactNode;
     handlePress: () => void;
   };
   center?: string;
@@ -44,6 +45,7 @@ const PageContainer: React.FC<Props> = ({
   children,
   title,
   subtitle,
+  titleNarrow,
   left,
   right,
   center,
@@ -66,7 +68,12 @@ const PageContainer: React.FC<Props> = ({
   const navRight = right
     ? {
         handlePress: right.handlePress,
-        view: <Text style={texts.top}>{right.text}</Text>,
+        view:
+          typeof right.view === 'string' ? (
+            <Text style={texts.top}>{right.view}</Text>
+          ) : (
+            right.view
+          ),
       }
     : undefined;
 
@@ -75,7 +82,7 @@ const PageContainer: React.FC<Props> = ({
       <TopNavbar left={navLeft} center={center || undefined} right={navRight} />
       <ScrollView style={views.contentWrapper} {...scrollOptions}>
         {title && (
-          <View style={views.titleWrapper}>
+          <View style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
             <Text style={texts.title}>{title}</Text>
             {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
           </View>

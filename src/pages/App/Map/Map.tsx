@@ -106,7 +106,7 @@ class Map extends Component<Props, State> {
               extLocation(previous),
               extLocation(current)
             );
-            if (pinInfo.addDistance > 0.009) pushPin(pinInfo);
+            if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
           }
         }
         this.moveCameraToUser(extLocation(current), trackUser);

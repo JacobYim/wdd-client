@@ -27,6 +27,9 @@ export const views = StyleSheet.create({
   titleWrapper: {
     marginVertical: 40,
   },
+  titleNarrow: {
+    marginVertical: 4,
+  },
   backIcon: {
     width: 18,
     height: 16,

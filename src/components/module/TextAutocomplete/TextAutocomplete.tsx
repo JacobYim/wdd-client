@@ -69,7 +69,7 @@ class Search extends Component<Props, State> {
           visible={this.state.showModal}
           onRequestClose={this.toggleModal}>
           <PageContainer
-            right={{ text: '닫기', handlePress: this.toggleModal }}
+            right={{ view: '닫기', handlePress: this.toggleModal }}
             scrollEnabled={false}>
             <TextInput
               value={this.state.value}
