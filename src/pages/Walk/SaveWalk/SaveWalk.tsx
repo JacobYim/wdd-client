@@ -1,13 +1,13 @@
 import React, { PureComponent, createRef } from 'react';
-import MapView, { Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import { connect } from 'react-redux';
-import { Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text, SafeAreaView, View, Dimensions } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import TopNavbar from 'src/components/module/TopNavbar';
 import { ReducerState } from 'src/store/reducers';
 import * as actions from 'src/store/actions/walk';
-import { views } from './SaveWalk.styles';
+import { views, icons } from './SaveWalk.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -15,8 +15,32 @@ interface Props {
   updateStatus: typeof actions.updateStatus;
 }
 
-class SaveWalk extends PureComponent<Props> {
+interface State {
+  peePooPins: ReducerState['walk']['pins'];
+}
+
+const mapColorToStrokes = (pins: ReducerState['walk']['pins']) => {
+  const pivot = Math.floor((pins.length - 2) / 3);
+  const emptyColor = () => '#00000000';
+  const arr1 = Array.from({ length: pivot }, emptyColor);
+  const arr2 = Array.from({ length: pins.length - 2 * pivot - 4 }, emptyColor);
+  return ['#127EFF'].concat(arr1, ['#5975CF'], arr2, ['#A06CA0'], arr1, [
+    '#FF6060',
+  ]);
+};
+
+const anchor = { x: 0.5, y: 0.5 };
+
+class SaveWalk extends PureComponent<Props, State> {
   private map = createRef<MapView>();
+
+  state: State = { peePooPins: [] };
+
+  componentDidMount() {
+    this.setState({
+      peePooPins: this.props.walk.pins.filter(pin => pin.type !== 'none'),
+    });
+  }
 
   handleDismiss = () => {
     const { navigation, updateStatus } = this.props;
@@ -24,33 +48,62 @@ class SaveWalk extends PureComponent<Props> {
     navigation.popToTop();
   };
 
-  mapDidMount = () => {
+  googleMapDidMount = () => {
     const map = this.map.current;
-    const edgePadding = { top: 10, right: 10, bottom: 10, left: 10 };
+    const { width, height } = Dimensions.get('window');
     if (map)
       map.fitToCoordinates(this.props.walk.pins, {
-        edgePadding,
         animated: false,
+        edgePadding: {
+          top: height * 0.16,
+          right: width * 0.1,
+          bottom: height * 0.16,
+          left: width * 0.1,
+        },
       });
   };
 
   render() {
     const { walk } = this.props;
+    // const strokeColors = mapColorToStrokes(walk.pins);
     return (
       <SafeAreaView style={views.container}>
         <MapView
           ref={this.map}
-          onLayout={this.mapDidMount}
+          onLayout={this.googleMapDidMount}
           provider={PROVIDER_GOOGLE}
           style={views.map}
+          zoomEnabled={false}
           scrollEnabled={false}
           rotateEnabled={false}
-          pitchEnabled={false}>
+          pitchEnabled={false}
+          toolbarEnabled={false}>
           <Polyline
             coordinates={walk.pins}
+            lineCap="round"
+            lineJoin="round"
             strokeWidth={4}
-            strokeColor="#2962FF"
+            strokeColor="#FF6060"
+            // strokeColors={strokeColors}
           />
+          {/* Start Pinpoint */}
+          <Marker
+            coordinate={walk.pins[0]}
+            anchor={anchor}
+            image={require('src/assets/icons/ic_start_marker.png')}
+          />
+          {/* End Pinpoint */}
+          <Marker coordinate={walk.pins[walk.pins.length - 1]} anchor={anchor}>
+            <View style={[icons.pin, icons.end]} />
+          </Marker>
+          {/* Pee & Poo Pinpoint */}
+          {this.state.peePooPins.map((pin, i) => (
+            <Marker coordinate={pin} anchor={anchor} key={i}>
+              <View style={[icons.pin, icons.mid]}>
+                <View style={icons.pinInside} />
+              </View>
+            </Marker>
+          ))}
         </MapView>
         <TopNavbar
           right={{ handlePress: this.handleDismiss, view: <Text>닫기</Text> }}

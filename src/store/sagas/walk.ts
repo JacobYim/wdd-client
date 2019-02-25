@@ -42,7 +42,6 @@ function* pushPin(action: ReturnType<typeof actions.pushPin>) {
       distance: distance + addDistance,
       pins: [...pins, { latitude, longitude, type }],
     };
-    console.log('pushPin', updateData);
     yield put(actions.setWalkSuccess(updateData));
   } catch (e) {
     yield put(actions.setWalkFailure(e));
