@@ -64,7 +64,7 @@ class SignIn extends Component<Props, State> {
           delete draft.email.alert;
           delete draft.password.alert;
           switch (snapshot.status) {
-            case 400:
+            case 401:
               draft.password.alert = snapshot.data.message;
               break;
             case 404:

@@ -7,7 +7,6 @@ import * as actions from 'src/store/actions/user';
 // Components
 import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
-import RoundButton from 'src/components/module/RoundButton';
 // Other
 import { validatePassword } from 'src/assets/functions/validate';
 
@@ -76,6 +75,11 @@ class ChangePassword extends Component<Props, State> {
         title="비밀번호 변경"
         subtitle="새롭고 안전한 비밀번호를 재설정하세요."
         left={{ navigation }}
+        bottomBox={{
+          text: '비밀번호 변경',
+          handlePress: this.handleSubmit,
+          disable: !password.valid || !passwordCheck.valid,
+        }}
         scrollEnabled={false}>
         <TextInput
           label="새 비밀번호"
@@ -95,11 +99,6 @@ class ChangePassword extends Component<Props, State> {
           inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSubmit}
-        />
-        <RoundButton
-          label="비밀번호 변경"
-          active={password.valid && passwordCheck.valid}
-          handlePress={this.handleSubmit}
         />
       </PageContainer>
     );

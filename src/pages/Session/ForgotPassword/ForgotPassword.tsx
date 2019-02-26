@@ -7,7 +7,6 @@ import * as userActions from 'src/store/actions/user';
 import { ReducerState } from 'src/store/reducers';
 import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
-import RoundButton from 'src/components/module/RoundButton';
 import { validateEmail } from 'src/assets/functions/validate';
 
 interface ParamInterface {
@@ -91,6 +90,11 @@ class ForgotPassword extends Component<Props, State> {
         title="비밀번호를 잊으셨나요?"
         subtitle="가입 때 사용하신 이메일 주소를 입력해주세요."
         left={{ navigation }}
+        bottomBox={{
+          text: '인증코드 받기',
+          disable: !email.valid,
+          handlePress: this.handleSendEmail,
+        }}
         scrollEnabled={false}>
         <TextInput
           label="이메일 주소 입력"
@@ -100,11 +104,6 @@ class ForgotPassword extends Component<Props, State> {
           handleChange={this.handleChange}
           returnKeyType="send"
           onSubmitEditing={this.handleSendEmail}
-        />
-        <RoundButton
-          label="인증코드 보내기"
-          active={email.valid}
-          handlePress={this.handleSendEmail}
         />
       </PageContainer>
     );
