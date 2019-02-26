@@ -6,7 +6,7 @@ import MapView, {
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import { connect } from 'react-redux';
-import { View, Dimensions, Image } from 'react-native';
+import { View, Dimensions, Image, Alert } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -55,9 +55,13 @@ class SaveWalk extends PureComponent<Props, State> {
     navigation.popToTop();
   };
 
-  handlePressDownload = () => {};
+  handlePressDownload = () => {
+    Alert.alert('작업중입니다.');
+  };
 
-  handlePressFeed = () => {};
+  handlePressFeed = () => {
+    Alert.alert('작업중입니다.');
+  };
 
   googleMapDidMount = () => {
     const map = this.map.current;
@@ -98,14 +102,14 @@ class SaveWalk extends PureComponent<Props, State> {
             // strokeColors={strokeColors}
           />
           {/* Start & END Pinpoint */}
-          <Marker
-            coordinate={walk.pins[0]}
-            anchor={center}
-            image={require('src/assets/icons/ic_start_marker.png')}
-          />
-          <Marker coordinate={walk.pins[walk.pins.length - 1]} anchor={center}>
+          <Marker coordinate={walk.pins[0]} anchor={center}>
             <View style={[icons.marker, icons.end]} />
           </Marker>
+          <Marker
+            coordinate={walk.pins[walk.pins.length - 1]}
+            anchor={center}
+            image={require('src/assets/icons/ic_cur_location.png')}
+          />
           {/* Pee & Poo Pinpoint */}
           {this.state.peePooPins.map((pin, i) => (
             <Marker coordinate={pin} anchor={{ x: 0.5, y: 0.838 }} key={i}>
