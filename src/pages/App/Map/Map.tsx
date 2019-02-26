@@ -2,13 +2,7 @@ import React, { Component, createRef } from 'react';
 import produce from 'immer';
 import Geolocation from 'react-native-geolocation-service';
 import { connect } from 'react-redux';
-import {
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  GestureResponderEvent,
-} from 'react-native';
+import { View, TouchableOpacity, Dimensions, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -46,6 +40,7 @@ const extLocation = ({
 
 class Map extends Component<Props, State> {
   private map = createRef<MapView>();
+  private preventDefault: boolean = false;
   private watchLocation: number = -1;
   private initLocation: LatLng = {
     // 우리동네댕댕이 HQ
@@ -128,11 +123,8 @@ class Map extends Component<Props, State> {
       map.animateToRegion({ ...center, ...this.initDelta }, 120);
   };
 
-  handleDragMapStart = (e: GestureResponderEvent) => {
-    if (e.target === 13) {
-      // e.stopPropagation();
-      if (this.state.trackUser) this.setState({ trackUser: false });
-    }
+  handleDragMapStart = () => {
+    if (this.state.trackUser) this.setState({ trackUser: false });
   };
 
   handlePressTrackButton = () => {
@@ -149,14 +141,12 @@ class Map extends Component<Props, State> {
     const { trackUser } = this.state;
 
     return (
-      <ScrollView
-        contentContainerStyle={views.container}
-        onTouchStart={this.handleDragMapStart}
-        scrollEnabled={false}>
+      <View style={views.container}>
         <MapView
           ref={this.map}
           provider={PROVIDER_GOOGLE}
           style={views.map}
+          onTouchStart={this.handleDragMapStart}
           initialRegion={{
             ...this.initLocation,
             ...this.initDelta,
@@ -172,7 +162,7 @@ class Map extends Component<Props, State> {
             source={require('src/assets/icons/ic_location.png')}
           />
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     );
   }
 }
