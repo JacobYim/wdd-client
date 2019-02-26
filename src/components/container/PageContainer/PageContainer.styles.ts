@@ -3,13 +3,14 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { color, font } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
+const horizontalSize = width * 0.064;
 
 export const views = StyleSheet.create({
   container: { flex: 1 },
-  contentWrapper: { flex: 1, marginHorizontal: width * 0.064 },
+  contentWrapper: { flex: 1, marginHorizontal: horizontalSize },
   bottom: {
     width,
-    paddingHorizontal: width * 0.064,
+    paddingHorizontal: horizontalSize,
     marginBottom: height * 0.03,
   },
   bottomBox: {

@@ -11,6 +11,10 @@ export const views = StyleSheet.create({
     height: 46.6,
     alignItems: 'center',
   },
+  bottomWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export const icons = StyleSheet.create({

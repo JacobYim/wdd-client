@@ -6,10 +6,11 @@ import MapView, {
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import { connect } from 'react-redux';
-import { Text, View, Dimensions, Image } from 'react-native';
+import { View, Dimensions, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 
+import BottomButtons from './BottomButtons';
 import PageContainer from 'src/components/container/PageContainer';
 import { ReducerState } from 'src/store/reducers';
 import * as actions from 'src/store/actions/walk';
@@ -54,6 +55,10 @@ class SaveWalk extends PureComponent<Props, State> {
     navigation.popToTop();
   };
 
+  handlePressDownload = () => {};
+
+  handlePressFeed = () => {};
+
   googleMapDidMount = () => {
     const map = this.map.current;
     const { width, height } = Dimensions.get('window');
@@ -61,10 +66,10 @@ class SaveWalk extends PureComponent<Props, State> {
       map.fitToCoordinates(this.props.walk.pins, {
         animated: false,
         edgePadding: {
-          top: height * 0.2,
-          right: width * 0.1,
+          top: height * 0.3,
+          right: width * 0.12,
           bottom: height * 0.2,
-          left: width * 0.1,
+          left: width * 0.12,
         },
       });
   };
@@ -92,13 +97,12 @@ class SaveWalk extends PureComponent<Props, State> {
             strokeColor="#FF6060"
             // strokeColors={strokeColors}
           />
-          {/* Start Pinpoint */}
+          {/* Start & END Pinpoint */}
           <Marker
             coordinate={walk.pins[0]}
             anchor={center}
             image={require('src/assets/icons/ic_start_marker.png')}
           />
-          {/* End Pinpoint */}
           <Marker coordinate={walk.pins[walk.pins.length - 1]} anchor={center}>
             <View style={[icons.marker, icons.end]} />
           </Marker>
@@ -125,8 +129,8 @@ class SaveWalk extends PureComponent<Props, State> {
           ))}
         </MapView>
         <LinearGradient
-          colors={['#FFFFFF', '#FFFFFF00', '#FFFFFF']}
-          locations={[0.16, 0.5, 0.84]}
+          colors={['#FFFFFF', '#FFFFFF00', '#FFFFFF00', '#FFFFFF']}
+          locations={[0.16, 0.4, 0.68, 0.84]}
           style={views.container}>
           <PageContainer
             right={{
@@ -137,6 +141,15 @@ class SaveWalk extends PureComponent<Props, State> {
                   source={require('src/assets/icons/ic_close.png')}
                 />
               ),
+            }}
+            bottom={{
+              view: (
+                <BottomButtons
+                  handlePressDownload={this.handlePressDownload}
+                  handlePressFeed={this.handlePressFeed}
+                />
+              ),
+              styles: views.bottomWrapper,
             }}
             title={`오늘의 행복한 순간을\n기록해보세요!`}
             scrollEnabled={false}
