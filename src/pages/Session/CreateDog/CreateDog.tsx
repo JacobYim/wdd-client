@@ -91,12 +91,13 @@ class CreateDog extends Component<Props, State> {
     return (
       <>
         <PageContainer
-          center="댕댕이 프로필 설정"
           left={{ navigation }}
-          right={{ view: '취소', handlePress: () => navigation.popToTop() }}
-          bottom={{
-            text: '다음',
-            boxType: true,
+          right={{
+            view: '건너뛰기',
+            handlePress: () => navigation.navigate('app'),
+          }}
+          bottomBox={{
+            text: '시작하기',
             handlePress: this.handleSubmit,
             disable: !name || !breed || !gender,
           }}

@@ -52,10 +52,12 @@ class CreateMeta extends Component<Props, State> {
         title="환영합니다!"
         subtitle="고객님께 더 적절한 산책과 댕댕이를 위해 몇 가지 정보를 입력해주세요."
         left={{ navigation }}
-        right={{ view: '취소', handlePress: () => navigation.popToTop() }}
-        bottom={{
+        right={{
+          view: '건너뛰기',
+          handlePress: () => navigation.navigate('app'),
+        }}
+        bottomBox={{
           text: '다음',
-          boxType: true,
           handlePress: this.handleSubmit,
           disable: !this.state.gender || !this.state.birth,
         }}

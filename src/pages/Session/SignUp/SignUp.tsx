@@ -8,7 +8,6 @@ import { ReducerState } from 'src/store/reducers';
 import * as userActions from 'src/store/actions/user';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/container/PageContainer';
-import RoundButton from 'src/components/module/RoundButton';
 import { validateEmail, validatePassword } from 'src/assets/functions/validate';
 
 interface ParamInterface {
@@ -54,8 +53,8 @@ class SignUp extends Component<Props, State> {
   }
 
   componentDidUpdate(
-    props: Props,
-    state: State,
+    p: Props,
+    s: State,
     snapshot: Props['user']['error'] | null
   ) {
     if (snapshot)
@@ -119,16 +118,16 @@ class SignUp extends Component<Props, State> {
   render() {
     const { navigation } = this.props;
     const { name, email, password, passwordCheck } = this.state;
+    const isValidated =
+      name.valid && email.valid && password.valid && passwordCheck.valid;
     return (
       <PageContainer
         title="회원가입"
-        bottom={{
-          text: '로그인 하기',
-          handlePress: () => navigation.popToTop(),
-        }}
-        right={{
-          view: '건너뛰기',
-          handlePress: () => navigation.navigate('app'),
+        left={{ navigation }}
+        bottomBox={{
+          text: '회원가입',
+          handlePress: this.handleSignUp,
+          disable: !isValidated,
         }}>
         <TextInput
           label="이름"
@@ -169,13 +168,6 @@ class SignUp extends Component<Props, State> {
           inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSignUp}
-        />
-        <RoundButton
-          label="회원가입"
-          active={
-            name.valid && email.valid && password.valid && passwordCheck.valid
-          }
-          handlePress={this.handleSignUp}
         />
       </PageContainer>
     );

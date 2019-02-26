@@ -34,11 +34,9 @@ class Agreement extends Component<Props, State> {
     return (
       <PageContainer
         title="약관동의"
-        right={{ view: '취소', handlePress: () => navigation.popToTop() }}
-        bottom={{
+        bottomBox={{
           text: '확인',
           handlePress: () => navigation.navigate('signUpUser'),
-          boxType: true,
           disable: !agreeAll,
         }}
         scrollEnabled={false}>

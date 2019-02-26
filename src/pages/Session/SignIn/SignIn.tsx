@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import produce from 'immer';
-import { Image, TextInput as Input } from 'react-native';
+import {
+  Image,
+  TextInput as Input,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -10,7 +15,7 @@ import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import PageContainer from 'src/components/container/PageContainer';
 import RoundButton from 'src/components/module/RoundButton';
 import { validateEmail, validatePassword } from 'src/assets/functions/validate';
-import { views } from './SignIn.styles';
+import { views, texts } from './SignIn.styles';
 
 interface ParamInterface {
   value: string;
@@ -49,8 +54,8 @@ class SignIn extends Component<Props, State> {
   }
 
   componentDidUpdate(
-    props: Props,
-    state: State,
+    p: Props,
+    s: State,
     snapshot: Props['user']['error'] | null
   ) {
     if (snapshot)
@@ -108,21 +113,9 @@ class SignIn extends Component<Props, State> {
 
     return (
       <PageContainer
-        bottom={{
-          text: '회원가입',
-          handlePress: () => navigation.navigate('signUp'),
-          diffText: '비밀번호를 잊으셨나요?',
-          handleDiffPress: () => navigation.navigate('forgotPassword'),
-        }}
-        right={{
-          view: '건너뛰기',
-          handlePress: () => navigation.navigate('app'),
-        }}
+        left={{ navigation }}
+        title="이메일로 로그인"
         scrollEnabled={false}>
-        <Image
-          style={views.logo}
-          source={require('src/assets/icons/logo_text.png')}
-        />
         <TextInput
           label="이메일"
           name="email"
@@ -149,6 +142,11 @@ class SignIn extends Component<Props, State> {
           active={email.valid && password.valid}
           handlePress={this.handleSignIn}
         />
+        <TouchableOpacity
+          style={views.forgotPassword}
+          onPress={() => navigation.navigate('forgotPassword')}>
+          <Text style={texts.forgotPassword}>비밀번호를 잊으셨나요?</Text>
+        </TouchableOpacity>
       </PageContainer>
     );
   }

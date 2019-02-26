@@ -2,15 +2,15 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 import { color, font } from 'src/theme';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
   container: { flex: 1 },
   contentWrapper: { flex: 1, marginHorizontal: width * 0.064 },
-  bottomText: {
-    marginBottom: 24,
-    flexDirection: 'row',
-    alignSelf: 'center',
+  bottom: {
+    width,
+    paddingHorizontal: width * 0.064,
+    marginBottom: height * 0.03,
   },
   bottomBox: {
     width,
@@ -41,15 +41,6 @@ export const texts = StyleSheet.create({
   top: {
     color: color.blackOpacity,
     fontSize: 16,
-  },
-  bottomText: {
-    color: `${color.gary55}CC`,
-    fontSize: font.size.small,
-    textDecorationLine: 'underline',
-  },
-  bottomDiff: {
-    color: `${color.black33}7F`,
-    fontSize: font.size.small,
   },
   bottomBox: {
     fontSize: font.size.large,
