@@ -1,64 +1,130 @@
 import React, { Component } from 'react';
 import produce from 'immer';
-import { TouchableOpacity, Text, Image } from 'react-native';
+import { TouchableOpacity, View, Text, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import PageContainer from 'src/components/container/PageContainer';
-import { views, texts } from './Agreement.styles';
+import { views, icons, texts } from './Agreement.styles';
+
+interface Term {
+  title: string;
+  agree: boolean;
+  link: any;
+}
+
+interface RenderTermInterface extends Term {
+  index: number;
+}
 
 interface Props {
   navigation: NavigationScreenProp<any>;
 }
 
 interface State {
-  agreeAll: boolean;
+  checkAll: boolean;
+  terms: Term[];
 }
 
 class Agreement extends Component<Props, State> {
   state: State = {
-    agreeAll: false,
+    checkAll: false,
+    terms: [
+      {
+        title: '서비스 이용 약관(필수)',
+        agree: false,
+        link: '',
+      },
+      {
+        title: '개인정보 이용 약관(필수)',
+        agree: false,
+        link: '',
+      },
+    ],
   };
 
-  handleShortcut = () => {
+  handleCheckAll = () => {
     this.setState(state =>
       produce(state, draft => {
-        draft.agreeAll = !state.agreeAll;
+        draft.terms.forEach(term => {
+          term.agree = !state.checkAll;
+        });
+        draft.checkAll = !state.checkAll;
       })
     );
   };
 
+  handleAgree = (index: number) => {
+    this.setState(state =>
+      produce(state, draft => {
+        let count = 0;
+        draft.terms[index].agree = !state.terms[index].agree;
+        draft.terms.forEach(term => {
+          if (term.agree) count += 1;
+        });
+        draft.checkAll = draft.terms.length === count;
+      })
+    );
+  };
+
+  renderTerm = ({ title, agree, index }: RenderTermInterface) => (
+    <View style={views.termWrapper} key={index}>
+      <TouchableOpacity
+        style={views.termInfo}
+        onPress={() => this.handleAgree(index)}
+        activeOpacity={0.95}>
+        <Image
+          style={icons.agree}
+          source={
+            agree
+              ? require('src/assets/icons/ic_check_on.png')
+              : require('src/assets/icons/ic_check_off.png')
+          }
+        />
+        <Text style={texts.termTitle}>{title}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={views.termMore} activeOpacity={0.95}>
+        <Image
+          style={icons.more}
+          source={require('src/assets/icons/ic_more.png')}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+
   render() {
     const { navigation } = this.props;
-    const { agreeAll } = this.state;
+    const { checkAll, terms } = this.state;
 
     return (
       <PageContainer
         title="약관동의"
+        left={{ navigation }}
         bottomBox={{
           text: '확인',
           handlePress: () => navigation.navigate('signUpUser'),
-          disable: !agreeAll,
+          disable: !checkAll,
         }}
         scrollEnabled={false}>
         <TouchableOpacity
           style={[
-            views.agreeAll,
-            views[agreeAll ? 'agreeAllActive' : 'agreeAllInactive'],
+            views.checkAll,
+            views[checkAll ? 'checkAllOn' : 'checkAllOff'],
           ]}
-          activeOpacity={0.7}
-          onPress={this.handleShortcut}>
+          activeOpacity={0.95}
+          onPress={this.handleCheckAll}>
           <Text
             style={[
-              texts.agreeAll,
-              texts[agreeAll ? 'agreeAllActive' : 'agreeAllInactive'],
+              texts.checkAll,
+              texts[checkAll ? 'checkAllOn' : 'checkAllOff'],
             ]}>
             아래 약관에 모두 동의합니다.
           </Text>
           <Image
-            style={views.agreeIcon}
+            style={icons.agreeDog}
             source={require('src/assets/icons/ic_agree.png')}
           />
         </TouchableOpacity>
+        {terms.map((term, index) => this.renderTerm({ ...term, index }))}
       </PageContainer>
     );
   }

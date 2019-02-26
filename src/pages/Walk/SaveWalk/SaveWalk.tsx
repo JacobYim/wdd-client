@@ -139,6 +139,7 @@ class SaveWalk extends PureComponent<Props, State> {
               ),
             }}
             title={`오늘의 행복한 순간을\n기록해보세요!`}
+            scrollEnabled={false}
             titleNarrow>
             <View />
           </PageContainer>

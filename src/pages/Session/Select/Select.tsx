@@ -20,7 +20,7 @@ const BottomButtons: React.FC<Props> = ({ navigation }) => (
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => navigation.navigate('signUp')}>
-      <Text style={texts.bottom}>회원가입</Text>
+      <Text style={[texts.bottom, { fontWeight: '600' }]}>회원가입</Text>
     </TouchableOpacity>
   </>
 );

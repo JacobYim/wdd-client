@@ -27,7 +27,7 @@ export const views = StyleSheet.create({
     alignSelf: 'center',
   },
   signIn: {
-    width: 162,
+    width: width * 0.432,
     height: signInHeight,
     marginTop: 20,
     borderColor: color.blue,
@@ -47,6 +47,7 @@ export const texts = StyleSheet.create({
   signIn: {
     color: color.blue,
     fontSize: font.size.medium,
+    fontWeight: 'bold',
   },
   bottom: {
     color: color.black33,
