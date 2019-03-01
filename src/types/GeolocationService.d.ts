@@ -15,9 +15,14 @@ interface WatchOptions {
 }
 
 declare module 'react-native-geolocation-service' {
-  import { GeolocationReturnType, GeolocationError } from 'react-native';
+  import {
+    Geolocation,
+    GeolocationReturnType,
+    GeolocationError,
+  } from 'react-native';
 
   const _default: {
+    requestAuthorization: Geolocation['requestAuthorization'];
     getCurrentPosition: (
       success: (callback: GeolocationReturnType) => void,
       error?: (callback: GeolocationError) => void,

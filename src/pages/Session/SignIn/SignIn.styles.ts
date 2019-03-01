@@ -1,21 +1,17 @@
 import { StyleSheet } from 'react-native';
+import { color, font } from 'src/theme';
 
 export const views = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  logo: {
-    height: 34,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-    marginTop: 40,
-    marginBottom: 64,
+  forgotPassword: {
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center',
   },
 });
 
 export const texts = StyleSheet.create({
-  title: {
-    fontSize: 14,
+  forgotPassword: {
+    color: color.black33Opacity,
+    fontSize: font.size.medium,
   },
 });

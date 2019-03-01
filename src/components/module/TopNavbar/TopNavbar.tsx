@@ -1,13 +1,12 @@
 import React, { ReactNode } from 'react';
+import { color, font } from 'src/theme';
 import {
-  StyleSheet,
   Dimensions,
   View,
-  TouchableOpacity,
+  StyleSheet,
   Text,
+  TouchableOpacity,
 } from 'react-native';
-
-import { color, font } from 'src/theme';
 
 interface Props {
   left?: {

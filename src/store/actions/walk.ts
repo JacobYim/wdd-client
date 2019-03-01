@@ -2,10 +2,10 @@ import { LatLng } from 'react-native-maps';
 
 // *** INTERFACES
 type Status = 'READY' | 'WALKING' | 'PAUSE' | 'FINISH';
-type PinType = 'none' | 'pee' | 'poo';
+type PinType = 'pee' | 'poo';
 
 interface PinInterface extends LatLng {
-  type: PinType;
+  type?: PinType;
 }
 
 export interface UpdateWalkInterface extends PinInterface {
@@ -15,35 +15,63 @@ export interface UpdateWalkInterface extends PinInterface {
 
 export interface WalkInterface {
   status: Status;
+  createdAt: Date;
   distance: number;
   speed: number;
   pins: PinInterface[];
+  seconds: number;
+  steps: number;
+}
+
+interface WalkSuccessInterface {
+  status?: Status;
+  distance?: number;
+  speed?: number;
+  pins?: PinInterface[];
+  seconds?: number;
+  steps?: number;
 }
 
 // *** CONSTS
 export const UPDATE_STATUS = 'walk/UPDATE_STATUS';
-export const UPDATE_WALK = 'walk/UPDATE_WALK';
+export const UPDATE_SECONDS = 'walk/UPDATE_SECONDS';
+export const UPDATE_STEPS = 'walk/UPDATE_STEPS';
+export const PUSH_PIN = 'walk/PUSH_PIN';
+export const UPDATE_LATEST_PIN = 'walk/UPDATE_LATEST_PIN';
 
 export const SET_WALK_REQUEST = 'walk/SET_WALK_REQUEST';
 export const SET_WALK_SUCCESS = 'walk/SET_WALK_SUCCESS';
 export const SET_WALK_FAILURE = 'walk/SET_WALK_FAILURE';
 
+export const CLEAR_WALK = 'walk/CLEAR_WALK';
+
 // *** FUNCTIONS
 export const updateStatus = (payload: Status) => ({
+  payload,
   type: UPDATE_STATUS,
-  payload,
 });
-export const updateWalk = (payload: UpdateWalkInterface) => ({
-  type: UPDATE_WALK,
+export const updateSeconds = () => ({ type: UPDATE_SECONDS });
+export const updateSteps = (payload: number) => ({
   payload,
+  type: UPDATE_STEPS,
+});
+export const pushPin = (payload: UpdateWalkInterface) => ({
+  payload,
+  type: PUSH_PIN,
+});
+export const updateLatestPin = (payload: PinType) => ({
+  payload,
+  type: UPDATE_LATEST_PIN,
 });
 
 export const setWalkRequest = () => ({ type: SET_WALK_REQUEST });
-export const setWalkSuccess = (payload: WalkInterface) => ({
-  type: SET_WALK_SUCCESS,
+export const setWalkSuccess = (payload: WalkSuccessInterface) => ({
   payload,
+  type: SET_WALK_SUCCESS,
 });
 export const setWalkFailure = (payload: Error) => ({
-  type: SET_WALK_FAILURE,
   payload,
+  type: SET_WALK_FAILURE,
 });
+
+export const clearWalk = () => ({ type: CLEAR_WALK });

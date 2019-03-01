@@ -3,9 +3,9 @@ import { color, font } from 'src/theme';
 
 export const texts = StyleSheet.create({
   label: {
-    color: color.black,
+    color: `${color.black}78`,
     fontSize: font.size.small,
-    marginBottom: 4,
+    marginBottom: 8,
   },
 });
 

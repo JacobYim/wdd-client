@@ -1,17 +1,16 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
-import { NavigationActions, NavigationScreenProp } from 'react-navigation';
-import Geolocation from 'react-native-geolocation-service';
 import { Alert } from 'react-native';
-
-import { setHeader, removeHeader } from 'src/services/api/axios';
+import Geolocation from 'react-native-geolocation-service';
+import { NavigationActions, NavigationScreenProp } from 'react-navigation';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { removeHeader, setHeader } from 'src/services/api/axios';
+import * as api from 'src/services/api/user';
+import * as actions from 'src/store/actions/user';
 import {
   getUserStorage,
   setUserStorage,
   updateUserStorage,
   removeUserStorage,
 } from 'src/services/storage/user';
-import * as actions from 'src/store/actions/user';
-import * as api from 'src/services/api/user';
 
 // HELPERS
 function* navigateToApp(navigation: NavigationScreenProp<any>) {
@@ -30,8 +29,9 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     const data = yield call(api.getUser);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
-    if (!nextStep) yield call(navigateToApp, action.navigation);
-    else
+    if (!nextStep) {
+      yield call(navigateToApp, action.navigation);
+    } else {
       Alert.alert('회원가입이 진행중입니다.', '이어서 하시겠습니까?', [
         {
           text: '예',
@@ -47,10 +47,11 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
         },
         {
           text: '나중에',
-          onPress: () => navigateToApp(action.navigation),
+          onPress: () => action.navigation.navigate('app'),
           style: 'cancel',
         },
       ]);
+    }
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
     yield call(removeHeader);

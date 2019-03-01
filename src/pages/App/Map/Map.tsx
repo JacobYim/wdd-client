@@ -1,30 +1,24 @@
-import React, { Component, createRef } from 'react';
 import produce from 'immer';
+import React, { Component, createRef } from 'react';
+import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import { connect } from 'react-redux';
-import {
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  GestureResponderEvent,
-} from 'react-native';
-import MapView, { PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
+import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
-
+import { connect } from 'react-redux';
 import { calcDistance } from 'src/assets/functions/calcutate';
-import { ReducerState } from 'src/store/reducers';
 import * as actions from 'src/store/actions/walk';
-import { views, icons } from './Map.styles';
+import { ReducerState } from 'src/store/reducers';
+import { icons, views } from './Map.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
-  updateWalk: typeof actions.updateWalk;
+  pushPin: typeof actions.pushPin;
   walk: ReducerState['walk'];
 }
 
 interface State {
   trackUser: boolean;
+  statusChanged: boolean;
   current: {
     latitude: number;
     longitude: number;
@@ -58,11 +52,18 @@ class Map extends Component<Props, State> {
 
   state: State = {
     trackUser: true,
+    statusChanged: true,
     current: {
       ...this.initLocation,
       speed: 0,
     },
   };
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.walk.status !== this.props.walk.status) {
+      this.setState({ statusChanged: true });
+    }
+  }
 
   componentDidMount() {
     this.watchPosition();
@@ -73,12 +74,11 @@ class Map extends Component<Props, State> {
   }
 
   watchPosition = () => {
-    if (this.watchLocation) Geolocation.clearWatch(this.watchLocation);
-    const { updateWalk } = this.props;
+    const { pushPin } = this.props;
     this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
         const { walk } = this.props;
-        const { trackUser } = this.state;
+        const { trackUser, statusChanged } = this.state;
         const current = {
           latitude: coords.latitude,
           longitude: coords.longitude,
@@ -89,18 +89,18 @@ class Map extends Component<Props, State> {
           const pinLength = walk.pins.length;
           const pinInfo: actions.UpdateWalkInterface = {
             ...current,
-            type: 'none',
             addDistance: 0,
           };
-          if (pinLength > 0) {
+          if (statusChanged) {
+            pushPin(pinInfo);
+            this.setState({ statusChanged: false });
+          } else {
             const previous = walk.pins[pinLength - 1];
             pinInfo.addDistance = calcDistance(
               extLocation(previous),
               extLocation(current)
             );
-            if (pinInfo.addDistance > 0.009) updateWalk(pinInfo);
-          } else {
-            updateWalk(pinInfo);
+            if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
           }
         }
         this.moveCameraToUser(extLocation(current), trackUser);
@@ -118,15 +118,13 @@ class Map extends Component<Props, State> {
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
     const map = this.map.current;
-    if (map && activate)
+    if (map && activate) {
       map.animateToRegion({ ...center, ...this.initDelta }, 120);
+    }
   };
 
-  handleDragMapStart = (e: GestureResponderEvent) => {
-    if (e.target === 13) {
-      // e.stopPropagation();
-      if (this.state.trackUser) this.setState({ trackUser: false });
-    }
+  handleDragMapStart = () => {
+    if (this.state.trackUser) this.setState({ trackUser: false });
   };
 
   handlePressTrackButton = () => {
@@ -143,14 +141,12 @@ class Map extends Component<Props, State> {
     const { trackUser } = this.state;
 
     return (
-      <ScrollView
-        contentContainerStyle={views.container}
-        onTouchStart={this.handleDragMapStart}
-        scrollEnabled={false}>
+      <View style={views.container}>
         <MapView
           ref={this.map}
           provider={PROVIDER_GOOGLE}
           style={views.map}
+          onTouchStart={this.handleDragMapStart}
           initialRegion={{
             ...this.initLocation,
             ...this.initDelta,
@@ -166,7 +162,7 @@ class Map extends Component<Props, State> {
             source={require('src/assets/icons/ic_location.png')}
           />
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -176,6 +172,6 @@ export default connect(
     walk: state.walk,
   }),
   {
-    updateWalk: actions.updateWalk,
+    pushPin: actions.pushPin,
   }
 )(Map);

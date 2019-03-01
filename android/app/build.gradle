@@ -101,8 +101,8 @@ android {
         applicationId "com.woodongdang.client.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "0.1.1"
+        versionCode 8
+        versionName "0.1.4"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -145,14 +145,13 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-background-timer')
     implementation project(':@JWWon_react-native-universal-pedometer')
-    implementation(project(':react-native-maps')){
-        exclude group: 'com.google.android.gms', module: 'play-services-base'
-        exclude group: 'com.google.android.gms', module: 'play-services-maps'
-    }
+    implementation project(':react-native-maps')
     implementation 'com.google.android.gms:play-services-base:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
-    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation project(':react-native-geolocation-service')
     implementation project(':react-native-image-picker')
     implementation project(':amazon-cognito-identity-js')

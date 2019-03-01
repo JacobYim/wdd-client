@@ -1,10 +1,11 @@
 {
   "name": "WddClient",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'",
+    "lint": "tslint --project tsconfig.json --format stylish",
     "dev": "./scripts/map-base-url.sh && npm run debug && npm start",
     "test": "jest"
   },
@@ -18,10 +19,13 @@
     "moment": "^2.24.0",
     "react": "^16.6.3",
     "react-native": "^0.58.3",
+    "react-native-background-timer": "^2.1.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-geolocation-service": "^2.0.0",
     "react-native-gesture-handler": "^1.0.12",
     "react-native-image-picker": "^0.28.0",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
+    "react-native-linear-gradient": "^2.5.3",
     "react-native-maps": "^0.23.0",
     "react-navigation": "^3.3.0",
     "react-redux": "^6.0.1",
@@ -32,9 +36,10 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",
-    "@types/node": "^11.9.4",
+    "@types/node": "^11.9.5",
     "@types/react": "^16.7.20",
     "@types/react-native": "^0.57.29",
+    "@types/react-native-background-timer": "^2.0.0",
     "@types/react-native-datepicker": "^1.7.0",
     "@types/react-navigation": "^3.0.3",
     "@types/react-redux": "^7.0.0",
@@ -46,6 +51,8 @@
     "metro-react-native-babel-preset": "^0.52.0",
     "react-test-renderer": "^16.8.2",
     "redux-devtools-extension": "^2.13.7",
+    "tslint": "^5.13.1",
+    "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.3.3"
   },
   "jest": {

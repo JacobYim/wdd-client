@@ -1,9 +1,8 @@
 import React from 'react';
 import DatePicker from 'react-native-datepicker';
-
-import { Props } from './index';
-import { views, texts } from './DateInput.styles';
 import LabelWrapper from 'src/components/container/LabelWrapper';
+import { texts, views } from './DateInput.styles';
+import { Props } from './index';
 
 const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
   const handleChangeWithName = (str: string, value: Date) => {
@@ -17,6 +16,7 @@ const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
         customStyles={{
           dateInput: views.dateInput,
           btnTextConfirm: texts.btnTextConfirm,
+          dateText: texts.dateText,
         }}
         date={value}
         mode="date"

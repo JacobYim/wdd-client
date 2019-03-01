@@ -1,16 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
 const circleSize = 60;
 
+const { width, height } = Dimensions.get('window');
+
 export const views = StyleSheet.create({
   container: {
-    height: '8.2%',
+    height: height * 0.087,
     backgroundColor: color.white,
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   tabWrapper: {
-    flex: 1,
+    flexBasis: width * 0.387,
     justifyContent: 'center',
     alignItems: 'center',
   },

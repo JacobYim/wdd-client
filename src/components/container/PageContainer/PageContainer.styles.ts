@@ -1,20 +1,20 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
+import { Dimensions, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const horizontalSize = width * 0.064;
 
 export const views = StyleSheet.create({
   container: { flex: 1 },
-  contentWrapper: { flex: 1, marginHorizontal: width * 0.064 },
-  bottomText: {
-    marginBottom: 24,
-    flexDirection: 'row',
-    alignSelf: 'center',
+  contentWrapper: { flex: 1, marginHorizontal: horizontalSize },
+  bottom: {
+    width,
+    paddingHorizontal: horizontalSize,
+    marginBottom: height * 0.045,
   },
   bottomBox: {
     width,
-    height: 48,
+    height: 51,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -22,10 +22,13 @@ export const views = StyleSheet.create({
     backgroundColor: color.blue,
   },
   boxDisable: {
-    backgroundColor: color.grayEF,
+    backgroundColor: `${color.blue}4C`,
   },
   titleWrapper: {
     marginVertical: 40,
+  },
+  titleNarrow: {
+    marginVertical: 4,
   },
   backIcon: {
     width: 18,
@@ -39,26 +42,13 @@ export const texts = StyleSheet.create({
     color: color.blackOpacity,
     fontSize: 16,
   },
-  bottomText: {
-    color: `${color.gary55}CC`,
-    fontSize: font.size.small,
-    textDecorationLine: 'underline',
-  },
-  bottomDiff: {
-    color: `${color.black33}7F`,
-    fontSize: font.size.small,
-  },
   bottomBox: {
     fontSize: font.size.large,
-  },
-  boxEnable: {
     color: color.white,
-  },
-  boxDisable: {
-    color: color.grayB1,
   },
   title: {
     fontSize: font.size.title,
+    fontWeight: '500',
     color: color.black,
   },
   subtitle: {

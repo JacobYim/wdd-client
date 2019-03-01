@@ -3,6 +3,7 @@ import {
   createMaterialTopTabNavigator,
 } from 'react-navigation';
 
+import SelectScreen from './Select';
 import SignInScreen from './SignIn';
 
 import AgreementScreen from './Agreement';
@@ -60,6 +61,7 @@ const ForgotPasswordNavigator = createMaterialTopTabNavigator(
 
 export default createStackNavigator(
   {
+    select: SelectScreen,
     signIn: SignInScreen,
     signUp: SignUpNavigator,
     forgotPassword: {
@@ -68,7 +70,7 @@ export default createStackNavigator(
     },
   },
   {
-    initialRouteName: 'signIn',
+    initialRouteName: 'select',
     headerMode: 'none',
   }
 );

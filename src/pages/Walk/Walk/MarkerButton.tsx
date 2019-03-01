@@ -1,17 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
-
+import { Dimensions, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { UpdateWalkInterface } from 'src/store/actions/walk';
 import { color } from 'src/theme';
 
 interface Props {
-  type: UpdateWalkInterface['type'];
   icon: NodeRequire;
-  onPress: (type: UpdateWalkInterface['type']) => void;
+  onPress: () => void;
 }
 
 const { width } = Dimensions.get('window');
-const btnSize = 50;
+const btnSize = 60;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -19,7 +17,7 @@ const styles = StyleSheet.create({
     height: btnSize,
     marginTop: width * 0.088 - btnSize / 2,
     borderRadius: btnSize / 2,
-    backgroundColor: color.blue,
+    backgroundColor: color.bluePastel,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: color.black,
@@ -29,17 +27,17 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   icon: {
-    width: '52%',
-    height: '52%',
+    width: '46%',
+    height: '46%',
     resizeMode: 'contain',
   },
 });
 
-const MarkerButton: React.FC<Props> = ({ type, icon, onPress }) => (
+const MarkerButton: React.FC<Props> = ({ icon, onPress }) => (
   <TouchableOpacity
     style={styles.wrapper}
     activeOpacity={0.7}
-    onPress={() => onPress(type)}>
+    onPress={onPress}>
     <Image source={icon} style={styles.icon} />
   </TouchableOpacity>
 );

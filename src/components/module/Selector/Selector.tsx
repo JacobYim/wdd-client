@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-
+import LabelWrapper from 'src/components/container/LabelWrapper';
 import { HandleChangeSelector } from './index';
 import { views } from './Selector.styles';
-import LabelWrapper from 'src/components/container/LabelWrapper';
 import ToggleBox from './ToggleBox';
 
 interface Data {

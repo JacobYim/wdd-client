@@ -1,15 +1,12 @@
-import produce from 'immer';
 import { AxiosResponse } from 'axios';
+import produce from 'immer';
 import { handleActions } from 'redux-actions';
-
 import { removeHeader } from 'src/services/api/axios';
 import { removeUserStorage } from 'src/services/storage/user';
-import { UserInterface } from 'src/store/actions/user';
-import { DogInterface } from 'src/store/actions/dog';
-import * as actions from 'src/store/actions/user';
 import * as dogActions from 'src/store/actions/dog';
+import * as actions from 'src/store/actions/user';
 
-export interface UserState extends UserInterface {
+export interface UserState extends actions.UserInterface {
   error?: AxiosResponse;
   dogError?: AxiosResponse;
 }
@@ -53,7 +50,7 @@ export default handleActions<UserState, any>(
       }),
     [dogActions.SET_DOG_SUCCESS]: (state, action) =>
       produce(state, draft => {
-        const dog = action.payload as DogInterface;
+        const dog = action.payload as dogActions.DogInterface;
         const dogID = dog.id;
         // *** SERIALIZE
         delete dog.id;

@@ -1,6 +1,5 @@
 import React, { Component, ComponentType } from 'react';
-import { Modal, View, Animated, Easing } from 'react-native';
-
+import { Animated, Easing, Modal, View } from 'react-native';
 import { color } from 'src/theme';
 
 export interface LoadingProps {

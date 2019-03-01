@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { TextInput as Input } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-// Redux
 import { connect } from 'react-redux';
-import * as actions from 'src/store/actions/user';
-// Components
+import { validatePassword } from 'src/assets/functions/validate';
 import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
-import RoundButton from 'src/components/module/RoundButton';
+import * as actions from 'src/store/actions/user';
+// Redux
+// Components
 // Other
-import { validatePassword } from 'src/assets/functions/validate';
 
 interface ParamInterface {
   value: string;
@@ -63,7 +62,7 @@ class ChangePassword extends Component<Props, State> {
     const token = navigation.getParam('token', null);
     if (token) {
       const { password } = this.state;
-      changePassword({ password: password.value, token }, navigation);
+      changePassword({ token, password: password.value }, navigation);
     }
   };
 
@@ -76,7 +75,12 @@ class ChangePassword extends Component<Props, State> {
         title="비밀번호 변경"
         subtitle="새롭고 안전한 비밀번호를 재설정하세요."
         left={{ navigation }}
-        scrollEnabled={false}>
+        bottomBox={{
+          text: '비밀번호 변경',
+          handlePress: this.handleSubmit,
+          disable: !password.valid || !passwordCheck.valid,
+        }}
+        alwaysShowBottom>
         <TextInput
           label="새 비밀번호"
           name="password"
@@ -95,11 +99,6 @@ class ChangePassword extends Component<Props, State> {
           inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSubmit}
-        />
-        <RoundButton
-          label="비밀번호 변경"
-          active={password.valid && passwordCheck.valid}
-          handlePress={this.handleSubmit}
         />
       </PageContainer>
     );

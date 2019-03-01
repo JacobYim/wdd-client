@@ -12,7 +12,6 @@ interface State {
 
 class Trailor extends PureComponent<Props, State> {
   private images = [
-    require('src/assets/images/img_count_3.jpg'), // TODO: Fix bug
     require('src/assets/images/img_count_3.jpg'),
     require('src/assets/images/img_count_2.jpg'),
     require('src/assets/images/img_count_1.jpg'),
@@ -26,38 +25,30 @@ class Trailor extends PureComponent<Props, State> {
 
   animateImage = () => {
     const { index, opacity } = this.state;
+
     Animated.timing(opacity, {
       toValue: 0,
       duration: 800,
       easing: Easing.bezier(0.48, 0, 1, 1),
-    }).start(() => {
-      if (index === this.images.length - 1) {
-        this.props.onFinish();
-      } else {
+    }).start(c => {
+      if (c.finished) {
         opacity.setValue(1);
-        this.setState({ index: index + 1 });
+        if (index === this.images.length - 1) this.props.onFinish();
+        else this.setState({ index: index + 1 });
       }
     });
   };
 
-  renderImage = (image: any, index: number) => {
-    const { opacity } = this.state;
-    const shouldRender = this.state.index === index;
-
-    return (
-      shouldRender && (
-        <Animated.Image
-          style={{ flex: 1, resizeMode: 'contain', opacity }}
-          key={index}
-          source={image}
-          onLayout={this.animateImage}
-        />
-      )
-    );
-  };
-
   render() {
-    return this.images.map(this.renderImage);
+    const { opacity, index } = this.state;
+    return (
+      <Animated.Image
+        style={{ opacity, flex: 1, resizeMode: 'contain' }}
+        key={index}
+        source={this.images[index]}
+        onLayout={this.animateImage}
+      />
+    );
   }
 }
 

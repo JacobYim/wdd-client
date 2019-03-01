@@ -1,12 +1,10 @@
+import * as Hangul from 'hangul-js';
 import React, { Component } from 'react';
 import { Modal, ScrollView, TextInput } from 'react-native';
-import * as Hangul from 'hangul-js';
-// Styles
-import { color } from 'src/theme';
-import { inputs, views } from './TextAutocomplete.styles';
-// Components
 import PageContainer from 'src/components/container/PageContainer';
 import Input, { HandleChangeText } from 'src/components/module/TextInput';
+import { color } from 'src/theme';
+import { texts, views } from './TextAutocomplete.styles';
 import TextBox from './TextBox';
 
 interface Props {
@@ -69,15 +67,14 @@ class Search extends Component<Props, State> {
           visible={this.state.showModal}
           onRequestClose={this.toggleModal}>
           <PageContainer
-            right={{ text: '닫기', handlePress: this.toggleModal }}
-            scrollEnabled={false}>
+            right={{ view: '닫기', handlePress: this.toggleModal }}>
             <TextInput
               value={this.state.value}
-              placeholder={`${label}을 입력해주세요`}
+              placeholder={`찾으시는 ${label}을 입력해주세요`}
               onChangeText={this.handleTextChange}
               onSubmitEditing={this.handleSubmit}
-              style={inputs.text}
-              placeholderTextColor={color.grayB1}
+              style={texts.input}
+              placeholderTextColor={color.black}
               multiline={false}
               autoCorrect={false}
               autoFocus={true}
