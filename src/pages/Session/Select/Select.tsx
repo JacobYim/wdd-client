@@ -1,9 +1,8 @@
 import React from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-
-import { views, texts } from './Select.styles';
 import PageContainer from 'src/components/container/PageContainer';
+import { texts, views } from './Select.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -20,7 +19,7 @@ const BottomButtons: React.FC<Props> = ({ navigation }) => (
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => navigation.navigate('signUp')}>
-      <Text style={[texts.bottom, { fontWeight: '600' }]}>회원가입</Text>
+      <Text style={texts.bottom}>회원가입</Text>
     </TouchableOpacity>
   </>
 );

@@ -102,13 +102,7 @@ const PageContainer: React.FC<Props> = ({
           onPress={bottomBox.handlePress}
           activeOpacity={0.7}
           disabled={bottomBox.disable}>
-          <Text
-            style={[
-              texts.bottomBox,
-              texts[bottomBox.disable ? 'boxDisable' : 'boxEnable'],
-            ]}>
-            {bottomBox.text}
-          </Text>
+          <Text style={texts.bottomBox}>{bottomBox.text}</Text>
         </TouchableOpacity>
       )}
     </SafeAreaView>

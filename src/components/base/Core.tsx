@@ -1,6 +1,5 @@
 import Amplify from 'aws-amplify';
 import React, { PureComponent } from 'react';
-import { Image, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import awsconfig from 'src/aws-exports';
@@ -25,14 +24,7 @@ class Core extends PureComponent<Props> {
   }
 
   render() {
-    return (
-      <View style={{ flex: 1, backgroundColor: '#FFF' }}>
-        <Image
-          style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-          source={require('src/assets/images/img_splash.jpg')}
-        />
-      </View>
-    );
+    return null;
   }
 }
 

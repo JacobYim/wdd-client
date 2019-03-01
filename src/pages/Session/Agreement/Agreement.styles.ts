@@ -9,7 +9,7 @@ export const views = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 16,
   },
   checkAllOn: {
     backgroundColor: color.blue,

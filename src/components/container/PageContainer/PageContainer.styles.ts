@@ -10,11 +10,11 @@ export const views = StyleSheet.create({
   bottom: {
     width,
     paddingHorizontal: horizontalSize,
-    marginBottom: height * 0.03,
+    marginBottom: height * 0.045,
   },
   bottomBox: {
     width,
-    height: 48,
+    height: 51,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -22,7 +22,7 @@ export const views = StyleSheet.create({
     backgroundColor: color.blue,
   },
   boxDisable: {
-    backgroundColor: color.grayEF,
+    backgroundColor: `${color.blue}4C`,
   },
   titleWrapper: {
     marginVertical: 40,
@@ -44,15 +44,11 @@ export const texts = StyleSheet.create({
   },
   bottomBox: {
     fontSize: font.size.large,
-  },
-  boxEnable: {
     color: color.white,
-  },
-  boxDisable: {
-    color: color.grayB1,
   },
   title: {
     fontSize: font.size.title,
+    fontWeight: '500',
     color: color.black,
   },
   subtitle: {

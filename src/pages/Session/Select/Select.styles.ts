@@ -8,6 +8,7 @@ const signInHeight = 32;
 export const views = StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
+    paddingHorizontal: 6,
     backgroundColor: color.white,
   },
   wrapper: {
@@ -52,6 +53,7 @@ export const texts = StyleSheet.create({
   bottom: {
     color: color.black33,
     fontSize: font.size.medium,
+    fontWeight: '600',
   },
   vr: {
     color: `${color.black}1A`,
