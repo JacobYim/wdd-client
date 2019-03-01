@@ -1,5 +1,5 @@
 import React, { createRef, PureComponent } from 'react';
-import { Alert, Dimensions, Image, View } from 'react-native';
+import { Alert, Dimensions, Image, SafeAreaView, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -9,8 +9,8 @@ import { ReducerState } from 'src/store/reducers';
 import BottomButtons from './BottomButtons';
 import { icons, views } from './SaveWalk.styles';
 import MapView, {
-  Callout,
   Marker,
+  Overlay,
   Polyline,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
@@ -23,14 +23,21 @@ interface Props {
 
 interface State {
   peePooPins: ReducerState['walk']['pins'];
+  bounds: [[number, number], [number, number]];
+  showOverlay: boolean;
 }
 
 const center = { x: 0.5, y: 0.5 };
+const DEFAULT_BOUND: [number, number] = [37.4734372, 127.0405071];
 
 class SaveWalk extends PureComponent<Props, State> {
   private map = createRef<MapView>();
 
-  state: State = { peePooPins: [] };
+  state: State = {
+    peePooPins: [],
+    bounds: [DEFAULT_BOUND, DEFAULT_BOUND],
+    showOverlay: false,
+  };
 
   componentDidMount() {
     this.setState({
@@ -52,6 +59,20 @@ class SaveWalk extends PureComponent<Props, State> {
     Alert.alert('작업중입니다.');
   };
 
+  handleRegionChange = async () => {
+    const map = this.map.current;
+    if (map) {
+      const { northEast, southWest } = await map.getMapBoundaries();
+      this.setState({
+        bounds: [
+          [northEast.latitude, northEast.longitude],
+          [southWest.latitude, southWest.longitude],
+        ],
+        showOverlay: true,
+      });
+    }
+  };
+
   googleMapDidMount = () => {
     const map = this.map.current;
     const { width, height } = Dimensions.get('window');
@@ -71,24 +92,28 @@ class SaveWalk extends PureComponent<Props, State> {
   render() {
     const { walk } = this.props;
     return (
-      <>
+      <SafeAreaView style={views.container}>
         <MapView
           ref={this.map}
           onLayout={this.googleMapDidMount}
           provider={PROVIDER_GOOGLE}
           style={views.absolute}
+          onRegionChangeComplete={this.handleRegionChange}
           zoomEnabled={false}
           scrollEnabled={false}
           rotateEnabled={false}
           pitchEnabled={false}
           toolbarEnabled={false}>
+          <Overlay
+            image={require('src/assets/images/bg_white_opacity.png')}
+            bounds={this.state.bounds}
+          />
           <Polyline
             coordinates={walk.pins}
             lineCap="round"
             lineJoin="round"
             strokeWidth={4}
             strokeColor="#FF6060"
-            // strokeColors={strokeColors}
           />
           {/* Start & END Pinpoint */}
           <Marker coordinate={walk.pins[0]} anchor={center}>
@@ -121,36 +146,43 @@ class SaveWalk extends PureComponent<Props, State> {
             </Marker>
           ))}
         </MapView>
-        <LinearGradient
-          colors={['#FFFFFF', '#FFFFFF00', '#FFFFFF00', '#FFFFFF']}
-          locations={[0.16, 0.4, 0.68, 0.84]}
-          style={views.container}>
-          <PageContainer
-            right={{
-              handlePress: this.handleDismiss,
-              view: (
-                <Image
-                  style={icons.close}
-                  source={require('src/assets/icons/ic_close.png')}
-                />
-              ),
-            }}
-            bottom={{
-              view: (
-                <BottomButtons
-                  handlePressDownload={this.handlePressDownload}
-                  handlePressFeed={this.handlePressFeed}
-                />
-              ),
-              styles: views.bottomWrapper,
-            }}
-            title={'오늘의 행복한 순간을\n기록해보세요!'}
-            titleNarrow
-            alwaysShowBottom>
-            <View />
-          </PageContainer>
-        </LinearGradient>
-      </>
+        {this.state.showOverlay && (
+          <>
+            <LinearGradient
+              style={views.topFilter}
+              colors={['#FFFFFF', '#FFFFFF78']}
+            />
+            <LinearGradient
+              style={views.bottomFilter}
+              colors={['#FFFFFF78', '#FFFFFF']}
+            />
+          </>
+        )}
+        <PageContainer
+          right={{
+            handlePress: this.handleDismiss,
+            view: (
+              <Image
+                style={icons.close}
+                source={require('src/assets/icons/ic_close.png')}
+              />
+            ),
+          }}
+          bottom={{
+            view: (
+              <BottomButtons
+                handlePressDownload={this.handlePressDownload}
+                handlePressFeed={this.handlePressFeed}
+              />
+            ),
+            styles: views.bottomWrapper,
+          }}
+          title={'오늘의 행복한 순간을\n기록해보세요!'}
+          titleNarrow
+          alwaysShowBottom>
+          {}
+        </PageContainer>
+      </SafeAreaView>
     );
   }
 }

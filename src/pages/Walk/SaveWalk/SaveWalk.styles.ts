@@ -1,7 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { color } from 'src/theme';
 
 const pinSize = 10;
+const { height } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
   container: { flex: 1 },
@@ -14,6 +15,24 @@ export const views = StyleSheet.create({
   bottomWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  topFilter: {
+    zIndex: 0,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: height * 0.19,
+    backgroundColor: color.white,
+  },
+  bottomFilter: {
+    zIndex: 0,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    right: 0,
+    height: height * 0.115,
+    backgroundColor: color.white,
   },
 });
 

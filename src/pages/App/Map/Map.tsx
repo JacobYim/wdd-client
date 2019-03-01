@@ -39,7 +39,6 @@ const extLocation = ({
 
 class Map extends Component<Props, State> {
   private map = createRef<MapView>();
-  private preventDefault: boolean = false;
   private watchLocation: number = -1;
   private initLocation: LatLng = {
     // 우리동네댕댕이 HQ
