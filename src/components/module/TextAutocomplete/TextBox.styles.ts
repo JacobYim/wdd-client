@@ -4,7 +4,7 @@ import { color, font } from 'src/theme';
 export const views = StyleSheet.create({
   button: {
     width: '100%',
-    marginVertical: 12,
+    marginVertical: 10,
     alignSelf: 'flex-start',
   },
 });

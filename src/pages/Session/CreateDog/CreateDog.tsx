@@ -1,6 +1,6 @@
 import produce from 'immer';
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -13,11 +13,7 @@ import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import { uploadImage } from 'src/services/aws/s3';
 import * as actions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
-import { views } from './CreateDog.styles';
-// Redux
-// Style
-// Components
-// Other
+import { texts, views } from './CreateDog.styles';
 
 interface Props extends LoadingProps {
   navigation: NavigationScreenProp<any>;
@@ -119,6 +115,10 @@ class CreateDog extends Component<Props, State> {
                 source={require('src/assets/icons/ic_edit.png')}
               />
             </TouchableOpacity>
+            <Text style={texts.notice}>
+              반려동물의 정보를 입력해주세요!{'\n'}
+              회원가입 후, 프로필 설정에서 변경 가능합니다.
+            </Text>
           </View>
           <TextInput
             name="name"

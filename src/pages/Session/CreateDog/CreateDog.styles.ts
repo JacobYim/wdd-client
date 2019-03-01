@@ -1,14 +1,12 @@
 import { StyleSheet } from 'react-native';
-
-import { color } from 'src/theme';
+import { color, font } from 'src/theme';
 
 const thumbnailSize = 100;
 const thumbnailEditSize = 28;
 
 export const views = StyleSheet.create({
   thumbnailWrapper: {
-    marginTop: 40,
-    marginBottom: 20,
+    marginVertical: 40,
     alignItems: 'center',
   },
   thumbnail: {
@@ -16,7 +14,7 @@ export const views = StyleSheet.create({
     height: thumbnailSize,
     borderRadius: thumbnailSize / 2,
     resizeMode: 'cover',
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderColor: color.grayEF,
   },
   edit: {
@@ -26,5 +24,15 @@ export const views = StyleSheet.create({
     width: thumbnailEditSize,
     height: thumbnailEditSize,
     resizeMode: 'contain',
+  },
+});
+
+export const texts = StyleSheet.create({
+  notice: {
+    textAlign: 'center',
+    color: color.black33Opacity,
+    fontSize: font.size.medium,
+    marginTop: 20,
+    lineHeight: 21,
   },
 });
