@@ -1,4 +1,8 @@
 import React, { PureComponent } from 'react';
+import { NavigationScreenProp, withNavigation } from 'react-navigation';
+import * as actions from 'src/store/actions/walk';
+import { color } from 'src/theme';
+import { statusBtn } from './Walk.styles';
 import {
   TouchableOpacity,
   Image,
@@ -6,11 +10,6 @@ import {
   Animated,
   View,
 } from 'react-native';
-import { withNavigation, NavigationScreenProp } from 'react-navigation';
-
-import * as actions from 'src/store/actions/walk';
-import { statusBtn } from './Walk.styles';
-import { color } from 'src/theme';
 
 interface Props {
   navigation: NavigationScreenProp<any>;

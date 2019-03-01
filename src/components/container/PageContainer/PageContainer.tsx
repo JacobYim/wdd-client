@@ -1,16 +1,15 @@
 import React, { ReactNode } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import {
-  SafeAreaView,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-  View,
-  Image,
-} from 'react-native';
-
 import TopNavbar from 'src/components/module/TopNavbar';
-import { views, texts } from './PageContainer.styles';
+import { texts, views } from './PageContainer.styles';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 interface Props {
   // default

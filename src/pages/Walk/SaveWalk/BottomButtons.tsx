@@ -1,4 +1,5 @@
 import React from 'react';
+import { color, font } from 'src/theme';
 import {
   View,
   StyleSheet,
@@ -7,8 +8,6 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-
-import { color, font } from 'src/theme';
 
 interface Props {
   handlePressDownload: () => void;
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: color.white,
     borderWidth: 1,
-    borderColor: color.black + '14',
+    borderColor: `${color.black}14`,
     elevation: 2,
     shadowOffset: { width: 0, height: 6 },
     shadowRadius: 12,

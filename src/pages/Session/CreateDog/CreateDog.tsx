@@ -1,23 +1,23 @@
+import produce from 'immer';
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProp } from 'react-navigation';
-// Redux
 import { connect } from 'react-redux';
+import breeds from 'src/assets/consts/breeds.json';
+import withLoading, { LoadingProps } from 'src/components/base/withLoading';
+import PageContainer from 'src/components/container/PageContainer';
+import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
+import TextAutocomplete from 'src/components/module/TextAutocomplete';
+import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
+import { uploadImage } from 'src/services/aws/s3';
 import * as actions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
-// Style
 import { views } from './CreateDog.styles';
+// Redux
+// Style
 // Components
-import PageContainer from 'src/components/container/PageContainer';
-import withLoading, { LoadingProps } from 'src/components/base/withLoading';
-import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
-import TextAutocomplete from 'src/components/module/TextAutocomplete';
-import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 // Other
-import ImagePicker from 'react-native-image-picker';
-import produce from 'immer';
-import { uploadImage } from 'src/services/aws/s3';
-import breeds from 'src/assets/consts/breeds.json';
 
 interface Props extends LoadingProps {
   navigation: NavigationScreenProp<any>;
@@ -53,13 +53,14 @@ class CreateDog extends Component<Props, State> {
 
     ImagePicker.showImagePicker(options, res => {
       if (res.didCancel || res.error) return;
-      if (res.customButton)
+      if (res.customButton) {
         this.setState(state =>
           produce(state, draft => {
             delete draft.thumbnailFile;
             draft.thumbnail = '';
           })
         );
+      }
 
       this.setState(state =>
         produce(state, draft => {
@@ -73,8 +74,8 @@ class CreateDog extends Component<Props, State> {
   handleSubmit = async () => {
     const { createDog, navigation, email, toggleLoading } = this.props;
     const thumbnail = await uploadImage({
-      table: 'dogs',
       email,
+      table: 'dogs',
       name: this.state.name,
       type: 'thumbnail',
       file: this.state.thumbnailFile,

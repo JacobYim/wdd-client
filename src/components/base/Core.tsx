@@ -1,12 +1,11 @@
-import { connect } from 'react-redux';
-import React, { PureComponent } from 'react';
-import { NavigationScreenProp } from 'react-navigation';
-import { View, Image } from 'react-native';
 import Amplify from 'aws-amplify';
-
+import React, { PureComponent } from 'react';
+import { Image, View } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
+import { connect } from 'react-redux';
 import awsconfig from 'src/aws-exports';
-import * as userActions from 'src/store/actions/user';
 import configAxios from 'src/services/api/axios';
+import * as userActions from 'src/store/actions/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;

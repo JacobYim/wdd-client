@@ -1,5 +1,4 @@
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import CoreScreen from 'src/components/base/Core';
 import AppNavigator from './App';
 import SessionNavigator from './Session';

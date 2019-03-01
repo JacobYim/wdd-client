@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
 import produce from 'immer';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-
-import * as userActions from 'src/store/actions/user';
-import { ReducerState } from 'src/store/reducers';
+import { connect } from 'react-redux';
+import { validateEmail } from 'src/assets/functions/validate';
 import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
-import { validateEmail } from 'src/assets/functions/validate';
+import * as userActions from 'src/store/actions/user';
+import { ReducerState } from 'src/store/reducers';
 
 interface ParamInterface {
   value: string;
@@ -36,8 +35,9 @@ class ForgotPassword extends Component<Props, State> {
   getSnapshotBeforeUpdate(prevProps: Props) {
     const { error } = this.props.user;
     const prevError = prevProps.user.error;
-    if (error && (!prevError || error.status !== prevError.status))
+    if (error && (!prevError || error.status !== prevError.status)) {
       return error;
+    }
     return null;
   }
 
@@ -46,14 +46,16 @@ class ForgotPassword extends Component<Props, State> {
     state: State,
     snapshot: Props['user']['error'] | null
   ) {
-    if (snapshot)
+    if (snapshot) {
       this.setState(state =>
         produce(state, draft => {
           delete draft.email.alert;
-          if (snapshot.status === 404)
+          if (snapshot.status === 404) {
             draft.email.alert = snapshot.data.message;
+          }
         })
       );
+    }
   }
 
   mapEventToState = ({ value }: HandleChangeText) => {
@@ -72,13 +74,15 @@ class ForgotPassword extends Component<Props, State> {
     const { forgotPassword, navigation } = this.props;
     const { email } = this.state;
 
-    if (email.valid) forgotPassword({ email: email.value }, navigation);
-    else
+    if (email.valid) {
+      forgotPassword({ email: email.value }, navigation);
+    } else {
       this.setState(state =>
         produce(state, draft => {
           draft.email.alert = '올바른 이메일을 입력해주세요.';
         })
       );
+    }
   };
 
   render() {

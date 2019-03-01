@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { Text, View } from 'react-native';
-
 import { texts, views } from './LabelWrapper.styles';
 
 interface Props {

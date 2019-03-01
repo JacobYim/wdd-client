@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
@@ -54,6 +54,6 @@ export const texts = StyleSheet.create({
     fontSize: font.size.medium,
   },
   vr: {
-    color: color.black + '1A',
+    color: `${color.black}1A`,
   },
 });

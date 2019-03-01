@@ -1,7 +1,6 @@
-import { select, put, takeEvery } from 'redux-saga/effects';
-
-import { ReducerState } from 'src/store/reducers';
+import { put, select, takeEvery } from 'redux-saga/effects';
 import * as actions from 'src/store/actions/walk';
+import { ReducerState } from 'src/store/reducers';
 
 // HELPERS
 const getWalk = (state: ReducerState) => state.walk;

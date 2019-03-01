@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
+import { Image, SafeAreaView, Text, View } from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
+import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
-import { SafeAreaView, View, Text, Image } from 'react-native';
+import TopNavbar from 'src/components/module/TopNavbar';
+import * as actions from 'src/store/actions/walk';
+import { ReducerState } from 'src/store/reducers';
+import MarkerButton from './MarkerButton';
+import StatusButton from './StatusButton';
+import Trailor from './Trailor';
+import { fonts, icons, views } from './Walk.styles';
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
-import BackgroundTimer from 'react-native-background-timer';
-import { NavigationScreenProp } from 'react-navigation';
-
-import TopNavbar from 'src/components/module/TopNavbar';
-import Trailor from './Trailor';
-import StatusButton from './StatusButton';
-import MarkerButton from './MarkerButton';
-import { ReducerState } from 'src/store/reducers';
-import { views, fonts, icons } from './Walk.styles';
-import * as actions from 'src/store/actions/walk';
 
 interface WalkInfoInterface {
   unit: 'Km' | '걸음' | 'Kcal';

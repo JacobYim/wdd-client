@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'",
+    "lint": "tslint --project tsconfig.json --format stylish",
     "dev": "./scripts/map-base-url.sh && npm run debug && npm start",
     "test": "jest"
   },
@@ -49,6 +50,8 @@
     "metro-react-native-babel-preset": "^0.52.0",
     "react-test-renderer": "^16.8.2",
     "redux-devtools-extension": "^2.13.7",
+    "tslint": "^5.13.1",
+    "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.3.3"
   },
   "jest": {

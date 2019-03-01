@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { TextInput as Input } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-// Redux
 import { connect } from 'react-redux';
-import * as actions from 'src/store/actions/user';
-// Components
+import { validatePassword } from 'src/assets/functions/validate';
 import PageContainer from 'src/components/container/PageContainer';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
+import * as actions from 'src/store/actions/user';
+// Redux
+// Components
 // Other
-import { validatePassword } from 'src/assets/functions/validate';
 
 interface ParamInterface {
   value: string;
@@ -62,7 +62,7 @@ class ChangePassword extends Component<Props, State> {
     const token = navigation.getParam('token', null);
     if (token) {
       const { password } = this.state;
-      changePassword({ password: password.value, token }, navigation);
+      changePassword({ token, password: password.value }, navigation);
     }
   };
 

@@ -29,22 +29,22 @@ export const SET_DOG_FAILURE = 'dog/SET_DOG_FAILURE';
 // *** FUNCTIONS
 type Navigation = NavigationScreenProp<any>;
 
-export const getDog = (payload: { id: string }) => ({ type: GET_DOG, payload });
+export const getDog = (payload: { id: string }) => ({ payload, type: GET_DOG });
 export const createDog = (
   payload: ShortenDogInterface,
   navigation?: Navigation
 ) => ({
-  type: CREATE_DOG,
   payload,
   navigation,
+  type: CREATE_DOG,
 });
 
 export const setDogRequest = () => ({ type: SET_DOG_REQUEST });
 export const setDogSuccess = (payload: DogInterface) => ({
-  type: SET_DOG_SUCCESS,
   payload,
+  type: SET_DOG_SUCCESS,
 });
 export const setDogFailure = (payload: Response) => ({
-  type: SET_DOG_FAILURE,
   payload,
+  type: SET_DOG_FAILURE,
 });

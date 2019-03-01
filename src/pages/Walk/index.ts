@@ -1,7 +1,6 @@
 import { createSwitchNavigator } from 'react-navigation';
-
-import WalkScreen from './Walk';
 import WalkSaveScreen from './SaveWalk';
+import WalkScreen from './Walk';
 
 export default createSwitchNavigator(
   {

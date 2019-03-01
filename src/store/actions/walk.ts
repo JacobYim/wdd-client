@@ -47,31 +47,31 @@ export const CLEAR_WALK = 'walk/CLEAR_WALK';
 
 // *** FUNCTIONS
 export const updateStatus = (payload: Status) => ({
-  type: UPDATE_STATUS,
   payload,
+  type: UPDATE_STATUS,
 });
 export const updateSeconds = () => ({ type: UPDATE_SECONDS });
 export const updateSteps = (payload: number) => ({
-  type: UPDATE_STEPS,
   payload,
+  type: UPDATE_STEPS,
 });
 export const pushPin = (payload: UpdateWalkInterface) => ({
-  type: PUSH_PIN,
   payload,
+  type: PUSH_PIN,
 });
 export const updateLatestPin = (payload: PinType) => ({
-  type: UPDATE_LATEST_PIN,
   payload,
+  type: UPDATE_LATEST_PIN,
 });
 
 export const setWalkRequest = () => ({ type: SET_WALK_REQUEST });
 export const setWalkSuccess = (payload: WalkSuccessInterface) => ({
-  type: SET_WALK_SUCCESS,
   payload,
+  type: SET_WALK_SUCCESS,
 });
 export const setWalkFailure = (payload: Error) => ({
-  type: SET_WALK_FAILURE,
   payload,
+  type: SET_WALK_FAILURE,
 });
 
 export const clearWalk = () => ({ type: CLEAR_WALK });

@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react';
+import LabelWrapper from 'src/components/container/LabelWrapper';
+import { HandleChangeText } from './index';
+import { inputs as inputStyle, texts } from './TextInput.styles';
 import {
   View,
   Text,
@@ -6,10 +9,6 @@ import {
   NativeSyntheticEvent,
   TextInputFocusEventData,
 } from 'react-native';
-
-import { HandleChangeText } from './index';
-import { inputs as inputStyle, texts } from './TextInput.styles';
-import LabelWrapper from 'src/components/container/LabelWrapper';
 
 interface InputsInterface {
   [key: string]: React.RefObject<Input>;

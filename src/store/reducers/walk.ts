@@ -1,10 +1,8 @@
 import produce from 'immer';
 import { handleActions } from 'redux-actions';
-import { WalkInterface } from 'src/store/actions/walk';
-
 import * as actions from 'src/store/actions/walk';
 
-export interface WalkState extends WalkInterface {
+export interface WalkState extends actions.WalkInterface {
   error?: any;
 }
 

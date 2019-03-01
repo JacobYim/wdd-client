@@ -43,7 +43,7 @@ class Trailor extends PureComponent<Props, State> {
     const { opacity, index } = this.state;
     return (
       <Animated.Image
-        style={{ flex: 1, resizeMode: 'contain', opacity }}
+        style={{ opacity, flex: 1, resizeMode: 'contain' }}
         key={index}
         source={this.images[index]}
         onLayout={this.animateImage}

@@ -1,7 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
-
-import { views, texts } from './TextBox.styles';
+import { Text, TouchableOpacity } from 'react-native';
+import { texts, views } from './TextBox.styles';
 
 interface Props {
   value: string;

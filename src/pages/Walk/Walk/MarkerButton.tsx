@@ -1,6 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
-
+import { Dimensions, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { UpdateWalkInterface } from 'src/store/actions/walk';
 import { color } from 'src/theme';
 

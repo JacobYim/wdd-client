@@ -1,20 +1,19 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
+import { Alert, Dimensions, Image, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { NavigationScreenProp } from 'react-navigation';
+import { connect } from 'react-redux';
+import PageContainer from 'src/components/container/PageContainer';
+import * as actions from 'src/store/actions/walk';
+import { ReducerState } from 'src/store/reducers';
+import BottomButtons from './BottomButtons';
+import { icons, views } from './SaveWalk.styles';
 import MapView, {
   Callout,
   Marker,
   Polyline,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
-import { connect } from 'react-redux';
-import { View, Dimensions, Image, Alert } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
-import LinearGradient from 'react-native-linear-gradient';
-
-import BottomButtons from './BottomButtons';
-import PageContainer from 'src/components/container/PageContainer';
-import { ReducerState } from 'src/store/reducers';
-import * as actions from 'src/store/actions/walk';
-import { views, icons } from './SaveWalk.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -25,16 +24,6 @@ interface Props {
 interface State {
   peePooPins: ReducerState['walk']['pins'];
 }
-
-// const mapColorToStrokes = (pins: ReducerState['walk']['pins']) => {
-//   const pivot = Math.floor((pins.length - 2) / 3);
-//   const emptyColor = () => '#00000000';
-//   const arr1 = Array.from({ length: pivot }, emptyColor);
-//   const arr2 = Array.from({ length: pins.length - 2 * pivot - 4 }, emptyColor);
-//   return ['#127EFF'].concat(arr1, ['#5975CF'], arr2, ['#A06CA0'], arr1, [
-//     '#FF6060',
-//   ]);
-// };
 
 const center = { x: 0.5, y: 0.5 };
 
@@ -66,7 +55,7 @@ class SaveWalk extends PureComponent<Props, State> {
   googleMapDidMount = () => {
     const map = this.map.current;
     const { width, height } = Dimensions.get('window');
-    if (map)
+    if (map) {
       map.fitToCoordinates(this.props.walk.pins, {
         animated: false,
         edgePadding: {
@@ -76,11 +65,11 @@ class SaveWalk extends PureComponent<Props, State> {
           left: width * 0.12,
         },
       });
+    }
   };
 
   render() {
     const { walk } = this.props;
-    // const strokeColors = mapColorToStrokes(walk.pins);
     return (
       <>
         <MapView
@@ -155,7 +144,7 @@ class SaveWalk extends PureComponent<Props, State> {
               ),
               styles: views.bottomWrapper,
             }}
-            title={`오늘의 행복한 순간을\n기록해보세요!`}
+            title={'오늘의 행복한 순간을\n기록해보세요!'}
             scrollEnabled={false}
             titleNarrow>
             <View />

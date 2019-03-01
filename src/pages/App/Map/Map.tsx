@@ -1,15 +1,14 @@
-import React, { Component, createRef } from 'react';
 import produce from 'immer';
+import React, { Component, createRef } from 'react';
+import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import { connect } from 'react-redux';
-import { View, TouchableOpacity, Dimensions, Image } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, LatLng } from 'react-native-maps';
+import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
-
+import { connect } from 'react-redux';
 import { calcDistance } from 'src/assets/functions/calcutate';
-import { ReducerState } from 'src/store/reducers';
 import * as actions from 'src/store/actions/walk';
-import { views, icons } from './Map.styles';
+import { ReducerState } from 'src/store/reducers';
+import { icons, views } from './Map.styles';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -62,8 +61,9 @@ class Map extends Component<Props, State> {
   };
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.walk.status !== this.props.walk.status)
+    if (prevProps.walk.status !== this.props.walk.status) {
       this.setState({ statusChanged: true });
+    }
   }
 
   componentDidMount() {
@@ -119,8 +119,9 @@ class Map extends Component<Props, State> {
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
     const map = this.map.current;
-    if (map && activate)
+    if (map && activate) {
       map.animateToRegion({ ...center, ...this.initDelta }, 120);
+    }
   };
 
   handleDragMapStart = () => {

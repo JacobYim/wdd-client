@@ -1,13 +1,13 @@
+import * as Hangul from 'hangul-js';
 import React, { Component } from 'react';
 import { Modal, ScrollView, TextInput } from 'react-native';
-import * as Hangul from 'hangul-js';
-// Styles
-import { color } from 'src/theme';
-import { inputs, views } from './TextAutocomplete.styles';
-// Components
 import PageContainer from 'src/components/container/PageContainer';
 import Input, { HandleChangeText } from 'src/components/module/TextInput';
+import { color } from 'src/theme';
+import { inputs, views } from './TextAutocomplete.styles';
 import TextBox from './TextBox';
+// Styles
+// Components
 
 interface Props {
   label: string;
