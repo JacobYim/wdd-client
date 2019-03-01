@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Platform,
 } from 'react-native';
 
 interface Props {
@@ -112,7 +113,9 @@ const PageContainer: React.FC<Props> = ({
     <SafeAreaView style={views.container}>
       <TopNavbar left={navLeft} center={center} right={navRight} />
       {alwaysShowBottom ? (
-        <KeyboardAvoidingView style={views.container} behavior="padding">
+        <KeyboardAvoidingView
+          style={views.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <ScrollView style={views.contentWrapper} scrollEnabled={false}>
             {RenderTitle()}
             {children}
