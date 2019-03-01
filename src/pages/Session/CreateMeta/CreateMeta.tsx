@@ -49,7 +49,9 @@ class CreateMeta extends Component<Props, State> {
     return (
       <PageContainer
         title="환영합니다!"
-        subtitle="고객님께 더 적절한 산책과 댕댕이를 위해 몇 가지 정보를 입력해주세요."
+        subtitle={
+          '고객님과 댕댕이의 즐거운 산책을 위해 간단한 정보가 필요합니다.\n\n먼저, 보호자의 성별과 생년월일을 입력해주세요.'
+        }
         left={{ navigation }}
         right={{
           view: '건너뛰기',
