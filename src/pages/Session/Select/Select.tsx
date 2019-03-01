@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
+import Splash from 'src/components/module/Splash';
 import { texts, views } from './Select.styles';
 
 interface Props {
@@ -26,18 +27,12 @@ const BottomButtons: React.FC<Props> = ({ navigation }) => (
 
 const Select: React.FC<Props> = ({ navigation }) => (
   <>
-    <View style={views.background}>
-      <Image
-        source={require('src/assets/images/img_background.jpg')}
-        style={views.bgImage}
-      />
-    </View>
+    <Splash />
     <PageContainer
       bottom={{
         view: <BottomButtons navigation={navigation} />,
         styles: views.bottom,
-      }}
-      scrollEnabled={false}>
+      }}>
       <View style={views.wrapper}>
         <Image
           style={views.logo}

@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import awsconfig from 'src/aws-exports';
+import Splash from 'src/components/module/Splash';
 import configAxios from 'src/services/api/axios';
 import * as userActions from 'src/store/actions/user';
 
@@ -24,7 +25,7 @@ class Core extends PureComponent<Props> {
   }
 
   render() {
-    return null;
+    return <Splash />;
   }
 }
 

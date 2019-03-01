@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
 import produce from 'immer';
-import { TouchableOpacity, View, Text, Image } from 'react-native';
+import React, { Component } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-
 import PageContainer from 'src/components/container/PageContainer';
-import { views, icons, texts } from './Agreement.styles';
+import { icons, texts, views } from './Agreement.styles';
 
 interface Term {
   title: string;
@@ -103,8 +102,7 @@ class Agreement extends Component<Props, State> {
           text: '확인',
           handlePress: () => navigation.navigate('signUpUser'),
           disable: !checkAll,
-        }}
-        scrollEnabled={false}>
+        }}>
         <TouchableOpacity
           style={[
             views.checkAll,

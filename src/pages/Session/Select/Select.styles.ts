@@ -6,20 +6,10 @@ const { width, height } = Dimensions.get('window');
 const signInHeight = 32;
 
 export const views = StyleSheet.create({
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    paddingHorizontal: 6,
-    backgroundColor: color.white,
-  },
   wrapper: {
     width: '100%',
     alignItems: 'center',
     marginTop: height * 0.07,
-  },
-  bgImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
   },
   logo: {
     width: width * 0.54,

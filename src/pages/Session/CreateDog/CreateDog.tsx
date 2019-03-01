@@ -101,8 +101,7 @@ class CreateDog extends Component<Props, State> {
             text: '시작하기',
             handlePress: this.handleSubmit,
             disable: !name || !breed || !gender,
-          }}
-          scrollEnabled={false}>
+          }}>
           <View style={views.thumbnailWrapper}>
             <TouchableOpacity
               activeOpacity={0.7}

@@ -1,12 +1,11 @@
+import moment from 'moment';
 import React, { Component } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
-import moment from 'moment';
-
-import * as userActions from 'src/store/actions/user';
 import PageContainer from 'src/components/container/PageContainer';
 import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
+import * as userActions from 'src/store/actions/user';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -60,8 +59,7 @@ class CreateMeta extends Component<Props, State> {
           text: '다음',
           handlePress: this.handleSubmit,
           disable: !this.state.gender || !this.state.birth,
-        }}
-        scrollEnabled={false}>
+        }}>
         <Selector
           name="gender"
           label="성별"

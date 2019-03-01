@@ -12,7 +12,7 @@ export const texts = StyleSheet.create({
 export const inputs = StyleSheet.create({
   text: {
     // outer size
-    height: 41,
+    height: 49,
     // inner size
     alignItems: 'center',
     paddingHorizontal: 12,

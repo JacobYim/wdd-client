@@ -16,6 +16,7 @@ const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
         customStyles={{
           dateInput: views.dateInput,
           btnTextConfirm: texts.btnTextConfirm,
+          dateText: texts.dateText,
         }}
         date={value}
         mode="date"

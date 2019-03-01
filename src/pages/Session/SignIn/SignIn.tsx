@@ -116,10 +116,7 @@ class SignIn extends Component<Props, State> {
     const { email, password } = this.state;
 
     return (
-      <PageContainer
-        left={{ navigation }}
-        title="이메일로 로그인"
-        scrollEnabled={false}>
+      <PageContainer left={{ navigation }} title="이메일로 로그인">
         <TextInput
           label="이메일"
           name="email"

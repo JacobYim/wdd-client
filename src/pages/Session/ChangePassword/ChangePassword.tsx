@@ -79,8 +79,7 @@ class ChangePassword extends Component<Props, State> {
           text: '비밀번호 변경',
           handlePress: this.handleSubmit,
           disable: !password.valid || !passwordCheck.valid,
-        }}
-        scrollEnabled={false}>
+        }}>
         <TextInput
           label="새 비밀번호"
           name="password"

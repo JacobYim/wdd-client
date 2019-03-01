@@ -3,7 +3,6 @@ import LabelWrapper from 'src/components/container/LabelWrapper';
 import { HandleChangeText } from './index';
 import { inputs as inputStyle, texts } from './TextInput.styles';
 import {
-  View,
   Text,
   TextInput as Input,
   NativeSyntheticEvent,

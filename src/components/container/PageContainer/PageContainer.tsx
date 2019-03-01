@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { NavigationScreenProp } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { texts, views } from './PageContainer.styles';
@@ -81,7 +82,7 @@ const PageContainer: React.FC<Props> = ({
   return (
     <SafeAreaView style={views.container}>
       <TopNavbar left={navLeft} center={center} right={navRight} />
-      <ScrollView style={views.contentWrapper} {...scrollOptions}>
+      <KeyboardAwareScrollView style={views.contentWrapper} {...scrollOptions}>
         {title && (
           <View style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
             <Text style={texts.title}>{title}</Text>
@@ -89,7 +90,7 @@ const PageContainer: React.FC<Props> = ({
           </View>
         )}
         {children}
-      </ScrollView>
+      </KeyboardAwareScrollView>
       {bottom && (
         <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>
       )}
