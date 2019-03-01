@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { width } = Dimensions.get('window');
-const btnSize = 50;
+const btnSize = 60;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     height: btnSize,
     marginTop: width * 0.088 - btnSize / 2,
     borderRadius: btnSize / 2,
-    backgroundColor: color.blue,
+    backgroundColor: color.bluePastel,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: color.black,
@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   icon: {
-    width: '52%',
-    height: '52%',
+    width: '46%',
+    height: '46%',
     resizeMode: 'contain',
   },
 });

@@ -112,6 +112,10 @@ class Walk extends Component<Props, State> {
                   ),
                 }}
               />
+              <Image
+                style={icons.gif}
+                source={require('src/assets/images/img_walk_test.png')}
+              />
               <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>
             </View>
             <View style={views.bottomWrapper}>

@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 export const statusBtn = width * 0.293;
 const whiteBackRadius =
   (Math.pow(width / 2, 2) + Math.pow(statusBtn / 2, 2)) / statusBtn;
@@ -15,6 +15,8 @@ export const views = StyleSheet.create({
   topWrapper: {
     flex: 0.54,
     alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingTop: 12,
     zIndex: 1,
   },
   bottomWrapper: {
@@ -40,7 +42,7 @@ export const views = StyleSheet.create({
   },
   gpsInfoWrapper: {
     width: '100%',
-    marginTop: '4.5%',
+    marginTop: height * 0.045,
     paddingHorizontal: '11.5%',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -60,7 +62,17 @@ export const views = StyleSheet.create({
 });
 
 export const icons = StyleSheet.create({
-  top: { width: 24, height: 24, resizeMode: 'contain' },
+  top: {
+    width: 26,
+    height: 26,
+    resizeMode: 'contain',
+  },
+  gif: {
+    marginTop: 21,
+    width: width * 0.7,
+    height: height * 0.3,
+    resizeMode: 'contain',
+  },
 });
 
 export const fonts = StyleSheet.create({
