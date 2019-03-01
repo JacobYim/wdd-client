@@ -32,7 +32,8 @@ const Select: React.FC<Props> = ({ navigation }) => (
       bottom={{
         view: <BottomButtons navigation={navigation} />,
         styles: views.bottom,
-      }}>
+      }}
+      scrollEnabled={false}>
       <View style={views.wrapper}>
         <Image
           style={views.logo}

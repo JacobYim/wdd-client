@@ -47,7 +47,7 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
         },
         {
           text: '나중에',
-          onPress: () => navigateToApp(action.navigation),
+          onPress: () => action.navigation.navigate('app'),
           style: 'cancel',
         },
       ]);

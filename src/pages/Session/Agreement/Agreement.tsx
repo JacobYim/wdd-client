@@ -102,7 +102,8 @@ class Agreement extends Component<Props, State> {
           text: '확인',
           handlePress: () => navigation.navigate('signUpUser'),
           disable: !checkAll,
-        }}>
+        }}
+        scrollEnabled={false}>
         <TouchableOpacity
           style={[
             views.checkAll,
