@@ -5,11 +5,12 @@ import TopNavbar from 'src/components/module/TopNavbar';
 import { texts, views } from './PageContainer.styles';
 import {
   Image,
+  KeyboardAvoidingView,
   SafeAreaView,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 
 interface Props {
@@ -39,6 +40,7 @@ interface Props {
     disable: boolean;
   };
   // options
+  alwaysShowBottom?: boolean;
   [x: string]: any;
 }
 
@@ -52,6 +54,7 @@ const PageContainer: React.FC<Props> = ({
   center,
   bottom,
   bottomBox,
+  alwaysShowBottom,
   ...scrollOptions
 }) => {
   const navLeft = left
@@ -78,19 +81,15 @@ const PageContainer: React.FC<Props> = ({
           ),
       }
     : undefined;
-
-  return (
-    <SafeAreaView style={views.container}>
-      <TopNavbar left={navLeft} center={center} right={navRight} />
-      <KeyboardAwareScrollView style={views.contentWrapper} {...scrollOptions}>
-        {title && (
-          <View style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
-            <Text style={texts.title}>{title}</Text>
-            {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
-          </View>
-        )}
-        {children}
-      </KeyboardAwareScrollView>
+  const RenderTitle = () =>
+    title && (
+      <View style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
+        <Text style={texts.title}>{title}</Text>
+        {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
+      </View>
+    );
+  const RenderBottom = () => (
+    <>
       {bottom && (
         <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>
       )}
@@ -105,6 +104,31 @@ const PageContainer: React.FC<Props> = ({
           disabled={bottomBox.disable}>
           <Text style={texts.bottomBox}>{bottomBox.text}</Text>
         </TouchableOpacity>
+      )}
+    </>
+  );
+
+  return (
+    <SafeAreaView style={views.container}>
+      <TopNavbar left={navLeft} center={center} right={navRight} />
+      {alwaysShowBottom ? (
+        <KeyboardAvoidingView style={views.container} behavior="padding">
+          <ScrollView style={views.contentWrapper} scrollEnabled={false}>
+            {RenderTitle()}
+            {children}
+          </ScrollView>
+          {RenderBottom()}
+        </KeyboardAvoidingView>
+      ) : (
+        <>
+          <KeyboardAwareScrollView
+            style={views.contentWrapper}
+            {...scrollOptions}>
+            {RenderTitle()}
+            {children}
+          </KeyboardAwareScrollView>
+          {RenderBottom()}
+        </>
       )}
     </SafeAreaView>
   );
