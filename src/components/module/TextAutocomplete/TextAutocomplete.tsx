@@ -12,17 +12,17 @@ interface Props {
   name: string;
   data: string[];
   handleChange: (data: HandleChangeText) => void;
-  defalutData?: string[];
+  trailData?: string[];
 }
 
 interface State {
-  value: string;
+  keyword: string;
   showModal: boolean;
   autocomplete: string[];
 }
 
 class Search extends Component<Props, State> {
-  state: State = { value: '', showModal: false, autocomplete: [] };
+  state: State = { keyword: '', showModal: false, autocomplete: [] };
 
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
@@ -39,25 +39,25 @@ class Search extends Component<Props, State> {
     });
   };
 
-  handleTextChange = (value: string) => {
-    const autocomplete = this.getAutocomplete(value);
-    this.setState({ value, autocomplete });
+  handleTextChange = (keyword: string) => {
+    const autocomplete = this.getAutocomplete(keyword);
+    this.setState({ keyword, autocomplete });
   };
 
-  handleTextPress = async (value: string) => {
-    await this.setState({ value });
+  handleTextPress = async (keyword: string) => {
+    await this.setState({ keyword });
     this.handleSubmit();
   };
 
   handleSubmit = () => {
     const { name, handleChange } = this.props;
-    handleChange({ name, value: this.state.value.trim() });
+    handleChange({ name, value: this.state.keyword.trim() });
     this.toggleModal();
   };
 
   render() {
-    const { name, label, defalutData = [] } = this.props;
-    const autocomplete = this.state.autocomplete.concat(defalutData);
+    const { name, label, trailData = [] } = this.props;
+    const autocomplete = this.state.autocomplete.concat(trailData);
 
     return (
       <>
@@ -69,7 +69,7 @@ class Search extends Component<Props, State> {
           <PageContainer
             right={{ view: '닫기', handlePress: this.toggleModal }}>
             <TextInput
-              value={this.state.value}
+              value={this.state.keyword}
               placeholder={`찾으시는 ${label}을 입력해주세요`}
               onChangeText={this.handleTextChange}
               onSubmitEditing={this.handleSubmit}
@@ -86,6 +86,7 @@ class Search extends Component<Props, State> {
               {autocomplete.map(item => (
                 <TextBox
                   value={item}
+                  keyword={this.state.keyword}
                   handlePress={this.handleTextPress}
                   key={item}
                 />
@@ -98,7 +99,7 @@ class Search extends Component<Props, State> {
           label={label}
           handleFocus={this.toggleModal}
           handleChange={() => null}
-          value={this.state.value}
+          value={this.state.keyword}
         />
       </>
     );
