@@ -32,7 +32,9 @@ class TextInput extends PureComponent<Props, State> {
   state: State = { isFocus: false };
 
   handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    const { handleFocus } = this.props;
     this.setState({ isFocus: true });
+    if (handleFocus) handleFocus(e);
   };
 
   handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -48,7 +50,7 @@ class TextInput extends PureComponent<Props, State> {
     const { inputs, name } = this.props;
     if (inputs) {
       const keyArray = Object.keys(inputs);
-      keyArray.map((key, index) => {
+      keyArray.forEach((key, index) => {
         if (key === name) {
           // select next input
           const { current } = inputs[keyArray[index + 1]];
@@ -75,7 +77,7 @@ class TextInput extends PureComponent<Props, State> {
           value={value}
           multiline={false}
           onChangeText={this.handleChangeWithName}
-          onFocus={options.handleFocus || this.handleFocus}
+          onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           returnKeyType={returnKeyType || 'default'}
           autoCapitalize="none"
