@@ -88,7 +88,7 @@ class CreateDog extends Component<Props, State> {
     return (
       <>
         <PageContainer
-          left={{ navigation }}
+          left={{ navigation, routeName: 'createMeta' }}
           right={{
             view: '건너뛰기',
             handlePress: () => navigation.navigate('app'),

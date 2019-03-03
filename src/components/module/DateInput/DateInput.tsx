@@ -16,11 +16,13 @@ const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
         customStyles={{
           dateInput: views.dateInput,
           btnTextConfirm: texts.btnTextConfirm,
-          dateText: texts.dateText,
+          placeholderText: [texts.dateText, texts.placeholder],
+          dateText: [texts.dateText, texts.value],
         }}
         date={value}
         mode="date"
         locale="ko-KO"
+        placeholder={`${label}을 입력해주세요`}
         format="YYYY년 MM월 DD일"
         confirmBtnText="확인"
         cancelBtnText="취소"

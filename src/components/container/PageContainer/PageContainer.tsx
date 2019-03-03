@@ -24,6 +24,7 @@ interface Props {
   // top
   left?: {
     navigation: NavigationScreenProp<any>;
+    routeName?: string;
   };
   right?: {
     view: string | ReactNode;
@@ -61,7 +62,11 @@ const PageContainer: React.FC<Props> = ({
   const navLeft = left
     ? {
         handlePress: () => {
-          left.navigation.goBack(null);
+          if (left.routeName) {
+            left.navigation.navigate(left.routeName);
+          } else {
+            left.navigation.goBack(null);
+          }
         },
         view: (
           <Image

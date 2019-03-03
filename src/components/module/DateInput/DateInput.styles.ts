@@ -21,8 +21,13 @@ export const texts = StyleSheet.create({
     color: color.blue,
   },
   dateText: {
-    color: color.black33,
     fontSize: font.size.medium,
     alignSelf: 'flex-start',
+  },
+  value: {
+    color: color.black33,
+  },
+  placeholder: {
+    color: color.black33Opacity,
   },
 });

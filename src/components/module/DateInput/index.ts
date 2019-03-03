@@ -6,7 +6,7 @@ export interface HandleChangeDate {
 export interface Props {
   label: string;
   name: string;
-  value: Date;
+  value?: Date;
   handleChange: (data: HandleChangeDate) => void;
 }
 

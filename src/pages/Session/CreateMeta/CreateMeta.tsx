@@ -14,15 +14,12 @@ interface Props {
 
 interface State {
   gender: 'M' | 'F' | '';
-  birth: Date;
+  birth?: Date;
 }
 
 class CreateMeta extends Component<Props, State> {
   state: State = {
     gender: '',
-    birth: moment()
-      .subtract(20, 'years')
-      .toDate(),
   };
 
   handleSubmit = () => {
@@ -44,6 +41,7 @@ class CreateMeta extends Component<Props, State> {
   };
 
   render() {
+    const { gender, birth } = this.state;
     const { navigation } = this.props;
 
     return (
@@ -60,7 +58,7 @@ class CreateMeta extends Component<Props, State> {
         bottomBox={{
           text: '다음',
           handlePress: this.handleSubmit,
-          disable: !this.state.gender || !this.state.birth,
+          disable: !gender || !birth,
         }}>
         <Selector
           name="gender"
@@ -71,7 +69,7 @@ class CreateMeta extends Component<Props, State> {
         <DateInput
           name="birth"
           label="생년월일"
-          value={this.state.birth}
+          value={birth}
           handleChange={this.handleDateChange}
         />
       </PageContainer>
