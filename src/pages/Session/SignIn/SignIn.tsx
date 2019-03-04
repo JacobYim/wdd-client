@@ -117,37 +117,39 @@ class SignIn extends Component<Props, State> {
 
     return (
       <PageContainer left={{ navigation }} title="이메일로 로그인">
-        <TextInput
-          label="이메일"
-          name="email"
-          value={email.value}
-          alert={email.alert}
-          keyboardType="email-address"
-          returnKeyType="next"
-          inputs={this.inputs}
-          handleChange={this.handleChange}
-        />
-        <TextInput
-          label="비밀번호"
-          name="password"
-          value={password.value}
-          alert={password.alert}
-          secureTextEntry={true}
-          returnKeyType="send"
-          inputs={this.inputs}
-          handleChange={this.handleChange}
-          onSubmitEditing={this.handleSignIn}
-        />
-        <RoundButton
-          label="로그인"
-          active={email.valid && password.valid}
-          handlePress={this.handleSignIn}
-        />
-        <TouchableOpacity
-          style={views.forgotPassword}
-          onPress={() => navigation.navigate('forgotPassword')}>
-          <Text style={texts.forgotPassword}>비밀번호를 잊으셨나요?</Text>
-        </TouchableOpacity>
+        <>
+          <TextInput
+            label="이메일"
+            name="email"
+            value={email.value}
+            alert={email.alert}
+            keyboardType="email-address"
+            returnKeyType="next"
+            inputs={this.inputs}
+            handleChange={this.handleChange}
+          />
+          <TextInput
+            label="비밀번호"
+            name="password"
+            value={password.value}
+            alert={password.alert}
+            secureTextEntry={true}
+            returnKeyType="send"
+            inputs={this.inputs}
+            handleChange={this.handleChange}
+            onSubmitEditing={this.handleSignIn}
+          />
+          <RoundButton
+            label="로그인"
+            active={email.valid && password.valid}
+            handlePress={this.handleSignIn}
+          />
+          <TouchableOpacity
+            style={views.forgotPassword}
+            onPress={() => navigation.navigate('forgotPassword')}>
+            <Text style={texts.forgotPassword}>비밀번호를 잊으셨나요?</Text>
+          </TouchableOpacity>
+        </>
       </PageContainer>
     );
   }

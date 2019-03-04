@@ -77,19 +77,21 @@ class CreateMeta extends PureComponent<Props, State> {
           handlePress: this.handleSubmit,
           disable: !gender || !birth,
         }}>
-        <Selector
-          name="gender"
-          label="성별"
-          value={gender}
-          list={[{ name: 'M', label: '남자' }, { name: 'F', label: '여자' }]}
-          handleChange={this.handleGenderChange}
-        />
-        <DateInput
-          name="birth"
-          label="생년월일"
-          value={birth}
-          handleChange={this.handleDateChange}
-        />
+        <>
+          <Selector
+            name="gender"
+            label="성별"
+            value={gender}
+            list={[{ name: 'M', label: '남자' }, { name: 'F', label: '여자' }]}
+            handleChange={this.handleGenderChange}
+          />
+          <DateInput
+            name="birth"
+            label="생년월일"
+            value={birth}
+            handleChange={this.handleDateChange}
+          />
+        </>
       </PageContainer>
     );
   }

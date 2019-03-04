@@ -98,8 +98,7 @@ class ForgotPassword extends Component<Props, State> {
           text: '인증코드 받기',
           disable: !email.valid,
           handlePress: this.handleSendEmail,
-        }}
-        alwaysShowBottom>
+        }}>
         <TextInput
           label="이메일 주소 입력"
           name="email"

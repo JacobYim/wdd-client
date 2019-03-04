@@ -1,5 +1,4 @@
-import React, { ReactNode } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, { PureComponent, ReactElement, ReactNode } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { texts, views } from './PageContainer.styles';
@@ -16,7 +15,7 @@ import {
 
 interface Props {
   // default
-  children: ReactNode;
+  children: ReactElement<any>;
   // title
   title?: string;
   subtitle?: string;
@@ -41,105 +40,110 @@ interface Props {
     handlePress: () => void;
     disable: boolean;
   };
-  // options
-  alwaysShowBottom?: boolean;
-  [x: string]: any;
+  // option
+  extraScrollHeight?: number;
 }
 
-const PageContainer: React.FC<Props> = ({
+const ContentWrapper: React.FC<{ style: object; children: ReactNode }> = ({
+  style,
   children,
-  title,
-  subtitle,
-  titleNarrow,
-  left,
-  right,
-  center,
-  bottom,
-  bottomBox,
-  alwaysShowBottom,
-  ...scrollOptions
-}) => {
-  const navLeft = left
-    ? {
-        handlePress: () => {
-          if (left.routeName) {
-            left.navigation.navigate(left.routeName);
-          } else {
-            left.navigation.goBack(null);
-          }
-        },
-        view: (
-          <Image
-            style={views.backIcon}
-            source={require('src/assets/icons/ic_back.png')}
-          />
-        ),
-      }
-    : undefined;
-  const navRight = right
-    ? {
-        handlePress: right.handlePress,
-        view:
-          typeof right.view === 'string' ? (
-            <Text style={texts.top}>{right.view}</Text>
-          ) : (
-            right.view
-          ),
-      }
-    : undefined;
-  const RenderTitle = () =>
-    title && (
-      <View style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
-        <Text style={texts.title}>{title}</Text>
-        {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
-      </View>
-    );
-  const RenderBottom = () => (
-    <>
-      {bottom && (
-        <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>
-      )}
-      {bottomBox && (
-        <TouchableOpacity
-          style={[
-            views.bottomBox,
-            views[bottomBox.disable ? 'boxDisable' : 'boxEnable'],
-          ]}
-          onPress={bottomBox.handlePress}
-          activeOpacity={0.7}
-          disabled={bottomBox.disable}>
-          <Text style={texts.bottomBox}>{bottomBox.text}</Text>
-        </TouchableOpacity>
-      )}
-    </>
+}) =>
+  Platform.OS === 'ios' ? (
+    <KeyboardAvoidingView style={style} behavior="padding">
+      {children}
+    </KeyboardAvoidingView>
+  ) : (
+    <>{children}</>
   );
 
-  return (
-    <SafeAreaView style={views.container}>
-      <TopNavbar left={navLeft} center={center} right={navRight} />
-      {alwaysShowBottom ? (
-        <KeyboardAvoidingView
-          style={views.container}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-          <ScrollView style={views.contentWrapper} scrollEnabled={false}>
-            {RenderTitle()}
-            {children}
-          </ScrollView>
-          {RenderBottom()}
-        </KeyboardAvoidingView>
-      ) : (
-        <>
-          <KeyboardAwareScrollView
-            style={views.contentWrapper}
-            {...scrollOptions}>
-            {RenderTitle()}
-            {children}
-          </KeyboardAwareScrollView>
-          {RenderBottom()}
-        </>
-      )}
-    </SafeAreaView>
+class PageContainer extends PureComponent<Props> {
+  private scroll = React.createRef<ScrollView>();
+
+  scrollTo = (height: number) => {
+    const scroll = this.scroll.current;
+    if (scroll) {
+      scroll.scrollTo({ x: 0, y: height, animated: true });
+    }
+  };
+
+  renderChildrenWithProps = () => (
+    <>{React.cloneElement(this.props.children, { scrollTo: this.scrollTo })}</>
   );
-};
+
+  render() {
+    const {
+      title,
+      subtitle,
+      titleNarrow,
+      left,
+      right,
+      center,
+      bottom,
+      bottomBox,
+      extraScrollHeight = 60,
+    } = this.props;
+    const navLeft = left && {
+      handlePress: () => {
+        if (left.routeName) {
+          left.navigation.navigate(left.routeName);
+        } else {
+          left.navigation.goBack(null);
+        }
+      },
+      view: (
+        <Image
+          style={views.backIcon}
+          source={require('src/assets/icons/ic_back.png')}
+        />
+      ),
+    };
+    const navRight = right && {
+      handlePress: right.handlePress,
+      view:
+        typeof right.view === 'string' ? (
+          <Text style={texts.top}>{right.view}</Text>
+        ) : (
+          right.view
+        ),
+    };
+
+    return (
+      <SafeAreaView style={views.container}>
+        <TopNavbar left={navLeft} center={center} right={navRight} />
+        <ContentWrapper style={views.container}>
+          <ScrollView
+            ref={this.scroll}
+            style={views.contentWrapper}
+            scrollEnabled={bottomBox !== undefined}
+            showsVerticalScrollIndicator={false}>
+            {title && (
+              <View style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
+                <Text style={texts.title}>{title}</Text>
+                {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
+              </View>
+            )}
+            {this.renderChildrenWithProps()}
+            {bottomBox && <View style={{ height: extraScrollHeight }} />}
+          </ScrollView>
+          {bottom && (
+            <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>
+          )}
+          {bottomBox && (
+            <TouchableOpacity
+              style={[
+                views.bottomBox,
+                views[bottomBox.disable ? 'boxDisable' : 'boxEnable'],
+              ]}
+              onPress={bottomBox.handlePress}
+              activeOpacity={0.7}
+              disabled={bottomBox.disable}>
+              <Text style={texts.bottomBox}>{bottomBox.text}</Text>
+            </TouchableOpacity>
+          )}
+        </ContentWrapper>
+      </SafeAreaView>
+    );
+  }
+}
 
 export default PageContainer;

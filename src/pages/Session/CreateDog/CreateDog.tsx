@@ -98,51 +98,53 @@ class CreateDog extends Component<Props, State> {
             handlePress: this.handleSubmit,
             disable: !name || !breed || !gender,
           }}>
-          <View style={views.thumbnailWrapper}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={this.handleImagePicker}>
-              <Image
-                style={views.thumbnail}
-                source={
-                  thumbnail
-                    ? { uri: thumbnail }
-                    : require('src/assets/icons/ic_thumbnail.png')
-                }
-              />
-              <Image
-                style={views.edit}
-                source={require('src/assets/icons/ic_edit.png')}
-              />
-            </TouchableOpacity>
-            <Text style={texts.notice}>
-              반려동물의 정보를 입력해주세요!{'\n'}
-              회원가입 후, 프로필 설정에서 변경 가능합니다.
-            </Text>
-          </View>
-          <TextInput
-            name="name"
-            label="이름"
-            value={name}
-            handleChange={this.handleChange}
-          />
-          <TextAutocomplete
-            name="breed"
-            label="품종"
-            data={breeds}
-            trailData={['믹스', '알 수 없음']}
-            handleChange={this.handleChange}
-          />
-          <Selector
-            name="gender"
-            label="성별"
-            handleChange={this.handleChange}
-            list={[
-              { name: 'M', label: '수컷' },
-              { name: 'F', label: '암컷' },
-              { name: 'N', label: '중성화' },
-            ]}
-          />
+          <>
+            <View style={views.thumbnailWrapper}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={this.handleImagePicker}>
+                <Image
+                  style={views.thumbnail}
+                  source={
+                    thumbnail
+                      ? { uri: thumbnail }
+                      : require('src/assets/icons/ic_thumbnail.png')
+                  }
+                />
+                <Image
+                  style={views.edit}
+                  source={require('src/assets/icons/ic_edit.png')}
+                />
+              </TouchableOpacity>
+              <Text style={texts.notice}>
+                반려동물의 정보를 입력해주세요!{'\n'}
+                회원가입 후, 프로필 설정에서 변경 가능합니다.
+              </Text>
+            </View>
+            <TextInput
+              name="name"
+              label="이름"
+              value={name}
+              handleChange={this.handleChange}
+            />
+            <TextAutocomplete
+              name="breed"
+              label="품종"
+              data={breeds}
+              trailData={['믹스', '알 수 없음']}
+              handleChange={this.handleChange}
+            />
+            <Selector
+              name="gender"
+              label="성별"
+              handleChange={this.handleChange}
+              list={[
+                { name: 'M', label: '수컷' },
+                { name: 'F', label: '암컷' },
+                { name: 'N', label: '중성화' },
+              ]}
+            />
+          </>
         </PageContainer>
       </>
     );
