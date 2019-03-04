@@ -34,12 +34,7 @@ const styles = StyleSheet.create({
 });
 
 const MarkerButton: React.FC<Props> = ({ icon, onPress }) => (
-  <TouchableScale
-    style={styles.wrapper}
-    pressInTension={70}
-    pressOutTension={50}
-    friction={5}
-    onPressIn={onPress}>
+  <TouchableScale style={styles.wrapper} onPress={onPress}>
     <Image source={icon} style={styles.icon} />
   </TouchableScale>
 );
