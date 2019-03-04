@@ -1,6 +1,7 @@
-import React, { PureComponent, ReactElement, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
+import { ContextInterface } from './index';
 import { texts, views } from './PageContainer.styles';
 import {
   Image,
@@ -15,7 +16,7 @@ import {
 
 interface Props {
   // default
-  children: ReactElement<any>;
+  children: ReactNode;
   // title
   title?: string;
   subtitle?: string;
@@ -56,6 +57,8 @@ const ContentWrapper: React.FC<{ style: object; children: ReactNode }> = ({
     <>{children}</>
   );
 
+export const PageContext = React.createContext<ContextInterface | null>(null);
+
 class PageContainer extends PureComponent<Props> {
   private scroll = React.createRef<ScrollView>();
 
@@ -66,12 +69,9 @@ class PageContainer extends PureComponent<Props> {
     }
   };
 
-  renderChildrenWithProps = () => (
-    <>{React.cloneElement(this.props.children, { scrollTo: this.scrollTo })}</>
-  );
-
   render() {
     const {
+      children,
       title,
       subtitle,
       titleNarrow,
@@ -80,7 +80,7 @@ class PageContainer extends PureComponent<Props> {
       center,
       bottom,
       bottomBox,
-      extraScrollHeight = 60,
+      extraScrollHeight = 85,
     } = this.props;
     const navLeft = left && {
       handlePress: () => {
@@ -108,40 +108,43 @@ class PageContainer extends PureComponent<Props> {
     };
 
     return (
-      <SafeAreaView style={views.container}>
-        <TopNavbar left={navLeft} center={center} right={navRight} />
-        <ContentWrapper style={views.container}>
-          <ScrollView
-            ref={this.scroll}
-            style={views.contentWrapper}
-            scrollEnabled={bottomBox !== undefined}
-            showsVerticalScrollIndicator={false}>
-            {title && (
-              <View style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
-                <Text style={texts.title}>{title}</Text>
-                {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
-              </View>
+      <PageContext.Provider value={{ scrollTo: this.scrollTo }}>
+        <SafeAreaView style={views.container}>
+          <TopNavbar left={navLeft} center={center} right={navRight} />
+          <ContentWrapper style={views.container}>
+            <ScrollView
+              ref={this.scroll}
+              style={views.contentWrapper}
+              scrollEnabled={bottomBox !== undefined}
+              showsVerticalScrollIndicator={false}>
+              {title && (
+                <View
+                  style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
+                  <Text style={texts.title}>{title}</Text>
+                  {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
+                </View>
+              )}
+              {children}
+              {bottomBox && <View style={{ height: extraScrollHeight }} />}
+            </ScrollView>
+            {bottom && (
+              <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>
             )}
-            {this.renderChildrenWithProps()}
-            {bottomBox && <View style={{ height: extraScrollHeight }} />}
-          </ScrollView>
-          {bottom && (
-            <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>
-          )}
-          {bottomBox && (
-            <TouchableOpacity
-              style={[
-                views.bottomBox,
-                views[bottomBox.disable ? 'boxDisable' : 'boxEnable'],
-              ]}
-              onPress={bottomBox.handlePress}
-              activeOpacity={0.7}
-              disabled={bottomBox.disable}>
-              <Text style={texts.bottomBox}>{bottomBox.text}</Text>
-            </TouchableOpacity>
-          )}
-        </ContentWrapper>
-      </SafeAreaView>
+            {bottomBox && (
+              <TouchableOpacity
+                style={[
+                  views.bottomBox,
+                  views[bottomBox.disable ? 'boxDisable' : 'boxEnable'],
+                ]}
+                onPress={bottomBox.handlePress}
+                activeOpacity={0.7}
+                disabled={bottomBox.disable}>
+                <Text style={texts.bottomBox}>{bottomBox.text}</Text>
+              </TouchableOpacity>
+            )}
+          </ContentWrapper>
+        </SafeAreaView>
+      </PageContext.Provider>
     );
   }
 }

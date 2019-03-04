@@ -103,28 +103,26 @@ class Agreement extends Component<Props, State> {
           handlePress: () => navigation.navigate('signUpUser'),
           disable: !checkAll,
         }}>
-        <>
-          <TouchableOpacity
+        <TouchableOpacity
+          style={[
+            views.checkAll,
+            views[checkAll ? 'checkAllOn' : 'checkAllOff'],
+          ]}
+          activeOpacity={0.95}
+          onPress={this.handleCheckAll}>
+          <Text
             style={[
-              views.checkAll,
-              views[checkAll ? 'checkAllOn' : 'checkAllOff'],
-            ]}
-            activeOpacity={0.95}
-            onPress={this.handleCheckAll}>
-            <Text
-              style={[
-                texts.checkAll,
-                texts[checkAll ? 'checkAllOn' : 'checkAllOff'],
-              ]}>
-              아래 약관에 모두 동의합니다.
-            </Text>
-            <Image
-              style={icons.agreeDog}
-              source={require('src/assets/icons/ic_agree.png')}
-            />
-          </TouchableOpacity>
-          {terms.map((term, index) => this.renderTerm({ ...term, index }))}
-        </>
+              texts.checkAll,
+              texts[checkAll ? 'checkAllOn' : 'checkAllOff'],
+            ]}>
+            아래 약관에 모두 동의합니다.
+          </Text>
+          <Image
+            style={icons.agreeDog}
+            source={require('src/assets/icons/ic_agree.png')}
+          />
+        </TouchableOpacity>
+        {terms.map((term, index) => this.renderTerm({ ...term, index }))}
       </PageContainer>
     );
   }
