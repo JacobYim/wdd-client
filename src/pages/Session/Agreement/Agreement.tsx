@@ -102,8 +102,7 @@ class Agreement extends Component<Props, State> {
           text: '확인',
           handlePress: () => navigation.navigate('signUpUser'),
           disable: !checkAll,
-        }}
-        alwaysShowBottom>
+        }}>
         <TouchableOpacity
           style={[
             views.checkAll,

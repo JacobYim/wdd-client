@@ -1,38 +1,52 @@
 import moment from 'moment';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import PageContainer from 'src/components/container/PageContainer';
 import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 import * as userActions from 'src/store/actions/user';
+import { ReducerState } from 'src/store/reducers';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
   createMeta: typeof userActions.createMeta;
+  user: ReducerState['user'];
 }
 
 interface State {
-  gender: 'M' | 'F' | '';
-  birth: Date;
+  getUserFromStore: boolean;
+  gender?: 'M' | 'F';
+  birth?: Date;
 }
 
-class CreateMeta extends Component<Props, State> {
-  state: State = {
-    gender: '',
-    birth: moment()
-      .subtract(20, 'years')
-      .toDate(),
-  };
+class CreateMeta extends PureComponent<Props, State> {
+  state: State = { getUserFromStore: false };
+
+  static getDerivedStateFromProps({ user }: Props, state: State) {
+    if (!state.getUserFromStore) {
+      if (user.gender && user.birth) {
+        return {
+          gender: user.gender as ('M' | 'F'),
+          birth: new Date(user.birth),
+          getUserFromStore: true,
+        };
+      }
+      return { gender: undefined, birth: undefined, getUserFromStore: true };
+    }
+    return null;
+  }
 
   handleSubmit = () => {
     const { createMeta, navigation } = this.props;
-    const payload = {
-      gender: this.state.gender,
-      birth: moment(this.state.birth).format('YYYY.MM.DD'),
-    };
-
-    createMeta(payload, navigation);
+    const { birth, gender } = this.state;
+    if (gender) {
+      const payload = {
+        gender,
+        birth: moment(birth).format('YYYY.MM.DD'),
+      };
+      createMeta(payload, navigation);
+    }
   };
 
   handleGenderChange = ({ name, value }: HandleChangeSelector) => {
@@ -44,6 +58,7 @@ class CreateMeta extends Component<Props, State> {
   };
 
   render() {
+    const { gender, birth } = this.state;
     const { navigation } = this.props;
 
     return (
@@ -60,18 +75,19 @@ class CreateMeta extends Component<Props, State> {
         bottomBox={{
           text: '다음',
           handlePress: this.handleSubmit,
-          disable: !this.state.gender || !this.state.birth,
+          disable: !gender || !birth,
         }}>
         <Selector
           name="gender"
           label="성별"
+          value={gender}
           list={[{ name: 'M', label: '남자' }, { name: 'F', label: '여자' }]}
           handleChange={this.handleGenderChange}
         />
         <DateInput
           name="birth"
           label="생년월일"
-          value={this.state.birth}
+          value={birth}
           handleChange={this.handleDateChange}
         />
       </PageContainer>
@@ -80,7 +96,7 @@ class CreateMeta extends Component<Props, State> {
 }
 
 export default connect(
-  null,
+  (state: ReducerState) => ({ user: state.user }),
   {
     createMeta: userActions.createMeta,
   }

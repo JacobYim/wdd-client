@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { color, font } from 'src/theme';
+import { color } from 'src/theme';
 
 export const views = StyleSheet.create({
   button: {
@@ -13,5 +13,8 @@ export const texts = StyleSheet.create({
   value: {
     fontSize: 15,
     color: color.gray66,
+  },
+  highlight: {
+    color: color.blue,
   },
 });

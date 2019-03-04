@@ -88,7 +88,7 @@ class CreateDog extends Component<Props, State> {
     return (
       <>
         <PageContainer
-          left={{ navigation }}
+          left={{ navigation, routeName: 'createMeta' }}
           right={{
             view: '건너뛰기',
             handlePress: () => navigation.navigate('app'),
@@ -130,7 +130,7 @@ class CreateDog extends Component<Props, State> {
             name="breed"
             label="품종"
             data={breeds}
-            defalutData={['믹스', '알 수 없음']}
+            trailData={['믹스', '알 수 없음']}
             handleChange={this.handleChange}
           />
           <Selector

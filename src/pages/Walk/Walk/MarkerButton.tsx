@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dimensions, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { UpdateWalkInterface } from 'src/store/actions/walk';
+import { Dimensions, Image, StyleSheet } from 'react-native';
+import TouchableScale from 'src/components/module/TouchableScale';
 import { color } from 'src/theme';
 
 interface Props {
@@ -34,12 +34,14 @@ const styles = StyleSheet.create({
 });
 
 const MarkerButton: React.FC<Props> = ({ icon, onPress }) => (
-  <TouchableOpacity
+  <TouchableScale
     style={styles.wrapper}
-    activeOpacity={0.7}
-    onPress={onPress}>
+    pressInTension={70}
+    pressOutTension={50}
+    friction={5}
+    onPressIn={onPress}>
     <Image source={icon} style={styles.icon} />
-  </TouchableOpacity>
+  </TouchableScale>
 );
 
 export default MarkerButton;

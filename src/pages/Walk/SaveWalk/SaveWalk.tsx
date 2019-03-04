@@ -68,7 +68,6 @@ class SaveWalk extends PureComponent<Props, State> {
           [northEast.latitude, northEast.longitude],
           [southWest.latitude, southWest.longitude],
         ],
-        showOverlay: true,
       });
     }
   };
@@ -110,9 +109,10 @@ class SaveWalk extends PureComponent<Props, State> {
           />
           <Polyline
             coordinates={walk.pins}
+            onLayout={() => this.setState({ showOverlay: true })}
             lineCap="round"
             lineJoin="round"
-            strokeWidth={4}
+            strokeWidth={6}
             strokeColor="#FF6060"
           />
           {/* Start & END Pinpoint */}
@@ -178,8 +178,7 @@ class SaveWalk extends PureComponent<Props, State> {
             styles: views.bottomWrapper,
           }}
           title={'오늘의 행복한 순간을\n기록해보세요!'}
-          titleNarrow
-          alwaysShowBottom>
+          titleNarrow>
           {}
         </PageContainer>
       </SafeAreaView>
