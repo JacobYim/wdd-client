@@ -24,7 +24,7 @@ class TouchableScale extends PureComponent<Props> {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={this.onPress}>
+      <TouchableWithoutFeedback onPressIn={this.onPress}>
         <Animated.View
           style={[
             this.props.style,
