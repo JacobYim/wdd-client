@@ -1,5 +1,5 @@
-import { ShortenDogInterface, DogInterface } from './dog';
 import { NavigationScreenProp } from 'react-navigation';
+import { DogInterface, ShortenDogInterface } from './dog';
 
 // *** INTERFACES
 export interface UserInterface {
@@ -58,48 +58,48 @@ export const REMOVE_USER = 'user/REMOVE_USER';
 type Navigation = NavigationScreenProp<any>;
 
 export const autoSignIn = (navigation: Navigation) => ({
-  type: AUTO_SIGNIN,
   navigation,
+  type: AUTO_SIGNIN,
 });
 export const signIn = (payload: SignInInterface, navigation: Navigation) => ({
-  type: SIGNIN,
   payload,
   navigation,
+  type: SIGNIN,
 });
 export const signUp = (payload: SignUpInterface, navigation: Navigation) => ({
-  type: SIGNUP,
   payload,
   navigation,
+  type: SIGNUP,
 });
 export const signOut = (navigation: Navigation) => ({
-  type: SIGNOUT,
   navigation,
+  type: SIGNOUT,
 });
 export const createMeta = (
   payload: { birth: string; gender: string },
   navigation: Navigation
-) => ({ type: CREATE_META, payload, navigation });
+) => ({ payload, navigation, type: CREATE_META });
 export const forgotPassword = (
   payload: { email: string },
   navigation: Navigation
 ) => ({
-  type: FORGOT_PASSWORD,
   payload,
   navigation,
+  type: FORGOT_PASSWORD,
 });
 export const changePassword = (
   payload: { password: string; token: string },
   navigation: Navigation
-) => ({ type: CHANGE_PASSWORD, payload, navigation });
+) => ({ payload, navigation, type: CHANGE_PASSWORD });
 
 export const setUserRequest = () => ({ type: SET_USER_REQUEST });
 export const setUserSuccess = (payload: UserInterface) => ({
-  type: SET_USER_SUCCESS,
   payload,
+  type: SET_USER_SUCCESS,
 });
 export const setUserFailure = (payload: Response) => ({
-  type: SET_USER_FAILURE,
   payload,
+  type: SET_USER_FAILURE,
 });
 
 export const removeUser = () => ({ type: REMOVE_USER });

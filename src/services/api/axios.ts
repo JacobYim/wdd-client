@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from 'src/assets/consts/base-url.json';
 
 export function setHeader(token: string) {
   axios.defaults.headers.common['authorization'] = token;
@@ -9,7 +10,9 @@ export function removeHeader() {
 }
 
 export default function configAxios() {
-  axios.defaults.baseURL = __DEV__
-    ? 'http://localhost:8080'
-    : 'http://api.woodongdang.com';
+  if (__DEV__) {
+    axios.defaults.baseURL = `http://${BASE_URL}:8080`;
+  } else {
+    axios.defaults.baseURL = 'http://api.woodongdang.com';
+  }
 }

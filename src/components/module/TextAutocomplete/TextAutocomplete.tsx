@@ -1,12 +1,10 @@
+import * as Hangul from 'hangul-js';
 import React, { Component } from 'react';
 import { Modal, ScrollView, TextInput } from 'react-native';
-import * as Hangul from 'hangul-js';
-// Styles
-import { color } from 'src/theme';
-import { inputs, views } from './TextAutocomplete.styles';
-// Components
-import PageContainer from 'src/components/module/PageContainer';
+import PageContainer from 'src/components/container/PageContainer';
 import Input, { HandleChangeText } from 'src/components/module/TextInput';
+import { color } from 'src/theme';
+import { texts, views } from './TextAutocomplete.styles';
 import TextBox from './TextBox';
 
 interface Props {
@@ -14,17 +12,17 @@ interface Props {
   name: string;
   data: string[];
   handleChange: (data: HandleChangeText) => void;
-  defalutData?: string[];
+  trailData?: string[];
 }
 
 interface State {
-  value: string;
+  keyword: string;
   showModal: boolean;
   autocomplete: string[];
 }
 
 class Search extends Component<Props, State> {
-  state: State = { value: '', showModal: false, autocomplete: [] };
+  state: State = { keyword: '', showModal: false, autocomplete: [] };
 
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
@@ -41,25 +39,25 @@ class Search extends Component<Props, State> {
     });
   };
 
-  handleTextChange = (value: string) => {
-    const autocomplete = this.getAutocomplete(value);
-    this.setState({ value, autocomplete });
+  handleTextChange = (keyword: string) => {
+    const autocomplete = this.getAutocomplete(keyword);
+    this.setState({ keyword, autocomplete });
   };
 
-  handleTextPress = async (value: string) => {
-    await this.setState({ value });
+  handleTextPress = async (keyword: string) => {
+    await this.setState({ keyword });
     this.handleSubmit();
   };
 
   handleSubmit = () => {
     const { name, handleChange } = this.props;
-    handleChange({ name, value: this.state.value.trim() });
+    handleChange({ name, value: this.state.keyword.trim() });
     this.toggleModal();
   };
 
   render() {
-    const { name, label, defalutData = [] } = this.props;
-    const autocomplete = this.state.autocomplete.concat(defalutData);
+    const { name, label, trailData = [] } = this.props;
+    const autocomplete = this.state.autocomplete.concat(trailData);
 
     return (
       <>
@@ -69,15 +67,14 @@ class Search extends Component<Props, State> {
           visible={this.state.showModal}
           onRequestClose={this.toggleModal}>
           <PageContainer
-            right={{ text: '닫기', handlePress: this.toggleModal }}
-            scrollEnabled={false}>
+            right={{ view: '닫기', handlePress: this.toggleModal }}>
             <TextInput
-              value={this.state.value}
-              placeholder={`${label}을 입력해주세요`}
+              value={this.state.keyword}
+              placeholder={`찾으시는 ${label}을 입력해주세요`}
               onChangeText={this.handleTextChange}
               onSubmitEditing={this.handleSubmit}
-              style={inputs.text}
-              placeholderTextColor={color.grayB1}
+              style={texts.input}
+              placeholderTextColor={color.black}
               multiline={false}
               autoCorrect={false}
               autoFocus={true}
@@ -89,6 +86,7 @@ class Search extends Component<Props, State> {
               {autocomplete.map(item => (
                 <TextBox
                   value={item}
+                  keyword={this.state.keyword}
                   handlePress={this.handleTextPress}
                   key={item}
                 />
@@ -101,7 +99,7 @@ class Search extends Component<Props, State> {
           label={label}
           handleFocus={this.toggleModal}
           handleChange={() => null}
-          value={this.state.value}
+          value={this.state.keyword}
         />
       </>
     );

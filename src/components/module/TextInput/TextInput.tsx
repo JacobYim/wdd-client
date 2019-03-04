@@ -1,15 +1,17 @@
 import React, { PureComponent } from 'react';
+import LabelWrapper from 'src/components/container/LabelWrapper';
+import { HandleChangeText } from './index';
+import { inputs as inputStyle, texts } from './TextInput.styles';
 import {
-  View,
+  PageContext,
+  ContextInterface,
+} from 'src/components/container/PageContainer';
+import {
   Text,
   TextInput as Input,
   NativeSyntheticEvent,
   TextInputFocusEventData,
 } from 'react-native';
-
-import { HandleChangeText } from './index';
-import { inputs as inputStyle, texts } from './TextInput.styles';
-import ModuleContainer from 'src/components/module/ModuleContainer';
 
 interface InputsInterface {
   [key: string]: React.RefObject<Input>;
@@ -28,13 +30,34 @@ interface Props {
 
 interface State {
   isFocus: boolean;
+  index: number;
 }
 
-class TextInput extends PureComponent<Props, State> {
-  state: State = { isFocus: false };
+const COMPONENT_HEIGHT = 85;
 
-  handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+class TextInput extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    let index = -1;
+    if (props.inputs) {
+      Object.keys(props.inputs).forEach((key, idx) => {
+        if (key === props.name) index = idx;
+      });
+    }
+
+    this.state = { index, isFocus: false };
+  }
+
+  handleFocus = (
+    e: NativeSyntheticEvent<TextInputFocusEventData>,
+    context: ContextInterface | null
+  ) => {
+    const { handleFocus } = this.props;
     this.setState({ isFocus: true });
+    if (context && this.state.index > -1) {
+      context.scrollTo(this.state.index * COMPONENT_HEIGHT);
+    }
+    if (handleFocus) handleFocus(e);
   };
 
   handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -47,16 +70,10 @@ class TextInput extends PureComponent<Props, State> {
   };
 
   handleFocusNext = () => {
-    const { inputs, name } = this.props;
+    const { inputs } = this.props;
     if (inputs) {
-      const keyArray = Object.keys(inputs);
-      keyArray.map((key, index) => {
-        if (key === name) {
-          // select next input
-          const { current } = inputs[keyArray[index + 1]];
-          if (current) current.focus();
-        }
-      });
+      const { current } = inputs[Object.keys(inputs)[this.state.index + 1]];
+      if (current) current.focus();
     }
   };
 
@@ -72,30 +89,35 @@ class TextInput extends PureComponent<Props, State> {
     } = this.props;
 
     return (
-      <ModuleContainer label={label}>
-        <Input
-          value={value}
-          multiline={false}
-          onChangeText={this.handleChangeWithName}
-          onFocus={options.handleFocus || this.handleFocus}
-          onBlur={this.handleBlur}
-          returnKeyType={returnKeyType || 'default'}
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={[
-            inputStyle.text,
-            inputStyle[this.state.isFocus ? 'focused' : 'unFocused'],
-          ]}
-          {...options}
-          {...inputs && { ref: inputs[name] }}
-          {...(returnKeyType === 'next'
-            ? {
-                onSubmitEditing: this.handleFocusNext,
-              }
-            : {})}
-        />
+      <LabelWrapper label={label}>
+        <PageContext.Consumer>
+          {context => (
+            <Input
+              value={value}
+              multiline={false}
+              onChangeText={this.handleChangeWithName}
+              onFocus={e => this.handleFocus(e, context)}
+              onBlur={this.handleBlur}
+              returnKeyType={returnKeyType || 'default'}
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={[
+                inputStyle.text,
+                inputStyle[this.state.isFocus ? 'focused' : 'unFocused'],
+              ]}
+              {...options}
+              {...inputs && { ref: inputs[name] }}
+              {...(returnKeyType === 'next'
+                ? {
+                    onSubmitEditing: this.handleFocusNext,
+                    blurOnSubmit: false,
+                  }
+                : {})}
+            />
+          )}
+        </PageContext.Consumer>
         {alert && <Text style={texts.alert}>{alert}</Text>}
-      </ModuleContainer>
+      </LabelWrapper>
     );
   }
 }

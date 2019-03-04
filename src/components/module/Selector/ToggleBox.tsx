@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-
-import { views, texts } from './ToggleBox.styles';
+import { texts, views } from './ToggleBox.styles';
 
 interface Props {
   label: string;

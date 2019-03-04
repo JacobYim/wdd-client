@@ -1,12 +1,11 @@
-import { connect } from 'react-redux';
+import Amplify from 'aws-amplify';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { Image } from 'react-native';
-import Amplify from 'aws-amplify';
-
+import { connect } from 'react-redux';
 import awsconfig from 'src/aws-exports';
-import * as userActions from 'src/store/actions/user';
+import Splash from 'src/components/module/Splash';
 import configAxios from 'src/services/api/axios';
+import * as userActions from 'src/store/actions/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -26,12 +25,7 @@ class Core extends PureComponent<Props> {
   }
 
   render() {
-    return (
-      <Image
-        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-        source={require('src/lib/images/img_splash.jpg')}
-      />
-    );
+    return <Splash />;
   }
 }
 

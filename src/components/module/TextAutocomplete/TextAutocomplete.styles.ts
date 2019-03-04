@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { color } from 'src/theme';
 
-export const inputs = StyleSheet.create({
-  text: {
+export const texts = StyleSheet.create({
+  input: {
     // outer size
     width: '100%',
-    marginVertical: 8,
+    marginTop: 15,
+    marginBottom: 10,
     // inner size
     paddingVertical: 12,
     // border styles

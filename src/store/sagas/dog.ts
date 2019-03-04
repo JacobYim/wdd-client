@@ -1,8 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-
+import * as api from 'src/services/api/dog';
 import { removeNextStep } from 'src/services/storage/user';
 import * as actions from 'src/store/actions/dog';
-import * as api from 'src/services/api/dog';
 
 function* getDog(action: ReturnType<typeof actions.getDog>) {
   try {

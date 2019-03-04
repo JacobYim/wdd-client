@@ -4,14 +4,35 @@
 
 - React Native + Typescript
 
+### 준비사항
+
+> iOS는 MacOS와 Xcode가 설치되어 있는 환경에서만 실행 가능
+
+1. `npm` 혹은 `yarn` 설치
+2. `cocoapod` 설치
+
 ### 실행하기
 
 1. `~$ git clone https://github.com/JWWon/wdd-client.git`
 2. `~$ cd wdd-client`
 3. `~/wdd-client$ npm install`
-4. `~/wdd-client$ react-native link`
-5. `~/wdd-client$ react-native run-android` or `react-native run-ios`
+4. `~/wdd-client$ cd ios && pod install && cd ..`
+5. `~/wdd-client& npm run dev`
+6. 서비스 실행
 
-   > run-android는 에뮬레이터 / 실제 디바이스가 연결된 이후에 실행
+- Android
+  1. 에뮬레이터 혹은 안드로이드 디바이스 연결
+  2. `~/wdd-client$ react-native run-android`
+- iOS
+  - 시뮬레이터
+    1. `~/wdd-client$ react-native run-ios`
+  - 아이폰 디바이스
+    1. 디바이스 연결
+    2. `~/wdd-client$ open ios/WddClient.xcworkspace`
+    3. Xcode에서 디바이스 선택 및 실행
 
-   > run-ios는 macOS에서 XCode 설치 후 실행 가능
+### 사용 방법
+
+- 디버깅 모드
+  - iOS : `CMD` + `D` 혹은 `핸드폰 흔들기` -> Debug JS Remotely
+  - Android : `CMD` + `M` 혹은 `핸드폰 흔들기` -> Debug JS Remotely

@@ -1,23 +1,19 @@
+import produce from 'immer';
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProp } from 'react-navigation';
-// Redux
 import { connect } from 'react-redux';
+import breeds from 'src/assets/consts/breeds.json';
+import withLoading, { LoadingProps } from 'src/components/base/withLoading';
+import PageContainer from 'src/components/container/PageContainer';
+import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
+import TextAutocomplete from 'src/components/module/TextAutocomplete';
+import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
+import { uploadImage } from 'src/services/aws/s3';
 import * as actions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
-// Style
-import { views } from './CreateDog.styles';
-// Components
-import PageContainer from 'src/components/module/PageContainer';
-import withLoading, { LoadingProps } from 'src/components/module/withLoading';
-import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
-import TextAutocomplete from 'src/components/module/TextAutocomplete';
-import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
-// Other
-import ImagePicker from 'react-native-image-picker';
-import produce from 'immer';
-import { uploadImage } from 'src/services/aws/s3';
-import breeds from 'src/lib/consts/breeds.json';
+import { texts, views } from './CreateDog.styles';
 
 interface Props extends LoadingProps {
   navigation: NavigationScreenProp<any>;
@@ -53,13 +49,14 @@ class CreateDog extends Component<Props, State> {
 
     ImagePicker.showImagePicker(options, res => {
       if (res.didCancel || res.error) return;
-      if (res.customButton)
+      if (res.customButton) {
         this.setState(state =>
           produce(state, draft => {
             delete draft.thumbnailFile;
             draft.thumbnail = '';
           })
         );
+      }
 
       this.setState(state =>
         produce(state, draft => {
@@ -73,8 +70,8 @@ class CreateDog extends Component<Props, State> {
   handleSubmit = async () => {
     const { createDog, navigation, email, toggleLoading } = this.props;
     const thumbnail = await uploadImage({
-      table: 'dogs',
       email,
+      table: 'dogs',
       name: this.state.name,
       type: 'thumbnail',
       file: this.state.thumbnailFile,
@@ -91,16 +88,16 @@ class CreateDog extends Component<Props, State> {
     return (
       <>
         <PageContainer
-          center="댕댕이 프로필 설정"
-          left={{ navigation }}
-          right={{ text: '취소', handlePress: () => navigation.popToTop() }}
-          bottom={{
-            text: '다음',
-            boxType: true,
+          left={{ navigation, routeName: 'createMeta' }}
+          right={{
+            view: '건너뛰기',
+            handlePress: () => navigation.navigate('app'),
+          }}
+          bottomBox={{
+            text: '시작하기',
             handlePress: this.handleSubmit,
             disable: !name || !breed || !gender,
-          }}
-          scrollEnabled={false}>
+          }}>
           <View style={views.thumbnailWrapper}>
             <TouchableOpacity
               activeOpacity={0.7}
@@ -110,14 +107,18 @@ class CreateDog extends Component<Props, State> {
                 source={
                   thumbnail
                     ? { uri: thumbnail }
-                    : require('src/lib/icons/ic_thumbnail.png')
+                    : require('src/assets/icons/ic_thumbnail.png')
                 }
               />
               <Image
                 style={views.edit}
-                source={require('src/lib/icons/ic_edit.png')}
+                source={require('src/assets/icons/ic_edit.png')}
               />
             </TouchableOpacity>
+            <Text style={texts.notice}>
+              반려동물의 정보를 입력해주세요!{'\n'}
+              회원가입 후, 프로필 설정에서 변경 가능합니다.
+            </Text>
           </View>
           <TextInput
             name="name"
@@ -129,7 +130,7 @@ class CreateDog extends Component<Props, State> {
             name="breed"
             label="품종"
             data={breeds}
-            defalutData={['믹스', '알 수 없음']}
+            trailData={['믹스', '알 수 없음']}
             handleChange={this.handleChange}
           />
           <Selector

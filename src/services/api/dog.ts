@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ShortenDogInterface, DogInterface } from 'src/store/actions/dog';
+import { DogInterface, ShortenDogInterface } from 'src/store/actions/dog';
 
 export const getDog = async (params: { id: string }) => {
   const response = await axios.get('/dogs', { params });
