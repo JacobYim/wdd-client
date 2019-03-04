@@ -10,28 +10,21 @@ interface Props {
   style?: object;
   defaultScale?: number;
   activeScale?: number;
-  tension?: number;
-  friction?: number;
-  pressInTension?: number;
-  pressInFriction?: number;
-  pressOutTension?: number;
-  pressOutFriction?: number;
-  onPressIn?: (e: GestureResponderEvent) => void;
-  onPressOut?: (e: GestureResponderEvent) => void;
+  activeDuration?: number;
+  restoreDuration?: number;
+  onPress?: (e: GestureResponderEvent) => void;
 }
 
 class TouchableScale extends PureComponent<Props> {
-  private tension = this.props.tension || 150;
-  private friction = this.props.friction || 5;
   private defaultScale = this.props.defaultScale || 1;
   private activeScale = this.props.activeScale || 1.1;
+  private activeDuration = this.props.activeDuration || 70;
+  private restoreDuration = this.props.restoreDuration || 50;
   private scaleAnimation = new Animated.Value(this.props.defaultScale || 1);
 
   render() {
     return (
-      <TouchableWithoutFeedback
-        onPressIn={this.onPressIn}
-        onPressOut={this.onPressOut}>
+      <TouchableWithoutFeedback onPress={this.onPress}>
         <Animated.View
           style={[
             this.props.style,
@@ -45,30 +38,23 @@ class TouchableScale extends PureComponent<Props> {
     );
   }
 
-  onPressIn = (e: GestureResponderEvent) => {
-    const { pressInTension, pressInFriction, onPressIn } = this.props;
+  onPress = (e: GestureResponderEvent) => {
+    const { onPress } = this.props;
+    if (onPress) onPress(e);
 
-    Animated.spring(this.scaleAnimation, {
-      tension: pressInTension || this.tension,
-      friction: pressInFriction || this.friction,
+    Animated.timing(this.scaleAnimation, {
       toValue: this.activeScale,
+      duration: this.activeDuration,
       useNativeDriver: true,
-    }).start();
-
-    if (onPressIn) onPressIn(e);
-  };
-
-  onPressOut = (e: GestureResponderEvent) => {
-    const { pressOutTension, pressOutFriction, onPressOut } = this.props;
-
-    Animated.spring(this.scaleAnimation, {
-      tension: pressOutTension || this.tension,
-      friction: pressOutFriction || this.friction,
-      toValue: this.defaultScale,
-      useNativeDriver: true,
-    }).start();
-
-    if (onPressOut) onPressOut(e);
+    }).start(c => {
+      if (c.finished) {
+        Animated.timing(this.scaleAnimation, {
+          toValue: this.defaultScale,
+          duration: this.restoreDuration,
+          useNativeDriver: true,
+        }).start();
+      }
+    });
   };
 }
 
