@@ -1,5 +1,5 @@
 import { NavigationScreenProp } from 'react-navigation';
-import { DogInterface, ShortenDogInterface } from './dog';
+import { DogSummeryInterface } from './dog';
 
 // *** INTERFACES
 export interface UserInterface {
@@ -9,12 +9,8 @@ export interface UserInterface {
   birth: string;
   gender: string; // 'M' | 'F'
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
-  dogs: {
-    [id: string]: ShortenDogInterface | DogInterface;
-  };
-  places: {
-    [id: string]: ShortenDogInterface;
-  };
+  dogs: { [_id: string]: DogSummeryInterface };
+  places: { [_id: string]: string };
 }
 
 export interface UpdateInterface {
@@ -23,12 +19,8 @@ export interface UpdateInterface {
   name?: string;
   birth?: string;
   gender?: string; // 'M' | 'F'
-  dogs?: {
-    [id: string]: ShortenDogInterface | DogInterface;
-  };
-  places?: {
-    [id: string]: ShortenDogInterface;
-  };
+  dogs?: { [_id: string]: DogSummeryInterface };
+  places?: { [_id: string]: string };
 }
 
 export interface SignInInterface {
