@@ -21,14 +21,13 @@ interface Props extends LoadingProps {
   email: ReducerState['user']['email'];
 }
 
-interface State extends actions.ShortenDogInterface {
+interface State extends actions.CreateDogInterface {
   thumbnailFile?: any;
 }
 
 class CreateDog extends Component<Props, State> {
   state: State = {
     name: '',
-    thumbnail: '',
     breed: '',
     gender: '',
   };
@@ -69,16 +68,16 @@ class CreateDog extends Component<Props, State> {
 
   handleSubmit = async () => {
     const { createDog, navigation, email, toggleLoading } = this.props;
+    const { name, thumbnailFile, ...others } = this.state;
     const thumbnail = await uploadImage({
       email,
+      name,
       table: 'dogs',
-      name: this.state.name,
       type: 'thumbnail',
-      file: this.state.thumbnailFile,
+      file: thumbnailFile,
     })(toggleLoading);
 
-    const { name, breed, gender } = this.state;
-    await createDog({ name, breed, gender, thumbnail }, navigation);
+    await createDog({ name, thumbnail, ...others }, navigation);
   };
 
   render() {

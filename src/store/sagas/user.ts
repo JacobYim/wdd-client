@@ -27,6 +27,7 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     // *** API
     yield put(actions.setUserRequest());
     const data = yield call(api.getUser);
+    console.log(data);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
     if (!nextStep) {
