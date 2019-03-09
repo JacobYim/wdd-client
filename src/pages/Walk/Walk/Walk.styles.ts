@@ -68,7 +68,7 @@ export const icons = StyleSheet.create({
     resizeMode: 'contain',
   },
   gif: {
-    marginTop: 21,
+    marginTop: 11,
     width: width * 0.7,
     height: height * 0.3,
     resizeMode: 'contain',

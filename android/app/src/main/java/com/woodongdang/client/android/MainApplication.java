@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.emesonsantana.BMDPedometer.BMDPedometer;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCWebViewPackage(),
             new LinearGradientPackage(),
             new BackgroundTimerPackage(),
             new BMDPedometer(),

@@ -84,11 +84,8 @@ class PageContainer extends PureComponent<Props> {
     } = this.props;
     const navLeft = left && {
       handlePress: () => {
-        if (left.routeName) {
-          left.navigation.navigate(left.routeName);
-        } else {
-          left.navigation.goBack(null);
-        }
+        if (left.routeName) left.navigation.navigate(left.routeName);
+        else left.navigation.goBack(null);
       },
       view: (
         <Image

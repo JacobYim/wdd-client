@@ -18,17 +18,18 @@ interface Props {
     handlePress: () => void;
   };
   center?: string;
+  showBorder?: boolean;
 }
 
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
-    height: 21,
-    marginTop: 15,
+    height: 45,
     paddingHorizontal: width * 0.04,
     flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: '#70707014',
   },
   center: {
     ...StyleSheet.absoluteFillObject,
@@ -44,8 +45,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const TopNavbar: React.FC<Props> = ({ left, right, center }) => (
-  <View style={styles.wrapper}>
+const TopNavbar: React.FC<Props> = ({ left, right, center, showBorder }) => (
+  <View style={[styles.wrapper, showBorder ? { borderBottomWidth: 1 } : {}]}>
     {center && (
       <View style={styles.center}>
         <Text style={styles.text}>{center}</Text>

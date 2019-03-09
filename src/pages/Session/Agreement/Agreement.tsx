@@ -4,11 +4,13 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
 import { icons, texts, views } from './Agreement.styles';
+import Detail from './Detail';
 
 interface Term {
   title: string;
+  force?: boolean;
   agree: boolean;
-  link: any;
+  link: string;
 }
 
 interface RenderTermInterface extends Term {
@@ -22,6 +24,10 @@ interface Props {
 interface State {
   checkAll: boolean;
   terms: Term[];
+  detail?: {
+    title: string;
+    link: string;
+  };
 }
 
 class Agreement extends Component<Props, State> {
@@ -29,16 +35,27 @@ class Agreement extends Component<Props, State> {
     checkAll: false,
     terms: [
       {
-        title: '서비스 이용 약관(필수)',
+        title: '서비스 이용 약관',
+        force: true,
         agree: false,
-        link: '',
+        link: 'http://policy.woodongdang.com/',
       },
       {
-        title: '개인정보 이용 약관(필수)',
+        title: '개인정보 이용 약관',
         agree: false,
         link: '',
       },
     ],
+  };
+
+  hideDetail = () => {
+    this.setState({ detail: undefined });
+  };
+
+  showDetail = (detail: State['detail']) => {
+    if (detail && !this.state.detail) {
+      this.setState({ detail });
+    }
   };
 
   handleCheckAll = () => {
@@ -65,7 +82,7 @@ class Agreement extends Component<Props, State> {
     );
   };
 
-  renderTerm = ({ title, agree, index }: RenderTermInterface) => (
+  renderTerm = ({ title, force, agree, link, index }: RenderTermInterface) => (
     <View style={views.termWrapper} key={index}>
       <TouchableOpacity
         style={views.termInfo}
@@ -79,9 +96,14 @@ class Agreement extends Component<Props, State> {
               : require('src/assets/icons/ic_check_off.png')
           }
         />
-        <Text style={texts.termTitle}>{title}</Text>
+        <Text style={texts.termTitle}>{`${title} [${
+          force ? '필수' : '선택'
+        }]`}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={views.termMore} activeOpacity={0.95}>
+      <TouchableOpacity
+        style={views.termMore}
+        activeOpacity={0.95}
+        onPress={() => this.showDetail({ title, link })}>
         <Image
           style={icons.more}
           source={require('src/assets/icons/ic_more.png')}
@@ -123,6 +145,7 @@ class Agreement extends Component<Props, State> {
           />
         </TouchableOpacity>
         {terms.map((term, index) => this.renderTerm({ ...term, index }))}
+        <Detail hideDetail={this.hideDetail} detail={this.state.detail} />
       </PageContainer>
     );
   }
