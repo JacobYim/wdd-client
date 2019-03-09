@@ -126,7 +126,7 @@ class Walk extends Component<Props, State> {
                   onPress={() => updateLatestPin('poo')}
                 />
                 <StatusButton
-                  status={status}
+                  walk={this.props.walk}
                   updateStatus={this.props.updateStatus}
                 />
                 <MarkerButton

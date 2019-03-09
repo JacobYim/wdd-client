@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { NavigationScreenProp, withNavigation } from 'react-navigation';
 import * as actions from 'src/store/actions/walk';
+import { ReducerState } from 'src/store/reducers';
 import { color } from 'src/theme';
-import { statusBtn } from './Walk.styles';
+import { statusBtn } from '../Walk.styles';
 import {
   TouchableOpacity,
   Image,
@@ -13,7 +14,7 @@ import {
 
 interface Props {
   navigation: NavigationScreenProp<any>;
-  status: 'WALKING' | 'PAUSE' | 'FINISH';
+  walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
 }
 
@@ -35,8 +36,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: '43%',
-    height: '43%',
+    width: '48%',
+    height: '40%',
     resizeMode: 'contain',
   },
   progressBase: {
@@ -87,6 +88,10 @@ class StatusButton extends PureComponent<Props, State> {
       backgroundColor: color.redLight,
       source: require('src/assets/icons/ic_stop.png'),
     },
+    READY: {
+      backgroundColor: color.blue,
+      source: require('src/assets/icons/ic_resume.png'),
+    },
   };
 
   state = {
@@ -115,16 +120,19 @@ class StatusButton extends PureComponent<Props, State> {
   };
 
   handleLongPress = () => {
-    const { updateStatus, navigation } = this.props;
+    const { updateStatus, walk, navigation } = this.props;
     updateStatus('FINISH');
     this.animateProgress().start(c => {
-      if (c.finished) navigation.navigate('save');
+      if (c.finished) {
+        if (walk.pins.length > 1) navigation.navigate('save');
+        else navigation.goBack(null);
+      }
     });
   };
 
   handlePressOut = () => {
-    const { status, updateStatus } = this.props;
-    switch (status) {
+    const { walk, updateStatus } = this.props;
+    switch (walk.status) {
       case 'FINISH':
       case 'WALKING':
         updateStatus('PAUSE');
@@ -138,7 +146,7 @@ class StatusButton extends PureComponent<Props, State> {
   };
 
   render() {
-    const { status } = this.props;
+    const { status } = this.props.walk;
     const { backgroundColor, source } = this.style[status];
     const progress = this.state.progress.interpolate({
       inputRange: [0, 1],
