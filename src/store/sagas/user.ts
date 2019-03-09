@@ -14,7 +14,6 @@ import {
 
 // HELPERS
 function* navigateToApp(navigation: NavigationScreenProp<any>) {
-  yield call(Geolocation.requestAuthorization);
   yield call(navigation.navigate, 'app');
 }
 

@@ -1,6 +1,5 @@
 import produce from 'immer';
 import React, { Component, createRef } from 'react';
-import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
@@ -9,6 +8,14 @@ import { calcDistance } from 'src/assets/functions/calcutate';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
 import { icons, views } from './Map.styles';
+import {
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  View,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -59,6 +66,27 @@ class Map extends Component<Props, State> {
     },
   };
 
+  checkPermission = async (): Promise<boolean> => {
+    if (
+      Platform.OS === 'ios' ||
+      (Platform.OS === 'android' && Platform.Version < 23)
+    ) {
+      return true;
+    }
+
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    );
+    if (hasPermission) return true;
+
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    );
+    if (status === PermissionsAndroid.RESULTS.GRANTED) return true;
+
+    return false;
+  };
+
   componentDidUpdate(prevProps: Props) {
     if (prevProps.walk.status !== this.props.walk.status) {
       this.setState({ statusChanged: true });
@@ -66,7 +94,9 @@ class Map extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.watchPosition();
+    if (this.checkPermission()) {
+      this.watchPosition();
+    }
   }
 
   componentWillUnmount() {
@@ -84,6 +114,7 @@ class Map extends Component<Props, State> {
           longitude: coords.longitude,
           speed: coords.speed || 0,
         };
+        console.log(current);
 
         if (walk.status === 'WALKING') {
           const pinLength = walk.pins.length;
