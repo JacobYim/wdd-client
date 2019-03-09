@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.blue,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
+    elevation: 1,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 6,
     shadowColor: color.black,

@@ -104,8 +104,8 @@ class ForgotPassword extends Component<Props, State> {
           name="email"
           value={email.value}
           alert={email.alert}
+          keyboardType="email-address"
           handleChange={this.handleChange}
-          returnKeyType="send"
           onSubmitEditing={this.handleSendEmail}
         />
       </PageContainer>

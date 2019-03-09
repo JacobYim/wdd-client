@@ -41,7 +41,7 @@ export const icons = StyleSheet.create({
     width: pinSize,
     height: pinSize,
     borderRadius: pinSize / 2,
-    elevation: 4,
+    elevation: 2,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 12,
     shadowColor: color.black,

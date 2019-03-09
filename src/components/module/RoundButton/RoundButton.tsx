@@ -19,7 +19,7 @@ const views = StyleSheet.create({
   },
   active: {
     backgroundColor: color.blue,
-    elevation: 4,
+    elevation: 2,
     shadowOffset: { width: 0, height: 6 },
     shadowRadius: 12,
     shadowColor: color.black,

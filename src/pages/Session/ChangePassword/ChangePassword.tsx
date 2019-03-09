@@ -94,7 +94,6 @@ class ChangePassword extends Component<Props, State> {
           name="passwordCheck"
           value={passwordCheck.value}
           secureTextEntry={true}
-          returnKeyType="send"
           inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSubmit}

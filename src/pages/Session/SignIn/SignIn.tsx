@@ -133,7 +133,6 @@ class SignIn extends Component<Props, State> {
           value={password.value}
           alert={password.alert}
           secureTextEntry={true}
-          returnKeyType="send"
           inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSignIn}

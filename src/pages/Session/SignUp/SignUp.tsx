@@ -171,7 +171,6 @@ class SignUp extends Component<Props, State> {
           value={passwordCheck.value}
           alert={passwordCheck.alert}
           secureTextEntry={true}
-          returnKeyType="send"
           inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSignUp}
