@@ -22,14 +22,18 @@ interface Props {
 }
 
 const { width } = Dimensions.get('window');
+const height = 45;
 const styles = StyleSheet.create({
   wrapper: {
+    height,
     width: '100%',
-    height: 45,
-    paddingHorizontal: width * 0.04,
     flexDirection: 'row',
-    alignItems: 'center',
     borderBottomColor: '#70707014',
+  },
+  button: {
+    paddingHorizontal: width * 0.04,
+    height: '100%',
+    justifyContent: 'center',
   },
   center: {
     ...StyleSheet.absoluteFillObject,
@@ -53,7 +57,10 @@ const TopNavbar: React.FC<Props> = ({ left, right, center, showBorder }) => (
       </View>
     )}
     {left && (
-      <TouchableOpacity onPress={left.handlePress} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={left.handlePress}
+        activeOpacity={0.7}
+        style={styles.button}>
         {left.view}
       </TouchableOpacity>
     )}
@@ -61,7 +68,7 @@ const TopNavbar: React.FC<Props> = ({ left, right, center, showBorder }) => (
       <TouchableOpacity
         onPress={right.handlePress}
         activeOpacity={0.7}
-        style={styles.right}>
+        style={[styles.button, styles.right]}>
         {right.view}
       </TouchableOpacity>
     )}
