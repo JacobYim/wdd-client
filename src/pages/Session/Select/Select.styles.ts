@@ -10,6 +10,7 @@ export const views = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginTop: height * 0.07,
+    paddingBottom: 2
   },
   logo: {
     width: width * 0.54,

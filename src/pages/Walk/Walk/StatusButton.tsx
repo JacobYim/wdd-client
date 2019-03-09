@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   progressBase: {
-    zIndex: -1,
+    zIndex: 6,
     position: 'absolute',
     top: -6,
     left: -6,
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   progressHalf: {
-    zIndex: 0,
+    zIndex: 7,
     width: progressSize / 2,
     height: progressSize,
     backgroundColor: '#FF6A67',
   },
   progressFilter: {
-    zIndex: 1,
+    zIndex: 8,
     position: 'absolute',
     top: 0,
     width: progressSize / 2,

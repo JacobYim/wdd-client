@@ -16,7 +16,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:@"AIzaSyDCxopPggjhX7gQTzOHueTMxb5nyffvDMA"]; // Google Map API
+  [GMSServices provideAPIKey:@"AIzaSyDDri-wHm7_1EUdG2Yvv5hl3PLfpb2o9mI"]; // Google Map API
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
