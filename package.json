@@ -7,7 +7,8 @@
     "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'",
     "lint": "tslint --project tsconfig.json --format stylish",
     "dev": "./scripts/map-base-url.sh && npm run debug && npm start",
-    "test": "jest"
+    "test": "jest",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@JWWon/react-native-universal-pedometer": "github:JWWon/react-native-universal-pedometer",
