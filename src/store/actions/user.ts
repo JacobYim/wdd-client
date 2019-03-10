@@ -3,6 +3,7 @@ import { DogSummeryInterface } from './dog';
 
 // *** INTERFACES
 export interface UserInterface {
+  readonly _id: string;
   readonly email: string; // PK
   readonly lastLogin: string;
   name: string;
