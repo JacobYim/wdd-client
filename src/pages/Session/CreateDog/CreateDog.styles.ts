@@ -15,7 +15,7 @@ export const views = StyleSheet.create({
     borderRadius: thumbnailSize / 2,
     resizeMode: 'cover',
     borderWidth: 1.5,
-    borderColor: `${color.black}78`,
+    borderColor: `${color.black}14`,
   },
   edit: {
     position: 'absolute',
