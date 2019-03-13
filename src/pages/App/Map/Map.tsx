@@ -7,12 +7,13 @@ import { connect } from 'react-redux';
 import { calcDistance } from 'src/assets/functions/calcutate';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
+import Header from './Header';
 import { icons, views } from './Map.styles';
 import {
   Dimensions,
   Image,
   TouchableOpacity,
-  View,
+  SafeAreaView,
   PermissionsAndroid,
   Platform,
 } from 'react-native';
@@ -171,7 +172,7 @@ class Map extends Component<Props, State> {
     const { trackUser } = this.state;
 
     return (
-      <View style={views.container}>
+      <SafeAreaView style={views.container}>
         <MapView
           ref={this.map}
           provider={PROVIDER_GOOGLE}
@@ -183,6 +184,7 @@ class Map extends Component<Props, State> {
           }}
           showsUserLocation={true}
         />
+        <Header />
         <TouchableOpacity
           style={views.trackUserButton}
           activeOpacity={1}
@@ -192,7 +194,7 @@ class Map extends Component<Props, State> {
             source={require('src/assets/icons/ic_location.png')}
           />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 }
