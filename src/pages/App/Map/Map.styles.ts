@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { color } from 'src/theme';
+import { color, shadow } from 'src/theme';
 
 const trackUserSize = 56;
 
@@ -23,10 +23,7 @@ export const views = StyleSheet.create({
     alignItems: 'center',
     borderRadius: trackUserSize / 2,
     backgroundColor: color.white,
-    shadowColor: color.black,
-    shadowOpacity: 0.18,
-    shadowRadius: 6,
-    elevation: 2,
+    ...shadow.shallow,
   },
 });
 

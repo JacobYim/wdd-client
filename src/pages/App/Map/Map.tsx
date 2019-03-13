@@ -114,7 +114,6 @@ class Map extends Component<Props, State> {
           longitude: coords.longitude,
           speed: coords.speed || 0,
         };
-        console.log(current);
 
         if (walk.status === 'WALKING') {
           const pinLength = walk.pins.length;

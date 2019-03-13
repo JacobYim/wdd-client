@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { color, font } from 'src/theme';
+import { color, font, shadow } from 'src/theme';
 
 interface Props {
   label: string;
@@ -20,10 +20,7 @@ const views = StyleSheet.create({
   active: {
     backgroundColor: color.blue,
     elevation: 2,
-    shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 12,
-    shadowColor: color.black,
-    shadowOpacity: 0.1,
+    ...shadow.deep,
   },
   inactive: {
     backgroundColor: color.grayEF,
