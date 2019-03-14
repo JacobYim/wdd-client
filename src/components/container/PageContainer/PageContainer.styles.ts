@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
-const horizontalSize = width * 0.064;
+export const horizontalSize = width * 0.064;
 
 export const views = StyleSheet.create({
   container: { flex: 1 },

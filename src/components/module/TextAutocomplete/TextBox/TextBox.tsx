@@ -35,7 +35,7 @@ const TextBox: React.FC<Props> = ({ value, keyword, handlePress }) => {
   return (
     <TouchableOpacity
       onPress={mapValueToPress}
-      style={views.button}
+      style={views.textButton}
       activeOpacity={0.7}>
       {highlightKeyword()}
     </TouchableOpacity>
