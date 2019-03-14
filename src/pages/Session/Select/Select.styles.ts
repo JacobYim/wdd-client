@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
@@ -50,6 +50,7 @@ export const texts = StyleSheet.create({
     color: color.blue,
     fontSize: font.size.medium,
     fontWeight: 'bold',
+    marginBottom: Platform.OS === 'android' ? 2 : 0,
   },
   bottom: {
     color: color.black33,
