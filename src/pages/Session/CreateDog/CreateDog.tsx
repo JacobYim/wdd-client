@@ -1,6 +1,5 @@
 import produce from 'immer';
 import React, { Component } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -14,6 +13,13 @@ import { uploadImage } from 'src/services/aws/s3';
 import * as actions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { texts, views } from './CreateDog.styles';
+import {
+  Image,
+  Text,
+  TextInput as Input,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 interface Props extends LoadingProps {
   navigation: NavigationScreenProp<any>;
@@ -26,6 +32,8 @@ interface State extends actions.CreateDogInterface {
 }
 
 class CreateDog extends Component<Props, State> {
+  private inputs = { name: React.createRef<Input>() };
+
   state: State = {
     name: '',
     breed: '',
@@ -96,7 +104,8 @@ class CreateDog extends Component<Props, State> {
             text: '시작하기',
             handlePress: this.handleSubmit,
             disable: !name || !breed || !gender,
-          }}>
+          }}
+          extraScrollHeight={200}>
           <View style={views.thumbnailWrapper}>
             <TouchableOpacity
               activeOpacity={0.7}
@@ -123,6 +132,7 @@ class CreateDog extends Component<Props, State> {
             name="name"
             label="이름"
             value={name}
+            inputs={this.inputs}
             handleChange={this.handleChange}
           />
           <TextAutocomplete

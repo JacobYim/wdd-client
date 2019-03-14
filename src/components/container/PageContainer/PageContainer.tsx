@@ -43,6 +43,7 @@ interface Props {
   };
   // option
   extraScrollHeight?: number;
+  extraBottom?: number;
 }
 
 const ContentWrapper: React.FC<{ style: object; children: ReactNode }> = ({
@@ -64,8 +65,13 @@ class PageContainer extends PureComponent<Props> {
 
   scrollTo = (height: number) => {
     const scroll = this.scroll.current;
+    const { extraScrollHeight } = this.props;
     if (scroll) {
-      scroll.scrollTo({ x: 0, y: height, animated: true });
+      scroll.scrollTo({
+        x: 0,
+        y: extraScrollHeight ? height + extraScrollHeight : height,
+        animated: true,
+      });
     }
   };
 
@@ -80,7 +86,7 @@ class PageContainer extends PureComponent<Props> {
       center,
       bottom,
       bottomBox,
-      extraScrollHeight = 85,
+      extraBottom: extraScrollHeight = 85,
     } = this.props;
     const navLeft = left && {
       handlePress: () => {
