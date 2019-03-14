@@ -21,6 +21,7 @@ const DateInput: React.FC<Props> = ({ label, name, value, handleChange }) => {
         }}
         date={value}
         mode="date"
+        androidMode="spinner"
         locale="ko-KO"
         placeholder={`${label}을 입력해주세요`}
         format="YYYY년 MM월 DD일"

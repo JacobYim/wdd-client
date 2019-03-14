@@ -1,5 +1,4 @@
 import { Alert } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
 import { NavigationActions, NavigationScreenProp } from 'react-navigation';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { removeHeader, setHeader } from 'src/services/api/axios';
@@ -26,7 +25,6 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     // *** API
     yield put(actions.setUserRequest());
     const data = yield call(api.getUser);
-    console.log(data);
     yield put(actions.setUserSuccess(data));
     // *** NAVIGATE
     if (!nextStep) {
@@ -54,7 +52,10 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     }
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
-    yield call(removeHeader);
+    if (e.response && e.response.data.statusCode === 403) {
+      yield call(removeHeader);
+      yield call(removeUserStorage);
+    }
     // *** NAVIGATE
     yield call(action.navigation.navigate, 'session');
   }

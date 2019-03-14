@@ -2,19 +2,20 @@ import { StyleSheet } from 'react-native';
 import { color } from 'src/theme';
 
 export const views = StyleSheet.create({
-  button: {
+  textButton: {
     width: '100%',
-    marginVertical: 10,
-    alignSelf: 'flex-start',
+    paddingVertical: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: color.grayEF,
   },
 });
 
 export const texts = StyleSheet.create({
   value: {
     fontSize: 15,
-    color: color.gray66,
+    color: color.grayB1,
   },
   highlight: {
-    color: color.blue,
+    color: color.black,
   },
 });

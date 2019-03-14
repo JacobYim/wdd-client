@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { color } from 'src/theme';
+import { color, shadow } from 'src/theme';
 
 const pinSize = 10;
 const { height } = Dimensions.get('window');
@@ -41,11 +41,7 @@ export const icons = StyleSheet.create({
     width: pinSize,
     height: pinSize,
     borderRadius: pinSize / 2,
-    elevation: 2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 12,
-    shadowColor: color.black,
-    shadowOpacity: 0.1,
+    ...shadow.deep,
     justifyContent: 'center',
     alignItems: 'center',
   },

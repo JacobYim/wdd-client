@@ -1,11 +1,18 @@
 import * as Hangul from 'hangul-js';
 import React, { Component } from 'react';
-import { Modal, ScrollView, TextInput } from 'react-native';
-import PageContainer from 'src/components/container/PageContainer';
 import Input, { HandleChangeText } from 'src/components/module/TextInput';
+import TopNavbar from 'src/components/module/TopNavbar';
 import { color } from 'src/theme';
-import { texts, views } from './TextAutocomplete.styles';
+import { icons, texts, views } from './TextAutocomplete.styles';
 import TextBox from './TextBox';
+import {
+  Image,
+  Modal,
+  ScrollView,
+  TextInput,
+  SafeAreaView,
+  View,
+} from 'react-native';
 
 interface Props {
   label: string;
@@ -66,22 +73,34 @@ class Search extends Component<Props, State> {
           transparent={false}
           visible={this.state.showModal}
           onRequestClose={this.toggleModal}>
-          <PageContainer
-            right={{ view: '닫기', handlePress: this.toggleModal }}>
-            <TextInput
-              value={this.state.keyword}
-              placeholder={`찾으시는 ${label}을 입력해주세요`}
-              onChangeText={this.handleTextChange}
-              onSubmitEditing={this.handleSubmit}
-              style={texts.input}
-              placeholderTextColor={color.black}
-              multiline={false}
-              autoCorrect={false}
-              autoFocus={true}
-              clearButtonMode="while-editing"
-              autoCapitalize="none"
-              returnKeyType="done"
+          <SafeAreaView style={{ flex: 1 }}>
+            <TopNavbar
+              right={{
+                view: (
+                  <Image
+                    style={icons.close}
+                    source={require('src/assets/icons/ic_close.png')}
+                  />
+                ),
+                handlePress: this.toggleModal,
+              }}
             />
+            <View style={views.inputWrapper}>
+              <TextInput
+                value={this.state.keyword}
+                placeholder={`찾으시는 ${label}을 입력해주세요`}
+                onChangeText={this.handleTextChange}
+                onSubmitEditing={this.handleSubmit}
+                style={texts.input}
+                placeholderTextColor={`${color.black}1A`}
+                multiline={false}
+                autoCorrect={false}
+                autoFocus={true}
+                clearButtonMode="while-editing"
+                autoCapitalize="none"
+                returnKeyType="done"
+              />
+            </View>
             <ScrollView style={views.autocompleteWrapper}>
               {autocomplete.map(item => (
                 <TextBox
@@ -92,7 +111,7 @@ class Search extends Component<Props, State> {
                 />
               ))}
             </ScrollView>
-          </PageContainer>
+          </SafeAreaView>
         </Modal>
         <Input
           name={name}

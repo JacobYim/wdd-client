@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet } from 'react-native';
 import TouchableScale from 'src/components/module/TouchableScale';
-import { color } from 'src/theme';
+import { color, shadow } from 'src/theme';
 
 interface Props {
   icon: NodeRequire;
@@ -20,11 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.bluePastel,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: color.black,
-    shadowOpacity: 0.16,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 1,
+    ...shadow.shallow,
   },
   icon: {
     width: '46%',

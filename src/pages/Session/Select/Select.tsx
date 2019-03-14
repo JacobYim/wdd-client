@@ -10,19 +10,19 @@ interface Props {
 }
 
 const BottomButtons: React.FC<Props> = ({ navigation }) => (
-  <>
+  <View style={views.buttons}>
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => navigation.navigate('app')}>
       <Text style={texts.bottom}>비회원으로 시작하기</Text>
     </TouchableOpacity>
-    <Text style={texts.vr}>{' | '}</Text>
+    <View style={views.vr} />
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => navigation.navigate('signUp')}>
       <Text style={texts.bottom}>회원가입</Text>
     </TouchableOpacity>
-  </>
+  </View>
 );
 
 const Select: React.FC<Props> = ({ navigation }) => (

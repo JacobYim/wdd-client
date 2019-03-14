@@ -1,5 +1,5 @@
 import React from 'react';
-import { color, font } from 'src/theme';
+import { color, font, shadow } from 'src/theme';
 import {
   View,
   StyleSheet,
@@ -32,11 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     borderWidth: 1,
     borderColor: `${color.black}14`,
-    elevation: 2,
-    shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 12,
-    shadowColor: color.black,
-    shadowOpacity: 0.1,
+    ...shadow.deep,
   },
   icon: {
     width: '47.5%',
@@ -55,11 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.blue,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 6,
-    shadowColor: color.black,
-    shadowOpacity: 0.15,
+    ...shadow.shallow,
   },
   rightText: {
     color: color.white,

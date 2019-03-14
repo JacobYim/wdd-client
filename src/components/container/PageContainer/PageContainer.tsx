@@ -9,6 +9,8 @@ import {
   SafeAreaView,
   Text,
   TouchableOpacity,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
   View,
   ScrollView,
   Platform,
@@ -43,6 +45,11 @@ interface Props {
   };
   // option
   extraScrollHeight?: number;
+  extraBottom?: number;
+}
+
+interface State {
+  center?: string;
 }
 
 const ContentWrapper: React.FC<{ style: object; children: ReactNode }> = ({
@@ -59,13 +66,33 @@ const ContentWrapper: React.FC<{ style: object; children: ReactNode }> = ({
 
 export const PageContext = React.createContext<ContextInterface | null>(null);
 
-class PageContainer extends PureComponent<Props> {
+class PageContainer extends PureComponent<Props, State> {
   private scroll = React.createRef<ScrollView>();
+
+  state: State = { center: this.props.center };
 
   scrollTo = (height: number) => {
     const scroll = this.scroll.current;
+    const { extraScrollHeight } = this.props;
     if (scroll) {
-      scroll.scrollTo({ x: 0, y: height, animated: true });
+      scroll.scrollTo({
+        x: 0,
+        y: extraScrollHeight ? height + extraScrollHeight : height,
+        animated: true,
+      });
+    }
+  };
+
+  handleScroll = (evt: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { center, title } = this.props;
+    if (!center && title) {
+      if (evt.nativeEvent.contentOffset.y > 84) {
+        if (!this.state.center) {
+          this.setState({ center: title });
+        }
+      } else if (this.state.center) {
+        this.setState({ center: undefined });
+      }
     }
   };
 
@@ -77,10 +104,9 @@ class PageContainer extends PureComponent<Props> {
       titleNarrow,
       left,
       right,
-      center,
       bottom,
       bottomBox,
-      extraScrollHeight = 85,
+      extraBottom: extraScrollHeight = 85,
     } = this.props;
     const navLeft = left && {
       handlePress: () => {
@@ -107,11 +133,17 @@ class PageContainer extends PureComponent<Props> {
     return (
       <PageContext.Provider value={{ scrollTo: this.scrollTo }}>
         <SafeAreaView style={views.container}>
-          <TopNavbar left={navLeft} center={center} right={navRight} />
+          <TopNavbar
+            left={navLeft}
+            center={this.state.center}
+            right={navRight}
+          />
           <ContentWrapper style={views.container}>
             <ScrollView
               ref={this.scroll}
               style={views.contentWrapper}
+              onScroll={this.handleScroll}
+              scrollEventThrottle={160}
               scrollEnabled={bottomBox !== undefined}
               showsVerticalScrollIndicator={false}>
               {title && (

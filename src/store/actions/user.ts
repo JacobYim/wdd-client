@@ -3,6 +3,7 @@ import { DogSummeryInterface } from './dog';
 
 // *** INTERFACES
 export interface UserInterface {
+  readonly _id: string;
   readonly email: string; // PK
   readonly lastLogin: string;
   name: string;
@@ -10,7 +11,8 @@ export interface UserInterface {
   gender: string; // 'M' | 'F'
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
   dogs: { [_id: string]: DogSummeryInterface };
-  places: { [_id: string]: string };
+  places: string[];
+  reviews: string[];
 }
 
 export interface UpdateInterface {
@@ -20,7 +22,8 @@ export interface UpdateInterface {
   birth?: string;
   gender?: string; // 'M' | 'F'
   dogs?: { [_id: string]: DogSummeryInterface };
-  places?: { [_id: string]: string };
+  places?: string[];
+  reviews?: string[];
 }
 
 export interface SignInInterface {
