@@ -126,7 +126,10 @@ class SignUp extends Component<Props, State> {
     const { navigation } = this.props;
     const { name, email, password, passwordCheck } = this.state;
     const isValidated =
-      name.valid && email.valid && password.valid && passwordCheck.valid;
+      name.valid &&
+      email.valid &&
+      password.valid &&
+      validatePassword(passwordCheck.value);
     return (
       <PageContainer
         title="회원가입"
