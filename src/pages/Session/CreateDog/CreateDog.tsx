@@ -1,7 +1,7 @@
 import produce from 'immer';
 import React, { Component } from 'react';
 import ImagePicker from 'react-native-image-picker';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import breeds from 'src/assets/consts/breeds.json';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
@@ -22,8 +22,7 @@ import {
   Modal,
 } from 'react-native';
 
-interface Props extends LoadingProps {
-  navigation: NavigationScreenProp<any>;
+interface Props extends LoadingProps, NavigationScreenProps {
   createDog: typeof actions.createDog;
   email: ReducerState['user']['email'];
 }

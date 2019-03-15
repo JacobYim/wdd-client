@@ -1,6 +1,6 @@
 import produce from 'immer';
 import React, { Component } from 'react';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { validateEmail } from 'src/assets/functions/validate';
 import PageContainer from 'src/components/container/PageContainer';
@@ -14,8 +14,7 @@ interface ParamInterface {
   alert?: string;
 }
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   forgotPassword: typeof userActions.forgotPassword;
   user: ReducerState['user'];
 }

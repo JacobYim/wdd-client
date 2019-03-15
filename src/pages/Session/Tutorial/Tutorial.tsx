@@ -1,12 +1,8 @@
 import React from 'react';
-import { NavigationScreenProp } from 'react-navigation';
-import { SafeAreaView, Text, Button } from 'react-native';
+import { Button, SafeAreaView, Text } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 
-interface Props {
-  navigation: NavigationScreenProp<Props>;
-}
-
-const Tutorial: React.FC<Props> = ({ navigation }: Props) => (
+const Tutorial: React.FC<NavigationScreenProps> = ({ navigation }) => (
   <SafeAreaView
     style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>튜토리얼 페이지입니다.</Text>

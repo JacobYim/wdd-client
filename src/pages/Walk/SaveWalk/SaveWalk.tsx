@@ -1,7 +1,7 @@
 import React, { createRef, PureComponent } from 'react';
 import { Alert, Dimensions, Image, SafeAreaView, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import PageContainer from 'src/components/container/PageContainer';
 import * as actions from 'src/store/actions/walk';
@@ -15,8 +15,7 @@ import MapView, {
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
 }

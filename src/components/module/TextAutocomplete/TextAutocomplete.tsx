@@ -21,7 +21,7 @@ interface State {
   autocomplete: string[];
 }
 
-class Search extends Component<Props, State> {
+class TextAutocomplete extends Component<Props, State> {
   state: State = { keyword: '', autocomplete: [] };
 
   getAutocomplete = (value: string) => {
@@ -99,4 +99,4 @@ class Search extends Component<Props, State> {
   }
 }
 
-export default Search;
+export default TextAutocomplete;

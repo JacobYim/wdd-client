@@ -1,12 +1,10 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { Button, View } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
-import { NavigationScreenProp } from 'react-navigation';
-
 import * as actions from 'src/store/actions/user';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   signOut: typeof actions.signOut;
 }
 

@@ -2,7 +2,7 @@ import produce from 'immer';
 import React, { Component, createRef } from 'react';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { calcDistance } from 'src/assets/functions/calcutate';
 import * as actions from 'src/store/actions/walk';
@@ -18,8 +18,7 @@ import {
   Platform,
 } from 'react-native';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   pushPin: typeof actions.pushPin;
   walk: ReducerState['walk'];
 }

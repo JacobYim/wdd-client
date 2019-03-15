@@ -1,14 +1,10 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationScreenProp, withNavigation } from 'react-navigation';
+import { NavigationScreenProps, withNavigation } from 'react-navigation';
 import { icons, texts, views } from './Header.styles';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
-
-const Header: React.FC<Props> = ({ navigation }) => {
-  const navToSearch = () => navigation.navigate('search');
+const Header: React.FC<NavigationScreenProps> = ({ navigation }) => {
+  const navToSearch = () => navigation.navigate('place');
   const navToResult = () => navigation.navigate('result');
   return (
     <View style={views.container}>
