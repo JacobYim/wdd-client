@@ -4,10 +4,10 @@ import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import { HandleChangeText } from 'src/components/module/TextInput';
 
 interface Props extends NavigationScreenProps {
-  results?: string[];
+  preLoad?: string[];
 }
 
-const Search: React.FC<Props> = ({ navigation, results = [] }) => {
+const Search: React.FC<Props> = ({ navigation, preLoad = [] }) => {
   function handleSubmit(data: HandleChangeText) {}
 
   function handleDismiss() {
@@ -18,7 +18,7 @@ const Search: React.FC<Props> = ({ navigation, results = [] }) => {
     <TextAutocomplete
       placeholder="원하는 장소를 검색하세요"
       name="search"
-      list={results}
+      list={preLoad}
       handleSubmit={handleSubmit}
       handleDismiss={handleDismiss}
     />

@@ -23,6 +23,7 @@ async function checkPermission() {
   ) {
     return true;
   }
+  // Get Permission from User
   const response = await PermissionsAndroid.request(
     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
   );
