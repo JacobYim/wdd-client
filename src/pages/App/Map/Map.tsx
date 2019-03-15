@@ -14,8 +14,6 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  PermissionsAndroid,
-  Platform,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -60,31 +58,7 @@ class Map extends Component<Props, State> {
   state: State = {
     trackUser: true,
     statusChanged: true,
-    current: {
-      ...this.initLocation,
-      speed: 0,
-    },
-  };
-
-  checkPermission = async (): Promise<boolean> => {
-    if (
-      Platform.OS === 'ios' ||
-      (Platform.OS === 'android' && Platform.Version < 23)
-    ) {
-      return true;
-    }
-
-    const hasPermission = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-    );
-    if (hasPermission) return true;
-
-    const status = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-    );
-    if (status === PermissionsAndroid.RESULTS.GRANTED) return true;
-
-    return false;
+    current: { ...this.initLocation, speed: 0 },
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -94,47 +68,36 @@ class Map extends Component<Props, State> {
   }
 
   componentDidMount() {
-    if (this.checkPermission()) {
-      this.watchPosition();
-    }
-  }
-
-  componentWillUnmount() {
-    Geolocation.clearWatch(this.watchLocation);
-  }
-
-  watchPosition = () => {
-    const { pushPin } = this.props;
     this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
-        const { walk } = this.props;
-        const { trackUser, statusChanged } = this.state;
-        const current = {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          speed: coords.speed || 0,
-        };
+        const { pushPin, walk } = this.props;
+        const { latitude, longitude, speed } = coords;
+        const current = { latitude, longitude, speed: speed || 0 };
 
-        if (walk.status === 'WALKING') {
-          const pinLength = walk.pins.length;
-          const pinInfo: actions.UpdateWalkInterface = {
-            ...current,
-            addDistance: 0,
-          };
-          if (statusChanged) {
-            pushPin(pinInfo);
-            this.setState({ statusChanged: false });
-          } else {
-            const previous = walk.pins[pinLength - 1];
-            pinInfo.addDistance = calcDistance(
-              extLocation(previous),
-              extLocation(current)
-            );
-            if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
-          }
-        }
-        this.moveCameraToUser(extLocation(current), trackUser);
-        this.setState({ current });
+        this.setState(state =>
+          produce(state, draft => {
+            if (walk.status === 'WALKING') {
+              const pinLength = walk.pins.length;
+              const pinInfo: actions.UpdateWalkInterface = {
+                ...current,
+                addDistance: 0,
+              };
+              if (state.statusChanged) {
+                pushPin(pinInfo);
+                draft.statusChanged = false;
+              } else {
+                const previous = walk.pins[pinLength - 1];
+                pinInfo.addDistance = calcDistance(
+                  extLocation(previous),
+                  extLocation(current)
+                );
+                if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
+              }
+            }
+            this.moveCameraToUser(extLocation(current), state.trackUser);
+            draft.current = current;
+          })
+        );
       },
       () => {},
       {
@@ -144,7 +107,11 @@ class Map extends Component<Props, State> {
         fastestInterval: 2000,
       }
     );
-  };
+  }
+
+  componentWillUnmount() {
+    Geolocation.clearWatch(this.watchLocation);
+  }
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
     const map = this.map.current;

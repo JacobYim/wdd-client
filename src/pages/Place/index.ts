@@ -1,11 +1,12 @@
-import { createStackNavigator } from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
 import SearchScreen from './Search';
 
-export default createStackNavigator(
+export default createSwitchNavigator(
   {
     search: SearchScreen,
   },
   {
-    headerMode: 'none',
+    initialRouteName: 'search',
+    backBehavior: 'initialRoute',
   }
 );
