@@ -1,12 +1,15 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { Component } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet } from 'react-native';
+import { Dimensions, Image, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
+import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
-import { GeoJSON, Params, Place, searchPlace } from 'src/services/api/place';
+import { Params, Place, searchPlace } from 'src/services/api/place';
+import { icons } from './Result.styles';
 import MapView, {
   LatLng,
+  Marker,
   PROVIDER_GOOGLE,
   EventUserLocation,
 } from 'react-native-maps';
@@ -24,12 +27,6 @@ interface State {
   filter: { range: number };
 }
 
-const geoToLatLng = ({ coordinates }: GeoJSON) =>
-  ({
-    latitude: coordinates[1],
-    longitude: coordinates[0],
-  } as LatLng);
-
 class Result extends Component<NavigationScreenProps, State> {
   private map = React.createRef<MapView>();
   private loadUserLocation = false;
@@ -39,14 +36,19 @@ class Result extends Component<NavigationScreenProps, State> {
     trackUser: true,
     userCoord: LOCATION,
     mapCoord: LOCATION,
-    filter: { range: 300 },
+    filter: {
+      range: 1, // km
+    },
   };
 
-  search = async (params: Params) => {
-    const response = await searchPlace(params);
-    const places: Place[] = response.map(data =>
-      Object.assign(data, { location: geoToLatLng(data.location) })
-    );
+  search = async (keyword?: string) => {
+    const { userCoord, filter } = this.state;
+    const params: Params = {
+      keyword,
+      location: userCoord,
+      range: filter.range,
+    };
+    const places = await searchPlace(params);
     this.setState({ places });
   };
 
@@ -78,13 +80,25 @@ class Result extends Component<NavigationScreenProps, State> {
       const { navigation } = this.props;
       this.loadUserLocation = true;
       const keyword: string | undefined = navigation.getParam('keyword');
-      this.search({ keyword, location: userCoord });
+      this.search(keyword);
     }
   };
 
   render() {
+    const { places, trackUser } = this.state;
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <TopNavbar
+          right={{
+            view: (
+              <Image
+                style={icons.close}
+                source={require('src/assets/icons/ic_close.png')}
+              />
+            ),
+            handlePress: () => this.props.navigation.goBack(null),
+          }}
+        />
         <MapView
           ref={this.map}
           provider={PROVIDER_GOOGLE}
@@ -98,8 +112,20 @@ class Result extends Component<NavigationScreenProps, State> {
         />
         <TrackUser
           handlePress={this.handlePressTrackButton}
-          active={this.state.trackUser}
+          active={trackUser}
         />
+        {places &&
+          places.map((place, index) => (
+            <Marker
+              coordinate={place.location}
+              anchor={{ x: 0.5, y: 0.5 }}
+              key={index}>
+              <Image
+                source={require('src/assets/icons/ic_pin.png')}
+                style={icons.pin}
+              />
+            </Marker>
+          ))}
       </SafeAreaView>
     );
   }
