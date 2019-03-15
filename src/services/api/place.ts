@@ -1,14 +1,25 @@
 import axios from 'axios';
+import { Alert } from 'react-native';
+import { LatLng } from 'react-native-maps';
 
-interface Place {
+export interface GeoJSON {
+  type: string;
+  coordinates: [number, number];
+}
+
+export interface Params {
+  keyword?: string;
+  location?: LatLng;
+  range?: number; // km
+}
+
+interface Response {
   name: string;
-  location: {
-    type: string;
-    coordinates: [number, number]; // [longitude, latitude]
-  };
+  location: GeoJSON;
   address: string;
   rating: number;
   images: string[];
+  distance: number; // km
   officeHour?: {
     default: string;
     weekend?: string;
@@ -20,13 +31,13 @@ interface Place {
   reviews?: string[];
 }
 
-interface Search {
-  coordinates?: [number, number];
-  name?: string;
-  range?: string; // km
+export interface Place
+  extends Pick<Response, Exclude<keyof Response, 'location'>> {
+  location: LatLng;
 }
 
-export const searchPlace = async (params?: Search) => {
+export const searchPlace = async (params?: Params) => {
   const response = await axios.get('/places', { params });
-  return response.data as Place[];
+  if (response.status === 404) Alert.alert('주변 가게를 찾을 수 없습니다.');
+  return response.data as Response[];
 };

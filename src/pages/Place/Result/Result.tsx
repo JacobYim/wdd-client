@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import TrackUser from 'src/pages/App/Map/TrackUser';
-import { searchPlace } from 'src/services/api/place';
+import { GeoJSON, Params, Place, searchPlace } from 'src/services/api/place';
 import MapView, {
   LatLng,
   PROVIDER_GOOGLE,
@@ -17,19 +17,37 @@ const LOCATION: LatLng = { latitude: 37.4734372, longitude: 127.0405071 };
 const DELTA = { latitudeDelta: 0.005, longitudeDelta: 0.005 * ASPECT_RATIO };
 
 interface State {
+  places: Place[];
   trackUser: boolean;
-  current: {
-    latitude: number;
-    longitude: number;
-  };
+  userCoord: LatLng;
+  mapCoord: LatLng;
+  filter: { range: number };
 }
+
+const geoToLatLng = ({ coordinates }: GeoJSON) =>
+  ({
+    latitude: coordinates[1],
+    longitude: coordinates[0],
+  } as LatLng);
 
 class Result extends Component<NavigationScreenProps, State> {
   private map = React.createRef<MapView>();
+  private loadUserLocation = false;
 
   state: State = {
+    places: [],
     trackUser: true,
-    current: LOCATION,
+    userCoord: LOCATION,
+    mapCoord: LOCATION,
+    filter: { range: 300 },
+  };
+
+  search = async (params: Params) => {
+    const response = await searchPlace(params);
+    const places: Place[] = response.map(data =>
+      Object.assign(data, { location: geoToLatLng(data.location) })
+    );
+    this.setState({ places });
   };
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
@@ -47,15 +65,21 @@ class Result extends Component<NavigationScreenProps, State> {
     this.setState(state =>
       produce(state, draft => {
         draft.trackUser = !state.trackUser;
-        this.moveCameraToUser(state.current, draft.trackUser);
+        this.moveCameraToUser(state.userCoord, draft.trackUser);
       })
     );
   };
 
   handleLocationChange = (e: EventUserLocation) => {
-    this.setState({
-      current: pick(e.nativeEvent.coordinate, ['latitude', 'longitude']),
-    });
+    const userCoord = pick(e.nativeEvent.coordinate, ['latitude', 'longitude']);
+    this.moveCameraToUser(userCoord, this.state.trackUser);
+    this.setState({ userCoord });
+    if (!this.loadUserLocation) {
+      const { navigation } = this.props;
+      this.loadUserLocation = true;
+      const keyword: string | undefined = navigation.getParam('keyword');
+      this.search({ keyword, location: userCoord });
+    }
   };
 
   render() {

@@ -8,7 +8,9 @@ interface Props extends NavigationScreenProps {
 }
 
 const Search: React.FC<Props> = ({ navigation, preLoad = [] }) => {
-  function handleSubmit(data: HandleChangeText) {}
+  function handleSubmit(data: HandleChangeText) {
+    navigation.navigate('result', { keyword: data.value });
+  }
 
   function handleDismiss() {
     navigation.goBack(null);
