@@ -1,12 +1,18 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { Component } from 'react';
-import { Dimensions, Image, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
 import { Params, Place, searchPlace } from 'src/services/api/place';
-import { icons } from './Result.styles';
+import { icons, views } from './Result.styles';
+import {
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import MapView, {
   LatLng,
   Marker,
@@ -37,17 +43,11 @@ class Result extends Component<NavigationScreenProps, State> {
     userCoord: LOCATION,
     mapCoord: LOCATION,
     filter: {
-      range: 1, // km
+      range: 0.3, // km
     },
   };
 
-  search = async (keyword?: string) => {
-    const { userCoord, filter } = this.state;
-    const params: Params = {
-      keyword,
-      location: userCoord,
-      range: filter.range,
-    };
+  search = async (params: Params) => {
     const places = await searchPlace(params);
     this.setState({ places });
   };
@@ -74,59 +74,65 @@ class Result extends Component<NavigationScreenProps, State> {
 
   handleLocationChange = (e: EventUserLocation) => {
     const userCoord = pick(e.nativeEvent.coordinate, ['latitude', 'longitude']);
-    this.moveCameraToUser(userCoord, this.state.trackUser);
+    const { trackUser, filter } = this.state;
+    this.moveCameraToUser(userCoord, trackUser);
     this.setState({ userCoord });
     if (!this.loadUserLocation) {
       const { navigation } = this.props;
-      this.loadUserLocation = true;
       const keyword: string | undefined = navigation.getParam('keyword');
-      this.search(keyword);
+      this.search({ keyword, location: userCoord, ...filter });
+      this.loadUserLocation = true;
     }
   };
 
   render() {
     const { places, trackUser } = this.state;
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <TopNavbar
-          right={{
-            view: (
-              <Image
-                style={icons.close}
-                source={require('src/assets/icons/ic_close.png')}
-              />
-            ),
-            handlePress: () => this.props.navigation.goBack(null),
-          }}
-        />
-        <MapView
-          ref={this.map}
-          provider={PROVIDER_GOOGLE}
-          style={StyleSheet.absoluteFillObject}
-          initialRegion={{ ...LOCATION, ...DELTA }}
-          showsCompass={false}
-          showsMyLocationButton={false}
-          showsUserLocation={true}
-          onTouchStart={this.handleDragMapStart}
-          onUserLocationChange={this.handleLocationChange}
-        />
-        <TrackUser
-          handlePress={this.handlePressTrackButton}
-          active={trackUser}
-        />
-        {places &&
-          places.map((place, index) => (
-            <Marker
-              coordinate={place.location}
-              anchor={{ x: 0.5, y: 0.5 }}
-              key={index}>
-              <Image
-                source={require('src/assets/icons/ic_pin.png')}
-                style={icons.pin}
-              />
-            </Marker>
-          ))}
-      </SafeAreaView>
+      <>
+        <SafeAreaView>
+          <TopNavbar
+            center="주변 상점"
+            left={{
+              view: (
+                <Image
+                  style={icons.back}
+                  source={require('src/assets/icons/ic_back.png')}
+                />
+              ),
+              handlePress: () => this.props.navigation.goBack(null),
+            }}
+            showBorder
+          />
+        </SafeAreaView>
+        <View style={views.container}>
+          <MapView
+            ref={this.map}
+            provider={PROVIDER_GOOGLE}
+            style={StyleSheet.absoluteFillObject}
+            initialRegion={{ ...LOCATION, ...DELTA }}
+            showsCompass={false}
+            showsMyLocationButton={false}
+            showsUserLocation={true}
+            onTouchStart={this.handleDragMapStart}
+            onUserLocationChange={this.handleLocationChange}>
+            {places &&
+              places.map((place, index) => (
+                <Marker coordinate={place.location} key={index}>
+                  <Image
+                    source={require('src/assets/icons/ic_pin.png')}
+                    style={icons.pin}
+                  />
+                </Marker>
+              ))}
+          </MapView>
+          <SafeAreaView>
+            <TrackUser
+              handlePress={this.handlePressTrackButton}
+              active={trackUser}
+            />
+          </SafeAreaView>
+        </View>
+      </>
     );
   }
 }

@@ -46,7 +46,7 @@ export const searchPlace = async (params?: Params) => {
   const response: AxiosResponse<Response[]> = await axios.get('/places', {
     params,
   });
-  if (response.status === 404) Alert.alert('주변 가게를 찾을 수 없습니다.');
+  if (response.data.length < 1) Alert.alert('주변 가게를 찾을 수 없습니다.');
   const places: Place[] = response.data.map(place => ({
     ...place,
     location: geoToLatLng(place.location),

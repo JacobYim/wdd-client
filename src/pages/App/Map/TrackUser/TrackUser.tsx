@@ -11,9 +11,10 @@ const trackUserSize = 56;
 
 const styles = StyleSheet.create({
   button: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
+    marginTop: 'auto',
+    marginLeft: 'auto',
+    marginBottom: 16,
+    marginRight: 16,
     width: trackUserSize,
     height: trackUserSize,
     justifyContent: 'center',

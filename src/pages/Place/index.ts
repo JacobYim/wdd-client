@@ -9,6 +9,5 @@ export default createSwitchNavigator(
   },
   {
     initialRouteName: 'search',
-    backBehavior: 'initialRoute',
   }
 );
