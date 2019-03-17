@@ -5,13 +5,14 @@ import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
 import { Params, Place, searchPlace } from 'src/services/api/place';
-import { icons, views } from './Result.styles';
+import { fonts, icons, views } from './Result.styles';
 import {
   Dimensions,
   Image,
   SafeAreaView,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
 import MapView, {
   LatLng,
@@ -86,7 +87,9 @@ class Result extends Component<NavigationScreenProps, State> {
   };
 
   render() {
-    const { places, trackUser } = this.state;
+    const { places, trackUser, filter } = this.state;
+    const range =
+      filter.range < 1 ? `${filter.range * 1000}m` : `${filter.range}km`;
     return (
       <>
         <SafeAreaView>
@@ -101,8 +104,14 @@ class Result extends Component<NavigationScreenProps, State> {
               ),
               handlePress: () => this.props.navigation.goBack(null),
             }}
-            showBorder
           />
+          <View style={views.filterWrapper}>
+            <Text style={fonts.range}>{range}</Text>
+            <Image
+              source={require('src/assets/icons/ic_dropdown.png')}
+              style={icons.dropDown}
+            />
+          </View>
         </SafeAreaView>
         <View style={views.container}>
           <MapView
