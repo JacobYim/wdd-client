@@ -1,14 +1,16 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { Component } from 'react';
-import { Dimensions, Image, SafeAreaView, View } from 'react-native';
+import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
+import Carousel, { CarouselStatic } from 'react-native-snap-carousel';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
 import { Params, Place, searchPlace } from 'src/services/api/place';
+import Card from './Card';
 import MarkerView from './MarkerView';
 import Range from './Range';
-import { icons, views } from './Result.styles';
+import { cardWidth, height, icons, views, width } from './Result.styles';
 import MapView, {
   LatLng,
   Marker,
@@ -17,7 +19,6 @@ import MapView, {
   EventUserLocation,
 } from 'react-native-maps';
 
-const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LOCATION: LatLng = { latitude: 37.4734372, longitude: 127.0405071 };
 const DELTA = { latitudeDelta: 0.005, longitudeDelta: 0.005 * ASPECT_RATIO };
@@ -31,8 +32,13 @@ interface State {
   filter: { keyword?: string; range: number };
 }
 
+type CarouselInterface = Carousel<Place> &
+  CarouselStatic<Place> &
+  ScrollViewProps;
+
 class Result extends Component<NavigationScreenProps, State> {
   private map = React.createRef<MapView>();
+  private carousel = React.createRef<CarouselInterface>();
   private loadUserLocation = false;
 
   state: State = {
@@ -94,8 +100,12 @@ class Result extends Component<NavigationScreenProps, State> {
 
   handleMarkerPress = (e: MapEvent<{ action: 'marker-press'; id: string }>) => {
     const { id, coordinate } = e.nativeEvent;
+    const curPlace = parseInt(id, 10);
     this.moveCameraToLocation(coordinate);
-    this.setState({ curPlace: parseInt(id, 10) });
+    this.setState({ curPlace });
+    if (this.carousel.current) {
+      this.carousel.current.snapToItem(curPlace);
+    }
   };
 
   handleRangeChange = (range: number) => {
@@ -103,6 +113,15 @@ class Result extends Component<NavigationScreenProps, State> {
       produce(state, draft => {
         draft.filter.range = range;
         this.search({ location: state.userCoord, ...draft.filter });
+      })
+    );
+  };
+
+  handleSnap = (index: number) => {
+    this.setState(state =>
+      produce(state, draft => {
+        draft.curPlace = index;
+        this.moveCameraToLocation(state.places[draft.curPlace].location);
       })
     );
   };
@@ -155,6 +174,14 @@ class Result extends Component<NavigationScreenProps, State> {
             <TrackUser
               handlePress={this.handlePressTrackButton}
               active={trackUser}
+            />
+            <Carousel
+              ref={this.carousel}
+              data={places}
+              sliderWidth={width}
+              itemWidth={cardWidth}
+              onSnapToItem={this.handleSnap}
+              renderItem={Card}
             />
           </SafeAreaView>
         </View>

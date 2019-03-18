@@ -1,8 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import { color } from 'src/theme';
 
-export const height = 49;
+export const { width, height } = Dimensions.get('window');
+export const filterHeight = 49;
+export const cardWidth = width * 0.872;
 
 export const views = StyleSheet.create({
   container: {
@@ -10,7 +12,7 @@ export const views = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   filterWrapper: {
-    height,
+    height: filterHeight,
     paddingHorizontal: horizontalSize,
     backgroundColor: color.grayF9,
     flexDirection: 'row',

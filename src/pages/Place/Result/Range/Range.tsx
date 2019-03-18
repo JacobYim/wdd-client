@@ -69,8 +69,14 @@ class Range extends PureComponent<Props, State> {
     );
   };
 
+  handleChange = (range: number) => {
+    const { handleChange } = this.props;
+    handleChange(range);
+    this.handleToggle();
+  };
+
   render() {
-    const { range, handleChange } = this.props;
+    const { range } = this.props;
 
     return (
       <>
@@ -98,7 +104,7 @@ class Range extends PureComponent<Props, State> {
                       { ...(index > 0 ? styles.borderTop : null) },
                     ]}
                     activeOpacity={0.7}
-                    onPress={() => handleChange(range)}
+                    onPress={() => this.handleChange(range)}
                     key={range}>
                     <Text>{rangeWithUnit(range)}</Text>
                   </TouchableOpacity>
