@@ -3,9 +3,8 @@ import React, { PureComponent } from 'react';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import { height as navHeight } from 'src/components/module/TopNavbar/TopNavbar';
 import { color } from 'src/theme';
-import { height as resultHeight } from '../Result.styles';
+import { filterHeight as resultHeight } from '../Result.styles';
 import {
-  GestureResponderEvent,
   Image,
   Modal,
   SafeAreaView,
@@ -91,27 +90,26 @@ class Range extends PureComponent<Props, State> {
           />
         </TouchableOpacity>
         <Modal visible={this.state.activated} transparent>
-          <SafeAreaView style={styles.modal}>
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={this.handleToggle}
-              activeOpacity={1}>
-              <View style={styles.box}>
-                {RANGES.map((range, index) => (
-                  <TouchableOpacity
-                    style={[
-                      styles.optionWrapper,
-                      { ...(index > 0 ? styles.borderTop : null) },
-                    ]}
-                    activeOpacity={0.7}
-                    onPress={() => this.handleChange(range)}
-                    key={range}>
-                    <Text>{rangeWithUnit(range)}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </TouchableOpacity>
-          </SafeAreaView>
+          <TouchableOpacity
+            style={styles.modal}
+            onPress={this.handleToggle}
+            activeOpacity={1}>
+            <SafeAreaView />
+            <View style={styles.box}>
+              {RANGES.map((range, index) => (
+                <TouchableOpacity
+                  style={[
+                    styles.optionWrapper,
+                    { ...(index > 0 ? styles.borderTop : null) },
+                  ]}
+                  activeOpacity={0.7}
+                  onPress={() => this.handleChange(range)}
+                  key={range}>
+                  <Text>{rangeWithUnit(range)}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TouchableOpacity>
         </Modal>
       </>
     );

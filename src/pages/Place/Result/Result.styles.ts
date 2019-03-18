@@ -4,7 +4,7 @@ import { color } from 'src/theme';
 
 export const { width, height } = Dimensions.get('window');
 export const filterHeight = 49;
-export const cardWidth = width * 0.872;
+export const cardWidth = 327;
 
 export const views = StyleSheet.create({
   container: {

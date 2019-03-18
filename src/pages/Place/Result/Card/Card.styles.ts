@@ -20,6 +20,10 @@ export const views = StyleSheet.create({
     marginLeft: 12,
     marginTop: 4,
   },
+  ratingWrapper: {
+    marginTop: 'auto',
+    flexDirection: 'row',
+  },
 });
 
 export const icons = StyleSheet.create({
@@ -40,6 +44,11 @@ export const texts = StyleSheet.create({
   address: {
     fontSize: font.size.medium,
     marginTop: 2,
+    color: color.blackOpacity,
+  },
+  rating: {
+    fontSize: 16,
+    fontFamily: font.family.NanumSquareRoundB,
     color: color.blackOpacity,
   },
 });
