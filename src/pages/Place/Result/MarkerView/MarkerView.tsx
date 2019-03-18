@@ -1,9 +1,10 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { PlaceInterface } from '../Result';
+import { Place } from 'src/services/api/place';
 
 interface Props {
-  place: PlaceInterface;
+  place: Place;
+  selected: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -23,15 +24,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const MarkerView: React.FC<Props> = ({ place }) => (
+const MarkerView: React.FC<Props> = ({ place, selected }) => (
   <View style={styles.wrapper}>
     <Image
       source={
-        place.selected
+        selected
           ? require('src/assets/icons/ic_place.png')
           : require('src/assets/icons/ic_pin.png')
       }
-      style={place.selected ? styles.place : styles.pin}
+      style={selected ? styles.place : styles.pin}
     />
   </View>
 );

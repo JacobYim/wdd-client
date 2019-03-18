@@ -22,7 +22,7 @@ interface Props {
 }
 
 const { width } = Dimensions.get('window');
-const height = 45;
+export const height = 45;
 const styles = StyleSheet.create({
   wrapper: {
     height,

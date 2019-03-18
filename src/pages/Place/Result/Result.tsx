@@ -1,21 +1,14 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { Component } from 'react';
+import { Dimensions, Image, SafeAreaView, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
 import { Params, Place, searchPlace } from 'src/services/api/place';
 import MarkerView from './MarkerView';
-import { fonts, icons, views } from './Result.styles';
-import {
-  Dimensions,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import Range from './Range';
+import { icons, views } from './Result.styles';
 import MapView, {
   LatLng,
   Marker,
@@ -29,16 +22,13 @@ const ASPECT_RATIO = width / height;
 const LOCATION: LatLng = { latitude: 37.4734372, longitude: 127.0405071 };
 const DELTA = { latitudeDelta: 0.005, longitudeDelta: 0.005 * ASPECT_RATIO };
 
-export interface PlaceInterface extends Place {
-  selected: boolean;
-}
-
 interface State {
-  places: PlaceInterface[];
+  places: Place[];
+  curPlace: number;
   trackUser: boolean;
   userCoord: LatLng;
   mapCoord: LatLng;
-  filter: { range: number };
+  filter: { keyword?: string; range: number };
 }
 
 class Result extends Component<NavigationScreenProps, State> {
@@ -47,10 +37,12 @@ class Result extends Component<NavigationScreenProps, State> {
 
   state: State = {
     places: [],
+    curPlace: 0,
     trackUser: false,
     userCoord: LOCATION,
     mapCoord: LOCATION,
     filter: {
+      keyword: this.props.navigation.getParam('keyword'),
       range: 0.5, // km
     },
   };
@@ -59,11 +51,11 @@ class Result extends Component<NavigationScreenProps, State> {
     const places = await searchPlace(params);
     this.setState(state =>
       produce(state, draft => {
-        places.forEach((place, index) => {
-          const selected = index === 0;
-          draft.places.push({ ...place, selected });
-          if (selected) this.moveCameraToLocation(place.location);
-        });
+        draft.places = places;
+        draft.curPlace = 0;
+        if (places.length > 0) {
+          this.moveCameraToLocation(places[draft.curPlace].location);
+        }
       })
     );
   };
@@ -93,32 +85,31 @@ class Result extends Component<NavigationScreenProps, State> {
     const { trackUser, filter } = this.state;
     this.moveCameraToLocation(userCoord, trackUser);
     this.setState({ userCoord });
+    // call only once
     if (!this.loadUserLocation) {
       this.loadUserLocation = true;
-      const { navigation } = this.props;
-      const keyword: string | undefined = navigation.getParam('keyword');
-      this.search({ keyword, location: userCoord, ...filter });
+      this.search({ location: userCoord, ...filter });
     }
   };
 
   handleMarkerPress = (e: MapEvent<{ action: 'marker-press'; id: string }>) => {
     const { id, coordinate } = e.nativeEvent;
-    const selectedIndex = parseInt(id, 10);
+    this.moveCameraToLocation(coordinate);
+    this.setState({ curPlace: parseInt(id, 10) });
+  };
+
+  handleRangeChange = (range: number) => {
     this.setState(state =>
       produce(state, draft => {
-        state.places.forEach((p, index) => {
-          const selected = selectedIndex === index;
-          draft.places[index].selected = selected;
-          if (selected) this.moveCameraToLocation(coordinate);
-        });
+        draft.filter.range = range;
+        this.search({ location: state.userCoord, ...draft.filter });
       })
     );
   };
 
   render() {
-    const { places, trackUser, filter } = this.state;
-    const range =
-      filter.range < 1 ? `${filter.range * 1000}m` : `${filter.range}km`;
+    const { places, trackUser, filter, curPlace } = this.state;
+
     return (
       <>
         <SafeAreaView>
@@ -135,22 +126,14 @@ class Result extends Component<NavigationScreenProps, State> {
             }}
           />
           <View style={views.filterWrapper}>
-            <TouchableOpacity
-              style={views.range}
-              onPress={() => console.log('pressed')}>
-              <Text style={fonts.range}>{range}</Text>
-              <Image
-                source={require('src/assets/icons/ic_dropdown.png')}
-                style={icons.dropDown}
-              />
-            </TouchableOpacity>
+            <Range range={filter.range} handleChange={this.handleRangeChange} />
           </View>
         </SafeAreaView>
         <View style={views.container}>
           <MapView
             ref={this.map}
             provider={PROVIDER_GOOGLE}
-            style={StyleSheet.absoluteFillObject}
+            style={views.map}
             initialRegion={{ ...LOCATION, ...DELTA }}
             showsCompass={false}
             showsMyLocationButton={false}
@@ -164,7 +147,7 @@ class Result extends Component<NavigationScreenProps, State> {
                   identifier={index.toString()}
                   coordinate={place.location}
                   key={index}>
-                  <MarkerView place={place} />
+                  <MarkerView place={place} selected={index === curPlace} />
                 </Marker>
               ))}
           </MapView>
