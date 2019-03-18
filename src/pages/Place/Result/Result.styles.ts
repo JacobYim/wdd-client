@@ -17,13 +17,14 @@ export const views = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: color.grayB1,
   },
+  range: {
+    height: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export const icons = StyleSheet.create({
-  pin: {
-    width: 20,
-    height: 20,
-  },
   back: {
     width: 18,
     height: 16,
