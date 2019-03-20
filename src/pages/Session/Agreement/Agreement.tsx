@@ -102,7 +102,7 @@ class Agreement extends Component<NavigationScreenProps, State> {
         onPress={() => this.showDetail({ title, link })}>
         <Image
           style={icons.more}
-          source={require('src/assets/icons/ic_more.png')}
+          source={require('src/assets/icons/ic_arrow.png')}
         />
       </TouchableOpacity>
     </View>

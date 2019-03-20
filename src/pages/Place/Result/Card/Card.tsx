@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { AdditionalParallaxProps } from 'react-native-snap-carousel';
 import { Place } from 'src/services/api/place';
 import { icons, texts, views } from './Card.styles';
@@ -41,6 +41,12 @@ const Card = ({ item }: Item, parallaxProps?: AdditionalParallaxProps) => (
         {ratingIcons(item.rating)}
       </View>
     </View>
+    <TouchableOpacity style={views.show} activeOpacity={0.7}>
+      <Image
+        source={require('src/assets/icons/ic_show.png')}
+        style={icons.show}
+      />
+    </TouchableOpacity>
   </View>
 );
 

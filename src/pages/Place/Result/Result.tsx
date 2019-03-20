@@ -73,7 +73,7 @@ class Result extends Component<NavigationScreenProps, State> {
     }
   };
 
-  handleDragMapStart = () => {
+  stopTrackUser = () => {
     if (this.state.trackUser) this.setState({ trackUser: false });
   };
 
@@ -157,7 +157,7 @@ class Result extends Component<NavigationScreenProps, State> {
             showsCompass={false}
             showsMyLocationButton={false}
             showsUserLocation={true}
-            onTouchStart={this.handleDragMapStart}
+            onTouchStart={this.stopTrackUser}
             onUserLocationChange={this.handleLocationChange}
             onMarkerPress={this.handleMarkerPress}>
             {places &&
