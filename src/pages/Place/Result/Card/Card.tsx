@@ -15,6 +15,21 @@ const renderImage = (images: string[]) =>
 
 const renderRating = (rating: number) => rating.toFixed(1);
 
+const ratingIcons = (rating: number) => {
+  const nodes: React.ReactNode[] = [];
+  const ratingRound = Math.round(rating);
+  for (let i = 1; i < 6; i += 1) {
+    nodes.push(
+      <Image
+        source={require('src/assets/icons/ic_rating.png')}
+        style={[icons.rating, { opacity: ratingRound < i ? 0.5 : 1 }]}
+        key={i}
+      />
+    );
+  }
+  return nodes;
+};
+
 const Card = ({ item }: Item, parallaxProps?: AdditionalParallaxProps) => (
   <View style={views.wrapper}>
     <Image source={renderImage(item.images)} style={icons.thumbnail} />
@@ -23,6 +38,7 @@ const Card = ({ item }: Item, parallaxProps?: AdditionalParallaxProps) => (
       <Text style={texts.address}>{item.address}</Text>
       <View style={views.ratingWrapper}>
         <Text style={texts.rating}>{renderRating(item.rating)}</Text>
+        {ratingIcons(item.rating)}
       </View>
     </View>
   </View>

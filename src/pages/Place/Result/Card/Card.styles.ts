@@ -23,6 +23,7 @@ export const views = StyleSheet.create({
   ratingWrapper: {
     marginTop: 'auto',
     flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
@@ -33,6 +34,11 @@ export const icons = StyleSheet.create({
     borderRadius: thumbnailSize / 2,
     borderWidth: 1,
     borderColor: `${color.black}14`,
+  },
+  rating: {
+    marginLeft: 4,
+    width: 13,
+    height: 13,
   },
 });
 
@@ -50,5 +56,6 @@ export const texts = StyleSheet.create({
     fontSize: 16,
     fontFamily: font.family.NanumSquareRoundB,
     color: color.blackOpacity,
+    marginRight: 4,
   },
 });
