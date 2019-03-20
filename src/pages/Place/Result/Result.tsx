@@ -1,16 +1,32 @@
 import produce from 'immer';
 import { pick } from 'lodash';
-import React, { Component } from 'react';
-import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
-import Carousel, { CarouselStatic } from 'react-native-snap-carousel';
+import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
 import { Params, Place, searchPlace } from 'src/services/api/place';
-import Card from './Card';
 import MarkerView from './MarkerView';
 import Range from './Range';
-import { cardWidth, height, icons, views, width } from './Result.styles';
+import {
+  cardWidth,
+  height,
+  icons,
+  texts,
+  views,
+  width
+  } from './Result.styles';
+import {
+  Image,
+  SafeAreaView,
+  ScrollViewProps,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import Carousel, {
+  CarouselStatic,
+  AdditionalParallaxProps,
+} from 'react-native-snap-carousel';
 import MapView, {
   LatLng,
   Marker,
@@ -32,11 +48,37 @@ interface State {
   filter: { keyword?: string; range: number };
 }
 
+interface Item {
+  item: Place;
+  index: number;
+}
+
 type CarouselInterface = Carousel<Place> &
   CarouselStatic<Place> &
   ScrollViewProps;
 
-class Result extends Component<NavigationScreenProps, State> {
+const renderImage = (images: string[]) =>
+  (images && images[0] && { uri: images[0] }) ||
+  require('src/assets/icons/logo_img.png');
+
+const renderRating = (rating: number) => rating.toFixed(1);
+
+const ratingIcons = (rating: number) => {
+  const nodes: React.ReactNode[] = [];
+  const ratingRound = Math.round(rating);
+  for (let i = 1; i < 6; i += 1) {
+    nodes.push(
+      <Image
+        source={require('src/assets/icons/ic_rating.png')}
+        style={[icons.rating, { opacity: ratingRound < i ? 0.5 : 1 }]}
+        key={i}
+      />
+    );
+  }
+  return nodes;
+};
+
+class Result extends PureComponent<NavigationScreenProps, State> {
   private map = React.createRef<MapView>();
   private carousel = React.createRef<CarouselInterface>();
   private loadUserLocation = false;
@@ -71,6 +113,11 @@ class Result extends Component<NavigationScreenProps, State> {
     if (map && activate) {
       map.animateToRegion({ ...center, ...DELTA }, 120);
     }
+  };
+
+  moveToDetail = (params: Place) => {
+    const { navigation } = this.props;
+    navigation.navigate({ params, routeName: 'detail' });
   };
 
   stopTrackUser = () => {
@@ -126,9 +173,31 @@ class Result extends Component<NavigationScreenProps, State> {
     );
   };
 
+  renderItem = ({ item }: Item, parallaxProps?: AdditionalParallaxProps) => (
+    <View style={views.cardWrapper}>
+      <Image source={renderImage(item.images)} style={icons.thumbnail} />
+      <View style={views.infoWrapper}>
+        <Text style={texts.name}>{item.name}</Text>
+        <Text style={texts.address}>{item.address}</Text>
+        <View style={views.ratingWrapper}>
+          <Text style={texts.rating}>{renderRating(item.rating)}</Text>
+          {ratingIcons(item.rating)}
+        </View>
+      </View>
+      <TouchableOpacity
+        style={views.show}
+        onPress={() => this.moveToDetail(item)}
+        activeOpacity={0.7}>
+        <Image
+          source={require('src/assets/icons/ic_show.png')}
+          style={icons.show}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+
   render() {
     const { places, trackUser, filter, curPlace } = this.state;
-
     return (
       <>
         <SafeAreaView>
@@ -180,8 +249,9 @@ class Result extends Component<NavigationScreenProps, State> {
               data={places}
               sliderWidth={width}
               itemWidth={cardWidth}
+              decelerationRate="fast"
               onSnapToItem={this.handleSnap}
-              renderItem={Card}
+              renderItem={this.renderItem}
             />
           </SafeAreaView>
         </View>
