@@ -1,12 +1,25 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import { cardHeight } from 'src/pages/Place/Result/Card';
 import { color, shadow } from 'src/theme';
 
+const { height } = Dimensions.get('window');
 const paddingVertical = 20;
-export { horizontalSize };
 
 export const views = StyleSheet.create({
+  navbarWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  headerWrapper: {
+    height: height * 0.41,
+  },
+  headerFilter: {
+    flex: 1,
+    backgroundColor: `${color.black}78`,
+  },
   infoHover: {
     marginTop: -(cardHeight / 2 + paddingVertical),
     marginBottom: 10,
@@ -45,6 +58,10 @@ export const icons = StyleSheet.create({
   edit: {
     width: 24,
     height: 24,
+  },
+  back: {
+    width: 18,
+    height: 16,
   },
 });
 

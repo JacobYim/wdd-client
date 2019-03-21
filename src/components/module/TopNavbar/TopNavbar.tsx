@@ -19,6 +19,7 @@ interface Props {
   };
   center?: string;
   showBorder?: boolean;
+  transparent?: boolean;
 }
 
 const { width } = Dimensions.get('window');
@@ -49,8 +50,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const TopNavbar: React.FC<Props> = ({ left, right, center, showBorder }) => (
-  <View style={[styles.wrapper, showBorder ? { borderBottomWidth: 1 } : {}]}>
+const TopNavbar: React.FC<Props> = ({
+  left,
+  right,
+  center,
+  showBorder,
+  transparent,
+}) => (
+  <View
+    style={[
+      styles.wrapper,
+      showBorder ? { borderBottomWidth: 1 } : null,
+      { backgroundColor: transparent ? 'transparent' : color.white },
+    ]}>
     {center && (
       <View style={styles.center}>
         <Text style={styles.text}>{center}</Text>

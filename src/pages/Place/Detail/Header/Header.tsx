@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
+import TopNavbar from 'src/components/module/TopNavbar';
 import { color } from 'src/theme';
 import {
   Dimensions,
@@ -42,9 +43,14 @@ const Header: React.FC<Props> = ({ thumbnail, navigation }) => (
     style={styles.container}
     source={{ uri: thumbnail }}
     imageStyle={{ resizeMode: 'cover' }}>
-    <View style={styles.filter}>
-      <SafeAreaView>
-        <TouchableOpacity
+    <View style={styles.filter} />
+  </ImageBackground>
+);
+
+export default Header;
+
+{
+  /* <TouchableOpacity
           activeOpacity={0.7}
           style={styles.button}
           onPress={() => navigation.goBack(null)}>
@@ -52,10 +58,5 @@ const Header: React.FC<Props> = ({ thumbnail, navigation }) => (
             source={require('src/assets/icons/ic_back_white.png')}
             style={styles.icon}
           />
-        </TouchableOpacity>
-      </SafeAreaView>
-    </View>
-  </ImageBackground>
-);
-
-export default Header;
+        </TouchableOpacity> */
+}

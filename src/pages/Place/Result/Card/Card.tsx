@@ -20,7 +20,7 @@ const renderRating = (rating: number) => {
     nodes.push(
       <Image
         source={require('src/assets/icons/ic_rating.png')}
-        style={[styles.ratingIcon, { opacity: ratingRound < i ? 0.5 : 1 }]}
+        style={[styles.ratingIcon, { opacity: ratingRound < i ? 0.1 : 1 }]}
         key={i}
       />
     );
