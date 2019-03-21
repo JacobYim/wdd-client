@@ -1,28 +1,15 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { PureComponent } from 'react';
+import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
 import { Params, Place, searchPlace } from 'src/services/api/place';
+import Card, { cardWidth } from './Card';
 import MarkerView from './MarkerView';
 import Range from './Range';
-import {
-  cardWidth,
-  height,
-  icons,
-  texts,
-  views,
-  width
-  } from './Result.styles';
-import {
-  Image,
-  SafeAreaView,
-  ScrollViewProps,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { height, icons, views, width } from './Result.styles';
 import Carousel, {
   CarouselStatic,
   AdditionalParallaxProps,
@@ -56,27 +43,6 @@ interface Item {
 type CarouselInterface = Carousel<Place> &
   CarouselStatic<Place> &
   ScrollViewProps;
-
-const renderImage = (images: string[]) =>
-  (images && images[0] && { uri: images[0] }) ||
-  require('src/assets/icons/logo_img.png');
-
-const renderRating = (rating: number) => rating.toFixed(1);
-
-const ratingIcons = (rating: number) => {
-  const nodes: React.ReactNode[] = [];
-  const ratingRound = Math.round(rating);
-  for (let i = 1; i < 6; i += 1) {
-    nodes.push(
-      <Image
-        source={require('src/assets/icons/ic_rating.png')}
-        style={[icons.rating, { opacity: ratingRound < i ? 0.5 : 1 }]}
-        key={i}
-      />
-    );
-  }
-  return nodes;
-};
 
 class Result extends PureComponent<NavigationScreenProps, State> {
   private map = React.createRef<MapView>();
@@ -115,9 +81,9 @@ class Result extends PureComponent<NavigationScreenProps, State> {
     }
   };
 
-  moveToDetail = (params: Place) => {
+  moveToDetail = (place: Place) => {
     const { navigation } = this.props;
-    navigation.navigate({ params, routeName: 'detail' });
+    navigation.navigate('detail', { place });
   };
 
   stopTrackUser = () => {
@@ -174,26 +140,16 @@ class Result extends PureComponent<NavigationScreenProps, State> {
   };
 
   renderItem = ({ item }: Item, parallaxProps?: AdditionalParallaxProps) => (
-    <View style={views.cardWrapper}>
-      <Image source={renderImage(item.images)} style={icons.thumbnail} />
-      <View style={views.infoWrapper}>
-        <Text style={texts.name}>{item.name}</Text>
-        <Text style={texts.address}>{item.address}</Text>
-        <View style={views.ratingWrapper}>
-          <Text style={texts.rating}>{renderRating(item.rating)}</Text>
-          {ratingIcons(item.rating)}
-        </View>
-      </View>
-      <TouchableOpacity
-        style={views.show}
-        onPress={() => this.moveToDetail(item)}
-        activeOpacity={0.7}>
+    <Card
+      place={item}
+      handlePress={() => this.moveToDetail(item)}
+      icon={
         <Image
           source={require('src/assets/icons/ic_show.png')}
           style={icons.show}
         />
-      </TouchableOpacity>
-    </View>
+      }
+    />
   );
 
   render() {

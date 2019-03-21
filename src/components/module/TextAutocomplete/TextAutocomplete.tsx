@@ -12,6 +12,7 @@ interface Props {
   name: string;
   list: string[];
   defaultList?: string[];
+  handleChange?: (data: HandleChangeText) => void;
   handleSubmit: (data: HandleChangeText) => void;
   handleDismiss: () => void;
 }
@@ -36,8 +37,12 @@ class TextAutocomplete extends Component<Props, State> {
   };
 
   handleTextChange = (keyword: string) => {
+    const { name, handleChange } = this.props;
     const autocomplete = this.getAutocomplete(keyword);
     this.setState({ keyword, autocomplete });
+    if (handleChange) {
+      handleChange({ name, value: keyword.trim() });
+    }
   };
 
   handleTextPress = async (keyword: string) => {
