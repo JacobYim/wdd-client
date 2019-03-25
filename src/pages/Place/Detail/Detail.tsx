@@ -98,7 +98,9 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
         <SafeAreaView style={views.navbarWrapper}>
           <TopNavbar
             left={{
-              handlePress: () => this.props.navigation.goBack(null),
+              handlePress: () => {
+                this.props.navigation.goBack(null);
+              },
               view: (
                 <Image
                   source={require('src/assets/icons/ic_back_white.png')}

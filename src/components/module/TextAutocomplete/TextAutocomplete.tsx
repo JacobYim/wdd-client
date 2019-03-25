@@ -11,6 +11,7 @@ interface Props {
   placeholder: string;
   name: string;
   list: string[];
+  icon: NodeRequire;
   defaultList?: string[];
   handleChange?: (data: HandleChangeText) => void;
   handleSubmit: (data: HandleChangeText) => void;
@@ -57,8 +58,11 @@ class TextAutocomplete extends Component<Props, State> {
   };
 
   render() {
-    const { placeholder, handleDismiss, defaultList = [] } = this.props;
-    const autocomplete = this.state.autocomplete.concat(defaultList);
+    const { placeholder, handleDismiss, icon, defaultList = [] } = this.props;
+    const data =
+      this.state.autocomplete.length > 0
+        ? this.state.autocomplete
+        : defaultList;
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -90,12 +94,13 @@ class TextAutocomplete extends Component<Props, State> {
           />
         </View>
         <ScrollView style={views.autocompleteWrapper}>
-          {autocomplete.map(item => (
+          {data.map((item, index) => (
             <TextBox
               value={item}
+              icon={icon}
               keyword={this.state.keyword}
               handlePress={this.handleTextPress}
-              key={item}
+              key={index}
             />
           ))}
         </ScrollView>

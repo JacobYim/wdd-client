@@ -168,6 +168,7 @@ class CreateDog extends Component<Props, State> {
             name="breed"
             placeholder="찾으시는 품종을 입력해주세요"
             list={breeds}
+            icon={require('src/assets/icons/ic_search_gray.png')}
             defaultList={['믹스', '알 수 없음']}
             handleSubmit={this.handleChange}
             handleDismiss={this.toggleModal}

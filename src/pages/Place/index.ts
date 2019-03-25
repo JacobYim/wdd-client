@@ -3,6 +3,20 @@ import DetailScreen from './Detail';
 import ResultScreen from './Result';
 import SearchScreen from './Search';
 
+const SearchNavigator = createStackNavigator(
+  {
+    default: SearchScreen,
+    detail: DetailScreen,
+  },
+  {
+    initialRouteName: 'default',
+    headerMode: 'none',
+    defaultNavigationOptions: {
+      gesturesEnabled: false,
+    },
+  }
+);
+
 const ResultNavigator = createStackNavigator(
   {
     default: ResultScreen,
@@ -19,7 +33,7 @@ const ResultNavigator = createStackNavigator(
 
 export default createSwitchNavigator(
   {
-    search: SearchScreen,
+    search: SearchNavigator,
     result: ResultNavigator,
   },
   {

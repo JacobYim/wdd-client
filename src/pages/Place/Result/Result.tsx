@@ -56,7 +56,6 @@ class Result extends PureComponent<NavigationScreenProps, State> {
     userCoord: LOCATION,
     mapCoord: LOCATION,
     filter: {
-      keyword: this.props.navigation.getParam('keyword'),
       range: 0.5, // km
     },
   };
