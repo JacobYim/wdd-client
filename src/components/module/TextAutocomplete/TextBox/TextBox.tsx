@@ -1,41 +1,40 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity } from 'react-native';
+import { Data } from '../TextAutocomplete';
 import { icons, texts, views } from './TextBox.styles';
 
 interface Props {
-  value: string;
+  data: Data;
   keyword: string;
   icon: NodeRequire;
-  handlePress: (value: string) => {};
+  handlePress: (data: Data) => void;
 }
 
-const TextBox: React.FC<Props> = ({ value, keyword, icon, handlePress }) => {
-  const mapValueToPress = () => {
-    handlePress(value);
-  };
+const TextBox: React.FC<Props> = ({ data, keyword, icon, handlePress }) => {
+  const { name } = data;
 
   const highlightKeyword = () => {
     const regexFull = new RegExp(keyword, 'g');
     const regexPart = new RegExp(keyword.slice(0, -1), 'g');
-    const match = regexFull.exec(value) || regexPart.exec(value);
+    const match = regexFull.exec(name) || regexPart.exec(name);
 
     if (match) {
       const start = match.index;
       const end = start + match[0].length;
       return (
-        <Text style={texts.value}>
-          {value.slice(0, start)}
-          <Text style={texts.highlight}>{value.slice(start, end)}</Text>
-          {value.slice(end)}
+        <Text style={texts.name}>
+          {name.slice(0, start)}
+          <Text style={texts.highlight}>{name.slice(start, end)}</Text>
+          {name.slice(end)}
         </Text>
       );
     }
-    return <Text style={texts.value}>{value}</Text>;
+    return <Text style={texts.name}>{name}</Text>;
   };
 
   return (
     <TouchableOpacity
-      onPress={mapValueToPress}
+      onPress={() => handlePress(data)}
       style={views.textButton}
       activeOpacity={0.7}>
       <Image source={icon} style={icons.badge} />

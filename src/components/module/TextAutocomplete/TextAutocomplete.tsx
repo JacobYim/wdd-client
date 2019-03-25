@@ -1,26 +1,27 @@
 import * as Hangul from 'hangul-js';
+import { sortBy } from 'lodash';
 import React, { Component } from 'react';
 import { Image, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
-import { HandleChangeText } from 'src/components/module/TextInput';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { color } from 'src/theme';
 import { icons, texts, views } from './TextAutocomplete.styles';
 import TextBox from './TextBox';
 
+export type Data = { name: string } & any;
+
 interface Props {
   placeholder: string;
-  name: string;
-  list: string[];
+  list: Data[];
   icon: NodeRequire;
-  defaultList?: string[];
-  handleChange?: (data: HandleChangeText) => void;
-  handleSubmit: (data: HandleChangeText) => void;
+  defaultList?: Data[];
+  handleSubmit: (data: Data) => void;
   handleDismiss: () => void;
+  handleChange?: (keyword: string) => void;
 }
 
 interface State {
   keyword: string;
-  autocomplete: string[];
+  autocomplete: Data[];
 }
 
 class TextAutocomplete extends Component<Props, State> {
@@ -31,34 +32,33 @@ class TextAutocomplete extends Component<Props, State> {
     // 한글을 분석해서 자동완성을 함
     const dValue = Hangul.disassembleToString(value.replace(/\s/g, ''));
     const regex = new RegExp(dValue);
-    return this.props.list.filter(item => {
-      const dItem = Hangul.disassembleToString(item.replace(/\s/g, ''));
-      return regex.test(dItem);
+    const dList = this.props.list.map((data: Data) => ({
+      ...data,
+      dName: Hangul.disassembleToString(data.name.replace(/\s/g, '')),
+    }));
+    const filter = dList.filter(data => regex.test(data.dName));
+    return sortBy(filter, data => {
+      const match = regex.exec(data.dName);
+      return match ? match[0].length : 0;
     });
   };
 
   handleTextChange = (keyword: string) => {
-    const { name, handleChange } = this.props;
+    const { handleChange } = this.props;
     const autocomplete = this.getAutocomplete(keyword);
     this.setState({ keyword, autocomplete });
-    if (handleChange) {
-      handleChange({ name, value: keyword.trim() });
-    }
-  };
-
-  handleTextPress = async (keyword: string) => {
-    await this.setState({ keyword });
-    this.handleSubmit();
-  };
-
-  handleSubmit = () => {
-    const { name, handleSubmit } = this.props;
-    handleSubmit({ name, value: this.state.keyword.trim() });
+    if (handleChange) handleChange(keyword.trim());
   };
 
   render() {
-    const { placeholder, handleDismiss, icon, defaultList = [] } = this.props;
-    const data =
+    const {
+      placeholder,
+      handleDismiss,
+      handleSubmit,
+      icon,
+      defaultList = [],
+    } = this.props;
+    const list =
       this.state.autocomplete.length > 0
         ? this.state.autocomplete
         : defaultList;
@@ -81,7 +81,6 @@ class TextAutocomplete extends Component<Props, State> {
             value={this.state.keyword}
             placeholder={placeholder}
             onChangeText={this.handleTextChange}
-            onSubmitEditing={this.handleSubmit}
             style={texts.input}
             placeholderTextColor={`${color.black}1A`}
             multiline={false}
@@ -93,12 +92,12 @@ class TextAutocomplete extends Component<Props, State> {
           />
         </View>
         <ScrollView style={views.autocompleteWrapper}>
-          {data.map((item, index) => (
+          {list.map((data, index) => (
             <TextBox
-              value={item}
+              data={data}
               icon={icon}
               keyword={this.state.keyword}
-              handlePress={this.handleTextPress}
+              handlePress={handleSubmit}
               key={index}
             />
           ))}

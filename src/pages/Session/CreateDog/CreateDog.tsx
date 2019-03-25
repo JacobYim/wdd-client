@@ -51,7 +51,11 @@ class CreateDog extends Component<Props, State> {
 
   handleChange = ({ name, value }: HandleChangeText | HandleChangeSelector) => {
     this.setState(state => ({ ...state, [name]: value }));
-    if (name === 'breed') this.toggleModal();
+  };
+
+  handleBreedChange = ({ name }: { name: string }) => {
+    this.setState({ breed: name });
+    this.toggleModal();
   };
 
   handleImagePicker = () => {
@@ -166,12 +170,11 @@ class CreateDog extends Component<Props, State> {
           transparent={false}
           visible={this.state.showModal}>
           <TextAutocomplete
-            name="breed"
             placeholder="찾으시는 품종을 입력해주세요"
             list={breeds}
             icon={require('src/assets/icons/ic_search_gray.png')}
-            defaultList={['믹스', '알 수 없음']}
-            handleSubmit={this.handleChange}
+            defaultList={[{ name: '믹스' }, { name: '알 수 없음' }]}
+            handleSubmit={this.handleBreedChange}
             handleDismiss={this.toggleModal}
           />
         </Modal>

@@ -12,7 +12,7 @@ export const views = StyleSheet.create({
 });
 
 export const texts = StyleSheet.create({
-  value: {
+  name: {
     fontSize: 15,
     color: color.grayB1,
   },
