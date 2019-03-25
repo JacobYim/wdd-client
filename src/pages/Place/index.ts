@@ -31,12 +31,7 @@ const ResultNavigator = createStackNavigator(
   }
 );
 
-export default createSwitchNavigator(
-  {
-    search: SearchNavigator,
-    result: ResultNavigator,
-  },
-  {
-    initialRouteName: 'search',
-  }
-);
+export default createSwitchNavigator({
+  search: SearchNavigator,
+  result: ResultNavigator,
+});

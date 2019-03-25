@@ -1,4 +1,6 @@
+import { pick } from 'lodash';
 import React, { PureComponent } from 'react';
+import Geolocation from 'react-native-geolocation-service';
 import { NavigationScreenProps } from 'react-navigation';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import { HandleChangeText } from 'src/components/module/TextInput';
@@ -6,22 +8,28 @@ import { Place, searchPlace } from 'src/services/api/place';
 
 interface State {
   places: Place[];
-  names: string[];
 }
 
 class Search extends PureComponent<NavigationScreenProps, State> {
   state: State = {
     places: [],
-    names: [],
   };
 
-  handleChange = async (data: HandleChangeText) => {
+  handleChange = (data: HandleChangeText) => {
     if (data.value.length > 1) {
-      const places = await searchPlace({ keyword: data.value });
-      const names = places.map(place => place.name);
-      this.setState({ names, places });
+      if (this.state.places.length === 0) {
+        Geolocation.getCurrentPosition(async ({ coords }) => {
+          const location = pick(coords, ['latitude', 'longitude']);
+          const places = await searchPlace({
+            location,
+            keyword: data.value,
+            range: 20,
+          });
+          this.setState({ places });
+        });
+      }
     } else {
-      this.setState({ names: [], places: [] });
+      this.setState({ places: [] });
     }
   };
 
@@ -30,13 +38,10 @@ class Search extends PureComponent<NavigationScreenProps, State> {
     navigation.navigate('detail', { place: this.state.places[0] });
   };
 
-  handleDismiss = () => {
-    const { navigation } = this.props;
-    navigation.goBack(null);
-  };
-
   render() {
-    const { names } = this.state;
+    const { places } = this.state;
+    const names = places.map(place => place.name);
+
     return (
       <TextAutocomplete
         placeholder="원하는 장소를 검색하세요"
@@ -45,7 +50,7 @@ class Search extends PureComponent<NavigationScreenProps, State> {
         icon={require('src/assets/icons/ic_pin_gray.png')}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
-        handleDismiss={this.handleDismiss}
+        handleDismiss={() => this.props.navigation.goBack(null)}
       />
     );
   }
