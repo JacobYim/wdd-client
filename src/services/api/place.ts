@@ -3,7 +3,7 @@ import { LatLng } from 'react-native-maps';
 
 export interface Params {
   keyword?: string;
-  label?: 'CAFE' | 'SHOP' | 'HOSPITAL' | 'OTHER';
+  label?: '카페' | '용품' | '병원' | '기타';
   location?: LatLng;
   range?: number; // km
 }
@@ -23,7 +23,7 @@ interface Response {
   name: string;
   location: GeoJSON;
   address: string;
-  label: 'CAFE' | 'SHOP' | 'HOSPITAL' | 'OTHER';
+  label: '카페' | '용품' | '병원' | '기타';
   rating: number;
   contact: string;
   thumbnail?: string;

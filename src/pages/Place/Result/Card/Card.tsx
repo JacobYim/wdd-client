@@ -91,7 +91,7 @@ const Info: React.FC<Props> = ({ place, handlePress, icon }) => (
     <Image source={renderImage(place.images)} style={styles.thumbnail} />
     <View style={styles.infoWrapper}>
       <Text style={styles.name}>{place.name}</Text>
-      <Text style={styles.describe}>카페 / 반려견 동반 가능</Text>
+      <Text style={styles.describe}>{place.label}</Text>
       <View style={styles.ratingWrapper}>
         <Text style={styles.rating}>{place.rating.toFixed(1)}</Text>
         {renderRating(place.rating)}
