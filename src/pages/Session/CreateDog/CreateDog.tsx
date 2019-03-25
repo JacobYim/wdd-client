@@ -51,6 +51,7 @@ class CreateDog extends Component<Props, State> {
 
   handleChange = ({ name, value }: HandleChangeText | HandleChangeSelector) => {
     this.setState(state => ({ ...state, [name]: value }));
+    if (name === 'breed') this.toggleModal();
   };
 
   handleImagePicker = () => {

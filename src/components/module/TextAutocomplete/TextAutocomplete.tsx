@@ -52,9 +52,8 @@ class TextAutocomplete extends Component<Props, State> {
   };
 
   handleSubmit = () => {
-    const { name, handleSubmit, handleDismiss } = this.props;
+    const { name, handleSubmit } = this.props;
     handleSubmit({ name, value: this.state.keyword.trim() });
-    handleDismiss();
   };
 
   render() {
