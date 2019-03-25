@@ -45,7 +45,10 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
     </View>
   );
 
-  handleRatingChange = (rating: number) => {};
+  handleRatingChange = (rating: number) => {
+    const { navigation } = this.props;
+    navigation.navigate('review', { rating, name: this.state.place.name });
+  };
 
   render() {
     const { place } = this.state;

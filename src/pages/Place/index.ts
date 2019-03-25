@@ -1,12 +1,14 @@
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import DetailScreen from './Detail';
 import ResultScreen from './Result';
+import ReviewScreen from './Review';
 import SearchScreen from './Search';
 
 const SearchNavigator = createStackNavigator(
   {
     default: SearchScreen,
     detail: DetailScreen,
+    review: ReviewScreen,
   },
   {
     initialRouteName: 'default',
@@ -21,6 +23,7 @@ const ResultNavigator = createStackNavigator(
   {
     default: ResultScreen,
     detail: DetailScreen,
+    review: ReviewScreen,
   },
   {
     initialRouteName: 'default',
