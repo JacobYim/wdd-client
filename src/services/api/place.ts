@@ -19,21 +19,22 @@ interface GeoJSON {
 }
 
 interface Response {
+  _id: string;
   name: string;
   location: GeoJSON;
   address: string;
+  label: 'CAFE' | 'SHOP' | 'HOSPITAL' | 'OTHER';
   rating: number;
+  contact: string;
+  thumbnail?: string;
   images: string[];
-  distance: number; // km
   officeHour?: {
     default: string;
     weekend?: string;
     dayoff?: string;
   };
-  contact?: string;
-  tags?: string[];
   likes?: string[];
-  reviews?: string[];
+  distance: number; // km
 }
 
 const geoToLatLng = ({ coordinates }: GeoJSON) =>

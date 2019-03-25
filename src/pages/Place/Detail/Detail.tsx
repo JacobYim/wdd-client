@@ -5,7 +5,9 @@ import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
 import Card from 'src/pages/Place/Result/Card';
 import { Place } from 'src/services/api/place';
+import { getReivews, Review } from 'src/services/api/review';
 import { icons, texts, views } from './Detail.styles';
+import ReviewCard from './ReviewCard';
 import {
   Image,
   ImageBackground,
@@ -16,7 +18,7 @@ import {
 } from 'react-native';
 
 interface State {
-  place: Place;
+  reviews: Review[];
 }
 
 function showOfficeHour(officeHour: {
@@ -34,9 +36,13 @@ function showOfficeHour(officeHour: {
 }
 
 class Detail extends PureComponent<NavigationScreenProps, State> {
-  state: State = {
-    place: this.props.navigation.getParam('place'),
-  };
+  place: Place = this.props.navigation.getParam('place');
+
+  state: State = { reviews: [] };
+
+  async componentDidMount() {
+    this.setState({ reviews: await getReivews({ place: this.place._id }) });
+  }
 
   renderRow = (label: string, data: string) => (
     <View style={views.rowWrapper}>
@@ -45,26 +51,33 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
     </View>
   );
 
+  handleCreateReview = (review: Review) => {
+    this.setState({ reviews: [...this.state.reviews, review] });
+  };
+
   handleRatingChange = (rating: number) => {
     const { navigation } = this.props;
-    navigation.navigate('review', { rating, name: this.state.place.name });
+    navigation.navigate('review', {
+      rating,
+      place: this.place,
+      handleAddReview: this.handleCreateReview,
+    });
   };
 
   render() {
-    const { place } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
           <ImageBackground
             style={views.headerWrapper}
-            source={{ uri: place.images[0] }}
+            source={{ uri: this.place.images[0] }}
             imageStyle={{ resizeMode: 'cover' }}>
             <View style={views.headerFilter} />
           </ImageBackground>
           <View style={[views.infoWrapper, { borderTopWidth: 0 }]}>
             <View style={views.infoHover}>
               <Card
-                place={place}
+                place={this.place}
                 handlePress={() => {}}
                 icon={
                   <Image
@@ -74,17 +87,17 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
                 }
               />
             </View>
-            {this.renderRow('장소', place.address)}
-            {place.officeHour &&
-              this.renderRow('시간', showOfficeHour(place.officeHour))}
-            {place.contact && this.renderRow('문의', place.contact)}
+            {this.renderRow('장소', this.place.address)}
+            {this.place.officeHour &&
+              this.renderRow('시간', showOfficeHour(this.place.officeHour))}
+            {this.place.contact && this.renderRow('문의', this.place.contact)}
           </View>
           <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
             <Text style={[texts.black, { paddingHorizontal: horizontalSize }]}>
               사진
             </Text>
             <View style={views.imageWrapper}>
-              {place.images.map(uri => (
+              {this.place.images.map(uri => (
                 <Image source={{ uri }} style={views.image} key={uri} />
               ))}
             </View>
@@ -96,7 +109,11 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
               containerStyle={{ marginTop: 20 }}
             />
           </View>
-          <View style={views.infoWrapper} />
+          <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
+            {this.state.reviews.map((review, index) => (
+              <ReviewCard key={index} review={review} />
+            ))}
+          </View>
         </ScrollView>
         <SafeAreaView style={views.navbarWrapper}>
           <TopNavbar

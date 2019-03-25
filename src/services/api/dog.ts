@@ -1,12 +1,14 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { CreateDogInterface, DogInterface } from 'src/store/actions/dog';
 
 export const getDog = async (params: { _id: string }) => {
-  const response = await axios.get('/dogs', { params });
-  return response.data as DogInterface;
+  const response: AxiosResponse<DogInterface> = await axios.get('/dogs', {
+    params,
+  });
+  return response.data;
 };
 
 export const createDog = async (body: CreateDogInterface) => {
-  const response = await axios.post('/dogs', body);
-  return response.data as DogInterface;
+  const response: AxiosResponse<DogInterface> = await axios.post('/dogs', body);
+  return response.data;
 };

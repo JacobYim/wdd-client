@@ -1,4 +1,6 @@
 import Amplify from 'aws-amplify';
+import moment from 'moment';
+import 'moment/locale/ko';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -15,6 +17,7 @@ class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
+    moment.locale('ko');
     Amplify.configure(awsconfig);
   }
 
