@@ -7,9 +7,9 @@ import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
 import { Params, Place, searchPlace } from 'src/services/api/place';
 import Card, { cardWidth } from './Card';
+import { height, icons, views, width } from './Map.styles';
 import MarkerView from './MarkerView';
 import Range from './Range';
-import { height, icons, views, width } from './Result.styles';
 import Carousel, {
   CarouselStatic,
   AdditionalParallaxProps,
@@ -44,7 +44,7 @@ type CarouselInterface = Carousel<Place> &
   CarouselStatic<Place> &
   ScrollViewProps;
 
-class Result extends PureComponent<NavigationScreenProps, State> {
+class Map extends PureComponent<NavigationScreenProps, State> {
   private map = React.createRef<MapView>();
   private carousel = React.createRef<CarouselInterface>();
   private loadUserLocation = false;
@@ -215,4 +215,4 @@ class Result extends PureComponent<NavigationScreenProps, State> {
   }
 }
 
-export default Result;
+export default Map;

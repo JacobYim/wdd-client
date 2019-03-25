@@ -9,25 +9,6 @@ interface Props {
   icon: React.ReactNode;
 }
 
-const renderImage = (images: string[]) =>
-  (images && images[0] && { uri: images[0] }) ||
-  require('src/assets/icons/logo_img.png');
-
-const renderRating = (rating: number) => {
-  const nodes: React.ReactNode[] = [];
-  const ratingRound = Math.round(rating);
-  for (let i = 1; i < 6; i += 1) {
-    nodes.push(
-      <Image
-        source={require('src/assets/icons/ic_rating.png')}
-        style={[styles.ratingIcon, { opacity: ratingRound < i ? 0.1 : 1 }]}
-        key={i}
-      />
-    );
-  }
-  return nodes;
-};
-
 export const cardWidth = 327;
 export const cardHeight = 104;
 const thumbnailSize = 50;
@@ -86,16 +67,33 @@ const styles = StyleSheet.create({
   },
 });
 
+export const Rating: React.FC<{ rating: number }> = ({ rating }) => {
+  const nodes: React.ReactNode[] = [];
+  const ratingRound = Math.round(rating);
+  for (let i = 1; i < 6; i += 1) {
+    nodes.push(
+      <Image
+        source={require('src/assets/icons/ic_rating.png')}
+        style={[styles.ratingIcon, { opacity: ratingRound < i ? 0.1 : 1 }]}
+        key={i}
+      />
+    );
+  }
+  return (
+    <View style={styles.ratingWrapper}>
+      <Text style={styles.rating}>{rating.toFixed(1)}</Text>
+      {nodes}
+    </View>
+  );
+};
+
 const Info: React.FC<Props> = ({ place, handlePress, icon }) => (
   <View style={styles.wrapper}>
-    <Image source={renderImage(place.images)} style={styles.thumbnail} />
+    <Image source={{ uri: place.thumbnail }} style={styles.thumbnail} />
     <View style={styles.infoWrapper}>
       <Text style={styles.name}>{place.name}</Text>
       <Text style={styles.describe}>{place.label}</Text>
-      <View style={styles.ratingWrapper}>
-        <Text style={styles.rating}>{place.rating.toFixed(1)}</Text>
-        {renderRating(place.rating)}
-      </View>
+      <Rating rating={place.rating} />
     </View>
     <TouchableOpacity
       style={styles.button}

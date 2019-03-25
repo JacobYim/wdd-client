@@ -26,8 +26,8 @@ interface Response {
   label: '카페' | '용품' | '병원' | '기타';
   rating: number;
   contact: string;
-  thumbnail?: string;
-  images: string[];
+  thumbnail: string;
+  images?: string[];
   officeHour?: {
     default: string;
     weekend?: string;

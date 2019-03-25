@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import { height as navHeight } from 'src/components/module/TopNavbar/TopNavbar';
 import { color } from 'src/theme';
-import { filterHeight as resultHeight } from '../Result.styles';
+import { filterHeight as resultHeight } from '../Map.styles';
 import {
   Image,
   Modal,

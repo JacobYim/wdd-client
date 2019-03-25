@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { cardHeight } from 'src/pages/Place/Result/Card';
+import { cardHeight } from 'src/pages/Place/Map/Card';
 import { color, shadow } from 'src/theme';
 
 const { height } = Dimensions.get('window');

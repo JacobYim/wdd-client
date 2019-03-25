@@ -3,7 +3,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
-import Card from 'src/pages/Place/Result/Card';
+import Card from 'src/pages/Place/Map/Card';
 import { Place } from 'src/services/api/place';
 import { getReivews, Review } from 'src/services/api/review';
 import { icons, texts, views } from './Detail.styles';
@@ -65,12 +65,13 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
   };
 
   render() {
+    const { thumbnail, images } = this.place;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
           <ImageBackground
             style={views.headerWrapper}
-            source={{ uri: this.place.images[0] }}
+            source={{ uri: thumbnail }}
             imageStyle={{ resizeMode: 'cover' }}>
             <View style={views.headerFilter} />
           </ImageBackground>
@@ -96,11 +97,13 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
             <Text style={[texts.black, { paddingHorizontal: horizontalSize }]}>
               사진
             </Text>
-            <View style={views.imageWrapper}>
-              {this.place.images.map(uri => (
-                <Image source={{ uri }} style={views.image} key={uri} />
-              ))}
-            </View>
+            {images && (
+              <View style={views.imageWrapper}>
+                {images.map(uri => (
+                  <Image source={{ uri }} style={views.image} key={uri} />
+                ))}
+              </View>
+            )}
           </View>
           <View style={[views.infoWrapper, { alignItems: 'center' }]}>
             <Text style={texts.black}>이 장소에 대한 평점을 남겨주세요.</Text>

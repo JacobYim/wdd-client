@@ -1,6 +1,6 @@
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import DetailScreen from './Detail';
-import ResultScreen from './Result';
+import MapScreen from './Map';
 import ReviewScreen from './Review';
 import SearchScreen from './Search';
 
@@ -19,9 +19,9 @@ const SearchNavigator = createStackNavigator(
   }
 );
 
-const ResultNavigator = createStackNavigator(
+const MapNavigator = createStackNavigator(
   {
-    default: ResultScreen,
+    default: MapScreen,
     detail: DetailScreen,
     review: ReviewScreen,
   },
@@ -36,5 +36,5 @@ const ResultNavigator = createStackNavigator(
 
 export default createSwitchNavigator({
   search: SearchNavigator,
-  result: ResultNavigator,
+  map: MapNavigator,
 });
