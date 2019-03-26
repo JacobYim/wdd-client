@@ -1,3 +1,4 @@
+import produce from 'immer';
 import React, { PureComponent, ReactNode } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
@@ -33,6 +34,7 @@ interface Props {
     handlePress: () => void;
   };
   center?: string;
+  showBorder?: boolean;
   // bottom
   bottom?: {
     view: ReactNode;
@@ -50,6 +52,7 @@ interface Props {
 
 interface State {
   center?: string;
+  showBorder?: boolean;
 }
 
 const ContentWrapper: React.FC<{ style: object; children: ReactNode }> = ({
@@ -69,7 +72,10 @@ export const PageContext = React.createContext<ContextInterface | null>(null);
 class PageContainer extends PureComponent<Props, State> {
   private scroll = React.createRef<ScrollView>();
 
-  state: State = { center: this.props.center };
+  state: State = {
+    center: this.props.center,
+    showBorder: this.props.showBorder,
+  };
 
   scrollTo = (height: number) => {
     const scroll = this.scroll.current;
@@ -85,15 +91,18 @@ class PageContainer extends PureComponent<Props, State> {
 
   handleScroll = (evt: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { center, title } = this.props;
-    if (!center && title) {
-      if (evt.nativeEvent.contentOffset.y > 84) {
-        if (!this.state.center) {
-          this.setState({ center: title });
+    const { contentOffset } = evt.nativeEvent;
+    this.setState(state =>
+      produce(state, draft => {
+        if (contentOffset && contentOffset.y > 84) {
+          if (!state.showBorder) draft.showBorder = true;
+          if (title && !center && !state.center) draft.center = title;
+        } else {
+          if (state.showBorder) draft.showBorder = false;
+          if (state.center) delete draft.center;
         }
-      } else if (this.state.center) {
-        this.setState({ center: undefined });
-      }
-    }
+      })
+    );
   };
 
   render() {
@@ -137,6 +146,7 @@ class PageContainer extends PureComponent<Props, State> {
             left={navLeft}
             center={this.state.center}
             right={navRight}
+            showBorder={this.state.showBorder}
           />
           <ContentWrapper style={views.container}>
             <ScrollView

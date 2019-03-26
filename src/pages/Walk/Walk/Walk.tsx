@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
 import * as actions from 'src/store/actions/walk';
@@ -19,8 +19,7 @@ interface WalkInfoInterface {
   value: number;
 }
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
   updateSeconds: typeof actions.updateSeconds;

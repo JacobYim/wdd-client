@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { NavigationScreenProp, withNavigation } from 'react-navigation';
+import { NavigationScreenProps, withNavigation } from 'react-navigation';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
 import { color } from 'src/theme';
@@ -12,8 +12,7 @@ import {
   View,
 } from 'react-native';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
 }

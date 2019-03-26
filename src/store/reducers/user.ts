@@ -7,7 +7,11 @@ import { removeUserStorage } from 'src/services/storage/user';
 import * as dogActions from 'src/store/actions/dog';
 import * as actions from 'src/store/actions/user';
 
-export interface UserState extends actions.UserInterface {
+export interface UserState
+  extends Pick<
+    actions.UserInterface,
+    Exclude<keyof actions.UserInterface, '_id'>
+  > {
   error?: AxiosResponse;
   dogError?: AxiosResponse;
 }
@@ -20,7 +24,7 @@ const initialState: UserState = {
   gender: '',
   status: 'TERMINATED',
   dogs: {},
-  places: {},
+  places: [],
 };
 
 export default handleActions<UserState, any>(

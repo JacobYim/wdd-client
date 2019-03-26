@@ -1,7 +1,7 @@
 import produce from 'immer';
 import React, { Component } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
 import { icons, texts, views } from './Agreement.styles';
 import Detail from './Detail';
@@ -17,10 +17,6 @@ interface RenderTermInterface extends Term {
   index: number;
 }
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
-
 interface State {
   checkAll: boolean;
   terms: Term[];
@@ -30,7 +26,7 @@ interface State {
   };
 }
 
-class Agreement extends Component<Props, State> {
+class Agreement extends Component<NavigationScreenProps, State> {
   state: State = {
     checkAll: false,
     terms: [
@@ -106,7 +102,7 @@ class Agreement extends Component<Props, State> {
         onPress={() => this.showDetail({ title, link })}>
         <Image
           style={icons.more}
-          source={require('src/assets/icons/ic_more.png')}
+          source={require('src/assets/icons/ic_arrow.png')}
         />
       </TouchableOpacity>
     </View>

@@ -29,7 +29,7 @@ export const views = StyleSheet.create({
     backgroundColor: color.white,
     justifyContent: 'center',
     alignItems: 'center',
-    ...shadow.deep,
+    ...shadow.shallow,
   },
 });
 

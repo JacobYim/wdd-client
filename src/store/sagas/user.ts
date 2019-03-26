@@ -1,9 +1,10 @@
-import { Alert } from 'react-native';
+import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import { NavigationActions, NavigationScreenProp } from 'react-navigation';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { removeHeader, setHeader } from 'src/services/api/axios';
 import * as api from 'src/services/api/user';
 import * as actions from 'src/store/actions/user';
+
 import {
   getUserStorage,
   setUserStorage,
@@ -12,8 +13,26 @@ import {
 } from 'src/services/storage/user';
 
 // HELPERS
+async function checkPermission() {
+  if (
+    Platform.OS === 'ios' ||
+    (Platform.OS === 'android' && Platform.Version < 23) ||
+    (await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    ))
+  ) {
+    return true;
+  }
+  // Get Permission from User
+  const response = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+  );
+  if (response === PermissionsAndroid.RESULTS.GRANTED) return true;
+  return false;
+}
+
 function* navigateToApp(navigation: NavigationScreenProp<any>) {
-  yield call(navigation.navigate, 'app');
+  if (checkPermission()) yield call(navigation.navigate, 'app');
 }
 
 // SAGAS

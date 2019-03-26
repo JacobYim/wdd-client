@@ -1,20 +1,17 @@
+import AgreementScreen from './Agreement';
+import ChangePasswordScreen from './ChangePassword';
+import CreateDogScreen from './CreateDog';
+import CreateMetaScreen from './CreateMeta';
+import ForgotPasswordScreen from './ForgotPassword';
+import SelectScreen from './Select';
+import SendEmailScreen from './SendEmail';
+import SignInScreen from './SignIn';
+import SignUpScreen from './SignUp';
+import TutorialScreen from './Tutorial';
 import {
   createStackNavigator,
   createMaterialTopTabNavigator,
 } from 'react-navigation';
-
-import SelectScreen from './Select';
-import SignInScreen from './SignIn';
-
-import AgreementScreen from './Agreement';
-import SignUpScreen from './SignUp';
-import CreateMetaScreen from './CreateMeta';
-import CreateDogScreen from './CreateDog';
-import TutorialScreen from './Tutorial';
-
-import ForgotPasswordScreen from './ForgotPassword';
-import SendEmailScreen from './SendEmail';
-import ChangePasswordScreen from './ChangePassword';
 
 const SignUpNavigator = createMaterialTopTabNavigator(
   {

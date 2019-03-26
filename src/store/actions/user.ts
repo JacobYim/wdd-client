@@ -12,7 +12,6 @@ export interface UserInterface {
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
   dogs: { [_id: string]: DogSummeryInterface };
   places: string[];
-  reviews: string[];
 }
 
 export interface UpdateInterface {
@@ -23,7 +22,6 @@ export interface UpdateInterface {
   gender?: string; // 'M' | 'F'
   dogs?: { [_id: string]: DogSummeryInterface };
   places?: string[];
-  reviews?: string[];
 }
 
 export interface SignInInterface {

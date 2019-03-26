@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput as Input } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { validatePassword } from 'src/assets/functions/validate';
 import PageContainer from 'src/components/container/PageContainer';
@@ -16,8 +16,7 @@ interface ParamInterface {
   alert?: string;
 }
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   changePassword: typeof actions.changePassword;
 }
 

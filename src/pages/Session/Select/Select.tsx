@@ -1,15 +1,11 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
 import Splash from 'src/components/module/Splash';
 import { texts, views } from './Select.styles';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
-
-const BottomButtons: React.FC<Props> = ({ navigation }) => (
+const BottomButtons: React.FC<NavigationScreenProps> = ({ navigation }) => (
   <View style={views.buttons}>
     <TouchableOpacity
       activeOpacity={0.7}
@@ -25,7 +21,7 @@ const BottomButtons: React.FC<Props> = ({ navigation }) => (
   </View>
 );
 
-const Select: React.FC<Props> = ({ navigation }) => (
+const Select: React.FC<NavigationScreenProps> = ({ navigation }) => (
   <>
     <Splash />
     <PageContainer

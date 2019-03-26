@@ -35,7 +35,6 @@ export const SET_DOG_SUCCESS = 'dog/SET_DOG_SUCCESS';
 export const SET_DOG_FAILURE = 'dog/SET_DOG_FAILURE';
 
 // *** FUNCTIONS
-type Navigation = NavigationScreenProp<any>;
 
 export const getDog = (payload: { _id: string }) => ({
   payload,
@@ -43,7 +42,7 @@ export const getDog = (payload: { _id: string }) => ({
 });
 export const createDog = (
   payload: CreateDogInterface,
-  navigation?: Navigation
+  navigation?: NavigationScreenProp<any>
 ) => ({
   payload,
   navigation,
