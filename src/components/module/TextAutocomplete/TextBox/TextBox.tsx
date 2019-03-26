@@ -10,6 +10,9 @@ interface Props {
   handlePress: (data: Data) => void;
 }
 
+const rangeWithUnit = (range: number) =>
+  range < 1 ? `${Math.round(range * 1000)}m` : `${range.toFixed(2)}km`;
+
 const TextBox: React.FC<Props> = ({ data, keyword, icon, handlePress }) => {
   const { name } = data;
 
@@ -39,6 +42,9 @@ const TextBox: React.FC<Props> = ({ data, keyword, icon, handlePress }) => {
       activeOpacity={0.7}>
       <Image source={icon} style={icons.badge} />
       {highlightKeyword()}
+      {data.distance && (
+        <Text style={texts.distance}>{rangeWithUnit(data.distance)}</Text>
+      )}
     </TouchableOpacity>
   );
 };

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { color } from 'src/theme';
+import { color, font } from 'src/theme';
 
 export const views = StyleSheet.create({
   textButton: {
@@ -18,6 +18,11 @@ export const texts = StyleSheet.create({
   },
   highlight: {
     color: color.black,
+  },
+  distance: {
+    marginLeft: 'auto',
+    color: color.blackOpacity,
+    fontSize: font.size.small,
   },
 });
 

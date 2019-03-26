@@ -34,12 +34,17 @@ class TextAutocomplete extends Component<Props, State> {
     const regex = new RegExp(dValue);
     const dList = this.props.list.map((data: Data) => ({
       ...data,
-      dName: Hangul.disassembleToString(data.name.replace(/\s/g, '')),
+      match: regex.exec(
+        Hangul.disassembleToString(data.name.replace(/\s/g, ''))
+      ),
     }));
-    const filter = dList.filter(data => regex.test(data.dName));
+    const filter = dList.filter(data => data.match !== null);
     return sortBy(filter, data => {
-      const match = regex.exec(data.dName);
-      return match ? match[0].length : 0;
+      let score = 0;
+      score += 1 - Math.pow(1.4, -data.match[0].length);
+      if (data.rating) score += data.rating / 5;
+      if (data.distance) score += Math.pow(0.5, data.distance);
+      return -score;
     });
   };
 
