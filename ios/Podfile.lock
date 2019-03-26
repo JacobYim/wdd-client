@@ -1,7 +1,5 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - BVLinearGradient (2.5.3):
-    - React
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -29,8 +27,8 @@ PODS:
   - GoogleMaps/Base (2.5.0)
   - GoogleMaps/Maps (2.5.0):
     - GoogleMaps/Base
-  - React (0.58.3):
-    - React/Core (= 0.58.3)
+  - React (0.59.2):
+    - React/Core (= 0.59.2)
   - react-native-background-timer (2.1.1):
     - React
   - react-native-google-maps (0.23.0):
@@ -41,57 +39,62 @@ PODS:
     - React
   - react-native-webview (5.3.0):
     - React
-  - React/Core (0.58.3):
-    - yoga (= 0.58.3.React)
-  - React/CxxBridge (0.58.3):
+  - React/Core (0.59.2):
+    - yoga (= 0.59.2.React)
+  - React/CxxBridge (0.59.2):
     - Folly (= 2018.10.22.00)
     - React/Core
     - React/cxxreact
     - React/jsiexecutor
-  - React/cxxreact (0.58.3):
+  - React/cxxreact (0.59.2):
     - boost-for-react-native (= 1.63.0)
+    - DoubleConversion
     - Folly (= 2018.10.22.00)
+    - glog
     - React/jsinspector
-  - React/DevSupport (0.58.3):
+  - React/DevSupport (0.59.2):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.58.3)
-  - React/jsi (0.58.3):
+  - React/fishhook (0.59.2)
+  - React/jsi (0.59.2):
+    - DoubleConversion
     - Folly (= 2018.10.22.00)
-  - React/jsiexecutor (0.58.3):
+    - glog
+  - React/jsiexecutor (0.59.2):
+    - DoubleConversion
     - Folly (= 2018.10.22.00)
+    - glog
     - React/cxxreact
     - React/jsi
-  - React/jsinspector (0.58.3)
-  - React/RCTActionSheet (0.58.3):
+  - React/jsinspector (0.59.2)
+  - React/RCTActionSheet (0.59.2):
     - React/Core
-  - React/RCTAnimation (0.58.3):
+  - React/RCTAnimation (0.59.2):
     - React/Core
-  - React/RCTBlob (0.58.3):
+  - React/RCTBlob (0.59.2):
     - React/Core
-  - React/RCTGeolocation (0.58.3):
+  - React/RCTGeolocation (0.59.2):
     - React/Core
-  - React/RCTImage (0.58.3):
+  - React/RCTImage (0.59.2):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.58.3):
+  - React/RCTLinkingIOS (0.59.2):
     - React/Core
-  - React/RCTNetwork (0.58.3):
+  - React/RCTNetwork (0.59.2):
     - React/Core
-  - React/RCTSettings (0.58.3):
+  - React/RCTSettings (0.59.2):
     - React/Core
-  - React/RCTText (0.58.3):
+  - React/RCTText (0.59.2):
     - React/Core
-  - React/RCTVibration (0.58.3):
+  - React/RCTVibration (0.59.2):
     - React/Core
-  - React/RCTWebSocket (0.58.3):
+  - React/RCTWebSocket (0.59.2):
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - yoga (0.58.3.React)
+  - yoga (0.59.2.React)
 
 DEPENDENCIES:
-  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -123,8 +126,6 @@ SPEC REPOS:
     - GoogleMaps
 
 EXTERNAL SOURCES:
-  BVLinearGradient:
-    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
@@ -146,19 +147,18 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: b0b70acf63ee888829b7c2ebbf6b50e227396e55
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
-  React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
+  React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
   react-native-background-timer: bb7a98c8e97fc7c290de2d423dd09ddb73dcbcbb
   react-native-google-maps: b946d62e25dc66097921ed82520e45b0b081768a
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-webview: a42108b827082f8f0333529b0772102031d5960d
-  yoga: 0885622311729a02c2bc02dca97167787a51488b
+  yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 99ec0990bdc879234c394fbf544022daea76129a
+PODFILE CHECKSUM: dbfd788d797d076fcb87514f0a040ee69a371896
 
 COCOAPODS: 1.5.3
