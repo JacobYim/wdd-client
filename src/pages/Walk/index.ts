@@ -1,11 +1,11 @@
 import { createSwitchNavigator } from 'react-navigation';
-import WalkSaveScreen from './SaveWalk';
+import SaveScreen from './Save';
 import WalkScreen from './Walk';
 
 export default createSwitchNavigator(
   {
     dashboard: WalkScreen,
-    save: WalkSaveScreen,
+    save: SaveScreen,
   },
   {
     initialRouteName: 'dashboard',

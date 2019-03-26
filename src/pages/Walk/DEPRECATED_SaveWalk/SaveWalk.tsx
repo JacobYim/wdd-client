@@ -1,6 +1,5 @@
 import React, { createRef, PureComponent } from 'react';
 import { Alert, Dimensions, Image, SafeAreaView, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import PageContainer from 'src/components/container/PageContainer';
@@ -145,18 +144,6 @@ class SaveWalk extends PureComponent<Props, State> {
             </Marker>
           ))}
         </MapView>
-        {this.state.showOverlay && (
-          <>
-            <LinearGradient
-              style={views.topFilter}
-              colors={['#FFFFFF', '#FFFFFF78']}
-            />
-            <LinearGradient
-              style={views.bottomFilter}
-              colors={['#FFFFFF78', '#FFFFFF']}
-            />
-          </>
-        )}
         <PageContainer
           right={{
             handlePress: this.handleDismiss,
