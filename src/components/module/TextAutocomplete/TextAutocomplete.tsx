@@ -39,13 +39,7 @@ class TextAutocomplete extends Component<Props, State> {
       ),
     }));
     const filter = dList.filter(data => data.match !== null);
-    return sortBy(filter, data => {
-      let score = 0;
-      score += 1 - Math.pow(1.4, -data.match[0].length);
-      if (data.rating) score += data.rating / 5;
-      if (data.distance) score += Math.pow(0.5, data.distance);
-      return -score;
-    });
+    return sortBy(filter, data => 1 - Math.pow(1.4, -data.match[0].length));
   };
 
   handleTextChange = (keyword: string) => {

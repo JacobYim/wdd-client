@@ -4,7 +4,7 @@ import MapScreen from './Map';
 import ReviewScreen from './Review';
 import SearchScreen from './Search';
 
-const SearchNavigator = createStackNavigator(
+export const SearchNavigator = createStackNavigator(
   {
     default: SearchScreen,
     detail: DetailScreen,
@@ -19,7 +19,7 @@ const SearchNavigator = createStackNavigator(
   }
 );
 
-const MapNavigator = createStackNavigator(
+export const MapNavigator = createStackNavigator(
   {
     default: MapScreen,
     detail: DetailScreen,
@@ -33,8 +33,3 @@ const MapNavigator = createStackNavigator(
     },
   }
 );
-
-export default createSwitchNavigator({
-  search: SearchNavigator,
-  map: MapNavigator,
-});

@@ -1,10 +1,13 @@
 import { Animated, Easing } from 'react-native';
 import BottomTabbar from 'src/components/base/BottomTabbar';
-import PlaceNavigator from 'src/pages/Place';
 import WalkNavigator from 'src/pages/Walk';
 import MapScreen from './Map';
 import ProfileScreen from './Profile';
 import WddScreen from './Wdd';
+import {
+  MapNavigator as PlaceMapNavigator,
+  SearchNavigator as PlaceSearchNavigator,
+} from 'src/pages/Place';
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -15,7 +18,8 @@ const MapNavigator = createStackNavigator(
   {
     map: MapScreen,
     walk: WalkNavigator,
-    place: PlaceNavigator,
+    placeMap: PlaceMapNavigator,
+    placeSearch: PlaceSearchNavigator,
   },
   {
     initialRouteName: 'map',

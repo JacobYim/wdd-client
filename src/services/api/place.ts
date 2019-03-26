@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { sortBy } from 'lodash';
 import { LatLng } from 'react-native-maps';
 
 export interface Params {
@@ -51,5 +52,8 @@ export const searchPlace = async (params?: Params) => {
     ...place,
     location: geoToLatLng(place.location),
   }));
-  return places;
+  return sortBy(
+    places,
+    (place: Place) => -(place.rating / 5 + Math.pow(0.5, place.distance))
+  );
 };
