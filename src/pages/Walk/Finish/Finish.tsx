@@ -9,9 +9,9 @@ import { rangeWithUnit } from 'src/assets/functions/print';
 import TopNavbar from 'src/components/module/TopNavbar';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
+import { icons, texts, views } from './Finish.styles';
 import ImageMarker from './ImageMarker';
 import InfoCard from './InfoCard';
-import { icons, texts, views } from './Save.styles';
 import TextMarker from './TextMarker';
 import {
   Dimensions,
@@ -34,7 +34,7 @@ interface State {
 
 const CENTER = { x: 0.5, y: 0.5 };
 
-class Save extends PureComponent<Props, State> {
+class Finish extends PureComponent<Props, State> {
   private map = createRef<MapView>();
 
   state: State = {
@@ -179,4 +179,4 @@ class Save extends PureComponent<Props, State> {
 export default connect(
   ({ walk }: ReducerState) => ({ walk }),
   { updateStatus: actions.updateStatus }
-)(Save);
+)(Finish);
