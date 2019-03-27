@@ -62,7 +62,18 @@ class Finish extends PureComponent<Props, State> {
     navigation.popToTop();
   };
 
-  handleUpload = () => {};
+  handleUpload = async () => {
+    const { navigation } = this.props;
+    const map = this.map.current;
+    if (!map) return;
+    const snapshot = await map.takeSnapshot({
+      width: 1200,
+      height: 1200,
+      format: 'jpg',
+      result: 'file',
+    });
+    navigation.navigate('upload', { snapshot });
+  };
 
   googleMapDidMount = () => {
     const map = this.map.current;
@@ -73,7 +84,7 @@ class Finish extends PureComponent<Props, State> {
       edgePadding: {
         top: height * 0.1,
         right: width * 0.12,
-        bottom: height * 0.05,
+        bottom: height * 0.1,
         left: width * 0.12,
       },
     });
