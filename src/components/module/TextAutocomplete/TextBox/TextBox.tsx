@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity } from 'react-native';
+import { rangeWithUnit } from 'src/assets/functions/print';
 import { Data } from '../TextAutocomplete';
 import { icons, texts, views } from './TextBox.styles';
 
@@ -9,9 +10,6 @@ interface Props {
   icon: NodeRequire;
   handlePress: (data: Data) => void;
 }
-
-const rangeWithUnit = (range: number) =>
-  range < 1 ? `${Math.round(range * 1000)}m` : `${range.toFixed(2)}km`;
 
 const TextBox: React.FC<Props> = ({ data, keyword, icon, handlePress }) => {
   const { name } = data;

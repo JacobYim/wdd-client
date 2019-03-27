@@ -1,5 +1,6 @@
 import produce from 'immer';
 import React, { PureComponent } from 'react';
+import { rangeWithUnit } from 'src/assets/functions/print';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import { height as navHeight } from 'src/components/module/TopNavbar/TopNavbar';
 import { color } from 'src/theme';
@@ -53,9 +54,6 @@ const styles = StyleSheet.create({
 });
 
 const RANGES = [0.3, 0.5, 1, 5];
-
-const rangeWithUnit = (range: number) =>
-  range < 1 ? `${range * 1000}m` : `${range}km`;
 
 class Range extends PureComponent<Props, State> {
   state: State = { activated: false };

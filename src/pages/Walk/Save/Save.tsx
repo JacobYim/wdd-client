@@ -1,13 +1,16 @@
+import produce from 'immer';
 import moment from 'moment';
 import React, { createRef, PureComponent } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
+import { rangeWithUnit } from 'src/assets/functions/print';
 import TopNavbar from 'src/components/module/TopNavbar';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
 import ImageMarker from './ImageMarker';
+import InfoCard from './InfoCard';
 import { icons, texts, views } from './Save.styles';
 import TextMarker from './TextMarker';
 import {
@@ -24,10 +27,34 @@ interface Props extends NavigationScreenProps {
   updateStatus: typeof actions.updateStatus;
 }
 
+interface State {
+  pees: ReducerState['walk']['pins'];
+  poos: ReducerState['walk']['pins'];
+}
+
 const CENTER = { x: 0.5, y: 0.5 };
 
-class Save extends PureComponent<Props> {
+class Save extends PureComponent<Props, State> {
   private map = createRef<MapView>();
+
+  state: State = {
+    pees: [],
+    poos: [],
+  };
+
+  componentDidMount() {
+    const { pins } = this.props.walk;
+    this.setState(state =>
+      produce(state, draft => {
+        for (let i = 1; i < pins.length - 2; i += 1) {
+          if (pins[i].type) {
+            if (pins[i].type === 'pee') draft.pees.push(pins[i]);
+            else draft.poos.push(pins[i]);
+          }
+        }
+      })
+    );
+  }
 
   handleDismiss = () => {
     const { navigation, updateStatus } = this.props;
@@ -54,7 +81,7 @@ class Save extends PureComponent<Props> {
 
   render() {
     const { walk } = this.props;
-    const lastIndex = walk.pins.length - 1;
+    const { pees, poos } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -79,23 +106,23 @@ class Save extends PureComponent<Props> {
             <Marker coordinate={walk.pins[0]}>
               <TextMarker text="출발" />
             </Marker>
-            <Marker coordinate={walk.pins[lastIndex]}>
+            <Marker coordinate={walk.pins[walk.pins.length - 1]}>
               <TextMarker text="도착" blackMode />
             </Marker>
-            {walk.pins.slice(1, lastIndex).map(
-              (pin, index) =>
-                pin.type && (
-                  <Marker key={index} coordinate={pin}>
-                    <ImageMarker
-                      source={
-                        pin.type === 'pee'
-                          ? require('src/assets/icons/ic_pee_small.png')
-                          : require('src/assets/icons/ic_poo_small.png')
-                      }
-                    />
-                  </Marker>
-                )
-            )}
+            {pees.map((pin, index) => (
+              <Marker key={index} coordinate={pin} anchor={CENTER}>
+                <ImageMarker
+                  source={require('src/assets/icons/ic_pee_small.png')}
+                />
+              </Marker>
+            ))}
+            {poos.map((pin, index) => (
+              <Marker key={index} coordinate={pin} anchor={CENTER}>
+                <ImageMarker
+                  source={require('src/assets/icons/ic_poo_small.png')}
+                />
+              </Marker>
+            ))}
           </MapView>
           <SafeAreaView>
             <TopNavbar
@@ -113,7 +140,24 @@ class Save extends PureComponent<Props> {
           </SafeAreaView>
         </View>
         <SafeAreaView>
-          <View style={views.dashboard} />
+          <View style={views.dashboard}>
+            <InfoCard
+              icon={require('src/assets/icons/ic_time.png')}
+              value={`${Math.floor(walk.seconds / 60)}분`}
+            />
+            <InfoCard
+              icon={require('src/assets/icons/ic_distance.png')}
+              value={rangeWithUnit(walk.distance)}
+            />
+            <InfoCard
+              icon={require('src/assets/icons/ic_poo_gray.png')}
+              value={`${poos.length}회`}
+            />
+            <InfoCard
+              icon={require('src/assets/icons/ic_pee_gray.png')}
+              value={`${pees.length}회`}
+            />
+          </View>
           <View style={views.info}>
             <Text style={texts.title}>오늘의 산책기록</Text>
             <Text style={texts.timestamp}>

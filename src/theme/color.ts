@@ -10,6 +10,7 @@ export default {
   // gray
   gary55: '#555555',
   gray66: '#666666',
+  gray84: '#848484',
   grayDA: '#DADCDF',
   grayB1: '#B1B1B1',
   grayEF: '#EFEFEF',
