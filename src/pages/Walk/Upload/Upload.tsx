@@ -1,23 +1,48 @@
+import produce from 'immer';
 import React, { PureComponent } from 'react';
-import { FlatList, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
-import ImageCard from './ImageCard';
+import { AddImageCard, ImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
+
+export interface ImageInterface {
+  uri: string;
+  file?: string;
+}
 
 interface State {
   memo: string;
-  images: string[];
+  images: ImageInterface[];
 }
 
 class Upload extends PureComponent<NavigationScreenProps, State> {
   state: State = {
     memo: '',
-    images: ['', this.props.navigation.getParam('snapshot')],
+    images: [{ uri: this.props.navigation.getParam('snapshot') }],
   };
 
   handleChangeMemo = (memo: string) => {
     this.setState({ memo });
+  };
+
+  handleAddImage = (image: ImageInterface) => {
+    this.setState(state =>
+      produce(state, draft => {
+        draft.images.push(image);
+      })
+    );
+  };
+
+  handleUpdateImage = (image: ImageInterface, index: number) => {};
+
+  handleDeleteImage = (index: number) => {
+    this.setState(state =>
+      produce(state, draft => {
+        draft.images.splice(index, 1);
+      })
+    );
   };
 
   render() {
@@ -29,16 +54,23 @@ class Upload extends PureComponent<NavigationScreenProps, State> {
         right={{ view: '완료', handlePress: () => {} }}
         bottom={{
           view: (
-            <FlatList
-              data={this.state.images}
-              horizontal={true}
-              style={views.listView}
-              renderItem={data => (
-                <ImageCard uri={data.item} key={data.index} />
-              )}
-            />
+            <ScrollView
+              nestedScrollEnabled={true}
+              contentContainerStyle={views.listView}
+              horizontal={true}>
+              <AddImageCard handleLoad={this.handleAddImage} />
+              {this.state.images.map((image, index) => (
+                <ImageCard
+                  key={index}
+                  image={image}
+                  index={index}
+                  handleUpdate={this.handleUpdateImage}
+                  handleDelete={this.handleDeleteImage}
+                />
+              ))}
+            </ScrollView>
           ),
-          styles: { paddingHorizontal: 0 },
+          styles: { paddingHorizontal: 0, flexDirection: 'row' },
         }}
         showBorder>
         <TextInput

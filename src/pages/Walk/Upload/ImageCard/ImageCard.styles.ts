@@ -5,23 +5,26 @@ const cardSize = 81;
 const deleteSize = 25;
 export const views = StyleSheet.create({
   wrapper: {
+    paddingTop: deleteSize / 2,
+    marginHorizontal: 8,
+  },
+  imageCard: {
     width: cardSize,
     height: cardSize,
     borderRadius: 4,
-    marginHorizontal: 8,
     backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden',
   },
-  fullSize: {
+  image: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+    borderRadius: 4,
   },
   deleteButton: {
     position: 'absolute',
-    top: -deleteSize / 2,
+    top: 0,
     right: -deleteSize / 2,
     width: deleteSize,
     height: deleteSize,
