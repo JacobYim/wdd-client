@@ -13,7 +13,7 @@ import {
 } from 'src/services/storage/user';
 
 // HELPERS
-async function checkPermission() {
+export async function checkPermission() {
   if (
     Platform.OS === 'ios' ||
     (Platform.OS === 'android' && Platform.Version < 23) ||

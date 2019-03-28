@@ -3,23 +3,28 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
 import Splash from 'src/components/module/Splash';
+import { checkPermission } from 'src/store/sagas/user';
 import { texts, views } from './Select.styles';
 
-const BottomButtons: React.FC<NavigationScreenProps> = ({ navigation }) => (
-  <View style={views.buttons}>
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() => navigation.navigate('app')}>
-      <Text style={texts.bottom}>비회원으로 시작하기</Text>
-    </TouchableOpacity>
-    <View style={views.vr} />
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() => navigation.navigate('signUp')}>
-      <Text style={texts.bottom}>회원가입</Text>
-    </TouchableOpacity>
-  </View>
-);
+const BottomButtons: React.FC<NavigationScreenProps> = ({ navigation }) => {
+  const navToApp = async () => {
+    if (await checkPermission()) navigation.navigate('app');
+  };
+
+  return (
+    <View style={views.buttons}>
+      <TouchableOpacity activeOpacity={0.7} onPress={navToApp}>
+        <Text style={texts.bottom}>비회원으로 시작하기</Text>
+      </TouchableOpacity>
+      <View style={views.vr} />
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('signUp')}>
+        <Text style={texts.bottom}>회원가입</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const Select: React.FC<NavigationScreenProps> = ({ navigation }) => (
   <>

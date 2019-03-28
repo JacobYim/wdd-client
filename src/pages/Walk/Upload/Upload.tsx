@@ -57,7 +57,8 @@ class Upload extends PureComponent<NavigationScreenProps, State> {
             <ScrollView
               nestedScrollEnabled={true}
               contentContainerStyle={views.listView}
-              horizontal={true}>
+              horizontal={true}
+              showsVerticalScrollIndicator={false}>
               <AddImageCard handleLoad={this.handleAddImage} />
               {this.state.images.map((image, index) => (
                 <ImageCard

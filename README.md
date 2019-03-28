@@ -17,8 +17,21 @@
 2. `~$ cd wdd-client`
 3. `~/wdd-client$ npm install`
 4. `~/wdd-client$ cd ios && pod install && cd ..`
-5. `~/wdd-client& npm run dev`
-6. 서비스 실행
+5. `android/Gradle Scripts(android-react-native-maps)` 에 다음 추가
+
+```
+{
+  dependencies {
+    ...,
+    implementation "com.android.support:support-media-compat:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+  }
+}
+```
+
+6. `~/wdd-client& npm run dev`
+7. 서비스 실행
 
 - Android
   1. 에뮬레이터 혹은 안드로이드 디바이스 연결
