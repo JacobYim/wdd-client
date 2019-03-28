@@ -261,6 +261,13 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
+		55452F93224CD414001CB345 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B5C32A36220C603B000FFB8D;
+			remoteInfo = "RNGestureHandler-tvOS";
+		};
 		555903CE2216A28F00BDDDF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */;
@@ -587,6 +594,7 @@
 			isa = PBXGroup;
 			children = (
 				553E099021FF4F3B00006157 /* libRNGestureHandler.a */,
+				55452F94224CD414001CB345 /* libRNGestureHandler-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1062,6 +1070,13 @@
 			fileType = archive.ar;
 			path = libRNImagePicker.a;
 			remoteRef = 553E09DA21FF55B900006157 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55452F94224CD414001CB345 /* libRNGestureHandler-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNGestureHandler-tvOS.a";
+			remoteRef = 55452F93224CD414001CB345 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		555903CF2216A28F00BDDDF1 /* libBMDPedometer.a */ = {
