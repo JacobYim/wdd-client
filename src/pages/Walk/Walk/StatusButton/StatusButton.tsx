@@ -123,8 +123,12 @@ class StatusButton extends PureComponent<Props, State> {
     updateStatus('FINISH');
     this.animateProgress().start(c => {
       if (c.finished) {
-        if (walk.pins.length > 1) navigation.navigate('finish');
-        else navigation.goBack(null);
+        if (walk.pins.length > 1) {
+          navigation.navigate('finish');
+        } else {
+          updateStatus('READY');
+          navigation.goBack(null);
+        }
       }
     });
   };

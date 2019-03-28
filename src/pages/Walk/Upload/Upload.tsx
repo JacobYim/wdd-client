@@ -3,7 +3,9 @@ import React, { PureComponent } from 'react';
 import { TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { NavigationScreenProps } from 'react-navigation';
+import { connect } from 'react-redux';
 import PageContainer from 'src/components/container/PageContainer';
+import * as actions from 'src/store/actions/walk';
 import { AddImageCard, ImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
 
@@ -12,15 +14,25 @@ export interface ImageInterface {
   file?: string;
 }
 
+interface Props extends NavigationScreenProps {
+  updateStatus: typeof actions.updateStatus;
+}
+
 interface State {
   memo: string;
   images: ImageInterface[];
 }
 
-class Upload extends PureComponent<NavigationScreenProps, State> {
+class Upload extends PureComponent<Props, State> {
   state: State = {
     memo: '',
     images: [{ uri: this.props.navigation.getParam('snapshot') }],
+  };
+
+  handleSave = () => {
+    const { navigation, updateStatus } = this.props;
+    updateStatus('READY');
+    navigation.popToTop();
   };
 
   handleChangeMemo = (memo: string) => {
@@ -51,7 +63,7 @@ class Upload extends PureComponent<NavigationScreenProps, State> {
       <PageContainer
         left={{ navigation }}
         center="게시물 작성"
-        right={{ view: '완료', handlePress: () => {} }}
+        right={{ view: '완료', handlePress: this.handleSave }}
         bottom={{
           view: (
             <ScrollView
@@ -86,4 +98,7 @@ class Upload extends PureComponent<NavigationScreenProps, State> {
   }
 }
 
-export default Upload;
+export default connect(
+  null,
+  { updateStatus: actions.updateStatus }
+)(Upload);
