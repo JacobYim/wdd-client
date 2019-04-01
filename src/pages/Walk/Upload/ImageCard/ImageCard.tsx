@@ -2,8 +2,6 @@ import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProp } from 'react-navigation';
-import { connect } from 'react-redux';
-import ImageWithSticker from 'src/components/module/ImageWithSticker';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
 import { ReducerState } from 'src/store/reducers';
 import { icons, views } from './ImageCard.styles';
@@ -58,7 +56,6 @@ export const AddImageCard: React.FC<AddProps> = ({ handleLoad }) => {
 
 interface Props {
   image: ImageInterface;
-  walk: ReducerState['walk'];
   navigate: NavigationScreenProp<any>['navigate'];
   index: number;
   handleUpdate: (image: ImageInterface, index: number) => void;
@@ -67,7 +64,6 @@ interface Props {
 
 const ImageCard: React.FC<Props> = ({
   image,
-  walk,
   index,
   navigate,
   handleDelete,
@@ -80,11 +76,9 @@ const ImageCard: React.FC<Props> = ({
     <ImageWrapper
       onPress={() => navigate('edit', { image, handleEdit })}
       onPressDelete={() => handleDelete(index)}>
-      <ImageWithSticker image={image} walk={walk} style={views.image} />
+      <Image source={{ uri: image.uri }} style={views.image} />
     </ImageWrapper>
   );
 };
 
-export default connect((state: ReducerState) => ({ walk: state.walk }))(
-  ImageCard
-);
+export default ImageCard;

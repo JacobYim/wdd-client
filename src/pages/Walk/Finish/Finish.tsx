@@ -14,12 +14,12 @@ import ImageMarker from './ImageMarker';
 import InfoCard from './InfoCard';
 import TextMarker from './TextMarker';
 import {
-  Dimensions,
   Image,
+  LayoutChangeEvent,
   SafeAreaView,
   StyleSheet,
-  View,
   Text,
+  View,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -38,10 +38,7 @@ const CENTER = { x: 0.5, y: 0.5 };
 class Finish extends PureComponent<Props, State> {
   private map = createRef<MapView>();
 
-  state: State = {
-    pees: [],
-    poos: [],
-  };
+  state: State = { pees: [], poos: [] };
 
   componentDidMount() {
     const { pins } = this.props.walk;
@@ -74,23 +71,26 @@ class Finish extends PureComponent<Props, State> {
     const snapshot = await map.takeSnapshot({
       width: 1200,
       height: 1200,
-      format: 'jpg',
+      format: 'png',
+      quality: 0.8,
       result: 'file',
     });
     navigation.navigate('upload', { snapshot });
   };
 
-  googleMapDidMount = () => {
+  googleMapDidMount = (e: LayoutChangeEvent) => {
     const map = this.map.current;
     if (!map) return;
-    const { width, height } = Dimensions.get('window');
+    const { width, height } = e.nativeEvent.layout;
+    const horizontal = width * 0.12;
+    const vertical = (height - width) / 2 + horizontal;
     map.fitToCoordinates(this.props.walk.pins, {
       animated: false,
       edgePadding: {
-        top: height * 0.1,
-        right: width * 0.12,
-        bottom: height * 0.1,
-        left: width * 0.12,
+        top: vertical,
+        left: horizontal,
+        bottom: vertical,
+        right: horizontal,
       },
     });
   };
