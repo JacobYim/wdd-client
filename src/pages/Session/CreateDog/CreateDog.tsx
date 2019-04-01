@@ -86,14 +86,14 @@ class CreateDog extends Component<Props, State> {
   };
 
   handleSubmit = async () => {
-    const { createDog, navigation, toggleLoading } = this.props;
+    const { createDog, email, navigation, toggleLoading } = this.props;
     const { name, ...others } = this.state;
     let thumbnail = undefined;
     if (this.state.thumbnail) {
       thumbnail = await uploadImage({
         name,
+        email,
         table: 'dogs',
-        type: 'thumbnail',
         uri: this.state.thumbnail,
       })(toggleLoading);
     }

@@ -2,7 +2,6 @@ import produce from 'immer';
 import moment from 'moment';
 import React, { createRef, PureComponent } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { rangeWithUnit } from 'src/assets/functions/print';
@@ -13,6 +12,12 @@ import { icons, texts, views } from './Finish.styles';
 import ImageMarker from './ImageMarker';
 import InfoCard from './InfoCard';
 import TextMarker from './TextMarker';
+import MapView, {
+  Marker,
+  LatLng,
+  Polyline,
+  PROVIDER_GOOGLE,
+} from 'react-native-maps';
 import {
   Image,
   LayoutChangeEvent,
@@ -29,6 +34,8 @@ interface Props extends NavigationScreenProps {
 }
 
 interface State {
+  start: LatLng;
+  end: LatLng;
   pees: ReducerState['walk']['pins'];
   poos: ReducerState['walk']['pins'];
 }
@@ -38,7 +45,12 @@ const CENTER = { x: 0.5, y: 0.5 };
 class Finish extends PureComponent<Props, State> {
   private map = createRef<MapView>();
 
-  state: State = { pees: [], poos: [] };
+  state: State = {
+    start: { latitude: 0, longitude: 0 },
+    end: { latitude: 0, longitude: 0 },
+    pees: [],
+    poos: [],
+  };
 
   componentDidMount() {
     const { pins } = this.props.walk;
@@ -50,6 +62,8 @@ class Finish extends PureComponent<Props, State> {
             else draft.poos.push(pins[i]);
           }
         }
+        draft.start = pins[0];
+        draft.end = pins[pins.length - 1];
         this.props.updateCount({
           pees: draft.pees.length,
           poos: draft.poos.length,
@@ -75,7 +89,10 @@ class Finish extends PureComponent<Props, State> {
       quality: 0.8,
       result: 'file',
     });
-    navigation.navigate('upload', { snapshot });
+    navigation.navigate('upload', {
+      snapshot,
+      handleDismiss: this.handleDismiss,
+    });
   };
 
   googleMapDidMount = (e: LayoutChangeEvent) => {
@@ -97,7 +114,7 @@ class Finish extends PureComponent<Props, State> {
 
   render() {
     const { walk } = this.props;
-    const { pees, poos } = this.state;
+    const { pees, poos, start, end } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -119,10 +136,10 @@ class Finish extends PureComponent<Props, State> {
               strokeWidth={6}
               strokeColor="#127EFF"
             />
-            <Marker coordinate={walk.pins[0]}>
+            <Marker coordinate={start}>
               <TextMarker text="출발" />
             </Marker>
-            <Marker coordinate={walk.pins[walk.pins.length - 1]}>
+            <Marker coordinate={end}>
               <TextMarker text="도착" blackMode />
             </Marker>
             {pees.map((pin, index) => (

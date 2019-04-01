@@ -4,14 +4,16 @@ import { TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
+import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
-import * as actions from 'src/store/actions/walk';
+import { uploadImages } from 'src/services/aws/s3';
+import { ReducerState } from 'src/store/reducers';
 import ImageCard, { AddImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
 
-interface Props extends NavigationScreenProps {
-  updateStatus: typeof actions.updateStatus;
+interface Props extends LoadingProps, NavigationScreenProps {
+  email: ReducerState['user']['email'];
 }
 
 interface State {
@@ -25,10 +27,18 @@ class Upload extends PureComponent<Props, State> {
     images: [{ uri: this.props.navigation.getParam('snapshot') }],
   };
 
-  handleSave = () => {
-    const { navigation, updateStatus } = this.props;
-    updateStatus('READY');
+  handleSave = async () => {
+    const { navigation, email, toggleLoading } = this.props;
+    const now = new Date();
+    const uris = this.state.images.map(image => image.nextUri || image.uri);
+    const images = await uploadImages({
+      email,
+      uris,
+      table: 'feeds',
+      name: now.toUTCString(),
+    })(toggleLoading);
     navigation.popToTop();
+    navigation.getParam('handleDismiss')();
   };
 
   handleChangeMemo = (memo: string) => {
@@ -101,7 +111,6 @@ class Upload extends PureComponent<Props, State> {
   }
 }
 
-export default connect(
-  null,
-  { updateStatus: actions.updateStatus }
-)(Upload);
+export default connect((state: ReducerState) => ({
+  email: state.user.email,
+}))(withLoading(Upload));
