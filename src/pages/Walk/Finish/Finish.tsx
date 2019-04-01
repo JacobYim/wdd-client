@@ -69,8 +69,8 @@ class Finish extends PureComponent<Props, State> {
     const map = this.map.current;
     if (!map) return;
     const snapshot = await map.takeSnapshot({
-      width: 1200,
-      height: 1200,
+      width: 800,
+      height: 800,
       format: 'png',
       quality: 0.8,
       result: 'file',

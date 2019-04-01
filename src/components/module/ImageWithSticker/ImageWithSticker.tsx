@@ -5,8 +5,8 @@ import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './ImageWithSticker.styles';
 
 export interface ImageInterface {
-  uri: string;
-  file?: string;
+  uri: string; // default uri
+  nextUri?: string; // edited
   stickers?: {
     time?: boolean;
     distance?: boolean;

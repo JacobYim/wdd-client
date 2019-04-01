@@ -3,7 +3,6 @@ import { Image, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProp } from 'react-navigation';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
-import { ReducerState } from 'src/store/reducers';
 import { icons, views } from './ImageCard.styles';
 
 const ImageWrapper: React.FC<{
@@ -41,7 +40,7 @@ export const AddImageCard: React.FC<AddProps> = ({ handleLoad }) => {
     };
     ImagePicker.showImagePicker(options, res => {
       if (res.didCancel || res.error) return;
-      handleLoad({ uri: res.uri, file: res.data });
+      handleLoad({ uri: res.uri });
     });
   };
   return (
