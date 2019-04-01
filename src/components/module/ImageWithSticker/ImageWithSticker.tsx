@@ -2,16 +2,16 @@ import React from 'react';
 import { Image, ImageBackground, Text, View } from 'react-native';
 import { rangeWithUnit } from 'src/assets/functions/print';
 import { ReducerState } from 'src/store/reducers';
-import { icons, views } from './ImageWithSticker.styles';
+import { icons, texts, views } from './ImageWithSticker.styles';
 
 export interface ImageInterface {
   uri: string;
   file?: string;
   stickers?: {
-    time: boolean;
-    distance: boolean;
-    poos: boolean;
-    pees: boolean;
+    time?: boolean;
+    distance?: boolean;
+    poos?: boolean;
+    pees?: boolean;
     top?: 'LOGO' | 'GO';
   };
 }
@@ -45,26 +45,28 @@ const ImageWithSticker: React.FC<Props> = ({ image, walk, size, style }) => (
         <View style={views.bottomWrapper}>
           {image.stickers.time && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_time.png')} />
-              <Text>{Math.floor(walk.seconds / 60)}분</Text>
+              <Image source={require('src/assets/icons/ic_time_white.png')} />
+              <Text style={texts.info}>{Math.floor(walk.seconds / 60)}분</Text>
             </View>
           )}
           {image.stickers.distance && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_distance.png')} />
-              <Text>{rangeWithUnit(walk.distance)}</Text>
+              <Image
+                source={require('src/assets/icons/ic_distance_white.png')}
+              />
+              <Text style={texts.info}>{rangeWithUnit(walk.distance)}</Text>
             </View>
           )}
           {image.stickers.poos && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_poo_small.png')} />
-              <Text>{walk.poos}회</Text>
+              <Image source={require('src/assets/icons/ic_poo.png')} />
+              <Text style={texts.info}>{walk.poos}회</Text>
             </View>
           )}
           {image.stickers.pees && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_pee_small.png')} />
-              <Text>{walk.pees}회</Text>
+              <Image source={require('src/assets/icons/ic_pee.png')} />
+              <Text style={texts.info}>{walk.pees}회</Text>
             </View>
           )}
         </View>

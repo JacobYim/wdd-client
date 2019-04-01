@@ -127,16 +127,12 @@ class Finish extends PureComponent<Props, State> {
             </Marker>
             {pees.map((pin, index) => (
               <Marker key={index} coordinate={pin} anchor={CENTER}>
-                <ImageMarker
-                  source={require('src/assets/icons/ic_pee_small.png')}
-                />
+                <ImageMarker source={require('src/assets/icons/ic_pee.png')} />
               </Marker>
             ))}
             {poos.map((pin, index) => (
               <Marker key={index} coordinate={pin} anchor={CENTER}>
-                <ImageMarker
-                  source={require('src/assets/icons/ic_poo_small.png')}
-                />
+                <ImageMarker source={require('src/assets/icons/ic_poo.png')} />
               </Marker>
             ))}
           </MapView>

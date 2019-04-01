@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import { color, font } from 'src/theme';
+
+const { width } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
   topWrapper: {
@@ -19,6 +22,16 @@ export const views = StyleSheet.create({
 
 export const icons = StyleSheet.create({
   logo: {
+    width: width * 0.5,
     height: 48,
+    resizeMode: 'contain',
+  },
+});
+
+export const texts = StyleSheet.create({
+  info: {
+    marginLeft: 6,
+    color: color.white,
+    fontSize: font.size.medium,
   },
 });
