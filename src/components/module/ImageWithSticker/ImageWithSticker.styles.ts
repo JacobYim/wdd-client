@@ -22,7 +22,7 @@ export const views = StyleSheet.create({
 
 export const icons = StyleSheet.create({
   logo: {
-    width: width * 0.5,
+    width: width * 0.4,
     height: 48,
     resizeMode: 'contain',
   },

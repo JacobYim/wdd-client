@@ -29,7 +29,6 @@ interface Props extends LoadingProps, NavigationScreenProps {
 
 interface State extends actions.CreateDogInterface {
   showModal: boolean;
-  thumbnailFile?: any;
 }
 
 class CreateDog extends Component<Props, State> {
@@ -73,7 +72,6 @@ class CreateDog extends Component<Props, State> {
       if (res.customButton) {
         this.setState(state =>
           produce(state, draft => {
-            delete draft.thumbnailFile;
             draft.thumbnail = '';
           })
         );
@@ -82,23 +80,23 @@ class CreateDog extends Component<Props, State> {
       this.setState(state =>
         produce(state, draft => {
           draft.thumbnail = res.uri;
-          draft.thumbnailFile = res.data;
         })
       );
     });
   };
 
   handleSubmit = async () => {
-    const { createDog, navigation, email, toggleLoading } = this.props;
-    const { name, thumbnailFile, ...others } = this.state;
-    const thumbnail = await uploadImage({
-      email,
-      name,
-      table: 'dogs',
-      type: 'thumbnail',
-      file: thumbnailFile,
-    })(toggleLoading);
-
+    const { createDog, navigation, toggleLoading } = this.props;
+    const { name, ...others } = this.state;
+    let thumbnail = undefined;
+    if (this.state.thumbnail) {
+      thumbnail = await uploadImage({
+        name,
+        table: 'dogs',
+        type: 'thumbnail',
+        uri: this.state.thumbnail,
+      })(toggleLoading);
+    }
     await createDog({ name, thumbnail, ...others }, navigation);
   };
 

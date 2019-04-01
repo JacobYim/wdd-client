@@ -31,7 +31,7 @@ export async function checkPermission() {
   return false;
 }
 
-function* navigateToApp(navigation: NavigationScreenProp<any>) {
+export function* navigateToApp(navigation: NavigationScreenProp<any>) {
   if (checkPermission()) yield call(navigation.navigate, 'app');
 }
 

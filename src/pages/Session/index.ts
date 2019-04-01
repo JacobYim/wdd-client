@@ -7,7 +7,6 @@ import SelectScreen from './Select';
 import SendEmailScreen from './SendEmail';
 import SignInScreen from './SignIn';
 import SignUpScreen from './SignUp';
-import TutorialScreen from './Tutorial';
 import {
   createStackNavigator,
   createMaterialTopTabNavigator,
@@ -19,7 +18,6 @@ const SignUpNavigator = createMaterialTopTabNavigator(
     signUpUser: SignUpScreen,
     createMeta: CreateMetaScreen,
     createDog: CreateDogScreen,
-    tutorial: TutorialScreen,
   },
   {
     initialRouteName: 'agreement',

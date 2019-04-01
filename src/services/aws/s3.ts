@@ -6,31 +6,25 @@ import { Storage } from 'aws-amplify';
  * DEVELOPMENT : __DEV__/{table}/{email}/{name}/{type}.png
  */
 interface UploadImage {
-  table: 'dogs' | 'users' | 'places';
-  email: string;
+  table: 'dogs' | 'places' | 'feeds';
   name: string;
   type: 'thumbnail' | string;
-  file: any;
+  uri: string;
 }
 
 type S3ResponseType = { key: string };
 type ToggleLoading = () => void;
 
-export const uploadImage = ({
-  email,
-  table,
-  name,
-  type,
-  file,
-}: UploadImage) => async (toggleLoading: ToggleLoading) => {
-  if (!file) return '';
-
+export const uploadImage = ({ table, name, type, uri }: UploadImage) => async (
+  toggleLoading: ToggleLoading
+) => {
   await toggleLoading();
-  const markDev = __DEV__ ? '__DEV__/' : '';
+  const response = await fetch(uri);
+  const file = await response.blob();
   const S3Response = (await Storage.put(
-    `${markDev}${table}/${email}/${name}/${type}.png`,
+    `${__DEV__ ? '__DEV__/' : ''}${table}/${name}/${type}.png`,
     file,
-    { contentType: 'image/png' }
+    { level: 'public', contentType: 'image/png' }
   )) as S3ResponseType;
   await toggleLoading();
   return S3Response.key;
