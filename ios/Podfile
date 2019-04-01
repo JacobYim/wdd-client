@@ -44,6 +44,8 @@ target 'WddClient' do
   # react-native-webview dependencies
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'RNViewShot', :path => '../node_modules/react-native-view-shot'
+
   # target 'WddClientTests' do
   #   inherit! :search_paths
   #   # Pods for testing

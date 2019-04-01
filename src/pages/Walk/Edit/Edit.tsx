@@ -1,5 +1,6 @@
 import produce from 'immer';
 import React, { PureComponent } from 'react';
+import ViewShot from 'react-native-view-shot';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import ImageWithSticker from 'src/components/module/ImageWithSticker';
@@ -27,6 +28,8 @@ interface State {
 const { width } = Dimensions.get('window');
 
 class Edit extends PureComponent<Props, State> {
+  private snapshot = React.createRef<ViewShot>();
+
   state: State = {
     image: this.props.navigation.getParam('image'),
   };
@@ -66,13 +69,17 @@ class Edit extends PureComponent<Props, State> {
     );
   };
 
-  completeEdit = () => {
+  completeEdit = async () => {
     const { navigation } = this.props;
     const handleEdit: (image: ImageInterface) => void = navigation.getParam(
       'handleEdit'
     );
-    handleEdit(this.state.image);
-    navigation.goBack(null);
+    const snapshot = this.snapshot.current;
+    if (snapshot) {
+      const nextUri: string = await (snapshot as any).capture();
+      handleEdit({ ...this.state.image, nextUri });
+      navigation.goBack(null);
+    }
   };
 
   renderButton = (onPress: () => void, icon: NodeRequire) => (
@@ -102,7 +109,9 @@ class Edit extends PureComponent<Props, State> {
           }}
           showBorder
         />
-        <ImageWithSticker image={this.state.image} walk={walk} size={width} />
+        <ViewShot ref={this.snapshot} options={{ format: 'png', quality: 0.9 }}>
+          <ImageWithSticker image={this.state.image} walk={walk} size={width} />
+        </ViewShot>
         <View style={views.buttonContainer}>
           <View style={views.buttonRow}>
             <TouchableOpacity style={views.button} onPress={this.handleClear}>

@@ -37,7 +37,7 @@ PODS:
     - React
   - react-native-maps (0.23.0):
     - React
-  - react-native-webview (5.3.0):
+  - react-native-webview (5.4.3):
     - React
   - React/Core (0.59.2):
     - yoga (= 0.59.2.React)
@@ -92,6 +92,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNViewShot (2.5.0):
+    - React
   - yoga (0.59.2.React)
 
 DEPENDENCIES:
@@ -117,6 +119,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNViewShot (from `../node_modules/react-native-view-shot`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
@@ -142,6 +145,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
+  RNViewShot:
+    :path: "../node_modules/react-native-view-shot"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -157,8 +162,9 @@ SPEC CHECKSUMS:
   react-native-google-maps: b946d62e25dc66097921ed82520e45b0b081768a
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-webview: a42108b827082f8f0333529b0772102031d5960d
+  RNViewShot: fdf9a64f0621ebc4e7c3392a10d2ffb70a7faee4
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: dbfd788d797d076fcb87514f0a040ee69a371896
+PODFILE CHECKSUM: dc0dc09268c6dcffff6466cc047e6d3e723a18cc
 
 COCOAPODS: 1.5.3
