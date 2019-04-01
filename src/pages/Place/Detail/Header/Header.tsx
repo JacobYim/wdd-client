@@ -1,17 +1,8 @@
 import React from 'react';
+import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import TopNavbar from 'src/components/module/TopNavbar';
 import { color } from 'src/theme';
-import {
-  Dimensions,
-  ImageBackground,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-  SafeAreaView,
-} from 'react-native';
 
 interface Props {
   thumbnail: string;
@@ -48,15 +39,3 @@ const Header: React.FC<Props> = ({ thumbnail, navigation }) => (
 );
 
 export default Header;
-
-{
-  /* <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.button}
-          onPress={() => navigation.goBack(null)}>
-          <Image
-            source={require('src/assets/icons/ic_back_white.png')}
-            style={styles.icon}
-          />
-        </TouchableOpacity> */
-}

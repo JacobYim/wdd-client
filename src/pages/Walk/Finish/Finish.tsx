@@ -25,6 +25,7 @@ import {
 interface Props extends NavigationScreenProps {
   walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
+  updateCount: typeof actions.updateCount;
 }
 
 interface State {
@@ -52,6 +53,10 @@ class Finish extends PureComponent<Props, State> {
             else draft.poos.push(pins[i]);
           }
         }
+        this.props.updateCount({
+          pees: draft.pees.length,
+          poos: draft.poos.length,
+        });
       })
     );
   }
@@ -162,11 +167,11 @@ class Finish extends PureComponent<Props, State> {
             />
             <InfoCard
               icon={require('src/assets/icons/ic_poo_gray.png')}
-              value={`${poos.length}회`}
+              value={`${walk.poos}회`}
             />
             <InfoCard
               icon={require('src/assets/icons/ic_pee_gray.png')}
-              value={`${pees.length}회`}
+              value={`${walk.pees}회`}
             />
           </View>
           <View style={views.info}>
@@ -189,5 +194,5 @@ class Finish extends PureComponent<Props, State> {
 
 export default connect(
   ({ walk }: ReducerState) => ({ walk }),
-  { updateStatus: actions.updateStatus }
+  { updateStatus: actions.updateStatus, updateCount: actions.updateCount }
 )(Finish);

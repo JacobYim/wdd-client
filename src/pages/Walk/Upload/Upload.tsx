@@ -5,14 +5,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import PageContainer from 'src/components/container/PageContainer';
+import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
 import * as actions from 'src/store/actions/walk';
-import { AddImageCard, ImageCard } from './ImageCard';
+import ImageCard, { AddImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
-
-export interface ImageInterface {
-  uri: string;
-  file?: string;
-}
 
 interface Props extends NavigationScreenProps {
   updateStatus: typeof actions.updateStatus;
@@ -47,7 +43,13 @@ class Upload extends PureComponent<Props, State> {
     );
   };
 
-  handleUpdateImage = (image: ImageInterface, index: number) => {};
+  handleUpdateImage = (image: ImageInterface, index: number) => {
+    this.setState(state =>
+      produce(state, draft => {
+        draft.images[index] = image;
+      })
+    );
+  };
 
   handleDeleteImage = (index: number) => {
     this.setState(state =>
@@ -77,6 +79,7 @@ class Upload extends PureComponent<Props, State> {
                   key={index}
                   image={image}
                   index={index}
+                  navigate={navigation.navigate}
                   handleUpdate={this.handleUpdateImage}
                   handleDelete={this.handleDeleteImage}
                 />

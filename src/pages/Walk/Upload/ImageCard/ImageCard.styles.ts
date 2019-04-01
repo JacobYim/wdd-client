@@ -17,10 +17,8 @@ export const views = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
     borderRadius: 4,
+    overflow: 'hidden',
   },
   deleteButton: {
     position: 'absolute',
