@@ -12,23 +12,31 @@ import {
   removeUserStorage,
 } from 'src/services/storage/user';
 
+const permissions = [
+  PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+  PermissionsAndroid.PERMISSIONS.CAMERA,
+  PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+];
+
 // HELPERS
 export async function checkPermission() {
   if (
     Platform.OS === 'ios' ||
-    (Platform.OS === 'android' && Platform.Version < 23) ||
-    (await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-    ))
+    (Platform.OS === 'android' && Platform.Version < 23)
   ) {
     return true;
   }
-  // Get Permission from User
-  const response = await PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-  );
-  if (response === PermissionsAndroid.RESULTS.GRANTED) return true;
-  return false;
+  permissions.forEach(async permission => {
+    if (!(await PermissionsAndroid.check(permission))) {
+      const response = await PermissionsAndroid.requestMultiple(permissions);
+      permissions.forEach(perm => {
+        if (response[perm] !== PermissionsAndroid.RESULTS.GRANTED) return false;
+      });
+    }
+  });
+  return true;
 }
 
 export function* navigateToApp(navigation: NavigationScreenProp<any>) {
