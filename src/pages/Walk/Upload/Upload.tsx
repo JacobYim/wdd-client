@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { pick } from 'lodash';
 import React, { PureComponent } from 'react';
 import { TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -7,13 +8,15 @@ import { connect } from 'react-redux';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
+import { Body, createFeed } from 'src/services/api/feed';
 import { uploadImages } from 'src/services/aws/s3';
 import { ReducerState } from 'src/store/reducers';
 import ImageCard, { AddImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
 
 interface Props extends LoadingProps, NavigationScreenProps {
-  email: ReducerState['user']['email'];
+  user: ReducerState['user'];
+  walk: ReducerState['walk'];
 }
 
 interface State {
@@ -28,15 +31,21 @@ class Upload extends PureComponent<Props, State> {
   };
 
   handleSave = async () => {
-    const { navigation, email, toggleLoading } = this.props;
+    const { navigation, user, walk, toggleLoading } = this.props;
     const now = new Date();
     const uris = this.state.images.map(image => image.nextUri || image.uri);
     const images = await uploadImages({
-      email,
       uris,
+      email: user.email,
       table: 'feeds',
       name: now.toUTCString(),
     })(toggleLoading);
+    await createFeed({
+      images,
+      memo: this.state.memo,
+      pins: JSON.stringify(walk.pins),
+      ...pick(walk, ['seconds', 'distance', 'steps', 'pees', 'poos']),
+    });
     navigation.popToTop();
     navigation.getParam('handleDismiss')();
   };
@@ -112,5 +121,6 @@ class Upload extends PureComponent<Props, State> {
 }
 
 export default connect((state: ReducerState) => ({
-  email: state.user.email,
+  user: state.user,
+  walk: state.walk,
 }))(withLoading(Upload));

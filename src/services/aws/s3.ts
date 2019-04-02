@@ -22,12 +22,12 @@ export const uploadImage = ({ table, email, name, uri }: UploadImage) => async (
 ) => {
   await toggleLoading();
   const response = await fetch(uri);
-  const file = await response.blob();
+  const data = await response.blob();
   const S3Response = (await Storage.put(
     `${__DEV__ ? '__DEV__/' : ''}${table}/${
       email ? `${email}/` : ''
     }${name}.png`,
-    file,
+    data,
     { level: 'public', contentType: 'image/png' }
   )) as S3ResponseType;
   await toggleLoading();
@@ -41,19 +41,20 @@ export const uploadImages = ({
   uris,
 }: UploadImages) => async (toggleLoading: ToggleLoading) => {
   await toggleLoading();
-  const uriList: string[] = [];
-  uris.forEach(async (uri, index) => {
-    const response = await fetch(uri);
-    const file = await response.blob();
-    const S3Response = (await Storage.put(
-      `${__DEV__ ? '__DEV__/' : ''}${table}/${
-        email ? `${email}/` : ''
-      }${name}_${index}.png`,
-      file,
-      { level: 'public', contentType: 'image/png' }
-    )) as S3ResponseType;
-    uriList.push(S3Response.key);
-  });
+  const uriList: string[] = await Promise.all(
+    uris.map(async (uri, index) => {
+      const response = await fetch(uri);
+      const data = await response.blob();
+      const S3Response = (await Storage.put(
+        `${__DEV__ ? '__DEV__/' : ''}${table}/${
+          email ? `${email}/` : ''
+        }${name}_${index}.png`,
+        data,
+        { level: 'public', contentType: 'image/png' }
+      )) as S3ResponseType;
+      return S3Response.key;
+    })
+  );
   await toggleLoading();
   return uriList;
 };
