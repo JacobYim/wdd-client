@@ -104,8 +104,8 @@ android {
         applicationId "com.woodongdang.client.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "0.3.1"
+        versionCode 14
+        versionName "0.3.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -152,10 +152,10 @@ android {
 }
 
 dependencies {
+    implementation project(':@JWWon_react-native-universal-pedometer')
     implementation project(':react-native-view-shot')
     implementation project(':react-native-webview')
     implementation project(':react-native-background-timer')
-    implementation project(':@JWWon_react-native-universal-pedometer')
     implementation project(':react-native-maps')
     implementation project(':react-native-geolocation-service')
     implementation project(':react-native-image-picker')
