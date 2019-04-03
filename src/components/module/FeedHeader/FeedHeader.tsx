@@ -49,7 +49,7 @@ const FeedHeader: React.FC<Props> = ({ user, updatedAt }) => {
             source={
               dog.thumbnail
                 ? { uri: dog.thumbnail }
-                : require('src/assets/icons/ic_wdd.png')
+                : require('src/assets/icons/ic_place_default.png')
             }
             style={styles.thumbnail}
           />

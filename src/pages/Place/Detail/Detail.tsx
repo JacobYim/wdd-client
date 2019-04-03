@@ -9,6 +9,7 @@ import { getReivews, Review } from 'src/services/api/review';
 import { icons, texts, views } from './Detail.styles';
 import ReviewCard from './ReviewCard';
 import {
+  Alert,
   Image,
   ImageBackground,
   ScrollView,
@@ -80,11 +81,13 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
             <View style={views.infoHover}>
               <Card
                 place={this.place}
-                handlePress={() => {}}
+                handlePress={() => {
+                  Alert.alert('저장했습니다.');
+                }}
                 icon={
                   <Image
-                    source={require('src/assets/icons/ic_edit.png')}
-                    style={icons.edit}
+                    source={require('src/assets/icons/ic_scrap.png')}
+                    style={icons.scrap}
                   />
                 }
               />

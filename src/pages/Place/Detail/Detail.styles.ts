@@ -53,9 +53,9 @@ export const views = StyleSheet.create({
 });
 
 export const icons = StyleSheet.create({
-  edit: {
-    width: 24,
-    height: 24,
+  scrap: {
+    width: 15,
+    height: 18,
   },
   back: {
     width: 18,
