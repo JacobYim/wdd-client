@@ -112,6 +112,9 @@ class Upload extends PureComponent<Props, State> {
           value={this.state.memo}
           style={texts.input}
           onChangeText={this.handleChangeMemo}
+          multiline={true}
+          autoCapitalize="none"
+          autoCorrect={false}
           placeholder="오늘 산책은 어떠셨나요?"
           placeholderTextColor="#00000048"
         />
