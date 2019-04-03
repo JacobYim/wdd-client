@@ -18,13 +18,12 @@ export interface UserState
 
 const initialState: UserState = {
   email: '',
-  lastLogin: '',
+  lastLogin: new Date(),
   name: '',
   birth: '',
   gender: '',
   status: 'TERMINATED',
   dogs: {},
-  places: [],
 };
 
 export default handleActions<UserState, any>(
@@ -56,12 +55,8 @@ export default handleActions<UserState, any>(
     [dogActions.SET_DOG_SUCCESS]: (state, action) =>
       produce(state, draft => {
         const dog = action.payload as dogActions.DogInterface;
-        const serialized = pick(dog, ['name', 'thumbnail']);
-        draft.dogs[dog._id] = {
-          default: true,
-          ...draft.dogs[dog._id],
-          ...serialized,
-        };
+        draft.repDog = dog;
+        draft.dogs[dog._id] = dog.name;
       }),
     [dogActions.SET_DOG_FAILURE]: (state, action) =>
       produce(state, draft => {

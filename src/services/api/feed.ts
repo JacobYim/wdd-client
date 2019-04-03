@@ -12,9 +12,13 @@ interface Feed {
   poos: number;
   images: string[];
   memo?: string;
+  createdAt: Date;
 }
 
-export type Body = Pick<Feed, Exclude<keyof Feed, '_id' | 'user' | 'dog'>>;
+export type Body = Pick<
+  Feed,
+  Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt'>
+>;
 
 export interface Params {
   user?: string;

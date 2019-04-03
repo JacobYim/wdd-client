@@ -1,34 +1,38 @@
 import { NavigationScreenProp } from 'react-navigation';
 
 // *** INTERFACES
-export interface DogSummeryInterface {
-  name: string;
-  thumbnail?: string;
-  default: boolean;
-}
-
-export interface DogInterface extends DogSummeryInterface {
-  _id: string; // PK
-  user: string; // FK
-  feeds: string[];
-  getLikes: string[];
-  birth?: string; // YYYY.MM.DD
-  weight?: number;
-  info?: string;
-  breed: string;
-  gender: 'M' | 'F' | 'N' | '';
-}
-
 export interface CreateDogInterface {
   name: string;
   thumbnail?: string;
   breed: string;
   gender: 'M' | 'F' | 'N' | '';
+  birth?: string; // YYYY.MM.DD
+  weight?: number;
+  info?: string;
+  feeds: string[];
+  likes: string[];
+}
+
+export interface UpdateDogInterface {
+  _id: string;
+  name?: string;
+  thumbnail?: string;
+  breed?: string;
+  gender?: 'M' | 'F' | 'N';
+  birth?: string; // YYYY.MM.DD
+  weight?: number;
+  info?: string;
+}
+
+export interface DogInterface extends CreateDogInterface {
+  _id: string;
+  user: string;
 }
 
 // *** CONSTS
-export const GET_DOG = 'dog/GET_DOG';
+export const SELECT_DOG = 'dog/SELECT_DOG';
 export const CREATE_DOG = 'dog/CREATE_DOG';
+export const UPDATE_DOG = 'dog/UPDATE_DOG';
 
 export const SET_DOG_REQUEST = 'dog/SET_DOG_REQUEST';
 export const SET_DOG_SUCCESS = 'dog/SET_DOG_SUCCESS';
@@ -36,9 +40,9 @@ export const SET_DOG_FAILURE = 'dog/SET_DOG_FAILURE';
 
 // *** FUNCTIONS
 
-export const getDog = (payload: { _id: string }) => ({
+export const selectDog = (payload: { _id: string }) => ({
   payload,
-  type: GET_DOG,
+  type: SELECT_DOG,
 });
 export const createDog = (
   payload: CreateDogInterface,
@@ -47,6 +51,10 @@ export const createDog = (
   payload,
   navigation,
   type: CREATE_DOG,
+});
+export const updateDog = (payload: UpdateDogInterface) => ({
+  payload,
+  type: UPDATE_DOG,
 });
 
 export const setDogRequest = () => ({ type: SET_DOG_REQUEST });

@@ -4,11 +4,12 @@ import { removeNextStep } from 'src/services/storage/user';
 import * as actions from 'src/store/actions/dog';
 import { navigateToApp } from './user';
 
-function* getDog(action: ReturnType<typeof actions.getDog>) {
+function* selectDog(action: ReturnType<typeof actions.selectDog>) {
   try {
     yield put(actions.setDogRequest());
-    const data = yield call(api.getDog, action.payload);
+    const data = yield call(api.selectDog, action.payload);
     yield put(actions.setDogSuccess(data));
+    yield call(removeNextStep);
   } catch (e) {
     yield put(actions.setDogFailure(e.response));
   }
@@ -27,7 +28,20 @@ function* createDog(action: ReturnType<typeof actions.createDog>) {
   }
 }
 
+function* updateDog(action: ReturnType<typeof actions.updateDog>) {
+  // call only dog is represent position
+  try {
+    yield put(actions.setDogRequest());
+    const data = yield call(api.updateDog, action.payload);
+    yield put(actions.setDogSuccess(data));
+    yield call(removeNextStep);
+  } catch (e) {
+    yield put(actions.setDogFailure(e.response));
+  }
+}
+
 export default function* root() {
-  yield takeEvery(actions.GET_DOG, getDog);
+  yield takeEvery(actions.SELECT_DOG, selectDog);
   yield takeEvery(actions.CREATE_DOG, createDog);
+  yield takeEvery(actions.UPDATE_DOG, updateDog);
 }

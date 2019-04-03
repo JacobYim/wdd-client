@@ -1,33 +1,32 @@
 import { NavigationScreenProp } from 'react-navigation';
-import { DogSummeryInterface } from './dog';
+import { DogInterface } from './dog';
 
 // *** INTERFACES
 export interface UserInterface {
   readonly _id: string;
   readonly email: string; // PK
-  readonly lastLogin: string;
+  readonly lastLogin: Date;
   name: string;
   birth: string;
   gender: string; // 'M' | 'F'
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
-  dogs: { [_id: string]: DogSummeryInterface };
-  places: string[];
+  dogs: { [_id: string]: string };
+  repDog?: DogInterface;
 }
 
 export interface UpdateInterface {
-  token?: string;
   password?: string;
   name?: string;
   birth?: string;
   gender?: string; // 'M' | 'F'
-  dogs?: { [_id: string]: DogSummeryInterface };
-  places?: string[];
+  status?: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
 }
 
 export interface SignInInterface {
   email: string;
   password: string;
 }
+
 export interface SignUpInterface extends SignInInterface {
   name: string;
 }
