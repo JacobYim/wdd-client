@@ -15,6 +15,7 @@ import {
   Text,
   View,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 
 interface State {
@@ -98,11 +99,16 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
               사진
             </Text>
             {images && (
-              <View style={views.imageWrapper}>
-                {images.map(uri => (
-                  <Image source={{ uri }} style={views.image} key={uri} />
-                ))}
-              </View>
+              <FlatList
+                contentContainerStyle={views.imageWrapper}
+                data={images}
+                keyExtractor={(d, index) => index.toString()}
+                renderItem={image => (
+                  <Image source={{ uri: image.item }} style={views.image} />
+                )}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+              />
             )}
           </View>
           <View style={[views.infoWrapper, { alignItems: 'center' }]}>

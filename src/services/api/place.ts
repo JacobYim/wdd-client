@@ -28,6 +28,7 @@ interface Response {
   rating: number;
   contact: string;
   thumbnail: string;
+  icon?: string;
   images?: string[];
   officeHour?: {
     default: string;

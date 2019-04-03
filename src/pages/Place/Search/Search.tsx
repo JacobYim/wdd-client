@@ -19,7 +19,7 @@ class Search extends PureComponent<NavigationScreenProps, State> {
     if (places.length === 0 && keyword.length > 1) {
       Geolocation.getCurrentPosition(async ({ coords }) => {
         const location = pick(coords, ['latitude', 'longitude']);
-        const places = await searchPlace({ location, keyword, range: 20 });
+        const places = await searchPlace({ location, keyword, range: 100 });
         this.setState({ places });
       });
     }

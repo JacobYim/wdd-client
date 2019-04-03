@@ -42,8 +42,6 @@ export const views = StyleSheet.create({
   imageWrapper: {
     marginTop: 4,
     paddingHorizontal: horizontalSize,
-    overflow: 'scroll',
-    flexDirection: 'row',
   },
   image: {
     width: 140,

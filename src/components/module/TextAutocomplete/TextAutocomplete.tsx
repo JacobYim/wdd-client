@@ -1,7 +1,7 @@
 import * as Hangul from 'hangul-js';
 import { sortBy } from 'lodash';
 import React, { Component } from 'react';
-import { Image, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
+import { FlatList, Image, SafeAreaView, TextInput, View } from 'react-native';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { color } from 'src/theme';
 import { icons, texts, views } from './TextAutocomplete.styles';
@@ -90,17 +90,19 @@ class TextAutocomplete extends Component<Props, State> {
             returnKeyType="done"
           />
         </View>
-        <ScrollView style={views.autocompleteWrapper}>
-          {list.map((data, index) => (
+        <FlatList
+          contentContainerStyle={views.autocompleteWrapper}
+          data={list}
+          keyExtractor={(d, index) => index.toString()}
+          renderItem={data => (
             <TextBox
-              data={data}
+              data={data.item}
               icon={icon}
               keyword={this.state.keyword}
               handlePress={handleSubmit}
-              key={index}
             />
-          ))}
-        </ScrollView>
+          )}
+        />
       </SafeAreaView>
     );
   }

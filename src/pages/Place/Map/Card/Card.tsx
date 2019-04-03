@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     ...shadow.deep,
   },
-  thumbnail: {
+  placeIcon: {
     width: thumbnailSize,
     height: thumbnailSize,
     borderRadius: thumbnailSize / 2,
@@ -87,21 +87,27 @@ export const Rating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-const Info: React.FC<Props> = ({ place, handlePress, icon }) => (
-  <View style={styles.wrapper}>
-    <Image source={{ uri: place.thumbnail }} style={styles.thumbnail} />
-    <View style={styles.infoWrapper}>
-      <Text style={styles.name}>{place.name}</Text>
-      <Text style={styles.describe}>{place.label}</Text>
-      <Rating rating={place.rating} />
+const Info: React.FC<Props> = ({ place, handlePress, icon }) => {
+  const placeIcon = place.icon
+    ? { uri: place.icon }
+    : require('src/assets/icons/ic_place_default.png');
+
+  return (
+    <View style={styles.wrapper}>
+      <Image source={placeIcon} style={styles.placeIcon} />
+      <View style={styles.infoWrapper}>
+        <Text style={styles.name}>{place.name}</Text>
+        <Text style={styles.describe}>{place.label}</Text>
+        <Rating rating={place.rating} />
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
+        onPress={handlePress}>
+        {icon}
+      </TouchableOpacity>
     </View>
-    <TouchableOpacity
-      style={styles.button}
-      activeOpacity={0.7}
-      onPress={handlePress}>
-      {icon}
-    </TouchableOpacity>
-  </View>
-);
+  );
+};
 
 export default Info;
