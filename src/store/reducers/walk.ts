@@ -14,6 +14,8 @@ const initialState: WalkState = {
   pins: [],
   seconds: 0,
   steps: 0,
+  poos: 0,
+  pees: 0,
 };
 
 export default handleActions<WalkState, any>(
@@ -25,6 +27,11 @@ export default handleActions<WalkState, any>(
     [actions.UPDATE_STEPS]: (state, action) =>
       produce(state, draft => {
         draft.steps = action.payload;
+      }),
+    [actions.UPDATE_COUNT]: (state, action) =>
+      produce(state, draft => {
+        draft.pees = action.payload.pees;
+        draft.poos = action.payload.poos;
       }),
     [actions.SET_WALK_REQUEST]: (state, action) =>
       produce(state, draft => {

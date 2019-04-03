@@ -21,6 +21,8 @@ export interface WalkInterface {
   pins: PinInterface[];
   seconds: number;
   steps: number;
+  poos: number;
+  pees: number;
 }
 
 interface WalkSuccessInterface {
@@ -30,12 +32,15 @@ interface WalkSuccessInterface {
   pins?: PinInterface[];
   seconds?: number;
   steps?: number;
+  poos?: number;
+  pees?: number;
 }
 
 // *** CONSTS
 export const UPDATE_STATUS = 'walk/UPDATE_STATUS';
 export const UPDATE_SECONDS = 'walk/UPDATE_SECONDS';
 export const UPDATE_STEPS = 'walk/UPDATE_STEPS';
+export const UPDATE_COUNT = 'walk/UPDATE_COUNT';
 export const PUSH_PIN = 'walk/PUSH_PIN';
 export const UPDATE_LATEST_PIN = 'walk/UPDATE_LATEST_PIN';
 
@@ -54,6 +59,10 @@ export const updateSeconds = () => ({ type: UPDATE_SECONDS });
 export const updateSteps = (payload: number) => ({
   payload,
   type: UPDATE_STEPS,
+});
+export const updateCount = (payload: { poos: number; pees: number }) => ({
+  payload,
+  type: UPDATE_COUNT,
 });
 export const pushPin = (payload: UpdateWalkInterface) => ({
   payload,

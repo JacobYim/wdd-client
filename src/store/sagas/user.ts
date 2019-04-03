@@ -1,10 +1,10 @@
-import { Alert } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import { NavigationActions, NavigationScreenProp } from 'react-navigation';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { removeHeader, setHeader } from 'src/services/api/axios';
 import * as api from 'src/services/api/user';
 import * as actions from 'src/store/actions/user';
+
 import {
   getUserStorage,
   setUserStorage,
@@ -12,10 +12,35 @@ import {
   removeUserStorage,
 } from 'src/services/storage/user';
 
+const permissions = [
+  PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+  PermissionsAndroid.PERMISSIONS.CAMERA,
+  PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+];
+
 // HELPERS
-function* navigateToApp(navigation: NavigationScreenProp<any>) {
-  yield call(Geolocation.requestAuthorization);
-  yield call(navigation.navigate, 'app');
+export async function checkPermission() {
+  if (
+    Platform.OS === 'ios' ||
+    (Platform.OS === 'android' && Platform.Version < 23)
+  ) {
+    return true;
+  }
+  permissions.forEach(async permission => {
+    if (!(await PermissionsAndroid.check(permission))) {
+      const response = await PermissionsAndroid.requestMultiple(permissions);
+      permissions.forEach(perm => {
+        if (response[perm] !== PermissionsAndroid.RESULTS.GRANTED) return false;
+      });
+    }
+  });
+  return true;
+}
+
+export function* navigateToApp(navigation: NavigationScreenProp<any>) {
+  if (checkPermission()) yield call(navigation.navigate, 'app');
 }
 
 // SAGAS
@@ -54,7 +79,10 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
     }
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
-    yield call(removeHeader);
+    if (e.response && e.response.data.statusCode === 403) {
+      yield call(removeHeader);
+      yield call(removeUserStorage);
+    }
     // *** NAVIGATE
     yield call(action.navigation.navigate, 'session');
   }

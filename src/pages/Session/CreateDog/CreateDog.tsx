@@ -1,8 +1,7 @@
 import produce from 'immer';
 import React, { Component } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import breeds from 'src/assets/consts/breeds.json';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
@@ -14,27 +13,48 @@ import { uploadImage } from 'src/services/aws/s3';
 import * as actions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { texts, views } from './CreateDog.styles';
+import {
+  Image,
+  Text,
+  TextInput as Input,
+  TouchableOpacity,
+  View,
+  Modal,
+} from 'react-native';
 
-interface Props extends LoadingProps {
-  navigation: NavigationScreenProp<any>;
+interface Props extends LoadingProps, NavigationScreenProps {
   createDog: typeof actions.createDog;
   email: ReducerState['user']['email'];
 }
 
-interface State extends actions.ShortenDogInterface {
-  thumbnailFile?: any;
+interface State extends actions.CreateDogInterface {
+  showModal: boolean;
 }
 
 class CreateDog extends Component<Props, State> {
+  private inputs = {
+    name: React.createRef<Input>(),
+    breed: React.createRef<Input>(),
+  };
+
   state: State = {
+    showModal: false,
     name: '',
-    thumbnail: '',
     breed: '',
     gender: '',
   };
 
+  toggleModal = () => {
+    this.setState({ showModal: !this.state.showModal });
+  };
+
   handleChange = ({ name, value }: HandleChangeText | HandleChangeSelector) => {
     this.setState(state => ({ ...state, [name]: value }));
+  };
+
+  handleBreedChange = ({ name }: { name: string }) => {
+    this.setState({ breed: name });
+    this.toggleModal();
   };
 
   handleImagePicker = () => {
@@ -52,7 +72,6 @@ class CreateDog extends Component<Props, State> {
       if (res.customButton) {
         this.setState(state =>
           produce(state, draft => {
-            delete draft.thumbnailFile;
             draft.thumbnail = '';
           })
         );
@@ -61,24 +80,24 @@ class CreateDog extends Component<Props, State> {
       this.setState(state =>
         produce(state, draft => {
           draft.thumbnail = res.uri;
-          draft.thumbnailFile = res.data;
         })
       );
     });
   };
 
   handleSubmit = async () => {
-    const { createDog, navigation, email, toggleLoading } = this.props;
-    const thumbnail = await uploadImage({
-      email,
-      table: 'dogs',
-      name: this.state.name,
-      type: 'thumbnail',
-      file: this.state.thumbnailFile,
-    })(toggleLoading);
-
-    const { name, breed, gender } = this.state;
-    await createDog({ name, breed, gender, thumbnail }, navigation);
+    const { createDog, email, navigation, toggleLoading } = this.props;
+    const { name, ...others } = this.state;
+    let thumbnail = undefined;
+    if (this.state.thumbnail) {
+      thumbnail = await uploadImage({
+        name,
+        email,
+        table: 'dogs',
+        uri: this.state.thumbnail,
+      })(toggleLoading);
+    }
+    await createDog({ name, thumbnail, ...others }, navigation);
   };
 
   render() {
@@ -86,65 +105,78 @@ class CreateDog extends Component<Props, State> {
     const { name, breed, gender, thumbnail } = this.state;
 
     return (
-      <>
-        <PageContainer
-          left={{ navigation, routeName: 'createMeta' }}
-          right={{
-            view: '건너뛰기',
-            handlePress: () => navigation.navigate('app'),
-          }}
-          bottomBox={{
-            text: '시작하기',
-            handlePress: this.handleSubmit,
-            disable: !name || !breed || !gender,
-          }}>
-          <View style={views.thumbnailWrapper}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={this.handleImagePicker}>
-              <Image
-                style={views.thumbnail}
-                source={
-                  thumbnail
-                    ? { uri: thumbnail }
-                    : require('src/assets/icons/ic_thumbnail.png')
-                }
-              />
-              <Image
-                style={views.edit}
-                source={require('src/assets/icons/ic_edit.png')}
-              />
-            </TouchableOpacity>
-            <Text style={texts.notice}>
-              반려동물의 정보를 입력해주세요!{'\n'}
-              회원가입 후, 프로필 설정에서 변경 가능합니다.
-            </Text>
-          </View>
-          <TextInput
-            name="name"
-            label="이름"
-            value={name}
-            handleChange={this.handleChange}
-          />
+      <PageContainer
+        left={{ navigation, routeName: 'createMeta' }}
+        right={{
+          view: '건너뛰기',
+          handlePress: () => navigation.navigate('app'),
+        }}
+        bottomBox={{
+          text: '시작하기',
+          handlePress: this.handleSubmit,
+          disable: !name || !breed || !gender,
+        }}
+        extraScrollHeight={200}>
+        <View style={views.thumbnailWrapper}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={this.handleImagePicker}>
+            <Image
+              style={views.thumbnail}
+              source={
+                thumbnail
+                  ? { uri: thumbnail }
+                  : require('src/assets/icons/ic_thumbnail.png')
+              }
+            />
+            <Image
+              style={views.edit}
+              source={require('src/assets/icons/ic_edit.png')}
+            />
+          </TouchableOpacity>
+          <Text style={texts.notice}>
+            반려동물의 정보를 입력해주세요!{'\n'}
+            회원가입 후, 프로필 설정에서 변경 가능합니다.
+          </Text>
+        </View>
+        <TextInput
+          name="name"
+          label="이름"
+          value={name}
+          inputs={this.inputs}
+          handleChange={this.handleChange}
+        />
+        <TextInput
+          name="breed"
+          label="품종"
+          value={breed}
+          handleChange={() => null}
+          handleFocus={this.toggleModal}
+        />
+        <Selector
+          name="gender"
+          label="성별"
+          handleChange={this.handleChange}
+          list={[
+            { name: 'M', label: '수컷' },
+            { name: 'F', label: '암컷' },
+            { name: 'N', label: '중성화' },
+          ]}
+        />
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.showModal}>
           <TextAutocomplete
-            name="breed"
-            label="품종"
-            data={breeds}
-            trailData={['믹스', '알 수 없음']}
-            handleChange={this.handleChange}
+            placeholder="찾으시는 품종을 입력해주세요"
+            list={breeds}
+            icon={require('src/assets/icons/ic_search_gray.png')}
+            defaultList={[{ name: '믹스' }, { name: '알 수 없음' }]}
+            handleSubmit={this.handleBreedChange}
+            handleDismiss={this.toggleModal}
           />
-          <Selector
-            name="gender"
-            label="성별"
-            handleChange={this.handleChange}
-            list={[
-              { name: 'M', label: '수컷' },
-              { name: 'F', label: '암컷' },
-              { name: 'N', label: '중성화' },
-            ]}
-          />
-        </PageContainer>
-      </>
+        </Modal>
+      </PageContainer>
     );
   }
 }

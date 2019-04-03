@@ -1,17 +1,18 @@
 import produce from 'immer';
+import { pick } from 'lodash';
 import React, { Component, createRef } from 'react';
-import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { calcDistance } from 'src/assets/functions/calcutate';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
-import { icons, views } from './Map.styles';
+import Header from './Header';
+import TrackUser from './TrackUser';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   pushPin: typeof actions.pushPin;
   walk: ReducerState['walk'];
 }
@@ -28,35 +29,17 @@ interface State {
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const extLocation = ({
-  latitude,
-  longitude,
-}: {
-  latitude: number;
-  longitude: number;
-  [x: string]: any;
-}): LatLng => ({ latitude, longitude });
+const LOCATION: LatLng = { latitude: 37.4734372, longitude: 127.0405071 };
+const DELTA = { latitudeDelta: 0.005, longitudeDelta: 0.005 * ASPECT_RATIO };
 
 class Map extends Component<Props, State> {
   private map = createRef<MapView>();
   private watchLocation: number = -1;
-  private initLocation: LatLng = {
-    // 우리동네댕댕이 HQ
-    latitude: 37.4734372,
-    longitude: 127.0405071,
-  };
-  private initDelta = {
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005 * ASPECT_RATIO,
-  };
 
   state: State = {
     trackUser: true,
     statusChanged: true,
-    current: {
-      ...this.initLocation,
-      speed: 0,
-    },
+    current: { ...LOCATION, speed: 0 },
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -66,45 +49,39 @@ class Map extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.watchPosition();
-  }
-
-  componentWillUnmount() {
-    Geolocation.clearWatch(this.watchLocation);
-  }
-
-  watchPosition = () => {
-    const { pushPin } = this.props;
     this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
-        const { walk } = this.props;
-        const { trackUser, statusChanged } = this.state;
-        const current = {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          speed: coords.speed || 0,
-        };
+        const { pushPin, walk } = this.props;
+        const { latitude, longitude, speed } = coords;
+        const current = { latitude, longitude, speed: speed || 0 };
 
-        if (walk.status === 'WALKING') {
-          const pinLength = walk.pins.length;
-          const pinInfo: actions.UpdateWalkInterface = {
-            ...current,
-            addDistance: 0,
-          };
-          if (statusChanged) {
-            pushPin(pinInfo);
-            this.setState({ statusChanged: false });
-          } else {
-            const previous = walk.pins[pinLength - 1];
-            pinInfo.addDistance = calcDistance(
-              extLocation(previous),
-              extLocation(current)
+        this.setState(state =>
+          produce(state, draft => {
+            if (walk.status === 'WALKING') {
+              const pinLength = walk.pins.length;
+              const pinInfo: actions.UpdateWalkInterface = {
+                ...current,
+                addDistance: 0,
+              };
+              if (state.statusChanged) {
+                pushPin(pinInfo);
+                draft.statusChanged = false;
+              } else {
+                const previous = walk.pins[pinLength - 1];
+                pinInfo.addDistance = calcDistance(
+                  pick(previous, ['latitude', 'longitude']),
+                  pick(current, ['latitude', 'longitude'])
+                );
+                if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
+              }
+            }
+            this.moveCameraToUser(
+              pick(current, ['latitude', 'longitude']),
+              state.trackUser
             );
-            if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
-          }
-        }
-        this.moveCameraToUser(extLocation(current), trackUser);
-        this.setState({ current });
+            draft.current = current;
+          })
+        );
       },
       () => {},
       {
@@ -114,12 +91,16 @@ class Map extends Component<Props, State> {
         fastestInterval: 2000,
       }
     );
-  };
+  }
+
+  componentWillUnmount() {
+    Geolocation.clearWatch(this.watchLocation);
+  }
 
   moveCameraToUser = (center: LatLng, activate: boolean) => {
     const map = this.map.current;
     if (map && activate) {
-      map.animateToRegion({ ...center, ...this.initDelta }, 120);
+      map.animateToRegion({ ...center, ...DELTA }, 120);
     }
   };
 
@@ -138,40 +119,29 @@ class Map extends Component<Props, State> {
   };
 
   render() {
-    const { trackUser } = this.state;
-
     return (
-      <View style={views.container}>
+      <SafeAreaView style={{ flex: 1 }}>
         <MapView
           ref={this.map}
           provider={PROVIDER_GOOGLE}
-          style={views.map}
-          onTouchStart={this.handleDragMapStart}
-          initialRegion={{
-            ...this.initLocation,
-            ...this.initDelta,
-          }}
+          style={StyleSheet.absoluteFillObject}
+          initialRegion={{ ...LOCATION, ...DELTA }}
+          showsMyLocationButton={false}
+          showsCompass={false}
           showsUserLocation={true}
+          onTouchStart={this.handleDragMapStart}
         />
-        <TouchableOpacity
-          style={views.trackUserButton}
-          activeOpacity={1}
-          onPress={this.handlePressTrackButton}>
-          <Image
-            style={[{ opacity: trackUser ? 1 : 0.4 }, icons.trackUser]}
-            source={require('src/assets/icons/ic_location.png')}
-          />
-        </TouchableOpacity>
-      </View>
+        <Header />
+        <TrackUser
+          handlePress={this.handlePressTrackButton}
+          active={this.state.trackUser}
+        />
+      </SafeAreaView>
     );
   }
 }
 
 export default connect(
-  (state: ReducerState) => ({
-    walk: state.walk,
-  }),
-  {
-    pushPin: actions.pushPin,
-  }
+  (state: ReducerState) => ({ walk: state.walk }),
+  { pushPin: actions.pushPin }
 )(Map);

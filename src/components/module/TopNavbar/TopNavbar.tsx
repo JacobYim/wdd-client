@@ -18,17 +18,23 @@ interface Props {
     handlePress: () => void;
   };
   center?: string;
+  showBorder?: boolean;
+  transparent?: boolean;
 }
 
 const { width } = Dimensions.get('window');
+export const height = 45;
 const styles = StyleSheet.create({
   wrapper: {
+    height,
     width: '100%',
-    height: 21,
-    marginTop: 15,
-    paddingHorizontal: width * 0.04,
     flexDirection: 'row',
-    alignItems: 'center',
+    borderBottomColor: '#70707014',
+  },
+  button: {
+    paddingHorizontal: width * 0.04,
+    height: '100%',
+    justifyContent: 'center',
   },
   center: {
     ...StyleSheet.absoluteFillObject,
@@ -44,15 +50,29 @@ const styles = StyleSheet.create({
   },
 });
 
-const TopNavbar: React.FC<Props> = ({ left, right, center }) => (
-  <View style={styles.wrapper}>
+const TopNavbar: React.FC<Props> = ({
+  left,
+  right,
+  center,
+  showBorder,
+  transparent,
+}) => (
+  <View
+    style={[
+      styles.wrapper,
+      showBorder ? { borderBottomWidth: 1 } : null,
+      { backgroundColor: transparent ? 'transparent' : color.white },
+    ]}>
     {center && (
       <View style={styles.center}>
         <Text style={styles.text}>{center}</Text>
       </View>
     )}
     {left && (
-      <TouchableOpacity onPress={left.handlePress} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={left.handlePress}
+        activeOpacity={0.7}
+        style={styles.button}>
         {left.view}
       </TouchableOpacity>
     )}
@@ -60,7 +80,7 @@ const TopNavbar: React.FC<Props> = ({ left, right, center }) => (
       <TouchableOpacity
         onPress={right.handlePress}
         activeOpacity={0.7}
-        style={styles.right}>
+        style={[styles.button, styles.right]}>
         {right.view}
       </TouchableOpacity>
     )}

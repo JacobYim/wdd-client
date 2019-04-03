@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import PageContainer from 'src/components/container/PageContainer';
 import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
@@ -8,8 +8,7 @@ import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 import * as userActions from 'src/store/actions/user';
 import { ReducerState } from 'src/store/reducers';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   createMeta: typeof userActions.createMeta;
   user: ReducerState['user'];
 }

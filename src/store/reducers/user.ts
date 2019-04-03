@@ -1,25 +1,29 @@
 import { AxiosResponse } from 'axios';
 import produce from 'immer';
+import { pick } from 'lodash';
 import { handleActions } from 'redux-actions';
 import { removeHeader } from 'src/services/api/axios';
 import { removeUserStorage } from 'src/services/storage/user';
 import * as dogActions from 'src/store/actions/dog';
 import * as actions from 'src/store/actions/user';
 
-export interface UserState extends actions.UserInterface {
+export interface UserState
+  extends Pick<
+    actions.UserInterface,
+    Exclude<keyof actions.UserInterface, '_id'>
+  > {
   error?: AxiosResponse;
   dogError?: AxiosResponse;
 }
 
 const initialState: UserState = {
   email: '',
-  lastLogin: '',
+  lastLogin: new Date(),
   name: '',
   birth: '',
   gender: '',
   status: 'TERMINATED',
   dogs: {},
-  places: {},
 };
 
 export default handleActions<UserState, any>(
@@ -51,11 +55,8 @@ export default handleActions<UserState, any>(
     [dogActions.SET_DOG_SUCCESS]: (state, action) =>
       produce(state, draft => {
         const dog = action.payload as dogActions.DogInterface;
-        const dogID = dog.id;
-        // *** SERIALIZE
-        delete dog.id;
-        delete dog.user;
-        draft.dogs[dogID] = dog;
+        draft.repDog = dog;
+        draft.dogs[dog._id] = dog.name;
       }),
     [dogActions.SET_DOG_FAILURE]: (state, action) =>
       produce(state, draft => {

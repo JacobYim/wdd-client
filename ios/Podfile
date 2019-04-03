@@ -41,8 +41,10 @@ target 'WddClient' do
   # react-native-background-timer dependencies
   pod 'react-native-background-timer', path: '../node_modules/react-native-background-timer'
 
-  # react-native-linear-gradient dependencies
-  pod 'BVLinearGradient', path: '../node_modules/react-native-linear-gradient'
+  # react-native-webview dependencies
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+  pod 'RNViewShot', :path => '../node_modules/react-native-view-shot'
 
   # target 'WddClientTests' do
   #   inherit! :search_paths

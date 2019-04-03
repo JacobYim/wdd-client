@@ -1,14 +1,28 @@
-import { createSwitchNavigator } from 'react-navigation';
-import WalkSaveScreen from './SaveWalk';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import EditScreen from './Edit';
+import FinishScreen from './Finish';
+import UploadScreen from './Upload';
 import WalkScreen from './Walk';
+
+const FinishNavigator = createStackNavigator(
+  {
+    finish: FinishScreen,
+    upload: UploadScreen,
+    edit: EditScreen,
+  },
+  {
+    initialRouteName: 'finish',
+    headerMode: 'none',
+  }
+);
 
 export default createSwitchNavigator(
   {
-    dashboard: WalkScreen,
-    save: WalkSaveScreen,
+    walk: WalkScreen,
+    finish: FinishNavigator,
   },
   {
-    initialRouteName: 'dashboard',
+    initialRouteName: 'walk',
     backBehavior: 'initialRoute',
   }
 );

@@ -24,12 +24,12 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1EE99741B2B0C9AE054A4818 /* libPods-WddClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C07010584D0D7943131F998 /* libPods-WddClient.a */; };
-		48D4B6BF720447EDB143A9E1 /* libBMDPedometer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DA5C39149F4684882C5674 /* libBMDPedometer.a */; };
 		5535B8892213EBB1003C3BC8 /* NanumSquareRoundB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */; };
 		5535B88A2213EBB1003C3BC8 /* NanumSquareRoundR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */; };
 		5535B88B2213EBB1003C3BC8 /* NanumSquareRoundEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */; };
 		7BE83AF8E24E4C75B31B6307 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34234F54CB48401884AD9265 /* libRNGestureHandler.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		91B284EFA369441481773C2A /* libBMDPedometer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC633DE5CC9046E3BFFBFF66 /* libBMDPedometer.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		F3140FCB2A8440F0B3F7D2D0 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 131B140406B044E9BC52EDFC /* libRNImagePicker.a */; };
@@ -261,12 +261,12 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
-		555903CE2216A28F00BDDDF1 /* PBXContainerItemProxy */ = {
+		55452F93224CD414001CB345 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */;
+			containerPortal = F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 844442D81CB01D4A00E10B29;
-			remoteInfo = BMDPedometer;
+			remoteGlobalIDString = B5C32A36220C603B000FFB8D;
+			remoteInfo = "RNGestureHandler-tvOS";
 		};
 		55D464ED2207433200EFF5DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -295,6 +295,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
+		};
+		55F306832254B07E00CA0BF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4AFDB46EA92C430DAE503908 /* BMDPedometer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 844442D81CB01D4A00E10B29;
+			remoteInfo = BMDPedometer;
 		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -343,7 +350,6 @@
 		00E356EE1AD99517003FC87E /* WddClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WddClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* WddClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WddClientTests.m; sourceTree = "<group>"; };
-		06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BMDPedometer.xcodeproj; path = "../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer.xcodeproj"; sourceTree = "<group>"; };
 		131B140406B044E9BC52EDFC /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -355,11 +361,11 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WddClient/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WddClient/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		21DA5C39149F4684882C5674 /* libBMDPedometer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBMDPedometer.a; sourceTree = "<group>"; };
 		225B96E05F8C4D2CF2D5FD4E /* libPods-WddClientTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WddClientTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FCFD0EA1BDC434CBCDEC3D1 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundR.ttf; path = ../src/assets/fonts/NanumSquareRoundR.ttf; sourceTree = "<group>"; };
 		34234F54CB48401884AD9265 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
+		4AFDB46EA92C430DAE503908 /* BMDPedometer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BMDPedometer.xcodeproj; path = "../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer.xcodeproj"; sourceTree = "<group>"; };
 		50D1A7758822D3249F504E68 /* Pods-WddClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WddClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-WddClient/Pods-WddClient.release.xcconfig"; sourceTree = "<group>"; };
 		5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundB.ttf; sourceTree = "<group>"; };
 		5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundR.ttf; sourceTree = "<group>"; };
@@ -373,6 +379,7 @@
 		9D78A190941B4EE447858796 /* Pods-WddClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WddClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WddClient/Pods-WddClient.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE5E350CE91B45B8868713E7 /* NanumSquareRoundEB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundEB.ttf; path = ../src/assets/fonts/NanumSquareRoundEB.ttf; sourceTree = "<group>"; };
+		BC633DE5CC9046E3BFFBFF66 /* libBMDPedometer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBMDPedometer.a; sourceTree = "<group>"; };
 		EA1E9D63749E47DBB053B909 /* libRNAWSCognito.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAWSCognito.a; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
@@ -409,7 +416,7 @@
 				F9CDAEA6061F4D419EA67270 /* libRNAWSCognito.a in Frameworks */,
 				F3140FCB2A8440F0B3F7D2D0 /* libRNImagePicker.a in Frameworks */,
 				1EE99741B2B0C9AE054A4818 /* libPods-WddClient.a in Frameworks */,
-				48D4B6BF720447EDB143A9E1 /* libBMDPedometer.a in Frameworks */,
+				91B284EFA369441481773C2A /* libBMDPedometer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,7 +577,7 @@
 				34234F54CB48401884AD9265 /* libRNGestureHandler.a */,
 				EA1E9D63749E47DBB053B909 /* libRNAWSCognito.a */,
 				131B140406B044E9BC52EDFC /* libRNImagePicker.a */,
-				21DA5C39149F4684882C5674 /* libBMDPedometer.a */,
+				BC633DE5CC9046E3BFFBFF66 /* libBMDPedometer.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -587,6 +594,7 @@
 			isa = PBXGroup;
 			children = (
 				553E099021FF4F3B00006157 /* libRNGestureHandler.a */,
+				55452F94224CD414001CB345 /* libRNGestureHandler-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -599,10 +607,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		555903CB2216A28F00BDDDF1 /* Products */ = {
+		55F306802254B07E00CA0BF0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				555903CF2216A28F00BDDDF1 /* libBMDPedometer.a */,
+				55F306842254B07E00CA0BF0 /* libBMDPedometer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -643,7 +651,7 @@
 				F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */,
 				935B8A8294874C488BB51B12 /* RNAWSCognito.xcodeproj */,
 				7A4F252190FF492AAB86F41C /* RNImagePicker.xcodeproj */,
-				06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */,
+				4AFDB46EA92C430DAE503908 /* BMDPedometer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -749,7 +757,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 940;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -763,7 +771,7 @@
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "WddClient" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -774,8 +782,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 555903CB2216A28F00BDDDF1 /* Products */;
-					ProjectRef = 06F0A05B700D46298D3D4A37 /* BMDPedometer.xcodeproj */;
+					ProductGroup = 55F306802254B07E00CA0BF0 /* Products */;
+					ProjectRef = 4AFDB46EA92C430DAE503908 /* BMDPedometer.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1064,11 +1072,11 @@
 			remoteRef = 553E09DA21FF55B900006157 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		555903CF2216A28F00BDDDF1 /* libBMDPedometer.a */ = {
+		55452F94224CD414001CB345 /* libRNGestureHandler-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libBMDPedometer.a;
-			remoteRef = 555903CE2216A28F00BDDDF1 /* PBXContainerItemProxy */;
+			path = "libRNGestureHandler-tvOS.a";
+			remoteRef = 55452F93224CD414001CB345 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		55D464EE2207433200EFF5DD /* libjsi.a */ = {
@@ -1097,6 +1105,13 @@
 			fileType = archive.ar;
 			path = "libjsiexecutor-tvOS.a";
 			remoteRef = 55D464F32207433200EFF5DD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55F306842254B07E00CA0BF0 /* libBMDPedometer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBMDPedometer.a;
+			remoteRef = 55F306832254B07E00CA0BF0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
@@ -1388,6 +1403,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1441,6 +1457,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;

@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { color, font } from 'src/theme';
+import { color, font, shadow } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
 export const statusBtn = width * 0.293;
@@ -11,6 +11,7 @@ export const views = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.white,
+    overflow: 'hidden',
   },
   topWrapper: {
     flex: 0.54,
@@ -54,10 +55,7 @@ export const views = StyleSheet.create({
     backgroundColor: color.white,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: color.black,
-    shadowOpacity: 0.07,
-    shadowRadius: 6,
-    elevation: 1,
+    ...shadow.shallow,
   },
 });
 
@@ -68,7 +66,7 @@ export const icons = StyleSheet.create({
     resizeMode: 'contain',
   },
   gif: {
-    marginTop: 21,
+    marginTop: 11,
     width: width * 0.7,
     height: height * 0.3,
     resizeMode: 'contain',

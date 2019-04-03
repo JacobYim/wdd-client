@@ -1,7 +1,5 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - BVLinearGradient (2.5.3):
-    - React
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -29,8 +27,8 @@ PODS:
   - GoogleMaps/Base (2.5.0)
   - GoogleMaps/Maps (2.5.0):
     - GoogleMaps/Base
-  - React (0.58.3):
-    - React/Core (= 0.58.3)
+  - React (0.59.2):
+    - React/Core (= 0.59.2)
   - react-native-background-timer (2.1.1):
     - React
   - react-native-google-maps (0.23.0):
@@ -39,57 +37,66 @@ PODS:
     - React
   - react-native-maps (0.23.0):
     - React
-  - React/Core (0.58.3):
-    - yoga (= 0.58.3.React)
-  - React/CxxBridge (0.58.3):
+  - react-native-webview (5.4.3):
+    - React
+  - React/Core (0.59.2):
+    - yoga (= 0.59.2.React)
+  - React/CxxBridge (0.59.2):
     - Folly (= 2018.10.22.00)
     - React/Core
     - React/cxxreact
     - React/jsiexecutor
-  - React/cxxreact (0.58.3):
+  - React/cxxreact (0.59.2):
     - boost-for-react-native (= 1.63.0)
+    - DoubleConversion
     - Folly (= 2018.10.22.00)
+    - glog
     - React/jsinspector
-  - React/DevSupport (0.58.3):
+  - React/DevSupport (0.59.2):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.58.3)
-  - React/jsi (0.58.3):
+  - React/fishhook (0.59.2)
+  - React/jsi (0.59.2):
+    - DoubleConversion
     - Folly (= 2018.10.22.00)
-  - React/jsiexecutor (0.58.3):
+    - glog
+  - React/jsiexecutor (0.59.2):
+    - DoubleConversion
     - Folly (= 2018.10.22.00)
+    - glog
     - React/cxxreact
     - React/jsi
-  - React/jsinspector (0.58.3)
-  - React/RCTActionSheet (0.58.3):
+  - React/jsinspector (0.59.2)
+  - React/RCTActionSheet (0.59.2):
     - React/Core
-  - React/RCTAnimation (0.58.3):
+  - React/RCTAnimation (0.59.2):
     - React/Core
-  - React/RCTBlob (0.58.3):
+  - React/RCTBlob (0.59.2):
     - React/Core
-  - React/RCTGeolocation (0.58.3):
+  - React/RCTGeolocation (0.59.2):
     - React/Core
-  - React/RCTImage (0.58.3):
+  - React/RCTImage (0.59.2):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.58.3):
+  - React/RCTLinkingIOS (0.59.2):
     - React/Core
-  - React/RCTNetwork (0.58.3):
+  - React/RCTNetwork (0.59.2):
     - React/Core
-  - React/RCTSettings (0.58.3):
+  - React/RCTSettings (0.59.2):
     - React/Core
-  - React/RCTText (0.58.3):
+  - React/RCTText (0.59.2):
     - React/Core
-  - React/RCTVibration (0.58.3):
+  - React/RCTVibration (0.59.2):
     - React/Core
-  - React/RCTWebSocket (0.58.3):
+  - React/RCTWebSocket (0.59.2):
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - yoga (0.58.3.React)
+  - RNViewShot (2.5.0):
+    - React
+  - yoga (0.59.2.React)
 
 DEPENDENCIES:
-  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -98,6 +105,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -111,6 +119,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNViewShot (from `../node_modules/react-native-view-shot`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
@@ -120,8 +129,6 @@ SPEC REPOS:
     - GoogleMaps
 
 EXTERNAL SOURCES:
-  BVLinearGradient:
-    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
@@ -136,23 +143,28 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
+  RNViewShot:
+    :path: "../node_modules/react-native-view-shot"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: b0b70acf63ee888829b7c2ebbf6b50e227396e55
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
-  React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
+  React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
   react-native-background-timer: bb7a98c8e97fc7c290de2d423dd09ddb73dcbcbb
   react-native-google-maps: b946d62e25dc66097921ed82520e45b0b081768a
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
-  yoga: 0885622311729a02c2bc02dca97167787a51488b
+  react-native-webview: a42108b827082f8f0333529b0772102031d5960d
+  RNViewShot: fdf9a64f0621ebc4e7c3392a10d2ffb70a7faee4
+  yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 8f83f7e62d2396358f9e868f3e47a821167ff7ea
+PODFILE CHECKSUM: dc0dc09268c6dcffff6466cc047e6d3e723a18cc
 
 COCOAPODS: 1.5.3

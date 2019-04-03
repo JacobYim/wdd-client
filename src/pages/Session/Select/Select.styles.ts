@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
@@ -10,6 +10,7 @@ export const views = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginTop: height * 0.07,
+    paddingBottom: 2,
   },
   logo: {
     width: width * 0.54,
@@ -32,6 +33,16 @@ export const views = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  vr: {
+    width: 1,
+    height: 12,
+    backgroundColor: `${color.black}1A`,
+    marginHorizontal: 12,
+  },
 });
 
 export const texts = StyleSheet.create({
@@ -39,13 +50,11 @@ export const texts = StyleSheet.create({
     color: color.blue,
     fontSize: font.size.medium,
     fontWeight: 'bold',
+    marginBottom: Platform.OS === 'android' ? 2 : 0,
   },
   bottom: {
     color: color.black33,
     fontSize: font.size.medium,
     fontWeight: '600',
-  },
-  vr: {
-    color: `${color.black}1A`,
   },
 });

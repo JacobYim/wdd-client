@@ -1,10 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
+interface Props extends NavigationScreenProps {}
 
 const Wdd: React.FC<Props> = ({ navigation }) => (
   <View

@@ -1,7 +1,7 @@
 import produce from 'immer';
 import React, { Component } from 'react';
 import { TextInput as Input } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { validateEmail, validatePassword } from 'src/assets/functions/validate';
 import PageContainer from 'src/components/container/PageContainer';
@@ -15,8 +15,7 @@ interface ParamInterface {
   alert?: string;
 }
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
   signUp: typeof userActions.signUp;
 }
@@ -126,7 +125,10 @@ class SignUp extends Component<Props, State> {
     const { navigation } = this.props;
     const { name, email, password, passwordCheck } = this.state;
     const isValidated =
-      name.valid && email.valid && password.valid && passwordCheck.valid;
+      name.valid &&
+      email.valid &&
+      password.valid &&
+      validatePassword(passwordCheck.value);
     return (
       <PageContainer
         title="회원가입"
@@ -171,7 +173,6 @@ class SignUp extends Component<Props, State> {
           value={passwordCheck.value}
           alert={passwordCheck.alert}
           secureTextEntry={true}
-          returnKeyType="send"
           inputs={this.inputs}
           handleChange={this.handleChange}
           onSubmitEditing={this.handleSignUp}

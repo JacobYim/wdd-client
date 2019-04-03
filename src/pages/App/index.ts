@@ -1,20 +1,25 @@
+import { Animated, Easing } from 'react-native';
+import BottomTabbar from 'src/components/base/BottomTabbar';
+import WalkNavigator from 'src/pages/Walk';
+import MapScreen from './Map';
+import ProfileScreen from './Profile';
+import WddScreen from './Wdd';
+import {
+  MapNavigator as PlaceMapNavigator,
+  SearchNavigator as PlaceSearchNavigator,
+} from 'src/pages/Place';
 import {
   createBottomTabNavigator,
   createStackNavigator,
   NavigationActions,
 } from 'react-navigation';
-import { Animated, Easing } from 'react-native';
-
-import MapScreen from './Map';
-import WddScreen from './Wdd';
-import ProfileScreen from './Profile';
-import WalkNavigator from 'src/pages/Walk';
-import BottomTabbar from 'src/components/base/BottomTabbar';
 
 const MapNavigator = createStackNavigator(
   {
     map: MapScreen,
     walk: WalkNavigator,
+    placeMap: PlaceMapNavigator,
+    placeSearch: PlaceSearchNavigator,
   },
   {
     initialRouteName: 'map',

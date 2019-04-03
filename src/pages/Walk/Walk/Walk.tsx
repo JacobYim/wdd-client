@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
 import * as actions from 'src/store/actions/walk';
@@ -19,8 +19,7 @@ interface WalkInfoInterface {
   value: number;
 }
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
+interface Props extends NavigationScreenProps {
   walk: ReducerState['walk'];
   updateStatus: typeof actions.updateStatus;
   updateSeconds: typeof actions.updateSeconds;
@@ -114,7 +113,7 @@ class Walk extends Component<Props, State> {
               />
               <Image
                 style={icons.gif}
-                source={require('src/assets/images/img_walk_test.png')}
+                source={require('src/assets/images/img_running.gif')}
               />
               <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>
             </View>
@@ -126,7 +125,7 @@ class Walk extends Component<Props, State> {
                   onPress={() => updateLatestPin('poo')}
                 />
                 <StatusButton
-                  status={status}
+                  walk={this.props.walk}
                   updateStatus={this.props.updateStatus}
                 />
                 <MarkerButton

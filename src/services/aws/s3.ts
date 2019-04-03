@@ -1,37 +1,60 @@
 import { Storage } from 'aws-amplify';
 
-/**
- * FILE STRUCTURE
- * PRODUCTION  : {table}/{email}/{name}/{type}.png
- * DEVELOPMENT : __DEV__/{table}/{email}/{name}/{type}.png
- */
 interface UploadImage {
-  table: 'dogs' | 'users' | 'places';
-  email: string;
+  table: 'dogs' | 'places' | 'feeds';
+  email?: string;
   name: string;
-  type: 'thumbnail' | string;
-  file: any;
+  uri: string;
+}
+
+interface UploadImages {
+  table: 'places' | 'feeds';
+  email?: string;
+  name: string;
+  uris: string[];
 }
 
 type S3ResponseType = { key: string };
 type ToggleLoading = () => void;
 
-export const uploadImage = ({
-  email,
-  table,
-  name,
-  type,
-  file,
-}: UploadImage) => async (toggleLoading: ToggleLoading) => {
-  if (!file) return '';
-
+export const uploadImage = ({ table, email, name, uri }: UploadImage) => async (
+  toggleLoading: ToggleLoading
+) => {
   await toggleLoading();
-  const markDev = __DEV__ ? '__DEV__/' : '';
+  const response = await fetch(uri);
+  const data = await response.blob();
   const S3Response = (await Storage.put(
-    `${markDev}${table}/${email}/${name}/${type}.png`,
-    file,
-    { contentType: 'image/png' }
+    `${__DEV__ ? '__DEV__/' : ''}${table}/${
+      email ? `${email}/` : ''
+    }${name}.png`,
+    data,
+    { level: 'public', contentType: 'image/png' }
   )) as S3ResponseType;
   await toggleLoading();
   return S3Response.key;
+};
+
+export const uploadImages = ({
+  table,
+  email,
+  name,
+  uris,
+}: UploadImages) => async (toggleLoading: ToggleLoading) => {
+  await toggleLoading();
+  const uriList: string[] = await Promise.all(
+    uris.map(async (uri, index) => {
+      const response = await fetch(uri);
+      const data = await response.blob();
+      const S3Response = (await Storage.put(
+        `${__DEV__ ? '__DEV__/' : ''}${table}/${
+          email ? `${email}/` : ''
+        }${name}_${index}.png`,
+        data,
+        { level: 'public', contentType: 'image/png' }
+      )) as S3ResponseType;
+      return S3Response.key;
+    })
+  );
+  await toggleLoading();
+  return uriList;
 };
