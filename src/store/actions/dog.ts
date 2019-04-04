@@ -1,5 +1,10 @@
 import { NavigationScreenProp } from 'react-navigation';
 
+interface Like {
+  dog: string;
+  createdAt: Date;
+}
+
 // *** INTERFACES
 export interface CreateDogInterface {
   name: string;
@@ -9,8 +14,6 @@ export interface CreateDogInterface {
   birth?: string; // YYYY.MM.DD
   weight?: number;
   info?: string;
-  feeds: string[];
-  likes: string[];
 }
 
 export interface UpdateDogInterface {
@@ -27,6 +30,8 @@ export interface UpdateDogInterface {
 export interface DogInterface extends CreateDogInterface {
   _id: string;
   user: string;
+  feeds: string[];
+  likes: Like[];
 }
 
 // *** CONSTS

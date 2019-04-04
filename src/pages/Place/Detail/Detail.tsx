@@ -1,11 +1,15 @@
+import { find } from 'lodash';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
+import { connect } from 'react-redux';
 import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
 import Card from 'src/pages/Place/Map/Card';
-import { Place } from 'src/services/api/place';
 import { getReivews, Review } from 'src/services/api/review';
+import { Place } from 'src/store/actions/place';
+import * as actions from 'src/store/actions/place';
+import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Detail.styles';
 import ReviewCard from './ReviewCard';
 import {
@@ -19,7 +23,14 @@ import {
   FlatList,
 } from 'react-native';
 
+interface Props extends NavigationScreenProps {
+  user: ReducerState['user'];
+  scrap: typeof actions.scrap;
+  unScrap: typeof actions.unScrap;
+}
+
 interface State {
+  isScrap: boolean;
   reviews: Review[];
 }
 
@@ -37,21 +48,31 @@ function showOfficeHour(officeHour: {
   return message;
 }
 
-class Detail extends PureComponent<NavigationScreenProps, State> {
+class Detail extends PureComponent<Props, State> {
   place: Place = this.props.navigation.getParam('place');
 
-  state: State = { reviews: [] };
+  state: State = {
+    isScrap:
+      find(this.props.user.places, place => place === this.place._id) !==
+      undefined,
+    reviews: [],
+  };
 
   async componentDidMount() {
     this.setState({ reviews: await getReivews({ place: this.place._id }) });
   }
 
-  renderRow = (label: string, data: string) => (
-    <View style={views.rowWrapper}>
-      <Text style={texts.blackOpacity}>{label}</Text>
-      <Text style={texts.black}>{data}</Text>
-    </View>
-  );
+  handleToggleScrap = async () => {
+    const { scrap, unScrap } = this.props;
+    if (this.state.isScrap) {
+      await unScrap({ id: this.place._id });
+      Alert.alert('스크랩이 취소되었습니다.');
+    } else {
+      await scrap({ id: this.place._id });
+      Alert.alert('스크랩되었습니다.');
+    }
+    this.setState({ isScrap: !this.state.isScrap });
+  };
 
   handleCreateReview = (review: Review) => {
     this.setState({ reviews: [...this.state.reviews, review] });
@@ -65,6 +86,13 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
       handleAddReview: this.handleCreateReview,
     });
   };
+
+  renderRow = (label: string, data: string) => (
+    <View style={views.rowWrapper}>
+      <Text style={texts.blackOpacity}>{label}</Text>
+      <Text style={texts.black}>{data}</Text>
+    </View>
+  );
 
   render() {
     const { thumbnail, images } = this.place;
@@ -81,12 +109,14 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
             <View style={views.infoHover}>
               <Card
                 place={this.place}
-                handlePress={() => {
-                  Alert.alert('저장했습니다.');
-                }}
+                handlePress={this.handleToggleScrap}
                 icon={
                   <Image
-                    source={require('src/assets/icons/ic_scrap.png')}
+                    source={
+                      this.state.isScrap
+                        ? require('src/assets/icons/ic_scrap_on.png')
+                        : require('src/assets/icons/ic_scrap_off.png')
+                    }
                     style={icons.scrap}
                   />
                 }
@@ -148,4 +178,9 @@ class Detail extends PureComponent<NavigationScreenProps, State> {
   }
 }
 
-export default Detail;
+export default connect(
+  (state: ReducerState) => ({
+    user: state.user,
+  }),
+  { scrap: actions.scrap, unScrap: actions.unScrap }
+)(Detail);

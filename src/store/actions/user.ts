@@ -11,6 +11,8 @@ export interface UserInterface {
   gender: string; // 'M' | 'F'
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
   dogs: { [_id: string]: string };
+  location: { type: string; coordinates: [number, number] };
+  places: string[];
   repDog?: DogInterface;
 }
 
@@ -20,6 +22,8 @@ export interface UpdateInterface {
   birth?: string;
   gender?: string; // 'M' | 'F'
   status?: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
+  location?: { type: string; coordinates: [number, number] };
+  repDog?: DogInterface;
 }
 
 export interface SignInInterface {

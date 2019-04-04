@@ -1,42 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import { sortBy } from 'lodash';
 import { LatLng } from 'react-native-maps';
+import { GeoJSON, Place, PlaceResponse } from 'src/store/actions/place';
 
 export interface Params {
   keyword?: string;
   label?: '카페' | '용품' | '병원' | '기타';
   location?: LatLng;
   range?: number; // km
-}
-
-export interface Place
-  extends Pick<Response, Exclude<keyof Response, 'location'>> {
-  location: LatLng;
-}
-
-interface GeoJSON {
-  type: string;
-  coordinates: [number, number];
-}
-
-interface Response {
-  _id: string;
-  name: string;
-  location: GeoJSON;
-  address: string;
-  label: '카페' | '용품' | '병원' | '기타';
-  rating: number;
-  contact: string;
-  thumbnail: string;
-  icon?: string;
-  images?: string[];
-  officeHour?: {
-    default: string;
-    weekend?: string;
-    dayoff?: string;
-  };
-  likes?: string[];
-  distance: number; // km
 }
 
 const geoToLatLng = ({ coordinates }: GeoJSON) =>
@@ -46,7 +17,7 @@ const geoToLatLng = ({ coordinates }: GeoJSON) =>
   } as LatLng);
 
 export const searchPlace = async (params?: Params) => {
-  const response: AxiosResponse<Response[]> = await axios.get('/places', {
+  const response: AxiosResponse<PlaceResponse[]> = await axios.get('/places', {
     params,
   });
   const places: Place[] = response.data.map(place => ({
@@ -57,4 +28,22 @@ export const searchPlace = async (params?: Params) => {
     places,
     (place: Place) => -(place.rating / 5 + Math.pow(0.5, place.distance))
   );
+};
+
+interface Query {
+  id: string;
+}
+
+export const scrap = async ({ id }: Query) => {
+  const response: AxiosResponse<PlaceResponse> = await axios.patch(
+    `/places/${id}/scrap`
+  );
+  return response.data;
+};
+
+export const unScrap = async ({ id }: Query) => {
+  const response: AxiosResponse<PlaceResponse> = await axios.delete(
+    `/places/${id}/scrap`
+  );
+  return response.data;
 };

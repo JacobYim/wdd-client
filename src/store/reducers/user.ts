@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios';
 import produce from 'immer';
-import { pick } from 'lodash';
 import { handleActions } from 'redux-actions';
 import { removeHeader } from 'src/services/api/axios';
 import { removeUserStorage } from 'src/services/storage/user';
 import * as dogActions from 'src/store/actions/dog';
+import * as placeActions from 'src/store/actions/place';
 import * as actions from 'src/store/actions/user';
 
 export interface UserState
@@ -24,6 +24,8 @@ const initialState: UserState = {
   gender: '',
   status: 'TERMINATED',
   dogs: {},
+  location: { type: 'Point', coordinates: [0, 0] },
+  places: [],
 };
 
 export default handleActions<UserState, any>(
@@ -68,6 +70,19 @@ export default handleActions<UserState, any>(
          * 406: NotAcceptable, 비활성 계정
          */
         draft.dogError = action.payload;
+      }),
+    // *** HANDLE PLACE ACTIONS
+    [placeActions.SET_PLACE_REQUEST]: (state, action) =>
+      produce(state, draft => {
+        delete draft.error;
+      }),
+    [placeActions.SET_PLACE_SUCCESS]: (state, action) =>
+      produce(state, draft => {
+        draft.places = action.payload;
+      }),
+    [placeActions.SET_PLACE_FAILURE]: (state, action) =>
+      produce(state, draft => {
+        draft.error = action.payload;
       }),
   },
   initialState
