@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationRoute, TabBarBottomProps } from 'react-navigation';
+import { BottomTabBarProps, NavigationRoute } from 'react-navigation';
 import { connect } from 'react-redux';
 import { ReducerState } from 'src/store/reducers';
 import { texts, views } from './BottomTabbar.styles';
 
-interface Props extends TabBarBottomProps {
+interface Props extends BottomTabBarProps {
   walk: ReducerState['walk'];
 }
 
@@ -20,6 +20,7 @@ const BottomNavbar: React.FC<Props> = ({ navigation, walk }) => {
     const isActive = walk.status === 'WALKING';
 
     if (index > 0) {
+      const { iconOn, iconOff, label } = route.params;
       return (
         <View style={views.tabWrapper} key={route.routeName}>
           <TouchableOpacity
@@ -27,8 +28,11 @@ const BottomNavbar: React.FC<Props> = ({ navigation, walk }) => {
             activeOpacity={0.7}
             onPress={() => navToRoute(route)}
             disabled={isCurrentIndex}>
-            <Image style={views.tabIcon} source={route.params.icon} />
-            <Text style={texts.tabLabel}>{route.params.label}</Text>
+            <Image
+              style={views.tabIcon}
+              source={isCurrentIndex ? iconOn : iconOff}
+            />
+            <Text style={texts.tabLabel}>{label}</Text>
           </TouchableOpacity>
         </View>
       );

@@ -44,7 +44,7 @@ export default createBottomTabNavigator(
       screen: MapNavigator,
       params: {
         tab: {
-          icon: require('src/assets/icons/logo_img.png'),
+          icon: require('src/assets/icons/ic_map_page.png'),
           navigate: NavigationActions.navigate({ routeName: 'map' }),
         },
         stack: {
@@ -56,14 +56,16 @@ export default createBottomTabNavigator(
     wdd: {
       screen: WddScreen,
       params: {
-        icon: require('src/assets/icons/ic_wdd.png'),
+        iconOn: require('src/assets/icons/ic_wdd_on.png'),
+        iconOff: require('src/assets/icons/ic_wdd_off.png'),
         label: '우동댕',
       },
     },
     profile: {
       screen: ProfileScreen,
       params: {
-        icon: require('src/assets/icons/ic_profile.png'),
+        iconOn: require('src/assets/icons/ic_profile_on.png'),
+        iconOff: require('src/assets/icons/ic_profile_off.png'),
         label: '내 프로필',
       },
     },

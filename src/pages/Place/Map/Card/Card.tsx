@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Place } from 'src/services/api/place';
+import { Place } from 'src/store/actions/place';
 import { color, font, shadow } from 'src/theme';
 
 interface Props {
