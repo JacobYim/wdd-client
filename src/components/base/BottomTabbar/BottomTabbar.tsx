@@ -32,7 +32,13 @@ const BottomNavbar: React.FC<Props> = ({ navigation, walk }) => {
               style={views.tabIcon}
               source={isCurrentIndex ? iconOn : iconOff}
             />
-            <Text style={texts.tabLabel}>{label}</Text>
+            <Text
+              style={[
+                texts.tabLabel,
+                isCurrentIndex ? texts.tabLabelOn : texts.tabLabelOff,
+              ]}>
+              {label}
+            </Text>
           </TouchableOpacity>
         </View>
       );

@@ -55,7 +55,12 @@ export const views = StyleSheet.create({
 export const texts = StyleSheet.create({
   tabLabel: {
     marginTop: 2,
-    color: color.grayB1,
     fontSize: font.size.small,
+  },
+  tabLabelOn: {
+    color: color.blue,
+  },
+  tabLabelOff: {
+    color: color.grayB1,
   },
 });
