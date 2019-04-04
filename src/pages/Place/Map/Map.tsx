@@ -5,7 +5,8 @@ import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/App/Map/TrackUser';
-import { Params, Place, searchPlace } from 'src/services/api/place';
+import { Params, searchPlace } from 'src/services/api/place';
+import { Place } from 'src/store/actions/place';
 import Card, { cardWidth } from './Card';
 import { height, icons, views, width } from './Map.styles';
 import MarkerView from './MarkerView';
@@ -202,6 +203,7 @@ class Map extends PureComponent<NavigationScreenProps, State> {
             <Carousel
               ref={this.carousel}
               data={places}
+              containerCustomStyle={views.carousel}
               sliderWidth={width}
               itemWidth={cardWidth}
               decelerationRate="fast"

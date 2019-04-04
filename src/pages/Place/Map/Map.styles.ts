@@ -27,6 +27,9 @@ export const views = StyleSheet.create({
     height: '100%',
     paddingRight: 20,
   },
+  carousel: {
+    marginBottom: 20,
+  },
 });
 
 export const icons = StyleSheet.create({
