@@ -92,7 +92,7 @@ class CreateDog extends Component<Props, State> {
     if (this.state.thumbnail) {
       thumbnail = await uploadImage({
         name,
-        email,
+        label: email,
         table: 'dogs',
         uri: this.state.thumbnail,
       })(toggleLoading);

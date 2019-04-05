@@ -8,14 +8,13 @@ import { connect } from 'react-redux';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
-import { Body, createFeed } from 'src/services/api/feed';
+import { createFeed } from 'src/services/api/feed';
 import { uploadImages } from 'src/services/aws/s3';
 import { ReducerState } from 'src/store/reducers';
 import ImageCard, { AddImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
 
 interface Props extends LoadingProps, NavigationScreenProps {
-  user: ReducerState['user'];
   walk: ReducerState['walk'];
 }
 
@@ -31,14 +30,12 @@ class Upload extends PureComponent<Props, State> {
   };
 
   handleSave = async () => {
-    const { navigation, user, walk, toggleLoading } = this.props;
-    const now = new Date();
+    const { navigation, walk, toggleLoading } = this.props;
     const uris = this.state.images.map(image => image.nextUri || image.uri);
     const images = await uploadImages({
       uris,
-      email: user.email,
       table: 'feeds',
-      name: now.toUTCString(),
+      name: JSON.stringify(walk.pins[0]),
     })(toggleLoading);
     await createFeed({
       images,
@@ -124,6 +121,5 @@ class Upload extends PureComponent<Props, State> {
 }
 
 export default connect((state: ReducerState) => ({
-  user: state.user,
   walk: state.walk,
 }))(withLoading(Upload));
