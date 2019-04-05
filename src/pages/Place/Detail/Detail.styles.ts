@@ -24,8 +24,6 @@ export const views = StyleSheet.create({
     marginTop: -(cardHeight / 2 + paddingVertical),
     marginBottom: 10,
     height: cardHeight,
-    borderRadius: 5,
-    backgroundColor: color.white,
     ...shadow.shallow,
   },
   infoWrapper: {

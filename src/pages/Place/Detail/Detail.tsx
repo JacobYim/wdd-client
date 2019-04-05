@@ -7,7 +7,6 @@ import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
 import Card from 'src/pages/Place/Map/Card';
 import { getReivews, Review } from 'src/services/api/review';
-import { Place } from 'src/store/actions/place';
 import * as actions from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Detail.styles';
@@ -49,7 +48,7 @@ function showOfficeHour(officeHour: {
 }
 
 class Detail extends PureComponent<Props, State> {
-  place: Place = this.props.navigation.getParam('place');
+  place: actions.Place = this.props.navigation.getParam('place');
 
   state: State = {
     isScrap:
@@ -110,6 +109,7 @@ class Detail extends PureComponent<Props, State> {
               <Card
                 place={this.place}
                 handlePress={this.handleToggleScrap}
+                width="100%"
                 icon={
                   <Image
                     source={

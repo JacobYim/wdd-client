@@ -7,6 +7,7 @@ interface Props {
   place: Place;
   handlePress: () => void;
   icon: React.ReactNode;
+  width?: number | string;
 }
 
 export const cardWidth = 327;
@@ -87,13 +88,13 @@ export const Rating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-const Info: React.FC<Props> = ({ place, handlePress, icon }) => {
+const Info: React.FC<Props> = ({ place, handlePress, icon, width }) => {
   const placeIcon = place.icon
     ? { uri: place.icon }
     : require('src/assets/icons/ic_place_default.png');
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, width ? { width } : null]}>
       <Image source={placeIcon} style={styles.placeIcon} />
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{place.name}</Text>

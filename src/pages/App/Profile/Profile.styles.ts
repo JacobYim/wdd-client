@@ -26,6 +26,7 @@ export const views = StyleSheet.create({
   selectDog: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: 80,
   },
   updateProfile: {
     marginTop: 6,
