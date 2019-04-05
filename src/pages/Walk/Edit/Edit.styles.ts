@@ -11,15 +11,11 @@ const space =
 
 export const views = StyleSheet.create({
   buttonContainer: {
-    paddingHorizontal: padding,
+    paddingHorizontal: padding - space / 2,
     paddingVertical: padding / 2,
-  },
-  buttonRow: {
-    paddingVertical: padding / 2,
-    marginHorizontal: -space / 2,
-    flexDirection: 'row',
   },
   button: {
+    marginVertical: padding / 2,
     marginHorizontal: space / 2,
     width: cardSize,
     height: cardSize,

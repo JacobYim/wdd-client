@@ -1,7 +1,7 @@
 import produce from 'immer';
 import React, { PureComponent } from 'react';
 import ViewShot from 'react-native-view-shot';
-import { NavigationScreenProps } from 'react-navigation';
+import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import ImageWithSticker from 'src/components/module/ImageWithSticker';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
@@ -82,12 +82,6 @@ class Edit extends PureComponent<Props, State> {
     }
   };
 
-  renderButton = (onPress: () => void, icon: NodeRequire) => (
-    <TouchableOpacity style={views.button} onPress={onPress}>
-      <Image source={icon} style={icons.button} />
-    </TouchableOpacity>
-  );
-
   render() {
     const { walk } = this.props;
     return (
@@ -113,33 +107,44 @@ class Edit extends PureComponent<Props, State> {
           <ImageWithSticker image={this.state.image} walk={walk} size={width} />
         </ViewShot>
         <View style={views.buttonContainer}>
-          <View style={views.buttonRow}>
-            <TouchableOpacity style={views.button} onPress={this.handleClear}>
-              <Text style={texts.clear}>없음</Text>
-            </TouchableOpacity>
-            {this.renderButton(
-              () => this.handleToggle('time'),
-              require('src/assets/icons/ic_time_black.png')
+          <FlatList
+            data={[
+              {
+                handlePress: this.handleClear,
+                text: '없음',
+              },
+              {
+                handlePress: () => this.handleToggle('time'),
+                icon: require('src/assets/icons/ic_time_black.png'),
+              },
+              {
+                handlePress: () => this.handleToggle('distance'),
+                icon: require('src/assets/icons/ic_distance.png'),
+              },
+              {
+                handlePress: () => this.handleToggle('poos'),
+                icon: require('src/assets/icons/ic_poo_gray.png'),
+              },
+              {
+                handlePress: () => this.handleToggle('pees'),
+                icon: require('src/assets/icons/ic_pee_gray.png'),
+              },
+              {
+                handlePress: () => this.handleLogo('LOGO'),
+                icon: require('src/assets/icons/logo_text.png'),
+              },
+            ]}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            numColumns={4}
+            keyExtractor={(i, index) => index.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={views.button} onPress={item.handlePress}>
+                {item.icon && <Image source={item.icon} style={icons.button} />}
+                {item.text && <Text style={texts.clear}>{item.text}</Text>}
+              </TouchableOpacity>
             )}
-            {this.renderButton(
-              () => this.handleToggle('distance'),
-              require('src/assets/icons/ic_distance.png')
-            )}
-            {this.renderButton(
-              () => this.handleToggle('poos'),
-              require('src/assets/icons/ic_poo_gray.png')
-            )}
-          </View>
-          <View style={views.buttonRow}>
-            {this.renderButton(
-              () => this.handleToggle('pees'),
-              require('src/assets/icons/ic_pee_gray.png')
-            )}
-            {this.renderButton(
-              () => this.handleLogo('LOGO'),
-              require('src/assets/icons/logo_text.png')
-            )}
-          </View>
+          />
         </View>
       </SafeAreaView>
     );
