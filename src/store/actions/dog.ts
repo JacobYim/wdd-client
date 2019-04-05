@@ -6,28 +6,21 @@ interface Like {
 }
 
 // *** INTERFACES
-export interface CreateDogInterface {
+export interface DogDataInterface {
   name: string;
   thumbnail?: string;
   breed: string;
   gender: 'M' | 'F' | 'N' | '';
-  birth?: string; // YYYY.MM.DD
+  birth?: string;
   weight?: number;
   info?: string;
 }
 
-export interface UpdateDogInterface {
+export interface UpdateDogInterface extends DogDataInterface {
   _id: string;
-  name?: string;
-  thumbnail?: string;
-  breed?: string;
-  gender?: 'M' | 'F' | 'N';
-  birth?: string; // YYYY.MM.DD
-  weight?: number;
-  info?: string;
 }
 
-export interface DogInterface extends CreateDogInterface {
+export interface DogInterface extends DogDataInterface {
   _id: string;
   user: string;
   feeds: string[];
@@ -50,7 +43,7 @@ export const selectDog = (payload: { _id: string }) => ({
   type: SELECT_DOG,
 });
 export const createDog = (
-  payload: CreateDogInterface,
+  payload: DogDataInterface,
   navigation?: NavigationScreenProp<any>
 ) => ({
   payload,

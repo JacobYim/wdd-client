@@ -1,54 +1,64 @@
-import { pick } from 'lodash';
-import React, { Component } from 'react';
+import moment from 'moment';
+import React, { PureComponent } from 'react';
+import { Image, Modal, TextInput as Input, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import breeds from 'src/assets/consts/breeds.json';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
+import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
 import { uploadImage } from 'src/services/aws/s3';
-import * as actions from 'src/store/actions/dog';
+import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
-import { texts, views } from './CreateDog.styles';
-import {
-  Image,
-  Text,
-  TextInput as Input,
-  TouchableOpacity,
-  View,
-  Modal,
-} from 'react-native';
+import { icons, views } from './Edit.styles';
 
 interface Props extends LoadingProps, NavigationScreenProps {
-  createDog: typeof actions.createDog;
-  email: ReducerState['user']['email'];
+  user: ReducerState['user'];
+  updateDog: typeof dogActions.updateDog;
 }
 
-interface State extends actions.DogDataInterface {
+interface State
+  extends Pick<
+    dogActions.UpdateDogInterface,
+    Exclude<keyof dogActions.UpdateDogInterface, 'birth'>
+  > {
   showModal: boolean;
+  birth?: Date;
 }
 
-class CreateDog extends Component<Props, State> {
+class Edit extends PureComponent<Props, State> {
   private inputs = {
     name: React.createRef<Input>(),
     breed: React.createRef<Input>(),
+    gender: React.createRef<Input>(),
+    weight: React.createRef<Input>(),
+    info: React.createRef<Input>(),
   };
 
-  state: State = {
-    showModal: false,
-    name: '',
-    breed: '',
-    gender: '',
-  };
+  constructor(props: Props) {
+    super(props);
+    if (props.user.repDog === undefined) return;
+    const { likes, feeds, user, birth, ...list } = props.user.repDog;
+    this.state = {
+      ...list,
+      showModal: false,
+      birth: birth ? new Date(birth) : undefined,
+    };
+  }
 
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
   };
 
-  handleChange = ({ name, value }: HandleChangeText | HandleChangeSelector) => {
+  handleChange = ({
+    name,
+    value,
+  }: HandleChangeText | HandleChangeSelector | HandleChangeDate) => {
     this.setState(state => ({ ...state, [name]: value }));
   };
 
@@ -70,70 +80,54 @@ class CreateDog extends Component<Props, State> {
   };
 
   handleSubmit = async () => {
-    const { createDog, email, navigation, toggleLoading } = this.props;
-    const state = pick(this.state, ['name', 'thumbnail', 'breed', 'gender']);
-    if (state.thumbnail) {
+    const { navigation, updateDog, user, toggleLoading } = this.props;
+    const { showModal, birth, ...state } = this.state;
+    if (state.thumbnail !== undefined) {
       const url = await uploadImage({
         table: 'dogs',
-        label: email,
+        label: user.email,
         name: state.name,
         uri: state.thumbnail,
       })(toggleLoading);
       state.thumbnail = url;
     }
-    await createDog(state, navigation);
+    await updateDog({ ...state, birth: moment(birth).format('YYYY.MM.DD') });
+    navigation.goBack(null);
   };
 
   render() {
-    const { navigation } = this.props;
-    const { name, breed, gender, thumbnail } = this.state;
+    const thumbnail = this.state.thumbnail
+      ? { uri: this.state.thumbnail }
+      : require('src/assets/icons/ic_place_default.png');
 
     return (
       <PageContainer
-        left={{ navigation, routeName: 'createMeta' }}
-        right={{
-          view: '건너뛰기',
-          handlePress: () => navigation.navigate('app'),
-        }}
-        bottomBox={{
-          text: '시작하기',
-          handlePress: this.handleSubmit,
-          disable: !name || !breed || !gender,
-        }}
-        extraScrollHeight={200}>
+        center="프로필 수정"
+        right={{ handlePress: this.handleSubmit, view: '완료' }}
+        extraBottom={80}
+        enableScroll>
         <View style={views.thumbnailWrapper}>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={this.handleImagePicker}>
+            <Image style={views.thumbnail} source={thumbnail} />
             <Image
-              style={views.thumbnail}
-              source={
-                thumbnail
-                  ? { uri: thumbnail }
-                  : require('src/assets/icons/ic_thumbnail.png')
-              }
-            />
-            <Image
-              style={views.edit}
+              style={icons.edit}
               source={require('src/assets/icons/ic_edit.png')}
             />
           </TouchableOpacity>
-          <Text style={texts.notice}>
-            반려동물의 정보를 입력해주세요!{'\n'}
-            회원가입 후, 프로필 설정에서 변경 가능합니다.
-          </Text>
         </View>
         <TextInput
           name="name"
           label="이름"
-          value={name}
+          value={this.state.name}
           inputs={this.inputs}
           handleChange={this.handleChange}
         />
         <TextInput
           name="breed"
           label="품종"
-          value={breed}
+          value={this.state.breed}
           handleChange={() => null}
           handleFocus={this.toggleModal}
         />
@@ -146,6 +140,19 @@ class CreateDog extends Component<Props, State> {
             { name: 'F', label: '암컷' },
             { name: 'N', label: '중성화' },
           ]}
+        />
+        <TextInput
+          name="info"
+          label="특징"
+          value={this.state.info}
+          inputs={this.inputs}
+          handleChange={this.handleChange}
+        />
+        <DateInput
+          name="birth"
+          label="생년월일"
+          value={this.state.birth}
+          handleChange={this.handleChange}
         />
         <Modal
           animationType="slide"
@@ -166,8 +173,6 @@ class CreateDog extends Component<Props, State> {
 }
 
 export default connect(
-  (state: ReducerState) => ({
-    email: state.user.email,
-  }),
-  { createDog: actions.createDog }
-)(withLoading(CreateDog));
+  (state: ReducerState) => ({ user: state.user }),
+  { updateDog: dogActions.updateDog }
+)(withLoading(Edit));

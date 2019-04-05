@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, SafeAreaView, Text, View } from 'react-native';
+import { Alert, Image, SafeAreaView, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -21,7 +21,11 @@ const Home: React.FC<Props> = ({ user, navigation }) => (
             style={icons.setting}
           />
         ),
-        handlePress: () => navigation.navigate('setting'),
+        handlePress: () => {
+          if (!user.email) Alert.alert('로그인을 해주세요.');
+          else if (!user.repDog) Alert.alert('메인 반려견을 선택해주세요');
+          else navigation.navigate('setting');
+        },
       }}
     />
     <View style={views.header}>
@@ -43,7 +47,10 @@ const Home: React.FC<Props> = ({ user, navigation }) => (
             style={icons.dropDown}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={views.updateProfile} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={views.updateProfile}
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate('edit')}>
           <Text style={texts.updateProfile}>프로필 수정</Text>
         </TouchableOpacity>
       </View>

@@ -38,7 +38,7 @@ export const views = StyleSheet.create({
 
 export const texts = StyleSheet.create({
   top: {
-    color: color.blackOpacity,
+    color: color.black,
     fontSize: 16,
   },
   bottomBox: {
