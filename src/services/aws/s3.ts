@@ -23,12 +23,13 @@ const uploadToS3 = async ({ table, label, name, uri }: UploadImage) => {
   const response = await fetch(uri);
   const data = await response.blob();
   const S3Response = (await Storage.put(
-    `${markDev}${table}/${label || moment().format('YYYY.MM.DD')}${name}.png`,
+    `${markDev}${table}/${label || moment().format('YYYY.MM.DD')}/${name}.png`,
     data,
     { level: 'public', contentType: 'image/png' }
   )) as S3ResponseType;
-  const url = (await Storage.get(S3Response.key)) as string;
-  return url;
+  return `https://s3.ap-northeast-2.amazonaws.com/wdd-client-file/public/${
+    S3Response.key
+  }`;
 };
 
 export const uploadImage = (data: UploadImage) => async (

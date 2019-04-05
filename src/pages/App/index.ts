@@ -1,8 +1,8 @@
 import { Animated, Easing } from 'react-native';
 import BottomTabbar from 'src/components/base/BottomTabbar';
 import WalkNavigator from 'src/pages/Walk';
+import ProfileNavigator from '../Profile';
 import MapScreen from './Map';
-import ProfileScreen from './Profile';
 import WddScreen from './Wdd';
 import {
   MapNavigator as PlaceMapNavigator,
@@ -62,7 +62,7 @@ export default createBottomTabNavigator(
       },
     },
     profile: {
-      screen: ProfileScreen,
+      screen: ProfileNavigator,
       params: {
         iconOn: require('src/assets/icons/ic_profile_on.png'),
         iconOff: require('src/assets/icons/ic_profile_off.png'),

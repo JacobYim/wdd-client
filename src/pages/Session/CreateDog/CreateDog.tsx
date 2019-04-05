@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { pick } from 'lodash';
 import React, { Component } from 'react';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
@@ -76,7 +77,6 @@ class CreateDog extends Component<Props, State> {
           })
         );
       }
-
       this.setState(state =>
         produce(state, draft => {
           draft.thumbnail = res.uri;
@@ -87,17 +87,17 @@ class CreateDog extends Component<Props, State> {
 
   handleSubmit = async () => {
     const { createDog, email, navigation, toggleLoading } = this.props;
-    const { name, ...others } = this.state;
-    let thumbnail = undefined;
-    if (this.state.thumbnail) {
-      thumbnail = await uploadImage({
-        name,
-        label: email,
+    const state = pick(this.state, ['name', 'thumbnail', 'breed', 'gender']);
+    if (state.thumbnail) {
+      const url = await uploadImage({
         table: 'dogs',
-        uri: this.state.thumbnail,
+        label: email,
+        name: state.name,
+        uri: state.thumbnail,
       })(toggleLoading);
+      state.thumbnail = url;
     }
-    await createDog({ name, thumbnail, ...others }, navigation);
+    await createDog(state, navigation);
   };
 
   render() {

@@ -5,13 +5,13 @@ import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { ReducerState } from 'src/store/reducers';
-import { icons, texts, views } from './Profile.styles';
+import { icons, texts, views } from './Home.styles';
 
 interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
 }
 
-const Profile: React.FC<Props> = ({ user }) => (
+const Home: React.FC<Props> = ({ user }) => (
   <SafeAreaView>
     <TopNavbar
       right={{
@@ -51,6 +51,4 @@ const Profile: React.FC<Props> = ({ user }) => (
   </SafeAreaView>
 );
 
-export default connect((state: ReducerState) => ({ user: state.user }))(
-  Profile
-);
+export default connect((state: ReducerState) => ({ user: state.user }))(Home);

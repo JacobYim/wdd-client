@@ -37,6 +37,7 @@ class Upload extends PureComponent<Props, State> {
       table: 'feeds',
       name: JSON.stringify(walk.pins[0]),
     })(toggleLoading);
+    console.log(images);
     await createFeed({
       images,
       memo: this.state.memo,
