@@ -78,26 +78,25 @@
 				}
 			}
 		},
-		"authcognito460c0a48": {
+		"authcognitoc670f476": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/ddlient-20190128180322-deployment/amplify-cfn-templates/auth/cognito460c0a48-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/wdd-client-20190405203644-deployment/amplify-cfn-templates/auth/cognitoc670f476-cloudformation-template.yml",
 				"Parameters": {
-					"identityPoolName": "cognito460c0a48_identitypool_460c0a48",
+					"identityPoolName": "cognitoc670f476_identitypool_c670f476",
 					"allowUnauthenticatedIdentities": true,
-					"thirdPartyAuth": false,
-					"lambdaLogPolicy": "cognito460c0a48_lambda_log_policy",
-					"openIdLambdaRoleName": "cognito460c0a48_openid_lambda_role",
-					"openIdRolePolicy": "cognito460c0a48_openid_pass_role_policy",
-					"openIdLambdaIAMPolicy": "cognito460c0a48_openid_lambda_iam_policy",
-					"openIdLogPolicy": "cognito460c0a48_openid_lambda_log_policy",
-					"userPoolName": "cognito460c0a48_userpool_460c0a48",
+					"lambdaLogPolicy": "cognitoc670f476_lambda_log_policy",
+					"openIdLambdaRoleName": "cognitoc670f476_openid_lambda_role",
+					"openIdRolePolicy": "cognitoc670f476_openid_pass_role_policy",
+					"openIdLambdaIAMPolicy": "cognitoc670f476_openid_lambda_iam_policy",
+					"openIdLogPolicy": "cognitoc670f476_openid_lambda_log_policy",
+					"userPoolName": "cognitoc670f476_userpool_c670f476",
 					"autoVerifiedAttributes": "email",
 					"mfaConfiguration": "OFF",
 					"mfaTypes": "SMS Text Message",
-					"roleName": "cognito460c0a48_sns-role",
-					"roleExternalId": "cognito460c0a48_role_external_id",
-					"policyName": "cognito460c0a48-sns-policy",
+					"roleName": "cognitoc670f476_sns-role",
+					"roleExternalId": "cognitoc670f476_role_external_id",
+					"policyName": "cognitoc670f476-sns-policy",
 					"smsAuthenticationMessage": "Your authentication code is {####}",
 					"smsVerificationMessage": "Your verification code is {####}",
 					"emailVerificationSubject": "Your verification code",
@@ -105,41 +104,78 @@
 					"defaultPasswordPolicy": false,
 					"passwordPolicyMinLength": 8,
 					"passwordPolicyCharacters": "Requires Lowercase,Requires Uppercase,Requires Numbers,Requires Symbols",
-					"requiredAttributes": "email",
-					"userpoolClientName": "cognito460c0a48_app_client",
+					"requiredAttributes": "email,gender,name",
+					"userpoolClientName": "cognitoc670f476_app_client",
 					"userpoolClientGenerateSecret": true,
 					"userpoolClientRefreshTokenValidity": 30,
+					"userpoolClientWriteAttributes": "email",
 					"userpoolClientReadAttributes": "email",
-					"mfaLambdaRole": "cognito460c0a48_totp_lambda_role",
-					"mfaLambdaLogPolicy": "cognito460c0a48_totp_lambda_log_policy",
-					"mfaPassRolePolicy": "cognito460c0a48_totp_pass_role_policy",
-					"mfaLambdaIAMPolicy": "cognito460c0a48_totp_lambda_iam_policy",
-					"userpoolClientLambdaRole": "cognito460c0a48_userpoolclient_lambda_role",
-					"userpoolClientLogPolicy": "cognito460c0a48_userpoolclient_lambda_log_policy",
-					"userpoolClientLambdaPolicy": "cognito460c0a48_userpoolclient_lambda_iam_policy",
+					"mfaLambdaRole": "cognitoc670f476_totp_lambda_role",
+					"mfaLambdaLogPolicy": "cognitoc670f476_totp_lambda_log_policy",
+					"mfaPassRolePolicy": "cognitoc670f476_totp_pass_role_policy",
+					"mfaLambdaIAMPolicy": "cognitoc670f476_totp_lambda_iam_policy",
+					"userpoolClientLambdaRole": "cognitoc670f476_userpoolclient_lambda_role",
+					"userpoolClientLogPolicy": "cognitoc670f476_userpoolclient_lambda_log_policy",
+					"userpoolClientLambdaPolicy": "cognitoc670f476_userpoolclient_lambda_iam_policy",
 					"userpoolClientSetAttributes": false,
+					"resourceName": "cognitoc670f476",
+					"authSelections": "identityPoolAndUserPool",
+					"authRoleName": {
+						"Ref": "AuthRoleName"
+					},
+					"unauthRoleName": {
+						"Ref": "UnauthRoleName"
+					},
+					"authRoleArn": {
+						"Fn::GetAtt": [
+							"AuthRole",
+							"Arn"
+						]
+					},
+					"unauthRoleArn": {
+						"Fn::GetAtt": [
+							"UnauthRole",
+							"Arn"
+						]
+					},
 					"useDefault": "default",
-					"unAuthRoleName": "ddlient-20190128180322-unauthRole",
-					"authRoleName": "ddlient-20190128180322-authRole",
-					"unAuthRoleArn": "arn:aws:iam::367420475204:role/ddlient-20190128180322-unauthRole",
-					"authRoleArn": "arn:aws:iam::367420475204:role/ddlient-20190128180322-authRole",
-					"resourceName": "cognito460c0a48",
-					"authSelections": "identityPoolAndUserPool"
+					"usernameAttributes": "email",
+					"env": "root"
 				}
 			}
 		},
-		"storageWddClient": {
+		"storageWddStorage": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/ddlient-20190128180322-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+				"TemplateURL": "https://s3.amazonaws.com/wdd-client-20190405203644-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
 				"Parameters": {
-					"bucketName": "wdd-client-file",
-					"authPolicyName": "s3_amplify_1b1c6dfb",
-					"unauthPolicyName": "s3_amplify_1b1c6dfb",
-					"authRoleName": "ddlient-20190128180322-authRole",
-					"unauthRoleName": "ddlient-20190128180322-unauthRole",
-					"authPermissions": "rw",
-					"unauthPermissions": "rw"
+					"bucketName": "wdd-storage",
+					"authPolicyName": "s3_amplify_e2867567",
+					"unauthPolicyName": "s3_amplify_e2867567",
+					"authRoleName": {
+						"Ref": "AuthRoleName"
+					},
+					"unauthRoleName": {
+						"Ref": "UnauthRoleName"
+					},
+					"selectedGuestPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket,s3:DeleteObject",
+					"selectedAuthenticatedPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket,s3:DeleteObject",
+					"s3PermissionsAuthenticatedPublic": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+					"s3PublicPolicy": "Public_policy_bcfb74d9",
+					"s3PermissionsAuthenticatedProtected": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+					"s3ProtectedPolicy": "Protected_policy_bcfb74d9",
+					"s3PermissionsAuthenticatedUploads": "s3:PutObject",
+					"s3UploadsPolicy": "Uploads_policy_bcfb74d9",
+					"s3PermissionsAuthenticatedPrivate": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+					"s3PrivatePolicy": "Private_policy_bcfb74d9",
+					"AuthenticatedAllowList": "ALLOW",
+					"s3ReadPolicy": "read_policy_bcfb74d9",
+					"s3PermissionsGuestPublic": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+					"s3PermissionsGuestProtected": "s3:GetObject",
+					"s3PermissionsGuestUploads": "s3:PutObject",
+					"s3PermissionsGuestPrivate": "DISALLOW",
+					"GuestAllowList": "ALLOW",
+					"env": "root"
 				}
 			}
 		}

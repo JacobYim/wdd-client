@@ -1,5 +1,6 @@
 import { Storage } from 'aws-amplify';
 import moment from 'moment';
+import awsmobile from 'src/aws-exports';
 
 interface Base {
   table: 'dogs' | 'places' | 'feeds';
@@ -22,14 +23,15 @@ const uploadToS3 = async ({ table, label, name, uri }: UploadImage) => {
   const markDev = __DEV__ ? '__DEV__/' : '';
   const response = await fetch(uri);
   const data = await response.blob();
-  const S3Response = (await Storage.put(
-    `${markDev}${table}/${label || moment().format('YYYY.MM.DD')}/${name}.png`,
-    data,
-    { level: 'public', contentType: 'image/png' }
-  )) as S3ResponseType;
-  return `https://s3.ap-northeast-2.amazonaws.com/wdd-client-file/public/${
-    S3Response.key
-  }`;
+  const key = `${markDev}${table}/${label ||
+    moment().format('YYYY.MM.DD')}/${name}.png`;
+  const S3Response = (await Storage.put(key, data, {
+    level: 'public',
+    contentType: 'image/png',
+  })) as S3ResponseType;
+  return `https://s3.ap-northeast-2.amazonaws.com/${
+    awsmobile.aws_user_files_s3_bucket
+  }/public/${S3Response.key}`;
 };
 
 export const uploadImage = (data: UploadImage) => async (

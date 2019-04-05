@@ -1,5 +1,5 @@
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
-import { NavigationActions, NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { removeHeader, setHeader } from 'src/services/api/axios';
 import * as api from 'src/services/api/user';
@@ -40,7 +40,7 @@ export async function checkPermission() {
 }
 
 export function* navigateToApp(navigation: NavigationScreenProp<any>) {
-  if (checkPermission()) yield call(navigation.navigate, 'app');
+  if (yield call(checkPermission)) yield call(navigation.navigate, 'app');
 }
 
 // SAGAS
@@ -61,18 +61,16 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
         {
           text: '예',
           onPress: () => {
-            action.navigation.navigate({
-              routeName: 'session',
-              action: NavigationActions.navigate({
-                routeName: 'signUp',
-                action: NavigationActions.navigate({ routeName: nextStep }),
-              }),
-            });
+            action.navigation.navigate('session');
+            action.navigation.navigate('signUp');
+            action.navigation.navigate(nextStep);
           },
         },
         {
           text: '나중에',
-          onPress: () => action.navigation.navigate('app'),
+          onPress: async () => {
+            if (await checkPermission()) action.navigation.navigate('app');
+          },
           style: 'cancel',
         },
       ]);

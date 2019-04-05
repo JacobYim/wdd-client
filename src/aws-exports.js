@@ -3,11 +3,12 @@
 const awsmobile = {
   aws_project_region: 'ap-northeast-2',
   aws_cognito_identity_pool_id:
-    'ap-northeast-2:8a333684-da29-4ec9-bd2d-77f38d44b5a2',
+    'ap-northeast-2:a9e659e3-e18c-4792-a33e-af30cab20726',
   aws_cognito_region: 'ap-northeast-2',
-  aws_user_pools_id: 'ap-northeast-2_7gSBHlM5o',
-  aws_user_pools_web_client_id: '3fvh6b2rec72k8cak4v16f3luc',
-  aws_user_files_s3_bucket: 'wdd-client-file',
+  aws_user_pools_id: 'ap-northeast-2_a501KRV0v',
+  aws_user_pools_web_client_id: 'mlnba5u4eankf2nb6prq5h1hk',
+  oauth: {},
+  aws_user_files_s3_bucket: 'wdd-storage-root',
   aws_user_files_s3_bucket_region: 'ap-northeast-2',
 };
 
