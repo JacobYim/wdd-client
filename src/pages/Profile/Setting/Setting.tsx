@@ -43,11 +43,19 @@ class Setting extends PureComponent<Props, State> {
         <ScrollView style={views.container}>
           <View style={[views.boxWrapper, { marginTop: 0, borderTopWidth: 0 }]}>
             {[
-              { label: '푸시 알림', name: 'pushNotif', value: pushNotif },
+              {
+                label: '푸시 알림',
+                value: pushNotif,
+                handleValueChange: (pushNotif: boolean) => {
+                  this.setState({ pushNotif });
+                },
+              },
               {
                 label: '내 산책여부 표시',
-                name: 'showMyFeed',
                 value: showMyFeed,
+                handleValueChange: (showMyFeed: boolean) => {
+                  this.setState({ showMyFeed });
+                },
               },
             ].map((item, index) => (
               <RowItem item={item} index={index} key={item.label} />

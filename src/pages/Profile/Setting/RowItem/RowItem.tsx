@@ -1,12 +1,19 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { color } from 'src/theme';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Switch,
+} from 'react-native';
 
 interface Props {
   item: {
     label: string;
-    name?: string;
     value?: boolean;
+    handleValueChange?: (value: boolean) => void;
     handlePress?: () => void;
   };
   index: number;
@@ -34,6 +41,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
   },
+  toggle: {
+    height: 24,
+  },
 });
 
 const RowItem: React.FC<Props> = ({ item, index }) => (
@@ -49,6 +59,14 @@ const RowItem: React.FC<Props> = ({ item, index }) => (
           source={require('src/assets/icons/ic_arrow.png')}
         />
       </TouchableOpacity>
+    )}
+    {item.value !== undefined && item.handleValueChange && (
+      <Switch
+        style={styles.toggle}
+        onValueChange={item.handleValueChange}
+        value={item.value}
+        trackColor={{ false: '#DADCDF', true: '#2699FB' }}
+      />
     )}
   </View>
 );
