@@ -10,6 +10,7 @@ import { icons, views } from './Setting.styles';
 
 interface Props extends NavigationScreenProps {
   signOut: typeof userActions.signOut;
+  terminate: typeof userActions.terminate;
 }
 
 interface State {
@@ -32,7 +33,7 @@ class Setting extends PureComponent<Props, State> {
   };
 
   render() {
-    const { navigation, signOut } = this.props;
+    const { navigation, signOut, terminate } = this.props;
     const { pushNotif, showMyFeed } = this.state;
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -87,7 +88,7 @@ class Setting extends PureComponent<Props, State> {
               { label: '개인정보 이용 약관', handlePress: () => {} },
               { label: '고객센터', handlePress: () => {} },
               { label: '로그아웃', handlePress: () => signOut(navigation) },
-              { label: '탈퇴하기', handlePress: () => {} },
+              { label: '탈퇴하기', handlePress: () => terminate(navigation) },
               { label: '장소등록 및 수정 요청', handlePress: () => {} },
             ].map((item, index) => (
               <RowItem item={item} index={index} key={item.label} />
@@ -102,5 +103,5 @@ class Setting extends PureComponent<Props, State> {
 
 export default connect(
   null,
-  { signOut: userActions.signOut }
+  { signOut: userActions.signOut, terminate: userActions.terminate }
 )(Setting);

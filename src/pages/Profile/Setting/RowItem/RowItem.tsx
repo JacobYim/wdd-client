@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   toggle: {
-    height: 24,
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
 });
 

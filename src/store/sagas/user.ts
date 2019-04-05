@@ -130,6 +130,33 @@ function* signOut(action: ReturnType<typeof actions.signOut>) {
   yield call(action.navigation.navigate, 'session');
 }
 
+function* terminate(action: ReturnType<typeof actions.terminate>) {
+  function* handlePress() {
+    yield put(actions.setUserRequest());
+    yield call(api.terminate);
+    yield put(actions.removeUser());
+    yield call(removeHeader);
+    yield call(removeUserStorage);
+    // *** NAVIGATE
+    yield call(action.navigation.navigate, 'session');
+  }
+
+  try {
+    Alert.alert('탈퇴 후에는 되돌릴 수 없습니다.', '정말 탈퇴하시겠습니까?', [
+      {
+        text: '예',
+        onPress: handlePress,
+      },
+      {
+        text: '나중에',
+        style: 'cancel',
+      },
+    ]);
+  } catch (e) {
+    yield put(actions.setUserFailure(e.response));
+  }
+}
+
 function* createMeta(action: ReturnType<typeof actions.createMeta>) {
   try {
     // *** API
@@ -179,6 +206,7 @@ export default function* root() {
   yield takeEvery(actions.SIGNIN, signIn);
   yield takeEvery(actions.SIGNUP, signUp);
   yield takeEvery(actions.SIGNOUT, signOut);
+  yield takeEvery(actions.TERMINATE, terminate);
   yield takeEvery(actions.CREATE_META, createMeta);
   yield takeEvery(actions.FORGOT_PASSWORD, forgotPassword);
   yield takeEvery(actions.CHANGE_PASSWORD, changePassword);

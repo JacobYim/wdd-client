@@ -40,6 +40,7 @@ export const AUTO_SIGNIN = 'user/AUTO_SIGNIN';
 export const SIGNIN = 'user/SIGNIN';
 export const SIGNUP = 'user/SIGNUP';
 export const SIGNOUT = 'user/SIGNOUT';
+export const TERMINATE = 'user/TERMINATE';
 export const CREATE_META = 'user/CREATE_META';
 export const FORGOT_PASSWORD = 'user/FORGOT_PASSWORD';
 export const CHANGE_PASSWORD = 'user/CHANGE_PASSWORD';
@@ -70,6 +71,10 @@ export const signUp = (payload: SignUpInterface, navigation: Navigation) => ({
 export const signOut = (navigation: Navigation) => ({
   navigation,
   type: SIGNOUT,
+});
+export const terminate = (navigation: Navigation) => ({
+  navigation,
+  type: TERMINATE,
 });
 export const createMeta = (
   payload: { birth: string; gender: string },

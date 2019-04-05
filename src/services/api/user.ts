@@ -25,6 +25,14 @@ export const signUp = async (body: actions.SignUpInterface) => {
   return response.data;
 };
 
+export const terminate = async () => {
+  // *** Set token on headers before call
+  const response: AxiosResponse<{ message: string }> = await axios.delete(
+    '/user'
+  );
+  return response.data;
+};
+
 export const updateUser = async (body: actions.UpdateInterface) => {
   // *** Set token on headers before call
   const response: AxiosResponse<actions.UserInterface> = await axios.patch(
