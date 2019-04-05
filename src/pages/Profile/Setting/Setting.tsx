@@ -3,6 +3,7 @@ import { Image, SafeAreaView, ScrollView, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
+import WebModal from 'src/components/module/WebModal';
 import * as userActions from 'src/store/actions/user';
 import RowItem from './RowItem';
 import { icons, views } from './Setting.styles';
@@ -14,12 +15,20 @@ interface Props extends NavigationScreenProps {
 interface State {
   pushNotif: boolean;
   showMyFeed: boolean;
+  web?: {
+    title: string;
+    link: string;
+  };
 }
 
 class Setting extends PureComponent<Props, State> {
   state: State = {
     pushNotif: true,
     showMyFeed: true,
+  };
+
+  hideModal = () => {
+    this.setState({ web: undefined });
   };
 
   render() {
@@ -64,8 +73,18 @@ class Setting extends PureComponent<Props, State> {
           <View style={views.boxWrapper}>
             {[
               { label: '공지사항', handlePress: () => {} },
-              { label: '서비스 약관', handlePress: () => {} },
-              { label: '개인정보 처리방침', handlePress: () => {} },
+              {
+                label: '서비스 약관',
+                handlePress: () => {
+                  this.setState({
+                    web: {
+                      title: '서비스 약관',
+                      link: 'http://policy.woodongdang.com/',
+                    },
+                  });
+                },
+              },
+              { label: '개인정보 이용 약관', handlePress: () => {} },
               { label: '고객센터', handlePress: () => {} },
               { label: '로그아웃', handlePress: () => signOut(navigation) },
               { label: '탈퇴하기', handlePress: () => {} },
@@ -75,6 +94,7 @@ class Setting extends PureComponent<Props, State> {
             ))}
           </View>
         </ScrollView>
+        <WebModal hideModal={this.hideModal} data={this.state.web} />
       </SafeAreaView>
     );
   }

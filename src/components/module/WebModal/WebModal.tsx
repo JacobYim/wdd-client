@@ -4,23 +4,20 @@ import { WebView } from 'react-native-webview';
 import TopNavbar from 'src/components/module/TopNavbar';
 
 interface Props {
-  hideDetail: () => void;
-  detail?: {
+  hideModal: () => void;
+  data?: {
     title: string;
     link: string;
   };
 }
 
-const Detail: React.FC<Props> = ({ hideDetail, detail }) => (
-  <Modal
-    visible={detail !== undefined}
-    transparent={false}
-    animationType="slide">
-    {detail && (
+const Detail: React.FC<Props> = ({ hideModal, data }) => (
+  <Modal visible={data !== undefined} transparent={false} animationType="slide">
+    {data && (
       <SafeAreaView style={{ flex: 1 }}>
         <TopNavbar
           left={{
-            handlePress: hideDetail,
+            handlePress: hideModal,
             view: (
               <Image
                 source={require('src/assets/icons/ic_back.png')}
@@ -32,10 +29,10 @@ const Detail: React.FC<Props> = ({ hideDetail, detail }) => (
               />
             ),
           }}
-          center={detail.title}
+          center={data.title}
           showBorder={true}
         />
-        <WebView source={{ uri: detail.link }} style={{ flex: 1 }} />
+        <WebView source={{ uri: data.link }} style={{ flex: 1 }} />
       </SafeAreaView>
     )}
   </Modal>
