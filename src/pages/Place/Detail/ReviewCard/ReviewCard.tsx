@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import FeedHeader from 'src/components/module/FeedHeader';
 import { Rating } from 'src/pages/Place/Map/Card/Card';
 import { Review } from 'src/services/api/review';
-import { color } from 'src/theme';
+import { color, size } from 'src/theme';
 
 interface Props {
   review: Review;
@@ -21,8 +20,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentWrapper: {
-    paddingLeft: horizontalSize + 42,
-    paddingRight: horizontalSize,
+    paddingLeft: size.horizontal + 42,
+    paddingRight: size.horizontal,
   },
   description: {
     marginTop: 6,

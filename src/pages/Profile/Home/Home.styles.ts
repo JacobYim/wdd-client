@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { color, font } from 'src/theme';
+import { color, font, size } from 'src/theme';
 
 const thumbnailSize = 75;
 
@@ -10,7 +9,7 @@ export const views = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: color.white,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     borderBottomWidth: 1,
     borderColor: color.grayEF,
   },

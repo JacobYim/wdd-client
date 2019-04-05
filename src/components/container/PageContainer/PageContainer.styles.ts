@@ -1,15 +1,14 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { color, font } from 'src/theme';
+import { color, font, size } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
-export const horizontalSize = width * 0.064;
 
 export const views = StyleSheet.create({
   container: { flex: 1 },
-  contentWrapper: { flex: 1, marginHorizontal: horizontalSize },
+  contentWrapper: { flex: 1, marginHorizontal: size.horizontal },
   bottom: {
     width,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     marginBottom: height * 0.045,
   },
   bottomBox: {

@@ -11,7 +11,7 @@ interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
 }
 
-const Home: React.FC<Props> = ({ user }) => (
+const Home: React.FC<Props> = ({ user, navigation }) => (
   <SafeAreaView>
     <TopNavbar
       right={{
@@ -21,7 +21,7 @@ const Home: React.FC<Props> = ({ user }) => (
             style={icons.setting}
           />
         ),
-        handlePress: () => {},
+        handlePress: () => navigation.navigate('setting'),
       }}
     />
     <View style={views.header}>

@@ -2,13 +2,13 @@ import { find } from 'lodash';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
 import Card from 'src/pages/Place/Map/Card';
 import { getReivews, Review } from 'src/services/api/review';
 import * as actions from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
+import { size } from 'src/theme';
 import { icons, texts, views } from './Detail.styles';
 import ReviewCard from './ReviewCard';
 import {
@@ -128,7 +128,7 @@ class Detail extends PureComponent<Props, State> {
             {this.place.contact && this.renderRow('문의', this.place.contact)}
           </View>
           <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
-            <Text style={[texts.black, { paddingHorizontal: horizontalSize }]}>
+            <Text style={[texts.black, { paddingHorizontal: size.horizontal }]}>
               사진
             </Text>
             {images && (

@@ -1,6 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { color, font, shadow } from 'src/theme';
+import { color, size } from 'src/theme';
 
 export const { width, height } = Dimensions.get('window');
 export const filterHeight = 49;
@@ -12,7 +11,7 @@ export const views = StyleSheet.create({
   },
   filterWrapper: {
     height: filterHeight,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     backgroundColor: color.grayF9,
     flexDirection: 'row',
     alignItems: 'center',

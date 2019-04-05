@@ -1,9 +1,8 @@
 import produce from 'immer';
 import React, { PureComponent } from 'react';
 import { rangeWithUnit } from 'src/assets/functions/print';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import { height as navHeight } from 'src/components/module/TopNavbar/TopNavbar';
-import { color } from 'src/theme';
+import { color, size } from 'src/theme';
 import { filterHeight as resultHeight } from '../Map.styles';
 import {
   Image,
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     width: 80,
     backgroundColor: color.white,
     marginTop: navHeight + resultHeight + 8,
-    marginLeft: horizontalSize,
+    marginLeft: size.horizontal,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 8,

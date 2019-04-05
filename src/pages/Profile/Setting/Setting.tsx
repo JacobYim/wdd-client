@@ -1,9 +1,78 @@
 import React, { PureComponent } from 'react';
+import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { connect } from 'react-redux';
+import TopNavbar from 'src/components/module/TopNavbar';
+import * as userActions from 'src/store/actions/user';
+import RowItem from './RowItem';
+import { icons, views } from './Setting.styles';
 
-class Setting extends PureComponent {
+interface Props extends NavigationScreenProps {
+  signOut: typeof userActions.signOut;
+}
+
+interface State {
+  pushNotif: boolean;
+  showMyFeed: boolean;
+}
+
+class Setting extends PureComponent<Props, State> {
+  state: State = {
+    pushNotif: true,
+    showMyFeed: true,
+  };
+
   render() {
-    return null;
+    const { navigation, signOut } = this.props;
+    const { pushNotif, showMyFeed } = this.state;
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <TopNavbar
+          center="설정"
+          left={{
+            view: (
+              <Image
+                style={icons.back}
+                source={require('src/assets/icons/ic_back.png')}
+              />
+            ),
+            handlePress: () => navigation.goBack(null),
+          }}
+          showBorder
+        />
+        <ScrollView style={views.container}>
+          <View style={[views.boxWrapper, { marginTop: 0, borderTopWidth: 0 }]}>
+            {[
+              { label: '푸시 알림', name: 'pushNotif', value: pushNotif },
+              {
+                label: '내 산책여부 표시',
+                name: 'showMyFeed',
+                value: showMyFeed,
+              },
+            ].map((item, index) => (
+              <RowItem item={item} index={index} key={item.label} />
+            ))}
+          </View>
+          <View style={views.boxWrapper}>
+            {[
+              { label: '공지사항', handlePress: () => {} },
+              { label: '서비스 약관', handlePress: () => {} },
+              { label: '개인정보 처리방침', handlePress: () => {} },
+              { label: '고객센터', handlePress: () => {} },
+              { label: '로그아웃', handlePress: () => signOut(navigation) },
+              { label: '탈퇴하기', handlePress: () => {} },
+              { label: '장소등록 및 수정 요청', handlePress: () => {} },
+            ].map((item, index) => (
+              <RowItem item={item} index={index} key={item.label} />
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
   }
 }
 
-export default Setting;
+export default connect(
+  null,
+  { signOut: userActions.signOut }
+)(Setting);

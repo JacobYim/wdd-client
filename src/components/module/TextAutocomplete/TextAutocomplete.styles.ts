@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { color } from 'src/theme';
+import { color, size } from 'src/theme';
 
 export const texts = StyleSheet.create({
   input: {
@@ -14,7 +13,7 @@ export const texts = StyleSheet.create({
 export const views = StyleSheet.create({
   inputWrapper: {
     paddingVertical: 20,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     marginTop: 8,
     marginBottom: 2,
     // border styles
@@ -23,7 +22,7 @@ export const views = StyleSheet.create({
   },
   autocompleteWrapper: {
     flex: 1,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
   },
 });
 

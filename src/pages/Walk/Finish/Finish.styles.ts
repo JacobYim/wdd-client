@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { color, font } from 'src/theme';
+import { color, font, size } from 'src/theme';
 
 export const views = StyleSheet.create({
   dashboard: {
@@ -12,7 +11,7 @@ export const views = StyleSheet.create({
     borderColor: '#00000014',
   },
   info: {
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     paddingTop: 20,
     paddingBottom: 44,
     backgroundColor: color.white,

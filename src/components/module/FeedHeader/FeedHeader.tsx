@@ -2,9 +2,8 @@ import { find } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
 import { UserInterface } from 'src/store/actions/user';
-import { color, font } from 'src/theme';
+import { color, font, size } from 'src/theme';
 
 interface Props {
   user: UserInterface;
@@ -14,7 +13,7 @@ interface Props {
 const thumbnailSize = 32;
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     paddingBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
@@ -40,20 +39,19 @@ const styles = StyleSheet.create({
 });
 
 const FeedHeader: React.FC<Props> = ({ user, updatedAt }) => {
-  const dog = find(user.dogs, dog => dog.default);
   return (
     <View style={styles.wrapper}>
-      {dog && (
+      {user.repDog && (
         <>
           <Image
             source={
-              dog.thumbnail
-                ? { uri: dog.thumbnail }
+              user.repDog.thumbnail
+                ? { uri: user.repDog.thumbnail }
                 : require('src/assets/icons/ic_place_default.png')
             }
             style={styles.thumbnail}
           />
-          <Text style={styles.name}>{dog.name}</Text>
+          <Text style={styles.name}>{user.repDog.name}</Text>
         </>
       )}
       <Text style={styles.time}>{moment(updatedAt).fromNow()}</Text>
