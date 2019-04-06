@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Alert, Image, Modal, Text, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
@@ -9,11 +10,7 @@ import { Place } from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Home.styles';
 import Scrap from './Scrap';
-import {
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native-gesture-handler';
+import Tabbar from './Tabbar';
 
 interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
@@ -79,38 +76,6 @@ class Home extends PureComponent<Props, State> {
     </TouchableOpacity>
   );
 
-  renderTopTabbar = () => (
-    <View style={views.topNavbar}>
-      {[
-        { label: '게시물', name: 'myFeed' },
-        { label: '내 상점', name: 'scrap' },
-        { label: '뱃지', name: 'badge' },
-        { label: '킁킁', name: 'likes' },
-      ].map((item, index) => (
-        <View key={index.toString()} style={{ flex: 1 }}>
-          <TouchableOpacity
-            style={views.navItem}
-            activeOpacity={0.8}
-            onPress={() => this.handleSwitchTab(item.name)}>
-            <View
-              style={[
-                views.navBorder,
-                index === 0 ? { borderWidth: 0 } : null,
-              ]}>
-              <Text
-                style={[
-                  texts.navItem,
-                  this.state.currentTab === item.name ? texts.navCurrent : null,
-                ]}>
-                {item.label}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      ))}
-    </View>
-  );
-
   renderModal = () => {
     const dogsList = Object.keys(this.props.user.dogs).map(_id => ({
       _id,
@@ -172,33 +137,34 @@ class Home extends PureComponent<Props, State> {
             handlePress: this.moveToSetting,
           }}
         />
-        <ScrollView style={{ flex: 1 }}>
-          <View style={views.header}>
-            <Image source={thumbnail} style={views.thumbnail} />
-            <View style={views.infoWrapper}>
-              <TouchableOpacity
-                style={views.selectDog}
-                activeOpacity={0.7}
-                onPress={this.toggleModal}>
-                <Text style={texts.name} numberOfLines={1}>
-                  {user.repDog ? user.repDog.name : '댕댕이 선택하기'}
-                </Text>
-                <Image
-                  source={require('src/assets/icons/ic_dropdown_black.png')}
-                  style={icons.dropDown}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={views.updateProfile}
-                activeOpacity={0.7}
-                onPress={() => navigation.navigate('edit')}>
-                <Text style={texts.updateProfile}>프로필 수정</Text>
-              </TouchableOpacity>
-            </View>
+        <View style={views.header}>
+          <Image source={thumbnail} style={views.thumbnail} />
+          <View style={views.infoWrapper}>
+            <TouchableOpacity
+              style={views.selectDog}
+              activeOpacity={0.7}
+              onPress={this.toggleModal}>
+              <Text style={texts.name} numberOfLines={1}>
+                {user.repDog ? user.repDog.name : '댕댕이 선택하기'}
+              </Text>
+              <Image
+                source={require('src/assets/icons/ic_dropdown_black.png')}
+                style={icons.dropDown}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={views.updateProfile}
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('edit')}>
+              <Text style={texts.updateProfile}>프로필 수정</Text>
+            </TouchableOpacity>
           </View>
-          {this.renderTopTabbar()}
-          {currentTab === 'scrap' && <Scrap scraps={this.state.scraps} />}
-        </ScrollView>
+        </View>
+        <Tabbar
+          onSwitch={this.handleSwitchTab}
+          currentTab={this.state.currentTab}
+        />
+        {currentTab === 'scrap' && <Scrap scraps={this.state.scraps} />}
         {this.renderModal()}
       </SafeAreaView>
     );

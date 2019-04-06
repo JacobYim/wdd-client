@@ -70,23 +70,6 @@ export const views = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  topNavbar: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: color.grayEF,
-  },
-  navItem: {
-    flex: 1,
-    paddingVertical: 16,
-  },
-  navBorder: {
-    flex: 1,
-    height: 20,
-    borderLeftWidth: 1,
-    borderColor: color.grayEF,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
 export const icons = StyleSheet.create({
@@ -128,13 +111,5 @@ export const texts = StyleSheet.create({
     marginLeft: 22,
     color: color.black,
     fontSize: font.size.medium,
-  },
-  navItem: {
-    color: color.gray48,
-    fontSize: 16,
-  },
-  navCurrent: {
-    color: color.blue,
-    fontWeight: '600',
   },
 });
