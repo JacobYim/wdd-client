@@ -7,24 +7,22 @@ import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { calcDistance } from 'src/assets/functions/calcutate';
-import * as actions from 'src/store/actions/walk';
+import * as userActions from 'src/store/actions/user';
+import * as walkActions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
 import Header from './Header';
 import TrackUser from './TrackUser';
 
 interface Props extends NavigationScreenProps {
-  pushPin: typeof actions.pushPin;
+  pushPin: typeof walkActions.pushPin;
+  updateLocation: typeof userActions.updateLocation;
   walk: ReducerState['walk'];
 }
 
 interface State {
   trackUser: boolean;
   statusChanged: boolean;
-  current: {
-    latitude: number;
-    longitude: number;
-    speed: number;
-  };
+  snapLocation: LatLng;
 }
 
 const { width, height } = Dimensions.get('window');
@@ -39,7 +37,7 @@ class Map extends Component<Props, State> {
   state: State = {
     trackUser: true,
     statusChanged: true,
-    current: { ...LOCATION, speed: 0 },
+    snapLocation: LOCATION,
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -49,37 +47,39 @@ class Map extends Component<Props, State> {
   }
 
   componentDidMount() {
+    const { pushPin, updateLocation } = this.props;
     this.watchLocation = Geolocation.watchPosition(
       ({ coords }) => {
-        const { pushPin, walk } = this.props;
-        const { latitude, longitude, speed } = coords;
-        const current = { latitude, longitude, speed: speed || 0 };
+        const { walk } = this.props;
+        const current = pick(coords, ['latitude', 'longitude']);
 
         this.setState(state =>
           produce(state, draft => {
+            // Update Walk Store
             if (walk.status === 'WALKING') {
-              const pinLength = walk.pins.length;
-              const pinInfo: actions.UpdateWalkInterface = {
+              const pinInfo: walkActions.UpdateWalkInterface = {
                 ...current,
+                speed: coords.speed || 0,
                 addDistance: 0,
               };
               if (state.statusChanged) {
                 pushPin(pinInfo);
                 draft.statusChanged = false;
               } else {
-                const previous = walk.pins[pinLength - 1];
+                const previous = walk.pins[walk.pins.length - 1];
                 pinInfo.addDistance = calcDistance(
                   pick(previous, ['latitude', 'longitude']),
-                  pick(current, ['latitude', 'longitude'])
+                  current
                 );
                 if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
               }
             }
-            this.moveCameraToUser(
-              pick(current, ['latitude', 'longitude']),
-              state.trackUser
-            );
-            draft.current = current;
+            // Default Actions
+            this.moveCameraToUser(current, state.trackUser);
+            if (calcDistance(current, draft.snapLocation) > 0.1) {
+              updateLocation(current);
+              draft.snapLocation = current;
+            }
           })
         );
       },
@@ -111,7 +111,7 @@ class Map extends Component<Props, State> {
   handlePressTrackButton = () => {
     this.setState(state =>
       produce(state, draft => {
-        const { latitude, longitude } = state.current;
+        const { latitude, longitude } = state.snapLocation;
         draft.trackUser = !state.trackUser;
         this.moveCameraToUser({ latitude, longitude }, draft.trackUser);
       })
@@ -143,5 +143,5 @@ class Map extends Component<Props, State> {
 
 export default connect(
   (state: ReducerState) => ({ walk: state.walk }),
-  { pushPin: actions.pushPin }
+  { pushPin: walkActions.pushPin, updateLocation: userActions.updateLocation }
 )(Map);

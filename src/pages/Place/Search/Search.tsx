@@ -3,16 +3,15 @@ import React, { PureComponent } from 'react';
 import Geolocation from 'react-native-geolocation-service';
 import { NavigationScreenProps } from 'react-navigation';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
-import { Place, searchPlace } from 'src/services/api/place';
+import { searchPlace } from 'src/services/api/place';
+import { Place } from 'src/store/actions/place';
 
 interface State {
   places: Place[];
 }
 
 class Search extends PureComponent<NavigationScreenProps, State> {
-  state: State = {
-    places: [],
-  };
+  state: State = { places: [] };
 
   handleChange = (keyword: string) => {
     const { places } = this.state;

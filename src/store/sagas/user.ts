@@ -201,6 +201,20 @@ function* changePassword(action: ReturnType<typeof actions.changePassword>) {
   }
 }
 
+function* updateLocation(action: ReturnType<typeof actions.updateLocation>) {
+  try {
+    yield put(actions.setUserRequest());
+    const location = {
+      type: 'Point',
+      coordinates: [action.payload.longitude, action.payload.latitude],
+    };
+    const data = yield call(api.updateUser, { location });
+    yield put(actions.setUserSuccess(data));
+  } catch (e) {
+    yield put(actions.setUserFailure(e.response));
+  }
+}
+
 export default function* root() {
   yield takeEvery(actions.AUTO_SIGNIN, autoSignIn);
   yield takeEvery(actions.SIGNIN, signIn);
@@ -210,4 +224,5 @@ export default function* root() {
   yield takeEvery(actions.CREATE_META, createMeta);
   yield takeEvery(actions.FORGOT_PASSWORD, forgotPassword);
   yield takeEvery(actions.CHANGE_PASSWORD, changePassword);
+  yield takeEvery(actions.UPDATE_LOCATION, updateLocation);
 }

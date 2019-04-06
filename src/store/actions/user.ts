@@ -1,3 +1,4 @@
+import { LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
 import { DogInterface } from './dog';
 
@@ -11,7 +12,7 @@ export interface UserInterface {
   gender: string; // 'M' | 'F'
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
   dogs: { [_id: string]: string };
-  location: { type: string; coordinates: [number, number] };
+  location: { type: string; coordinates: number[] };
   places: string[];
   repDog?: DogInterface;
 }
@@ -22,7 +23,7 @@ export interface UpdateInterface {
   birth?: string;
   gender?: string; // 'M' | 'F'
   status?: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
-  location?: { type: string; coordinates: [number, number] };
+  location?: { type: string; coordinates: number[] };
   repDog?: DogInterface;
 }
 
@@ -44,6 +45,7 @@ export const TERMINATE = 'user/TERMINATE';
 export const CREATE_META = 'user/CREATE_META';
 export const FORGOT_PASSWORD = 'user/FORGOT_PASSWORD';
 export const CHANGE_PASSWORD = 'user/CHANGE_PASSWORD';
+export const UPDATE_LOCATION = 'user/UPDATE_LOCATION';
 
 export const SET_USER_REQUEST = 'user/SET_USER_REQUEST';
 export const SET_USER_SUCCESS = 'user/SET_USER_SUCCESS';
@@ -92,6 +94,10 @@ export const changePassword = (
   payload: { password: string; token: string },
   navigation: Navigation
 ) => ({ payload, navigation, type: CHANGE_PASSWORD });
+export const updateLocation = (payload: LatLng) => ({
+  payload,
+  type: UPDATE_LOCATION,
+});
 
 export const setUserRequest = () => ({ type: SET_USER_REQUEST });
 export const setUserSuccess = (payload: UserInterface) => ({
