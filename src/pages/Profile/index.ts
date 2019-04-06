@@ -8,6 +8,10 @@ const ProfileNavigator = createStackNavigator(
     home: HomeScreen,
     setting: SettingScreen,
     edit: EditScreen,
+    create: {
+      screen: EditScreen,
+      params: { createMode: true },
+    },
   },
   {
     initialRouteName: 'home',

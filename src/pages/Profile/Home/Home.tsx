@@ -70,12 +70,18 @@ class Home extends PureComponent<Props, State> {
               keyExtractor={(d, index) => index.toString()}
               renderItem={({ item }) => this.renderSelectDog(item)}
             />
-            <TouchableOpacity style={views.addDogButton} activeOpacity={0.7}>
+            <TouchableOpacity
+              style={views.addDogButton}
+              activeOpacity={0.7}
+              onPress={() => {
+                this.toggleModal();
+                this.props.navigation.navigate('create');
+              }}>
               <Image
                 source={require('src/assets/icons/ic_add.png')}
                 style={icons.add}
               />
-              <Text style={texts.addDog}>계정 추가</Text>
+              <Text style={texts.addDog}>반려견 추가</Text>
             </TouchableOpacity>
           </SafeAreaView>
         </TouchableOpacity>
