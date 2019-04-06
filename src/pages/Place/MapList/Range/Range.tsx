@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { rangeWithUnit } from 'src/assets/functions/print';
 import { height as navHeight } from 'src/components/module/TopNavbar/TopNavbar';
 import { color, size } from 'src/theme';
-import { filterHeight as resultHeight } from '../Map.styles';
+import { filterHeight as resultHeight } from '../MapList.styles';
 import {
   Image,
   Modal,

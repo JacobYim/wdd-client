@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { cardHeight } from 'src/pages/Place/Map/Card';
+import { cardHeight } from 'src/pages/Place/MapList/Card';
 import { color, shadow, size } from 'src/theme';
 
 const { height } = Dimensions.get('window');

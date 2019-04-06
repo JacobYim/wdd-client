@@ -4,7 +4,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
-import Card from 'src/pages/Place/Map/Card';
+import Card from 'src/pages/Place/MapList/Card';
 import { getReivews, Review } from 'src/services/api/review';
 import * as actions from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';

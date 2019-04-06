@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import FeedHeader from 'src/components/module/FeedHeader';
-import { Rating } from 'src/pages/Place/Map/Card/Card';
+import { Rating } from 'src/pages/Place/MapList/Card/Card';
 import { Review } from 'src/services/api/review';
 import { color, size } from 'src/theme';
 

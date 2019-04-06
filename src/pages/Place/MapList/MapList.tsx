@@ -4,11 +4,11 @@ import React, { PureComponent } from 'react';
 import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
-import TrackUser from 'src/pages/App/Map/TrackUser';
+import TrackUser from 'src/pages/Map/Map/TrackUser';
 import { Params, searchPlace } from 'src/services/api/place';
 import { Place } from 'src/store/actions/place';
 import Card, { cardWidth } from './Card';
-import { height, icons, views, width } from './Map.styles';
+import { height, icons, views, width } from './MapList.styles';
 import MarkerView from './MarkerView';
 import Range from './Range';
 import Carousel, {
@@ -45,7 +45,7 @@ type CarouselInterface = Carousel<Place> &
   CarouselStatic<Place> &
   ScrollViewProps;
 
-class Map extends PureComponent<NavigationScreenProps, State> {
+class MapList extends PureComponent<NavigationScreenProps, State> {
   private map = React.createRef<MapView>();
   private carousel = React.createRef<CarouselInterface>();
   private loadUserLocation = false;
@@ -217,4 +217,4 @@ class Map extends PureComponent<NavigationScreenProps, State> {
   }
 }
 
-export default Map;
+export default MapList;
