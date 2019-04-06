@@ -37,6 +37,7 @@ export interface SignUpInterface extends SignInInterface {
 }
 
 // *** CONSTS
+export const GET_USER = 'user/GET_USER';
 export const AUTO_SIGNIN = 'user/AUTO_SIGNIN';
 export const SIGNIN = 'user/SIGNIN';
 export const SIGNUP = 'user/SIGNUP';
@@ -56,6 +57,7 @@ export const REMOVE_USER = 'user/REMOVE_USER';
 // *** FUNCTIONS
 type Navigation = NavigationScreenProp<any>;
 
+export const getUser = () => ({ type: GET_USER });
 export const autoSignIn = (navigation: Navigation) => ({
   navigation,
   type: AUTO_SIGNIN,

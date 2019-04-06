@@ -44,6 +44,16 @@ export function* navigateToApp(navigation: NavigationScreenProp<any>) {
 }
 
 // SAGAS
+function* getUser() {
+  try {
+    yield put(actions.setUserRequest());
+    const data = yield call(api.getUser);
+    yield put(actions.setUserSuccess(data));
+  } catch (e) {
+    yield put(actions.setUserFailure(e));
+  }
+}
+
 function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
   try {
     // *** GET TOKEN FROM STORAGE
@@ -216,6 +226,7 @@ function* updateLocation(action: ReturnType<typeof actions.updateLocation>) {
 }
 
 export default function* root() {
+  yield takeEvery(actions.GET_USER, getUser);
   yield takeEvery(actions.AUTO_SIGNIN, autoSignIn);
   yield takeEvery(actions.SIGNIN, signIn);
   yield takeEvery(actions.SIGNUP, signUp);

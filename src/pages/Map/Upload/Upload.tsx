@@ -10,12 +10,14 @@ import PageContainer from 'src/components/container/PageContainer';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
 import { createFeed } from 'src/services/api/feed';
 import { uploadImages } from 'src/services/aws/s3';
+import * as userActions from 'src/store/actions/user';
 import { ReducerState } from 'src/store/reducers';
 import ImageCard, { AddImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
 
 interface Props extends LoadingProps, NavigationScreenProps {
   walk: ReducerState['walk'];
+  getUser: typeof userActions.getUser;
 }
 
 interface State {
@@ -30,7 +32,7 @@ class Upload extends PureComponent<Props, State> {
   };
 
   handleSave = async () => {
-    const { navigation, walk, toggleLoading } = this.props;
+    const { navigation, walk, toggleLoading, getUser } = this.props;
     const uris = this.state.images.map(image => image.nextUri || image.uri);
     const images = await uploadImages({
       uris,
@@ -43,6 +45,7 @@ class Upload extends PureComponent<Props, State> {
       pins: JSON.stringify(walk.pins),
       ...pick(walk, ['seconds', 'distance', 'steps', 'pees', 'poos']),
     });
+    await getUser();
     navigation.popToTop();
     navigation.getParam('handleDismiss')();
   };
@@ -120,6 +123,11 @@ class Upload extends PureComponent<Props, State> {
   }
 }
 
-export default connect((state: ReducerState) => ({
-  walk: state.walk,
-}))(withLoading(Upload));
+export default connect(
+  (state: ReducerState) => ({
+    walk: state.walk,
+  }),
+  {
+    getUser: userActions.getUser,
+  }
+)(withLoading(Upload));
