@@ -3,9 +3,12 @@ import { Alert, Image, Modal, Text, View } from 'react-native';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
+import { serachByIds } from 'src/services/api/place';
 import * as dogActions from 'src/store/actions/dog';
+import { Place } from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Home.styles';
+import Scrap from './Scrap';
 import {
   ScrollView,
   TouchableOpacity,
@@ -20,13 +23,23 @@ interface Props extends NavigationScreenProps {
 interface State {
   showSelectDog: boolean;
   currentTab: string;
+  scraps: Place[];
 }
 
 class Home extends PureComponent<Props, State> {
   state: State = {
     showSelectDog: false,
     currentTab: 'myFeed',
+    scraps: [],
   };
+
+  async componentDidMount() {
+    const { places } = this.props.user;
+    if (this.state.scraps.length === 0 && places.length > 0) {
+      const scraps = await serachByIds({ places });
+      this.setState({ scraps });
+    }
+  }
 
   toggleModal = () => {
     this.setState({ showSelectDog: !this.state.showSelectDog });
@@ -140,6 +153,7 @@ class Home extends PureComponent<Props, State> {
 
   render() {
     const { user, navigation } = this.props;
+    const { currentTab } = this.state;
     const thumbnail =
       user.repDog && user.repDog.thumbnail
         ? { uri: user.repDog.thumbnail }
@@ -183,6 +197,7 @@ class Home extends PureComponent<Props, State> {
             </View>
           </View>
           {this.renderTopTabbar()}
+          {currentTab === 'scrap' && <Scrap scraps={this.state.scraps} />}
         </ScrollView>
         {this.renderModal()}
       </SafeAreaView>

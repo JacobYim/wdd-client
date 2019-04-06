@@ -95,12 +95,12 @@ class PageContainer extends PureComponent<Props, State> {
     const { contentOffset } = evt.nativeEvent;
     this.setState(state =>
       produce(state, draft => {
-        if (contentOffset && contentOffset.y > 84) {
+        if (contentOffset.y > 84) {
           if (!state.showBorder) draft.showBorder = true;
           if (title && !center && !state.center) draft.center = title;
         } else {
           if (state.showBorder) draft.showBorder = false;
-          if (state.center) delete draft.center;
+          if (title && state.center) draft.center = undefined;
         }
       })
     );
