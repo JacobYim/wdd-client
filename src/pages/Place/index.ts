@@ -1,4 +1,4 @@
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import DetailScreen from './Detail';
 import MapListScreen from './MapList';
 import ReviewScreen from './Review';
