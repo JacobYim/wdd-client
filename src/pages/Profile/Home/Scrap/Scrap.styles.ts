@@ -2,9 +2,10 @@ import { StyleSheet } from 'react-native';
 import { color, font, size } from 'src/theme';
 
 const thumbnailSize = 56;
+const verticalSize = 8;
 export const views = StyleSheet.create({
   container: {
-    paddingHorizontal: size.horizontal,
+    paddingLeft: size.horizontal,
     paddingTop: 11.5,
   },
   wrapper: {
@@ -17,7 +18,8 @@ export const views = StyleSheet.create({
     borderRadius: thumbnailSize / 2,
   },
   textWrapper: {
-    paddingVertical: 8,
+    flex: 1,
+    height: thumbnailSize + verticalSize * 2,
     marginLeft: 12,
     borderTopWidth: 1,
     borderColor: color.grayEF,
