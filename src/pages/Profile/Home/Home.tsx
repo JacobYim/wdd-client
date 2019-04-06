@@ -19,11 +19,13 @@ interface Props extends NavigationScreenProps {
 
 interface State {
   showSelectDog: boolean;
+  currentTab: string;
 }
 
 class Home extends PureComponent<Props, State> {
   state: State = {
     showSelectDog: false,
+    currentTab: 'myFeed',
   };
 
   toggleModal = () => {
@@ -43,6 +45,10 @@ class Home extends PureComponent<Props, State> {
     this.toggleModal();
   };
 
+  handleSwitchTab = (tab: string) => {
+    this.setState({ currentTab: tab });
+  };
+
   renderSelectDog = (item: { _id: string; name: string }) => (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -58,6 +64,38 @@ class Home extends PureComponent<Props, State> {
         }
       />
     </TouchableOpacity>
+  );
+
+  renderTopTabbar = () => (
+    <View style={views.topNavbar}>
+      {[
+        { label: '게시물', name: 'myFeed' },
+        { label: '내 상점', name: 'scrap' },
+        { label: '뱃지', name: 'badge' },
+        { label: '킁킁', name: 'likes' },
+      ].map((item, index) => (
+        <View key={index.toString()} style={{ flex: 1 }}>
+          <TouchableOpacity
+            style={views.navItem}
+            activeOpacity={0.8}
+            onPress={() => this.handleSwitchTab(item.name)}>
+            <View
+              style={[
+                views.navBorder,
+                index === 0 ? { borderWidth: 0 } : null,
+              ]}>
+              <Text
+                style={[
+                  texts.navItem,
+                  this.state.currentTab === item.name ? texts.navCurrent : null,
+                ]}>
+                {item.label}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      ))}
+    </View>
   );
 
   renderModal = () => {
@@ -144,6 +182,7 @@ class Home extends PureComponent<Props, State> {
               </TouchableOpacity>
             </View>
           </View>
+          {this.renderTopTabbar()}
         </ScrollView>
         {this.renderModal()}
       </SafeAreaView>
