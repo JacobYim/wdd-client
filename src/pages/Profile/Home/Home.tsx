@@ -3,6 +3,7 @@ import { Alert, Image, Modal, Text, View } from 'react-native';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
+import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Home.styles';
 import {
@@ -13,6 +14,7 @@ import {
 
 interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
+  selectDog: typeof dogActions.selectDog;
 }
 
 interface State {
@@ -35,8 +37,17 @@ class Home extends PureComponent<Props, State> {
     else navigation.navigate('setting');
   };
 
+  handleSelectDog = async (_id: string) => {
+    const { selectDog } = this.props;
+    await selectDog({ _id });
+    this.toggleModal();
+  };
+
   renderSelectDog = (item: { _id: string; name: string }) => (
-    <TouchableOpacity activeOpacity={0.7} style={views.dogSelectWrapper}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={views.dogSelectWrapper}
+      onPress={() => this.handleSelectDog(item._id)}>
       <Text style={texts.selectDogName}>{item.name}</Text>
       <Image
         style={icons.check}
@@ -91,6 +102,10 @@ class Home extends PureComponent<Props, State> {
 
   render() {
     const { user, navigation } = this.props;
+    const thumbnail =
+      user.repDog && user.repDog.thumbnail
+        ? { uri: user.repDog.thumbnail }
+        : require('src/assets/icons/ic_place_default.png');
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -107,14 +122,7 @@ class Home extends PureComponent<Props, State> {
         />
         <ScrollView style={{ flex: 1 }}>
           <View style={views.header}>
-            <Image
-              source={
-                user.repDog
-                  ? { uri: user.repDog.thumbnail }
-                  : require('src/assets/icons/ic_place_default.png')
-              }
-              style={views.thumbnail}
-            />
+            <Image source={thumbnail} style={views.thumbnail} />
             <View style={views.infoWrapper}>
               <TouchableOpacity
                 style={views.selectDog}
@@ -143,4 +151,7 @@ class Home extends PureComponent<Props, State> {
   }
 }
 
-export default connect((state: ReducerState) => ({ user: state.user }))(Home);
+export default connect(
+  (state: ReducerState) => ({ user: state.user }),
+  { selectDog: dogActions.selectDog }
+)(Home);

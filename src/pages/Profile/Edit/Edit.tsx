@@ -1,6 +1,7 @@
+import produce from 'immer';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Alert, Image, Modal, TextInput as Input, View } from 'react-native';
+import { Image, Modal, TextInput as Input, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
@@ -30,6 +31,11 @@ interface State
   > {
   showModal: boolean;
   birth?: Date;
+  error: {
+    name?: string;
+    breed?: string;
+    gender?: string;
+  };
 }
 
 class Edit extends PureComponent<Props, State> {
@@ -49,13 +55,14 @@ class Edit extends PureComponent<Props, State> {
     this.state = {
       _id: this.create ? '' : repDog._id,
       name: this.create ? '' : repDog.name,
-      thumbnail: this.create ? '' : repDog.thumbnail,
       breed: this.create ? '' : repDog.breed,
       gender: this.create ? '' : repDog.gender,
+      thumbnail: !this.create ? repDog.thumbnail : undefined,
       birth: !this.create && repDog.birth ? new Date(repDog.birth) : undefined,
       weight: !this.create && repDog.weight ? repDog.weight : undefined,
       info: !this.create && repDog.info ? repDog.info : undefined,
       showModal: false,
+      error: {},
     };
   }
 
@@ -67,11 +74,22 @@ class Edit extends PureComponent<Props, State> {
     name,
     value,
   }: HandleChangeText | HandleChangeSelector | HandleChangeDate) => {
-    this.setState(state => ({ ...state, [name]: value }));
+    this.setState(state => {
+      const error = { ...state.error };
+      if (name === 'name' || name === 'gender') {
+        delete error[name];
+      }
+      return { ...state, error, [name]: value };
+    });
   };
 
   handleBreedChange = ({ name }: { name: string }) => {
-    this.setState({ breed: name });
+    this.setState(state =>
+      produce(state, draft => {
+        draft.breed = name;
+        delete draft.error.breed;
+      })
+    );
     this.toggleModal();
   };
 
@@ -87,6 +105,16 @@ class Edit extends PureComponent<Props, State> {
     });
   };
 
+  validate = async () => {
+    await this.setState(state =>
+      produce(state, draft => {
+        if (!state.name) draft.error.name = '반려견의 이름을 입력해주세요.';
+        if (!state.breed) draft.error.breed = '반려견의 품종을 입력해주세요.';
+        if (!state.gender) draft.error.gender = '반려견의 성별을 입력해주세요.';
+      })
+    );
+  };
+
   handleSubmit = async () => {
     const {
       createDog,
@@ -95,8 +123,9 @@ class Edit extends PureComponent<Props, State> {
       user,
       toggleLoading,
     } = this.props;
-    const { showModal, birth: prevBirth, _id, ...state } = this.state;
-    if (state.name && state.breed && state.gender) {
+    await this.validate();
+    const { showModal, error, birth: prevBirth, _id, ...state } = this.state;
+    if (Object.keys(error).length === 0) {
       let birth: string | undefined = undefined;
       // Parse state data
       if (state.thumbnail !== undefined) {
@@ -115,8 +144,6 @@ class Edit extends PureComponent<Props, State> {
       if (_id) await updateDog({ ...state, birth, _id });
       else await createDog({ ...state, birth });
       navigation.goBack(null);
-    } else {
-      Alert.alert('반려견의 이름, 품종, 성별을 모두 입력해주세요.');
     }
   };
 
@@ -147,6 +174,7 @@ class Edit extends PureComponent<Props, State> {
         <TextInput
           name="name"
           label="이름"
+          alert={this.state.error.name}
           value={this.state.name}
           inputs={this.inputs}
           handleChange={this.handleChange}
@@ -154,6 +182,7 @@ class Edit extends PureComponent<Props, State> {
         <TextInput
           name="breed"
           label="품종"
+          alert={this.state.error.breed}
           value={this.state.breed}
           handleChange={() => null}
           handleFocus={this.toggleModal}
@@ -162,6 +191,7 @@ class Edit extends PureComponent<Props, State> {
           name="gender"
           label="성별"
           value={this.state.gender}
+          alert={this.state.error.gender}
           handleChange={this.handleChange}
           list={[
             { name: 'M', label: '수컷' },
