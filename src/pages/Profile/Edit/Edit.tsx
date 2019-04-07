@@ -26,8 +26,8 @@ interface Props extends LoadingProps, NavigationScreenProps {
 
 interface State
   extends Pick<
-    dogActions.UpdateDogInterface,
-    Exclude<keyof dogActions.UpdateDogInterface, 'birth'>
+    dogActions.UpdateDog,
+    Exclude<keyof dogActions.UpdateDog, 'birth'>
   > {
   showModal: boolean;
   birth?: Date;

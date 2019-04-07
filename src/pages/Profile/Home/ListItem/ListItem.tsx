@@ -4,7 +4,7 @@ import { color, font, size } from 'src/theme';
 
 interface Props {
   onPress?: () => void;
-  thumbnail: string;
+  thumbnail?: string;
   index: number;
   name: string;
   message: string;
@@ -52,7 +52,14 @@ const ListItem: React.FC<Props> = ({
     style={styles.wrapper}
     onPress={onPress}
     activeOpacity={0.7}>
-    <Image source={{ uri: thumbnail }} style={styles.thumbnail} />
+    <Image
+      source={
+        thumbnail
+          ? { uri: thumbnail }
+          : require('src/assets/icons/ic_place_default.png')
+      }
+      style={styles.thumbnail}
+    />
     <View
       style={[styles.textWrapper, index === 0 ? { borderTopWidth: 0 } : null]}>
       <Text style={styles.name}>{name}</Text>

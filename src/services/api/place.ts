@@ -30,7 +30,7 @@ export const searchPlace = async (params?: Params) => {
   );
 };
 
-export const serachByIds = async (params: { places: string[] }) => {
+export const getScraps = async (params: { places: string[] }) => {
   const response: AxiosResponse<PlaceResponse[]> = await axios.get('/places', {
     params: { places: JSON.stringify(params.places) },
   });

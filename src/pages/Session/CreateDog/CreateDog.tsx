@@ -27,7 +27,7 @@ interface Props extends LoadingProps, NavigationScreenProps {
   email: ReducerState['user']['email'];
 }
 
-interface State extends actions.DogDataInterface {
+interface State extends actions.DogBase {
   showModal: boolean;
 }
 

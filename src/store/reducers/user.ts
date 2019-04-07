@@ -56,7 +56,7 @@ export default handleActions<UserState, any>(
       }),
     [dogActions.SET_DOG_SUCCESS]: (state, action) =>
       produce(state, draft => {
-        const dog = action.payload as dogActions.DogInterface;
+        const dog = action.payload as dogActions.Dog;
         draft.repDog = dog;
         draft.dogs[dog._id] = dog.name;
       }),

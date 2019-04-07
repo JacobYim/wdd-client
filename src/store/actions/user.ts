@@ -1,6 +1,6 @@
 import { LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
-import { DogInterface } from './dog';
+import { Dog } from './dog';
 
 // *** INTERFACES
 export interface UserInterface {
@@ -14,7 +14,7 @@ export interface UserInterface {
   dogs: { [_id: string]: string };
   location: { type: string; coordinates: number[] };
   places: string[];
-  repDog?: DogInterface;
+  repDog?: Dog;
 }
 
 export interface UpdateInterface {
@@ -24,7 +24,7 @@ export interface UpdateInterface {
   gender?: string; // 'M' | 'F'
   status?: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
   location?: { type: string; coordinates: number[] };
-  repDog?: DogInterface;
+  repDog?: Dog;
 }
 
 export interface SignInInterface {

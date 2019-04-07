@@ -1,17 +1,19 @@
 import { isEqual } from 'lodash';
+import moment from 'moment';
 import React, { PureComponent } from 'react';
 import { Alert, Image, Modal, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
-import { serachByIds } from 'src/services/api/place';
+import { LinkedLike, searchDogs } from 'src/services/api/dog';
+import { getScraps } from 'src/services/api/place';
 import * as dogActions from 'src/store/actions/dog';
-import { Place } from 'src/store/actions/place';
+import { Place as Scrap } from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Home.styles';
 import ListItem from './ListItem';
-import Tabbar from './Tabbar';
+import TabBar from './Tabbar';
 
 interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
@@ -21,7 +23,8 @@ interface Props extends NavigationScreenProps {
 interface State {
   showSelectDog: boolean;
   currentTab: string;
-  scraps: Place[];
+  scraps: Scrap[];
+  likes: LinkedLike[];
 }
 
 class Home extends PureComponent<Props, State> {
@@ -29,6 +32,7 @@ class Home extends PureComponent<Props, State> {
     showSelectDog: false,
     currentTab: 'myFeed',
     scraps: [],
+    likes: [],
   };
 
   componentDidMount() {
@@ -51,10 +55,24 @@ class Home extends PureComponent<Props, State> {
             this.state.scraps.map(scrap => scrap._id).sort()
           )
         ) {
-          const scraps = await serachByIds({ places });
+          const scraps = await getScraps({ places });
           this.setState({ scraps });
         }
-        break;
+        return;
+      }
+      case 'likes': {
+        const { repDog } = this.props.user;
+        if (!repDog) return;
+        if (
+          !isEqual(
+            repDog.likes.map(like => like.dog),
+            this.state.likes.map(like => like._id)
+          )
+        ) {
+          const likes = await searchDogs({ likes: repDog.likes });
+          this.setState({ likes });
+        }
+        return;
       }
     }
   };
@@ -178,7 +196,7 @@ class Home extends PureComponent<Props, State> {
             </TouchableOpacity>
           </View>
         </View>
-        <Tabbar
+        <TabBar
           onSwitch={this.handleSwitchTab}
           currentTab={this.state.currentTab}
         />
@@ -194,6 +212,21 @@ class Home extends PureComponent<Props, State> {
                 index={index}
                 name={item.name}
                 message={item.label}
+              />
+            )}
+          />
+        )}
+        {currentTab === 'likes' && (
+          <FlatList
+            data={this.state.likes}
+            keyExtractor={(i, index) => index.toString()}
+            contentContainerStyle={views.listContainer}
+            renderItem={({ item, index }) => (
+              <ListItem
+                thumbnail={item.thumbnail}
+                index={index}
+                name={`${item.name}님이 킁킁을 보냈습니다.`}
+                message={moment(item.createdAt).fromNow()}
               />
             )}
           />

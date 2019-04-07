@@ -1,12 +1,12 @@
 import { NavigationScreenProp } from 'react-navigation';
 
-interface Like {
+export interface Like {
   dog: string;
   createdAt: Date;
 }
 
 // *** INTERFACES
-export interface DogDataInterface {
+export interface DogBase {
   name: string;
   thumbnail?: string;
   breed: string;
@@ -16,11 +16,11 @@ export interface DogDataInterface {
   info?: string;
 }
 
-export interface UpdateDogInterface extends DogDataInterface {
+export interface UpdateDog extends DogBase {
   _id: string;
 }
 
-export interface DogInterface extends DogDataInterface {
+export interface Dog extends DogBase {
   _id: string;
   user: string;
   feeds: string[];
@@ -43,20 +43,20 @@ export const selectDog = (payload: { _id: string }) => ({
   type: SELECT_DOG,
 });
 export const createDog = (
-  payload: DogDataInterface,
+  payload: DogBase,
   navigation?: NavigationScreenProp<any>
 ) => ({
   payload,
   navigation,
   type: CREATE_DOG,
 });
-export const updateDog = (payload: UpdateDogInterface) => ({
+export const updateDog = (payload: UpdateDog) => ({
   payload,
   type: UPDATE_DOG,
 });
 
 export const setDogRequest = () => ({ type: SET_DOG_REQUEST });
-export const setDogSuccess = (payload: DogInterface) => ({
+export const setDogSuccess = (payload: Dog) => ({
   payload,
   type: SET_DOG_SUCCESS,
 });
