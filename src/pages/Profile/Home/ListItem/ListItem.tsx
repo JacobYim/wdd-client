@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { color, font, size } from 'src/theme';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import DefaultImage from 'src/components/module/DefaultImage';
+import { color, font } from 'src/theme';
 
 interface Props {
   onPress?: () => void;
@@ -16,11 +17,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  thumbnail: {
-    width: thumbnailSize,
-    height: thumbnailSize,
-    borderRadius: thumbnailSize / 2,
   },
   textWrapper: {
     flex: 1,
@@ -52,14 +48,7 @@ const ListItem: React.FC<Props> = ({
     style={styles.wrapper}
     onPress={onPress}
     activeOpacity={0.7}>
-    <Image
-      source={
-        thumbnail
-          ? { uri: thumbnail }
-          : require('src/assets/icons/ic_place_default.png')
-      }
-      style={styles.thumbnail}
-    />
+    <DefaultImage size={thumbnailSize} uri={thumbnail} />
     <View
       style={[styles.textWrapper, index === 0 ? { borderTopWidth: 0 } : null]}>
       <Text style={styles.name}>{name}</Text>

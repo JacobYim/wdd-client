@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import breeds from 'src/assets/consts/breeds.json';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
+import DefaultImage from 'src/components/module/DefaultImage';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
@@ -105,14 +106,7 @@ class CreateDog extends Component<Props, State> {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={this.handleImagePicker}>
-            <Image
-              style={views.thumbnail}
-              source={
-                thumbnail
-                  ? { uri: thumbnail }
-                  : require('src/assets/icons/ic_thumbnail.png')
-              }
-            />
+            <DefaultImage size={100} uri={thumbnail} showBorder />
             <Image
               style={views.edit}
               source={require('src/assets/icons/ic_edit.png')}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import DefaultImage from 'src/components/module/DefaultImage';
 import { Place } from 'src/store/actions/place';
 import { color, font, shadow } from 'src/theme';
 
@@ -12,7 +13,6 @@ interface Props {
 
 export const cardWidth = 327;
 export const cardHeight = 104;
-const thumbnailSize = 50;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -23,13 +23,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: color.white,
     ...shadow.deep,
-  },
-  placeIcon: {
-    width: thumbnailSize,
-    height: thumbnailSize,
-    borderRadius: thumbnailSize / 2,
-    borderWidth: 1,
-    borderColor: `${color.black}14`,
   },
   infoWrapper: {
     flex: 1,
@@ -89,13 +82,9 @@ export const Rating: React.FC<{ rating: number }> = ({ rating }) => {
 };
 
 const Info: React.FC<Props> = ({ place, handlePress, icon, width }) => {
-  const placeIcon = place.icon
-    ? { uri: place.icon }
-    : require('src/assets/icons/ic_place_default.png');
-
   return (
     <View style={[styles.wrapper, width ? { width } : null]}>
-      <Image source={placeIcon} style={styles.placeIcon} />
+      <DefaultImage size={50} uri={place.icon} />
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{place.name}</Text>
         <Text style={styles.describe}>{place.label}</Text>

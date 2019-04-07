@@ -5,6 +5,7 @@ import { Alert, Image, Modal, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
+import DefaultImage from 'src/components/module/DefaultImage';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { LinkedLike, searchDogs } from 'src/services/api/dog';
 import { getScraps } from 'src/services/api/place';
@@ -155,10 +156,6 @@ class Home extends PureComponent<Props, State> {
   render() {
     const { user, navigation } = this.props;
     const { currentTab } = this.state;
-    const thumbnail =
-      user.repDog && user.repDog.thumbnail
-        ? { uri: user.repDog.thumbnail }
-        : require('src/assets/icons/ic_place_default.png');
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -174,7 +171,7 @@ class Home extends PureComponent<Props, State> {
           }}
         />
         <View style={views.header}>
-          <Image source={thumbnail} style={views.thumbnail} />
+          <DefaultImage size={75} uri={user.repDog && user.repDog.thumbnail} />
           <View style={views.infoWrapper}>
             <TouchableOpacity
               style={views.selectDog}

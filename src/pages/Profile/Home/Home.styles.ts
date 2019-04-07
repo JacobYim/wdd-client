@@ -1,8 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { color, font, size } from 'src/theme';
 
-const thumbnailSize = 75;
-
 const { width, height } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
@@ -14,12 +12,6 @@ export const views = StyleSheet.create({
     paddingHorizontal: size.horizontal,
     borderBottomWidth: 1,
     borderColor: color.grayEF,
-  },
-  thumbnail: {
-    width: thumbnailSize,
-    height: thumbnailSize,
-    borderRadius: thumbnailSize / 2,
-    resizeMode: 'cover',
   },
   infoWrapper: {
     marginLeft: 20,

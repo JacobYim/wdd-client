@@ -10,6 +10,7 @@ import breeds from 'src/assets/consts/breeds.json';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
 import DateInput, { HandleChangeDate } from 'src/components/module/DateInput';
+import DefaultImage from 'src/components/module/DefaultImage';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
@@ -149,9 +150,6 @@ class Edit extends PureComponent<Props, State> {
 
   render() {
     const { navigation } = this.props;
-    const thumbnail = this.state.thumbnail
-      ? { uri: this.state.thumbnail }
-      : require('src/assets/icons/ic_place_default.png');
 
     return (
       <PageContainer
@@ -164,7 +162,7 @@ class Edit extends PureComponent<Props, State> {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={this.handleImagePicker}>
-            <Image style={views.thumbnail} source={thumbnail} />
+            <DefaultImage size={80} uri={this.state.thumbnail} />
             <Image
               style={icons.edit}
               source={require('src/assets/icons/ic_edit.png')}

@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-const thumbnailSize = 80;
 const thumbnailEditSize = 26;
 
 export const views = StyleSheet.create({
@@ -8,12 +7,6 @@ export const views = StyleSheet.create({
     marginTop: 30,
     marginBottom: 24,
     alignItems: 'center',
-  },
-  thumbnail: {
-    width: thumbnailSize,
-    height: thumbnailSize,
-    borderRadius: thumbnailSize / 2,
-    resizeMode: 'cover',
   },
 });
 
