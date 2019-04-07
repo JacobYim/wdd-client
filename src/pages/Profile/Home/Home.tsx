@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import React, { PureComponent } from 'react';
 import { Alert, Image, Modal, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
@@ -9,7 +10,7 @@ import * as dogActions from 'src/store/actions/dog';
 import { Place } from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Home.styles';
-import Scrap from './Scrap';
+import ListItem from './ListItem';
 import Tabbar from './Tabbar';
 
 interface Props extends NavigationScreenProps {
@@ -30,16 +31,32 @@ class Home extends PureComponent<Props, State> {
     scraps: [],
   };
 
-  async componentDidMount() {
-    const { places } = this.props.user;
-    if (this.state.scraps.length === 0 && places.length > 0) {
-      const scraps = await serachByIds({ places });
-      this.setState({ scraps });
-    }
+  componentDidMount() {
+    this.props.navigation.addListener('willFocus', () => {
+      this.loadingDataByTab(this.state.currentTab);
+    });
   }
 
   toggleModal = () => {
     this.setState({ showSelectDog: !this.state.showSelectDog });
+  };
+
+  loadingDataByTab = async (tab: string) => {
+    switch (tab) {
+      case 'scrap': {
+        const { places } = this.props.user;
+        if (
+          !isEqual(
+            places.sort(),
+            this.state.scraps.map(scrap => scrap._id).sort()
+          )
+        ) {
+          const scraps = await serachByIds({ places });
+          this.setState({ scraps });
+        }
+        break;
+      }
+    }
   };
 
   moveToSetting = () => {
@@ -55,8 +72,9 @@ class Home extends PureComponent<Props, State> {
     this.toggleModal();
   };
 
-  handleSwitchTab = (tab: string) => {
-    this.setState({ currentTab: tab });
+  handleSwitchTab = (currentTab: string) => {
+    this.setState({ currentTab });
+    this.loadingDataByTab(currentTab);
   };
 
   renderSelectDog = (item: { _id: string; name: string }) => (
@@ -164,7 +182,22 @@ class Home extends PureComponent<Props, State> {
           onSwitch={this.handleSwitchTab}
           currentTab={this.state.currentTab}
         />
-        {currentTab === 'scrap' && <Scrap scraps={this.state.scraps} />}
+        {currentTab === 'scrap' && (
+          <FlatList
+            data={this.state.scraps}
+            keyExtractor={(i, index) => index.toString()}
+            contentContainerStyle={views.listContainer}
+            renderItem={({ item, index }) => (
+              <ListItem
+                onPress={() => navigation.navigate('place', { place: item })}
+                thumbnail={item.thumbnail}
+                index={index}
+                name={item.name}
+                message={item.label}
+              />
+            )}
+          />
+        )}
         {this.renderModal()}
       </SafeAreaView>
     );

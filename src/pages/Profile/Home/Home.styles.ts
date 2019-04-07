@@ -70,6 +70,10 @@ export const views = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  listContainer: {
+    paddingLeft: size.horizontal,
+    paddingTop: 11.5,
+  },
 });
 
 export const icons = StyleSheet.create({
