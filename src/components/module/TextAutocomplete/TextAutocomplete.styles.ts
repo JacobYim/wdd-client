@@ -21,7 +21,6 @@ export const views = StyleSheet.create({
     borderColor: color.grayDA,
   },
   autocompleteWrapper: {
-    flex: 1,
     paddingHorizontal: size.horizontal,
   },
 });
