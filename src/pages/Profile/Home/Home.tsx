@@ -6,8 +6,10 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
+import FeedComponent from 'src/components/module/Feed';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { LinkedLike, searchDogs } from 'src/services/api/dog';
+import { Feed, getFeeds } from 'src/services/api/feed';
 import { getScraps } from 'src/services/api/place';
 import * as dogActions from 'src/store/actions/dog';
 import { Place as Scrap } from 'src/store/actions/place';
@@ -24,6 +26,7 @@ interface Props extends NavigationScreenProps {
 interface State {
   showSelectDog: boolean;
   currentTab: string;
+  feeds: Feed[];
   scraps: Scrap[];
   likes: LinkedLike[];
 }
@@ -31,7 +34,8 @@ interface State {
 class Home extends PureComponent<Props, State> {
   state: State = {
     showSelectDog: false,
-    currentTab: 'myFeed',
+    currentTab: 'feeds',
+    feeds: [],
     scraps: [],
     likes: [],
   };
@@ -42,36 +46,47 @@ class Home extends PureComponent<Props, State> {
     });
   }
 
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (
+      prevState.currentTab === 'feeds' &&
+      !isEqual(prevProps.user.repDog, this.props.user.repDog)
+    ) {
+      this.loadingDataByTab(prevState.currentTab);
+    }
+  }
+
   toggleModal = () => {
     this.setState({ showSelectDog: !this.state.showSelectDog });
   };
 
   loadingDataByTab = async (tab: string) => {
+    const { repDog, places } = this.props.user;
+    const { feeds, scraps, likes } = this.state;
     switch (tab) {
-      case 'scrap': {
-        const { places } = this.props.user;
+      case 'feeds': {
         if (
-          !isEqual(
-            places.sort(),
-            this.state.scraps.map(scrap => scrap._id).sort()
-          )
+          repDog &&
+          !isEqual(repDog.feeds.sort(), feeds.map(like => like._id).sort())
         ) {
-          const scraps = await getScraps({ places });
-          this.setState({ scraps });
+          this.setState({ feeds: await getFeeds({ feeds: repDog.feeds }) });
+        }
+        return;
+      }
+      case 'scrap': {
+        if (!isEqual(places.sort(), scraps.map(scrap => scrap._id).sort())) {
+          this.setState({ scraps: await getScraps({ places }) });
         }
         return;
       }
       case 'likes': {
-        const { repDog } = this.props.user;
-        if (!repDog) return;
         if (
+          repDog &&
           !isEqual(
             repDog.likes.map(like => like.dog),
-            this.state.likes.map(like => like._id)
+            likes.map(like => like._id)
           )
         ) {
-          const likes = await searchDogs({ likes: repDog.likes });
-          this.setState({ likes });
+          this.setState({ likes: await searchDogs({ likes: repDog.likes }) });
         }
         return;
       }
@@ -197,11 +212,19 @@ class Home extends PureComponent<Props, State> {
           onSwitch={this.handleSwitchTab}
           currentTab={this.state.currentTab}
         />
+        {currentTab === 'feeds' && user.repDog && (
+          <FlatList
+            data={this.state.feeds}
+            keyExtractor={(i, index) => index.toString()}
+            contentContainerStyle={views.listSpace}
+            renderItem={({ item }) => <FeedComponent feed={item} />}
+          />
+        )}
         {currentTab === 'scrap' && (
           <FlatList
             data={this.state.scraps}
             keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={views.listContainer}
+            contentContainerStyle={[views.listContainer, views.listSpace]}
             renderItem={({ item, index }) => (
               <ListItem
                 onPress={() => navigation.navigate('place', { place: item })}
@@ -217,7 +240,7 @@ class Home extends PureComponent<Props, State> {
           <FlatList
             data={this.state.likes}
             keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={views.listContainer}
+            contentContainerStyle={[views.listContainer, views.listSpace]}
             renderItem={({ item, index }) => (
               <ListItem
                 thumbnail={item.thumbnail}

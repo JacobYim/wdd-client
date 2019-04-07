@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-interface Feed {
+export interface Feed {
   _id: string;
   user: string;
   dog: string;
@@ -21,7 +21,8 @@ export type Body = Pick<
 >;
 
 export interface Params {
-  user?: string;
+  dogs?: string[];
+  feeds?: string[];
 }
 
 export const createFeed = async (params: Body) => {
@@ -29,7 +30,10 @@ export const createFeed = async (params: Body) => {
   return response.data;
 };
 
-export const getFeeds = async (params?: Params) => {
+export const getFeeds = async (p: Params) => {
+  const params: { dogs?: string; feeds?: string } = {};
+  if (p.dogs) params.dogs = JSON.stringify(p.dogs);
+  if (p.feeds) params.feeds = JSON.stringify(p.feeds);
   const response: AxiosResponse<Feed[]> = await axios.get('/feeds', { params });
   return response.data;
 };

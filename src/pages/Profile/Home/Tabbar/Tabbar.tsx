@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 const Tabbar: React.FC<Props> = ({ onSwitch, currentTab }) => (
   <View style={styles.container}>
     {[
-      { label: '게시물', name: 'myFeed' },
+      { label: '게시물', name: 'feeds' },
       { label: '내 상점', name: 'scrap' },
       { label: '뱃지', name: 'badge' },
       { label: '킁킁', name: 'likes' },

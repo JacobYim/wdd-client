@@ -4,6 +4,9 @@ import { color, font, size } from 'src/theme';
 const { width, height } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   header: {
     paddingBottom: 32,
     flexDirection: 'row',
@@ -65,6 +68,9 @@ export const views = StyleSheet.create({
   listContainer: {
     paddingLeft: size.horizontal,
     paddingTop: 11.5,
+  },
+  listSpace: {
+    paddingBottom: height * 0.1,
   },
 });
 
