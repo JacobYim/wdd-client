@@ -78,6 +78,46 @@ const Badges: React.FC<{ user: ReducerState['user'] }> = ({ user }) => (
         name: '10km',
         source: require('src/assets/badges/badge_10km.png'),
       },
+      {
+        label: '산책 1회',
+        name: 'walk_1',
+        source: require('src/assets/badges/badge_walk_1.png'),
+      },
+      {
+        label: '산책 3회',
+        name: 'walk_3',
+        source: require('src/assets/badges/badge_walk_3.png'),
+      },
+      {
+        label: '산책 5회',
+        name: 'walk_5',
+        source: require('src/assets/badges/badge_walk_5.png'),
+      },
+      {
+        label: '산책 10회',
+        name: 'walk_10',
+        source: require('src/assets/badges/badge_walk_10.png'),
+      },
+      {
+        label: '스크랩 1회',
+        name: 'scrap_1',
+        source: require('src/assets/badges/badge_scrap_1.png'),
+      },
+      {
+        label: '스크랩 3회',
+        name: 'scrap_3',
+        source: require('src/assets/badges/badge_scrap_3.png'),
+      },
+      {
+        label: '스크랩 5회',
+        name: 'scrap_5',
+        source: require('src/assets/badges/badge_scrap_5.png'),
+      },
+      {
+        label: '스크랩 10회',
+        name: 'scrap_10',
+        source: require('src/assets/badges/badge_scrap_10.png'),
+      },
     ]}
     showsVerticalScrollIndicator={false}
     showsHorizontalScrollIndicator={false}

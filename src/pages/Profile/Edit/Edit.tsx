@@ -18,6 +18,10 @@ import { uploadImage } from 'src/services/aws/s3';
 import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, views } from './Edit.styles';
+import {
+  checkPermission,
+  PICTURE_PERMISSIONS,
+} from 'src/assets/functions/validate';
 
 interface Props extends LoadingProps, NavigationScreenProps {
   user: ReducerState['user'];
@@ -94,16 +98,18 @@ class Edit extends PureComponent<Props, State> {
     this.toggleModal();
   };
 
-  handleImagePicker = () => {
+  handleImagePicker = async () => {
     const options = {
       title: '프로필 선택',
       customButtons: [{ name: 'default', title: '기본 이미지' }],
       storageOptions: { skipBackup: true, path: 'images' },
     };
-    ImagePicker.showImagePicker(options, res => {
-      if (res.didCancel || res.error) return;
-      this.setState({ thumbnail: res.customButton ? '' : res.uri });
-    });
+    if (await checkPermission(PICTURE_PERMISSIONS)) {
+      ImagePicker.showImagePicker(options, res => {
+        if (res.didCancel || res.error) return;
+        this.setState({ thumbnail: res.customButton ? '' : res.uri });
+      });
+    }
   };
 
   validate = async () => {

@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { Component, createRef } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet } from 'react-native';
+import { Alert, Dimensions, SafeAreaView, StyleSheet } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
 import { NavigationScreenProps } from 'react-navigation';
@@ -12,6 +12,10 @@ import * as walkActions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
 import Header from './Header';
 import TrackUser from './TrackUser';
+import {
+  LOCATION_PERMISSIONS,
+  checkPermission,
+} from 'src/assets/functions/validate';
 
 interface Props extends NavigationScreenProps {
   pushPin: typeof walkActions.pushPin;
@@ -46,51 +50,55 @@ class Map extends Component<Props, State> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { pushPin, updateLocation } = this.props;
-    this.watchLocation = Geolocation.watchPosition(
-      ({ coords }) => {
-        const { walk } = this.props;
-        const current = pick(coords, ['latitude', 'longitude']);
+    if (await checkPermission(LOCATION_PERMISSIONS)) {
+      this.watchLocation = Geolocation.watchPosition(
+        ({ coords }) => {
+          const { walk } = this.props;
+          const current = pick(coords, ['latitude', 'longitude']);
 
-        this.setState(state =>
-          produce(state, draft => {
-            // Update Walk Store
-            if (walk.status === 'WALKING') {
-              const pinInfo: walkActions.UpdateWalkInterface = {
-                ...current,
-                speed: coords.speed || 0,
-                addDistance: 0,
-              };
-              if (state.statusChanged) {
-                pushPin(pinInfo);
-                draft.statusChanged = false;
-              } else {
-                const previous = walk.pins[walk.pins.length - 1];
-                pinInfo.addDistance = calcDistance(
-                  pick(previous, ['latitude', 'longitude']),
-                  current
-                );
-                if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
+          this.setState(state =>
+            produce(state, draft => {
+              // Update Walk Store
+              if (walk.status === 'WALKING') {
+                const pinInfo: walkActions.UpdateWalkInterface = {
+                  ...current,
+                  speed: coords.speed || 0,
+                  addDistance: 0,
+                };
+                if (state.statusChanged) {
+                  pushPin(pinInfo);
+                  draft.statusChanged = false;
+                } else {
+                  const previous = walk.pins[walk.pins.length - 1];
+                  pinInfo.addDistance = calcDistance(
+                    pick(previous, ['latitude', 'longitude']),
+                    current
+                  );
+                  if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
+                }
               }
-            }
-            // Default Actions
-            this.moveCameraToUser(current, state.trackUser);
-            if (calcDistance(current, draft.snapLocation) > 0.1) {
-              updateLocation(current);
-              draft.snapLocation = current;
-            }
-          })
-        );
-      },
-      () => {},
-      {
-        enableHighAccuracy: true,
-        distanceFilter: 2, // Listen moving on every 2m
-        interval: 5000,
-        fastestInterval: 2000,
-      }
-    );
+              // Default Actions
+              this.moveCameraToUser(current, state.trackUser);
+              if (calcDistance(current, draft.snapLocation) > 0.1) {
+                updateLocation(current);
+                draft.snapLocation = current;
+              }
+            })
+          );
+        },
+        err => {
+          Alert.alert(err.message);
+        },
+        {
+          enableHighAccuracy: true,
+          distanceFilter: 2, // Listen moving on every 2m
+          interval: 5000,
+          fastestInterval: 2000,
+        }
+      );
+    }
   }
 
   componentWillUnmount() {

@@ -2,7 +2,6 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import * as api from 'src/services/api/dog';
 import { removeNextStep } from 'src/services/storage/user';
 import * as actions from 'src/store/actions/dog';
-import { navigateToApp } from './user';
 
 function* selectDog(action: ReturnType<typeof actions.selectDog>) {
   try {
@@ -22,7 +21,7 @@ function* createDog(action: ReturnType<typeof actions.createDog>) {
     yield put(actions.setDogSuccess(data));
     yield call(removeNextStep);
     // *** NAVIGATE
-    if (action.navigation) yield call(navigateToApp, action.navigation);
+    if (action.navigation) yield call(action.navigation.navigate, 'app');
   } catch (e) {
     yield put(actions.setDogFailure(e.response));
   }

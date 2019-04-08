@@ -4,6 +4,10 @@ import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProp } from 'react-navigation';
 import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWithSticker';
 import { icons, views } from './ImageCard.styles';
+import {
+  checkPermission,
+  PICTURE_PERMISSIONS,
+} from 'src/assets/functions/validate';
 
 const ImageWrapper: React.FC<{
   onPress: () => void;
@@ -33,15 +37,17 @@ interface AddProps {
 }
 
 export const AddImageCard: React.FC<AddProps> = ({ handleLoad }) => {
-  const showImagePicker = () => {
+  const showImagePicker = async () => {
     const options = {
       title: '산책 사진 선택',
       storageOptions: { skipBackup: true, path: 'images' },
     };
-    ImagePicker.showImagePicker(options, res => {
-      if (res.didCancel || res.error) return;
-      handleLoad({ uri: res.uri });
-    });
+    if (await checkPermission(PICTURE_PERMISSIONS)) {
+      ImagePicker.showImagePicker(options, res => {
+        if (res.didCancel || res.error) return;
+        handleLoad({ uri: res.uri });
+      });
+    }
   };
   return (
     <ImageWrapper onPress={showImagePicker}>
