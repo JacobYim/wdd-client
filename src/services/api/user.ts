@@ -1,21 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { LatLng } from 'react-native-maps';
 import * as actions from 'src/store/actions/user';
 
 export interface SearchParams {
-  location?: LatLng;
+  coordinates: number[];
 }
-
-const clientToAPI = ({ location, ...params }: SearchParams) => {
-  const payload: any = { ...params };
-  if (location !== undefined) {
-    payload.coordinates = JSON.stringify([
-      location.longitude,
-      location.latitude,
-    ]);
-  }
-  return payload;
-};
 
 export const getUser = async () => {
   // *** Set token on headers before call
@@ -66,10 +54,10 @@ export const forgotPassword = async (body: { email: string }) => {
   return response.data;
 };
 
-export const serachUsers = async (params: SearchParams) => {
+export const searchUsers = async (params: SearchParams) => {
   const response: AxiosResponse<actions.UserInterface[]> = await axios.get(
     '/users',
-    { params: clientToAPI(params) }
+    { params: { coordinates: JSON.stringify(params.coordinates) } }
   );
   return response.data;
 };

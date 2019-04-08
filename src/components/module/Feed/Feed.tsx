@@ -5,25 +5,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
 import { rangeWithUnit } from 'src/assets/functions/print';
 import DefaultImage from 'src/components/module/DefaultImage';
-import { Dog } from 'src/store/actions/dog';
+import { Feed as FeedInterface } from 'src/services/api/feed';
 import { icons, texts, views, width } from './Feed.styles';
 
-interface Feed {
-  user: string;
-  dog: Dog;
-  pins: string;
-  seconds: number;
-  distance: number; // km
-  steps: number;
-  pees: number;
-  poos: number;
-  createdAt: Date;
-  memo?: string;
-  images: string[];
-}
-
 interface Props {
-  feed: Feed;
+  feed: FeedInterface;
 }
 
 interface State {

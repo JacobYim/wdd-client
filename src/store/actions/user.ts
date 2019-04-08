@@ -52,6 +52,7 @@ export const SET_USER_REQUEST = 'user/SET_USER_REQUEST';
 export const SET_USER_SUCCESS = 'user/SET_USER_SUCCESS';
 export const SET_USER_FAILURE = 'user/SET_USER_FAILURE';
 
+export const UPDATE_LOCAL = 'user/UPDATE_LOCAL';
 export const REMOVE_USER = 'user/REMOVE_USER';
 
 // *** FUNCTIONS
@@ -111,4 +112,8 @@ export const setUserFailure = (payload: Response) => ({
   type: SET_USER_FAILURE,
 });
 
+export const updateLocal = (payload: UpdateInterface) => ({
+  payload,
+  type: UPDATE_LOCAL,
+});
 export const removeUser = () => ({ type: REMOVE_USER });

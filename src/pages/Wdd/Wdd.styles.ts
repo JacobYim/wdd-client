@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { height } from 'src/components/module/TopNavbar/TopNavbar';
-import { color } from 'src/theme';
+import { color, size } from 'src/theme';
+
+const dogItemSpace = 10;
 
 export const views = StyleSheet.create({
   header: {
@@ -9,6 +11,18 @@ export const views = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: color.grayEF,
+  },
+  dogsWrapper: {
+    borderBottomWidth: 1,
+    borderColor: color.grayEF,
+    alignItems: 'center',
+  },
+  dogsListWrapper: {
+    paddingHorizontal: size.horizontal - dogItemSpace,
+  },
+  dogItem: {
+    paddingVertical: 16,
+    paddingHorizontal: dogItemSpace,
   },
 });
 

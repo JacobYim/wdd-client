@@ -89,7 +89,9 @@ class Map extends Component<Props, State> {
           );
         },
         err => {
-          Alert.alert(err.message);
+          if (err.PERMISSION_DENIED) {
+            Alert.alert('위치정보 요청이 거부되었습니다.');
+          }
         },
         {
           enableHighAccuracy: true,

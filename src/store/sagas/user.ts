@@ -1,8 +1,9 @@
 import { Alert } from 'react-native';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { removeHeader, setHeader } from 'src/services/api/axios';
 import * as api from 'src/services/api/user';
 import * as actions from 'src/store/actions/user';
+import { ReducerState } from 'src/store/reducers';
 
 import {
   getUserStorage,
@@ -10,6 +11,9 @@ import {
   updateUserStorage,
   removeUserStorage,
 } from 'src/services/storage/user';
+
+// HELPERS
+const getUserFromStore = (state: ReducerState) => state.user;
 
 // SAGAS
 function* getUser() {
@@ -180,16 +184,21 @@ function* changePassword(action: ReturnType<typeof actions.changePassword>) {
 }
 
 function* updateLocation(action: ReturnType<typeof actions.updateLocation>) {
+  const location = {
+    type: 'Point',
+    coordinates: [action.payload.longitude, action.payload.latitude],
+  };
   try {
     yield put(actions.setUserRequest());
-    const location = {
-      type: 'Point',
-      coordinates: [action.payload.longitude, action.payload.latitude],
-    };
+    const user: ReturnType<typeof getUserFromStore> = yield select(
+      getUserFromStore
+    );
+    if (!user.email) throw 'NOT_SIGN_IN';
     const data = yield call(api.updateUser, { location });
     yield put(actions.setUserSuccess(data));
   } catch (e) {
     yield put(actions.setUserFailure(e.response));
+    yield put(actions.updateLocal({ location }));
   }
 }
 

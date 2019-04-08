@@ -48,6 +48,10 @@ export default handleActions<UserState, any>(
         draft.error = action.payload;
       });
     },
+    [actions.UPDATE_LOCAL]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
     [actions.REMOVE_USER]: (state, action) => initialState,
     // *** HANDLE DOG ACTIONS
     [dogActions.SET_DOG_REQUEST]: (state, action) =>

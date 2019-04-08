@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
+import { Dog } from 'src/store/actions/dog';
 
 export interface Feed {
   _id: string;
   user: string;
-  dog: string;
+  dog: Dog;
   pins: string; // JSON.stringify(pins)
   seconds: number;
   distance: number; // km
