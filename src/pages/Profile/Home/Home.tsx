@@ -14,6 +14,7 @@ import { getScraps } from 'src/services/api/place';
 import * as dogActions from 'src/store/actions/dog';
 import { Place as Scrap } from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
+import Badges from './Badges';
 import { icons, texts, views } from './Home.styles';
 import ListItem from './ListItem';
 import TabBar from './Tabbar';
@@ -236,6 +237,7 @@ class Home extends PureComponent<Props, State> {
             )}
           />
         )}
+        {currentTab === 'badge' && <Badges user={user} />}
         {currentTab === 'likes' && (
           <FlatList
             data={this.state.likes}
