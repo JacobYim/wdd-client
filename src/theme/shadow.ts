@@ -13,4 +13,10 @@ export default {
     shadowColor: '#000',
     shadowOpacity: 0.12,
   },
+  center: {
+    elevation: 2,
+    shadowRadius: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+  },
 };
