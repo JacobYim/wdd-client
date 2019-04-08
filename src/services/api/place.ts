@@ -1,29 +1,40 @@
 import axios, { AxiosResponse } from 'axios';
 import { sortBy } from 'lodash';
 import { LatLng } from 'react-native-maps';
-import { GeoJSON, Place, PlaceResponse } from 'src/store/actions/place';
+import { Place, PlaceResponse } from 'src/store/actions/place';
 
-export interface Params {
+export interface SearchParams {
   keyword?: string;
   label?: '카페' | '용품' | '병원' | '기타';
   location?: LatLng;
   range?: number; // km
 }
 
-const geoToLatLng = ({ coordinates }: GeoJSON) =>
-  ({
-    latitude: coordinates[1],
-    longitude: coordinates[0],
-  } as LatLng);
+const clientToAPI = ({ location, ...params }: SearchParams) => {
+  const payload: any = { ...params };
+  if (location !== undefined) {
+    payload.coordinates = JSON.stringify([
+      location.longitude,
+      location.latitude,
+    ]);
+  }
+  return payload;
+};
 
-export const searchPlace = async (params?: Params) => {
-  const response: AxiosResponse<PlaceResponse[]> = await axios.get('/places', {
-    params,
-  });
-  const places: Place[] = response.data.map(place => ({
+const apiToClient = (place: PlaceResponse) =>
+  ({
     ...place,
-    location: geoToLatLng(place.location),
-  }));
+    location: {
+      latitude: place.location.coordinates[1],
+      longitude: place.location.coordinates[0],
+    },
+  } as Place);
+
+export const searchPlace = async (p: SearchParams) => {
+  const response: AxiosResponse<PlaceResponse[]> = await axios.get('/places', {
+    params: clientToAPI(p),
+  });
+  const places = response.data.map(apiToClient);
   return sortBy(
     places,
     (place: Place) => -(place.rating / 5 + Math.pow(0.5, place.distance))
@@ -34,10 +45,7 @@ export const getScraps = async (params: { places: string[] }) => {
   const response: AxiosResponse<PlaceResponse[]> = await axios.get('/places', {
     params: { places: JSON.stringify(params.places) },
   });
-  const places: Place[] = response.data.map(place => ({
-    ...place,
-    location: geoToLatLng(place.location),
-  }));
+  const places = response.data.map(apiToClient);
   return places;
 };
 
@@ -49,12 +57,12 @@ export const scrap = async ({ id }: Query) => {
   const response: AxiosResponse<PlaceResponse> = await axios.patch(
     `/places/${id}/scrap`
   );
-  return response.data;
+  return apiToClient(response.data);
 };
 
 export const unScrap = async ({ id }: Query) => {
   const response: AxiosResponse<PlaceResponse> = await axios.delete(
     `/places/${id}/scrap`
   );
-  return response.data;
+  return apiToClient(response.data);
 };

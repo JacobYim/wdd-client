@@ -5,7 +5,7 @@ import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/Map/Map/TrackUser';
-import { Params, searchPlace } from 'src/services/api/place';
+import { SearchParams, searchPlace } from 'src/services/api/place';
 import { Place } from 'src/store/actions/place';
 import Card, { cardWidth } from './Card';
 import { height, icons, views, width } from './MapList.styles';
@@ -61,7 +61,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
     },
   };
 
-  search = async (params: Params) => {
+  search = async (params: SearchParams) => {
     const places = await searchPlace(params);
     this.setState(state =>
       produce(state, draft => {

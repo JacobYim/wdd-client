@@ -81,7 +81,7 @@ class Map extends Component<Props, State> {
               }
               // Default Actions
               this.moveCameraToUser(current, state.trackUser);
-              if (calcDistance(current, draft.snapLocation) > 0.1) {
+              if (calcDistance(current, draft.snapLocation) > 0.05) {
                 updateLocation(current);
                 draft.snapLocation = current;
               }

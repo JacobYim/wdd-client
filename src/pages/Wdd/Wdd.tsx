@@ -1,19 +1,34 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { PureComponent } from 'react';
+import { Image, SafeAreaView, Text, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
+import { connect } from 'react-redux';
+import { serachUsers } from 'src/services/api/user';
+import { ReducerState } from 'src/store/reducers';
+import { icons, views } from './Wdd.styles';
 
-interface Props extends NavigationScreenProps {}
+interface Props extends NavigationScreenProps {
+  user: ReducerState['user'];
+}
 
-const Wdd: React.FC<Props> = ({ navigation }) => (
-  <View
-    style={{
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#FFF',
-    }}>
-    <Text>우동댕 페이지 준비중입니다 ٩(๑❛ᴗ❛๑)۶</Text>
-  </View>
-);
+interface State {
+  users: ReducerState['user'][];
+}
 
-export default Wdd;
+class Wdd extends PureComponent<Props, State> {
+  async componentDidMount() {}
+
+  render() {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={views.header}>
+          <Image
+            source={require('src/assets/icons/logo_text.png')}
+            style={icons.logo}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
+
+export default connect((state: ReducerState) => ({ user: state.user }))(Wdd);
