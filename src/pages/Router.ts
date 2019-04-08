@@ -1,7 +1,53 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import BottomTabbar from 'src/components/base/BottomTabbar';
 import CoreScreen from 'src/components/base/Core';
-import AppNavigator from './App';
+import MapNavigator from 'src/pages/Map';
+import ProfileNavigator from 'src/pages/Profile';
+import WddScreen from 'src/pages/Wdd';
 import SessionNavigator from './Session';
+import {
+  createAppContainer,
+  createSwitchNavigator,
+  createBottomTabNavigator,
+  NavigationActions,
+} from 'react-navigation';
+
+const AppNavigator = createBottomTabNavigator(
+  {
+    map: {
+      screen: MapNavigator,
+      params: {
+        tab: {
+          icon: require('src/assets/icons/ic_map_page.png'),
+          navigate: NavigationActions.navigate({ routeName: 'map' }),
+        },
+        stack: {
+          icon: require('src/assets/icons/ic_footprint.png'),
+          navigate: NavigationActions.navigate({ routeName: 'walk' }),
+        },
+      },
+    },
+    wdd: {
+      screen: WddScreen,
+      params: {
+        iconOn: require('src/assets/icons/ic_wdd_on.png'),
+        iconOff: require('src/assets/icons/ic_wdd_off.png'),
+        label: '우동댕',
+      },
+    },
+    profile: {
+      screen: ProfileNavigator,
+      params: {
+        iconOn: require('src/assets/icons/ic_profile_on.png'),
+        iconOff: require('src/assets/icons/ic_profile_off.png'),
+        label: '내 프로필',
+      },
+    },
+  },
+  {
+    initialRouteName: 'map',
+    tabBarComponent: BottomTabbar,
+  }
+);
 
 export default createAppContainer(
   createSwitchNavigator(

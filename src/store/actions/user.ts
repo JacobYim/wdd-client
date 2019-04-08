@@ -1,5 +1,6 @@
+import { LatLng } from 'react-native-maps';
 import { NavigationScreenProp } from 'react-navigation';
-import { DogInterface } from './dog';
+import { Dog } from './dog';
 
 // *** INTERFACES
 export interface UserInterface {
@@ -11,9 +12,9 @@ export interface UserInterface {
   gender: string; // 'M' | 'F'
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
   dogs: { [_id: string]: string };
-  location: { type: string; coordinates: [number, number] };
+  location: { type: string; coordinates: number[] };
   places: string[];
-  repDog?: DogInterface;
+  repDog?: Dog;
 }
 
 export interface UpdateInterface {
@@ -22,8 +23,8 @@ export interface UpdateInterface {
   birth?: string;
   gender?: string; // 'M' | 'F'
   status?: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
-  location?: { type: string; coordinates: [number, number] };
-  repDog?: DogInterface;
+  location?: { type: string; coordinates: number[] };
+  repDog?: Dog;
 }
 
 export interface SignInInterface {
@@ -36,13 +37,16 @@ export interface SignUpInterface extends SignInInterface {
 }
 
 // *** CONSTS
+export const GET_USER = 'user/GET_USER';
 export const AUTO_SIGNIN = 'user/AUTO_SIGNIN';
 export const SIGNIN = 'user/SIGNIN';
 export const SIGNUP = 'user/SIGNUP';
 export const SIGNOUT = 'user/SIGNOUT';
+export const TERMINATE = 'user/TERMINATE';
 export const CREATE_META = 'user/CREATE_META';
 export const FORGOT_PASSWORD = 'user/FORGOT_PASSWORD';
 export const CHANGE_PASSWORD = 'user/CHANGE_PASSWORD';
+export const UPDATE_LOCATION = 'user/UPDATE_LOCATION';
 
 export const SET_USER_REQUEST = 'user/SET_USER_REQUEST';
 export const SET_USER_SUCCESS = 'user/SET_USER_SUCCESS';
@@ -53,6 +57,7 @@ export const REMOVE_USER = 'user/REMOVE_USER';
 // *** FUNCTIONS
 type Navigation = NavigationScreenProp<any>;
 
+export const getUser = () => ({ type: GET_USER });
 export const autoSignIn = (navigation: Navigation) => ({
   navigation,
   type: AUTO_SIGNIN,
@@ -71,6 +76,10 @@ export const signOut = (navigation: Navigation) => ({
   navigation,
   type: SIGNOUT,
 });
+export const terminate = (navigation: Navigation) => ({
+  navigation,
+  type: TERMINATE,
+});
 export const createMeta = (
   payload: { birth: string; gender: string },
   navigation: Navigation
@@ -87,6 +96,10 @@ export const changePassword = (
   payload: { password: string; token: string },
   navigation: Navigation
 ) => ({ payload, navigation, type: CHANGE_PASSWORD });
+export const updateLocation = (payload: LatLng) => ({
+  payload,
+  type: UPDATE_LOCATION,
+});
 
 export const setUserRequest = () => ({ type: SET_USER_REQUEST });
 export const setUserSuccess = (payload: UserInterface) => ({

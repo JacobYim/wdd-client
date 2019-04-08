@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { cardHeight } from 'src/pages/Place/Map/Card';
-import { color, shadow } from 'src/theme';
+import { cardHeight } from 'src/pages/Place/MapList/Card';
+import { color, shadow, size } from 'src/theme';
 
 const { height } = Dimensions.get('window');
 const paddingVertical = 20;
@@ -24,13 +23,11 @@ export const views = StyleSheet.create({
     marginTop: -(cardHeight / 2 + paddingVertical),
     marginBottom: 10,
     height: cardHeight,
-    borderRadius: 5,
-    backgroundColor: color.white,
     ...shadow.shallow,
   },
   infoWrapper: {
     paddingVertical,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     backgroundColor: color.white,
     borderTopWidth: 10,
     borderColor: color.grayEF,
@@ -41,7 +38,7 @@ export const views = StyleSheet.create({
   },
   imageWrapper: {
     marginTop: 4,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
   },
   image: {
     width: 140,

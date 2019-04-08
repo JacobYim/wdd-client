@@ -34,7 +34,6 @@ interface Props {
     handlePress: () => void;
   };
   center?: string;
-  showBorder?: boolean;
   // bottom
   bottom?: {
     view: ReactNode;
@@ -46,8 +45,10 @@ interface Props {
     disable: boolean;
   };
   // option
+  showBorder?: boolean;
   extraScrollHeight?: number;
   extraBottom?: number;
+  enableScroll?: boolean;
 }
 
 interface State {
@@ -94,12 +95,12 @@ class PageContainer extends PureComponent<Props, State> {
     const { contentOffset } = evt.nativeEvent;
     this.setState(state =>
       produce(state, draft => {
-        if (contentOffset && contentOffset.y > 84) {
+        if (contentOffset.y > 84) {
           if (!state.showBorder) draft.showBorder = true;
           if (title && !center && !state.center) draft.center = title;
         } else {
           if (state.showBorder) draft.showBorder = false;
-          if (state.center) delete draft.center;
+          if (title && state.center) draft.center = undefined;
         }
       })
     );
@@ -115,6 +116,7 @@ class PageContainer extends PureComponent<Props, State> {
       right,
       bottom,
       bottomBox,
+      enableScroll,
       extraBottom: extraScrollHeight = 85,
     } = this.props;
     const navLeft = left && {
@@ -154,7 +156,7 @@ class PageContainer extends PureComponent<Props, State> {
               style={views.contentWrapper}
               onScroll={this.handleScroll}
               scrollEventThrottle={160}
-              scrollEnabled={bottomBox !== undefined}
+              scrollEnabled={enableScroll || bottomBox !== undefined}
               showsVerticalScrollIndicator={false}>
               {title && (
                 <View

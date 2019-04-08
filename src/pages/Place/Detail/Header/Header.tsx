@@ -1,8 +1,7 @@
 import React from 'react';
 import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { color } from 'src/theme';
+import { color, size } from 'src/theme';
 
 interface Props {
   thumbnail: string;
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: `${color.black}78`,
   },
   button: {
-    paddingLeft: horizontalSize,
+    paddingLeft: size.horizontal,
     paddingVertical: 14,
   },
   icon: {

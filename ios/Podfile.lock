@@ -27,6 +27,7 @@ PODS:
   - GoogleMaps/Base (2.5.0)
   - GoogleMaps/Maps (2.5.0):
     - GoogleMaps/Base
+  - JKBigInteger2 (0.0.5)
   - React (0.59.2):
     - React/Core (= 0.59.2)
   - react-native-background-timer (2.1.1):
@@ -37,7 +38,7 @@ PODS:
     - React
   - react-native-maps (0.23.0):
     - React
-  - react-native-webview (5.4.3):
+  - react-native-webview (5.6.2):
     - React
   - React/Core (0.59.2):
     - yoga (= 0.59.2.React)
@@ -92,6 +93,11 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNAWSCognito (3.0.10):
+    - JKBigInteger2 (= 0.0.5)
+    - React
+  - RNVectorIcons (6.4.2):
+    - React
   - RNViewShot (2.5.0):
     - React
   - yoga (0.59.2.React)
@@ -119,6 +125,8 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RNViewShot (from `../node_modules/react-native-view-shot`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -127,6 +135,7 @@ SPEC REPOS:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps
+    - JKBigInteger2
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -145,6 +154,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
+  RNAWSCognito:
+    :path: "../node_modules/amazon-cognito-identity-js"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   RNViewShot:
     :path: "../node_modules/react-native-view-shot"
   yoga:
@@ -157,14 +170,17 @@ SPEC CHECKSUMS:
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
+  JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
   react-native-background-timer: bb7a98c8e97fc7c290de2d423dd09ddb73dcbcbb
   react-native-google-maps: b946d62e25dc66097921ed82520e45b0b081768a
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-webview: a42108b827082f8f0333529b0772102031d5960d
+  RNAWSCognito: 5f4859d05c2a20dafc8a1bbb15ffc6cc92fa4d0d
+  RNVectorIcons: 8c52e1e8da1153613fdef44748e865c25556cb9c
   RNViewShot: fdf9a64f0621ebc4e7c3392a10d2ffb70a7faee4
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: dc0dc09268c6dcffff6466cc047e6d3e723a18cc
+PODFILE CHECKSUM: 83322fb4796e18795a562aa944f16b24cf235b3b
 
 COCOAPODS: 1.5.3

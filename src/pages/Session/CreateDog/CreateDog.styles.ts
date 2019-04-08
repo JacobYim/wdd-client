@@ -1,21 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
-const thumbnailSize = 100;
 const thumbnailEditSize = 28;
 
 export const views = StyleSheet.create({
   thumbnailWrapper: {
     marginVertical: 40,
     alignItems: 'center',
-  },
-  thumbnail: {
-    width: thumbnailSize,
-    height: thumbnailSize,
-    borderRadius: thumbnailSize / 2,
-    resizeMode: 'cover',
-    borderWidth: 1.5,
-    borderColor: `${color.black}14`,
   },
   edit: {
     position: 'absolute',

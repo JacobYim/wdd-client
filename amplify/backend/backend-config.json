@@ -1,0 +1,14 @@
+{
+	"auth": {
+		"cognitoc670f476": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation"
+		}
+	},
+	"storage": {
+		"WddStorage": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
+	}
+}

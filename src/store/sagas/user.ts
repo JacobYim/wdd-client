@@ -1,5 +1,5 @@
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
-import { NavigationActions, NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { removeHeader, setHeader } from 'src/services/api/axios';
 import * as api from 'src/services/api/user';
@@ -40,10 +40,20 @@ export async function checkPermission() {
 }
 
 export function* navigateToApp(navigation: NavigationScreenProp<any>) {
-  if (checkPermission()) yield call(navigation.navigate, 'app');
+  if (yield call(checkPermission)) yield call(navigation.navigate, 'app');
 }
 
 // SAGAS
+function* getUser() {
+  try {
+    yield put(actions.setUserRequest());
+    const data = yield call(api.getUser);
+    yield put(actions.setUserSuccess(data));
+  } catch (e) {
+    yield put(actions.setUserFailure(e));
+  }
+}
+
 function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
   try {
     // *** GET TOKEN FROM STORAGE
@@ -61,18 +71,16 @@ function* autoSignIn(action: ReturnType<typeof actions.autoSignIn>) {
         {
           text: '예',
           onPress: () => {
-            action.navigation.navigate({
-              routeName: 'session',
-              action: NavigationActions.navigate({
-                routeName: 'signUp',
-                action: NavigationActions.navigate({ routeName: nextStep }),
-              }),
-            });
+            action.navigation.navigate('session');
+            action.navigation.navigate('signUp');
+            action.navigation.navigate(nextStep);
           },
         },
         {
           text: '나중에',
-          onPress: () => action.navigation.navigate('app'),
+          onPress: async () => {
+            if (await checkPermission()) action.navigation.navigate('app');
+          },
           style: 'cancel',
         },
       ]);
@@ -132,6 +140,33 @@ function* signOut(action: ReturnType<typeof actions.signOut>) {
   yield call(action.navigation.navigate, 'session');
 }
 
+function* terminate(action: ReturnType<typeof actions.terminate>) {
+  function* handlePress() {
+    yield put(actions.setUserRequest());
+    yield call(api.terminate);
+    yield put(actions.removeUser());
+    yield call(removeHeader);
+    yield call(removeUserStorage);
+    // *** NAVIGATE
+    yield call(action.navigation.navigate, 'session');
+  }
+
+  try {
+    Alert.alert('탈퇴 후에는 되돌릴 수 없습니다.', '정말 탈퇴하시겠습니까?', [
+      {
+        text: '예',
+        onPress: handlePress,
+      },
+      {
+        text: '나중에',
+        style: 'cancel',
+      },
+    ]);
+  } catch (e) {
+    yield put(actions.setUserFailure(e.response));
+  }
+}
+
 function* createMeta(action: ReturnType<typeof actions.createMeta>) {
   try {
     // *** API
@@ -176,12 +211,29 @@ function* changePassword(action: ReturnType<typeof actions.changePassword>) {
   }
 }
 
+function* updateLocation(action: ReturnType<typeof actions.updateLocation>) {
+  try {
+    yield put(actions.setUserRequest());
+    const location = {
+      type: 'Point',
+      coordinates: [action.payload.longitude, action.payload.latitude],
+    };
+    const data = yield call(api.updateUser, { location });
+    yield put(actions.setUserSuccess(data));
+  } catch (e) {
+    yield put(actions.setUserFailure(e.response));
+  }
+}
+
 export default function* root() {
+  yield takeEvery(actions.GET_USER, getUser);
   yield takeEvery(actions.AUTO_SIGNIN, autoSignIn);
   yield takeEvery(actions.SIGNIN, signIn);
   yield takeEvery(actions.SIGNUP, signUp);
   yield takeEvery(actions.SIGNOUT, signOut);
+  yield takeEvery(actions.TERMINATE, terminate);
   yield takeEvery(actions.CREATE_META, createMeta);
   yield takeEvery(actions.FORGOT_PASSWORD, forgotPassword);
   yield takeEvery(actions.CHANGE_PASSWORD, changePassword);
+  yield takeEvery(actions.UPDATE_LOCATION, updateLocation);
 }

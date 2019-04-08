@@ -44,7 +44,10 @@ export default function withLoading<P extends LoadingProps>(
 
       return (
         <>
-          <Modal visible={this.state.showLoading} transparent={true}>
+          <Modal
+            visible={this.state.showLoading}
+            transparent={true}
+            hardwareAccelerated>
             <View
               style={{
                 flex: 1,
@@ -53,7 +56,7 @@ export default function withLoading<P extends LoadingProps>(
                 alignItems: 'center',
               }}>
               <Animated.Image
-                source={require('src/assets/icons/logo_img.png')}
+                source={require('src/assets/icons/ic_loading.png')}
                 style={{
                   width: 100,
                   height: 100,
