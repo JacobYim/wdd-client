@@ -152,11 +152,11 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-webview')
     implementation project(':react-native-vector-icons')
     implementation project(':amazon-cognito-identity-js')
     implementation project(':@JWWon_react-native-universal-pedometer')
     implementation project(':react-native-view-shot')
-    implementation project(':react-native-webview')
     implementation project(':react-native-background-timer')
     implementation project(':react-native-maps')
     implementation project(':react-native-geolocation-service')

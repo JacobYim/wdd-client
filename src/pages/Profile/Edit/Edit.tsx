@@ -213,7 +213,9 @@ class Edit extends PureComponent<Props, State> {
         <Modal
           animationType="slide"
           transparent={false}
-          visible={this.state.showModal}>
+          visible={this.state.showModal}
+          onRequestClose={this.toggleModal}
+          hardwareAccelerated>
           <TextAutocomplete
             placeholder="찾으시는 품종을 입력해주세요"
             list={breeds}

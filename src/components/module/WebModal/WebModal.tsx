@@ -12,7 +12,12 @@ interface Props {
 }
 
 const Detail: React.FC<Props> = ({ hideModal, data }) => (
-  <Modal visible={data !== undefined} transparent={false} animationType="slide">
+  <Modal
+    visible={data !== undefined}
+    transparent={false}
+    animationType="slide"
+    hardwareAccelerated
+    onRequestClose={hideModal}>
     {data && (
       <SafeAreaView style={{ flex: 1 }}>
         <TopNavbar

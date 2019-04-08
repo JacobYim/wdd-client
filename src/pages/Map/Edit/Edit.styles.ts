@@ -1,21 +1,16 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
-const padding = 20;
-const CARDS_IN_SINGLE_ROW = 4;
 const { width } = Dimensions.get('window');
 const cardSize = 68;
-const space =
-  (width - padding * 2 - cardSize * CARDS_IN_SINGLE_ROW) /
-  (CARDS_IN_SINGLE_ROW - 1);
+const space = (width - cardSize * 4) / 5;
 
 export const views = StyleSheet.create({
   buttonContainer: {
-    paddingHorizontal: padding - space / 2,
-    paddingVertical: padding / 2,
+    marginTop: space,
+    paddingHorizontal: space / 2,
   },
   button: {
-    marginVertical: padding / 2,
     marginHorizontal: space / 2,
     width: cardSize,
     height: cardSize,

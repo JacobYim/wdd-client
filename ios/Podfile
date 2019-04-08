@@ -42,13 +42,14 @@ target 'WddClient' do
   pod 'react-native-background-timer', path: '../node_modules/react-native-background-timer'
 
   # react-native-webview dependencies
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   pod 'RNViewShot', :path => '../node_modules/react-native-view-shot'
 
   pod 'RNAWSCognito', :path => '../node_modules/amazon-cognito-identity-js'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   # target 'WddClientTests' do
   #   inherit! :search_paths

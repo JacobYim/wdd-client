@@ -138,7 +138,9 @@ class Home extends PureComponent<Props, State> {
       <Modal
         animationType="none"
         visible={this.state.showSelectDog}
-        transparent>
+        onRequestClose={this.toggleModal}
+        transparent
+        hardwareAccelerated>
         <TouchableOpacity
           style={views.modalBackground}
           activeOpacity={1}

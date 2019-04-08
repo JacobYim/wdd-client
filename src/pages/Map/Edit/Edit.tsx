@@ -106,46 +106,45 @@ class Edit extends PureComponent<Props, State> {
         <ViewShot ref={this.snapshot} options={{ format: 'png', quality: 0.9 }}>
           <ImageWithSticker image={this.state.image} walk={walk} size={width} />
         </ViewShot>
-        <View style={views.buttonContainer}>
-          <FlatList
-            data={[
-              {
-                handlePress: this.handleClear,
-                text: '없음',
-              },
-              {
-                handlePress: () => this.handleToggle('time'),
-                icon: require('src/assets/icons/ic_time_black.png'),
-              },
-              {
-                handlePress: () => this.handleToggle('distance'),
-                icon: require('src/assets/icons/ic_distance.png'),
-              },
-              {
-                handlePress: () => this.handleToggle('poos'),
-                icon: require('src/assets/icons/ic_poo_gray.png'),
-              },
-              {
-                handlePress: () => this.handleToggle('pees'),
-                icon: require('src/assets/icons/ic_pee_gray.png'),
-              },
-              {
-                handlePress: () => this.handleLogo('LOGO'),
-                icon: require('src/assets/icons/logo_text.png'),
-              },
-            ]}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            numColumns={4}
-            keyExtractor={(i, index) => index.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={views.button} onPress={item.handlePress}>
-                {item.icon && <Image source={item.icon} style={icons.button} />}
-                {item.text && <Text style={texts.clear}>{item.text}</Text>}
-              </TouchableOpacity>
-            )}
-          />
-        </View>
+        <FlatList
+          data={[
+            {
+              handlePress: this.handleClear,
+              text: '없음',
+            },
+            {
+              handlePress: () => this.handleToggle('time'),
+              icon: require('src/assets/icons/ic_time_black.png'),
+            },
+            {
+              handlePress: () => this.handleToggle('distance'),
+              icon: require('src/assets/icons/ic_distance.png'),
+            },
+            {
+              handlePress: () => this.handleToggle('poos'),
+              icon: require('src/assets/icons/ic_poo_gray.png'),
+            },
+            {
+              handlePress: () => this.handleToggle('pees'),
+              icon: require('src/assets/icons/ic_pee_gray.png'),
+            },
+            {
+              handlePress: () => this.handleLogo('LOGO'),
+              icon: require('src/assets/icons/logo_text.png'),
+            },
+          ]}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          columnWrapperStyle={views.buttonContainer}
+          numColumns={4}
+          keyExtractor={(i, index) => index.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={views.button} onPress={item.handlePress}>
+              {item.icon && <Image source={item.icon} style={icons.button} />}
+              {item.text && <Text style={texts.clear}>{item.text}</Text>}
+            </TouchableOpacity>
+          )}
+        />
       </SafeAreaView>
     );
   }

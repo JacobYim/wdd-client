@@ -86,7 +86,12 @@ class Range extends PureComponent<Props, State> {
             style={styles.icon}
           />
         </TouchableOpacity>
-        <Modal animationType="fade" visible={this.state.activated} transparent>
+        <Modal
+          animationType="fade"
+          visible={this.state.activated}
+          transparent
+          hardwareAccelerated
+          onRequestClose={this.handleToggle}>
           <TouchableOpacity
             style={styles.modal}
             onPress={this.handleToggle}

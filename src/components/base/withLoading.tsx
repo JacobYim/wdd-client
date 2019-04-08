@@ -44,7 +44,10 @@ export default function withLoading<P extends LoadingProps>(
 
       return (
         <>
-          <Modal visible={this.state.showLoading} transparent={true}>
+          <Modal
+            visible={this.state.showLoading}
+            transparent={true}
+            hardwareAccelerated>
             <View
               style={{
                 flex: 1,

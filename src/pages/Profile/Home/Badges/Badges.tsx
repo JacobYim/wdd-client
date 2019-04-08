@@ -1,15 +1,27 @@
 import React from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import { ReducerState } from 'src/store/reducers';
 import { font } from 'src/theme';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
+
+const { width } = Dimensions.get('window');
+const badgeSize = 78;
+const space = (width - badgeSize * 4) / 5;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 12,
+    marginTop: space,
+    paddingHorizontal: space / 2,
   },
   wrapper: {
-    flex: 1,
-    marginTop: 16,
+    width: badgeSize,
+    marginHorizontal: space / 2,
     alignItems: 'center',
   },
   icon: {
@@ -67,9 +79,11 @@ const Badges: React.FC<{ user: ReducerState['user'] }> = ({ user }) => (
         source: require('src/assets/badges/badge_10km.png'),
       },
     ]}
+    showsVerticalScrollIndicator={false}
+    showsHorizontalScrollIndicator={false}
     numColumns={4}
     keyExtractor={(i, index) => index.toString()}
-    contentContainerStyle={styles.container}
+    columnWrapperStyle={styles.container}
     renderItem={({ item }) => (
       <View style={styles.wrapper}>
         <Image source={item.source} style={[styles.icon, { opacity: 0.3 }]} />
