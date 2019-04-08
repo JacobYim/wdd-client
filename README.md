@@ -10,7 +10,7 @@
 
 1. `npm` 혹은 `yarn` 설치
 2. `cocoapod` 설치
-3. `aws configure` 실행
+3. `aws init` 실행
 
 ### 실행하기
 
