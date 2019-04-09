@@ -5,6 +5,7 @@ import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
 import Feed from 'src/components/module/Feed';
+import { pushLike } from 'src/services/api/dog';
 import { Feed as FeedInterface, getFeeds } from 'src/services/api/feed';
 import { searchUsers } from 'src/services/api/user';
 import { Dog } from 'src/store/actions/dog';
@@ -54,6 +55,8 @@ class Wdd extends PureComponent<Props, State> {
 
   renderModal = () => {
     const { selectDog: dog } = this.state;
+    const signedIn = this.props.user.email.length > 0;
+
     return (
       <Modal
         animationType="none"
@@ -106,7 +109,14 @@ class Wdd extends PureComponent<Props, State> {
                     </View>
                   ))}
                 </View>
-                <TouchableOpacity style={views.likeButton} activeOpacity={0.7}>
+                <TouchableOpacity
+                  style={[
+                    views.likeButton,
+                    !signedIn ? { opacity: 0.3 } : null,
+                  ]}
+                  activeOpacity={0.7}
+                  disabled={!signedIn}
+                  onPress={() => pushLike({ _id: dog._id })}>
                   <Text style={texts.like}>킁킁 보내기</Text>
                 </TouchableOpacity>
               </SafeAreaView>
