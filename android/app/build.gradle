@@ -104,8 +104,8 @@ android {
         applicationId "com.woodongdang.client.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "0.4.1"
+        versionCode 17
+        versionName "0.4.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
