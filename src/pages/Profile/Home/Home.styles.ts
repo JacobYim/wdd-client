@@ -18,6 +18,7 @@ export const views = StyleSheet.create({
   },
   infoWrapper: {
     marginLeft: 20,
+    justifyContent: 'center',
   },
   selectDog: {
     flexDirection: 'row',
@@ -72,6 +73,11 @@ export const views = StyleSheet.create({
   listSpace: {
     paddingBottom: height * 0.1,
   },
+  signInMessage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export const icons = StyleSheet.create({
@@ -113,5 +119,14 @@ export const texts = StyleSheet.create({
     marginLeft: 22,
     color: color.black,
     fontSize: font.size.medium,
+  },
+  signIn: {
+    fontSize: font.size.large,
+    color: color.grayB1,
+  },
+  underline: {
+    textDecorationColor: color.grayB1,
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
   },
 });

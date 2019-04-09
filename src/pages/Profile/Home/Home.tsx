@@ -33,9 +33,11 @@ interface State {
 }
 
 class Home extends PureComponent<Props, State> {
+  signedIn = this.props.user.email.length > 0;
+
   state: State = {
     showSelectDog: false,
-    currentTab: 'feeds',
+    currentTab: this.signedIn ? 'feeds' : '',
     feeds: [],
     scraps: [],
     likes: [],
@@ -94,13 +96,6 @@ class Home extends PureComponent<Props, State> {
     }
   };
 
-  moveToSetting = () => {
-    const { user, navigation } = this.props;
-    if (!user.email) Alert.alert('로그인을 해주세요.');
-    else if (!user.repDog) Alert.alert('메인 반려견을 선택해주세요');
-    else navigation.navigate('setting');
-  };
-
   handleSelectDog = async (_id: string) => {
     const { selectDog } = this.props;
     await selectDog({ _id });
@@ -108,8 +103,10 @@ class Home extends PureComponent<Props, State> {
   };
 
   handleSwitchTab = (currentTab: string) => {
-    this.setState({ currentTab });
-    this.loadingDataByTab(currentTab);
+    if (this.signedIn) {
+      this.setState({ currentTab });
+      this.loadingDataByTab(currentTab);
+    }
   };
 
   renderSelectDog = (item: { _id: string; name: string }) => (
@@ -185,30 +182,38 @@ class Home extends PureComponent<Props, State> {
                 style={icons.setting}
               />
             ),
-            handlePress: this.moveToSetting,
+            handlePress: () => navigation.navigate('setting'),
           }}
         />
         <View style={views.header}>
           <DefaultImage size={75} uri={user.repDog && user.repDog.thumbnail} />
           <View style={views.infoWrapper}>
-            <TouchableOpacity
-              style={views.selectDog}
-              activeOpacity={0.7}
-              onPress={this.toggleModal}>
-              <Text style={texts.name} numberOfLines={1}>
-                {user.repDog ? user.repDog.name : '댕댕이 선택하기'}
-              </Text>
-              <Image
-                source={require('src/assets/icons/ic_dropdown_black.png')}
-                style={icons.dropDown}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={views.updateProfile}
-              activeOpacity={0.7}
-              onPress={() => navigation.navigate('edit')}>
-              <Text style={texts.updateProfile}>프로필 수정</Text>
-            </TouchableOpacity>
+            {this.signedIn ? (
+              <>
+                <TouchableOpacity
+                  style={views.selectDog}
+                  activeOpacity={0.7}
+                  onPress={this.toggleModal}>
+                  <Text style={texts.name} numberOfLines={1}>
+                    {user.repDog ? user.repDog.name : '댕댕이 선택'}
+                  </Text>
+                  <Image
+                    source={require('src/assets/icons/ic_dropdown_black.png')}
+                    style={icons.dropDown}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={views.updateProfile}
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('edit')}>
+                  <Text style={texts.updateProfile}>프로필 수정</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TouchableOpacity onPress={() => navigation.navigate('session')}>
+                <Text style={[texts.signIn, texts.underline]}>로그인 하기</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
         <TabBar
@@ -254,6 +259,13 @@ class Home extends PureComponent<Props, State> {
               />
             )}
           />
+        )}
+        {!currentTab && (
+          <View style={views.signInMessage}>
+            <Text style={[texts.signIn, { textAlign: 'center' }]}>
+              로그인을 통해 댕댕이와의 추억을{'\n'}쌓아보세요! 😆
+            </Text>
+          </View>
         )}
         {this.renderModal()}
       </SafeAreaView>

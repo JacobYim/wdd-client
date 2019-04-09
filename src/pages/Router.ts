@@ -39,7 +39,7 @@ const AppNavigator = createBottomTabNavigator(
       params: {
         iconOn: require('src/assets/icons/ic_profile_on.png'),
         iconOff: require('src/assets/icons/ic_profile_off.png'),
-        label: '내 프로필',
+        label: '내 댕댕이',
       },
     },
   },
