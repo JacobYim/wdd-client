@@ -2,14 +2,15 @@ import produce from 'immer';
 import { find } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import Swiper from 'react-native-swiper';
+import { Image, Text, TouchableOpacity, View, ViewToken } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { rangeWithUnit } from 'src/assets/functions/print';
 import DefaultImage from 'src/components/module/DefaultImage';
 import DoubleTab from 'src/components/module/DoubleTab';
 import { ReducerState } from 'src/store/reducers';
-import { icons, texts, views, width } from './Feed.styles';
+import { icons, texts, views } from './Feed.styles';
+
 import {
   pushLike,
   undoLike,
@@ -43,10 +44,6 @@ class Feed extends PureComponent<Props, State> {
     });
   }
 
-  handleChangeIndex = (index: number) => {
-    this.setState({ index: index + 1 });
-  };
-
   toggleLike = () => {
     const { _id } = this.props.feed;
     this.setState(state =>
@@ -59,6 +56,14 @@ class Feed extends PureComponent<Props, State> {
         else undoLike({ _id });
       })
     );
+  };
+
+  handleIndexChanged = (info: {
+    viewableItems: ViewToken[];
+    changed: ViewToken[];
+  }) => {
+    const index = (info.viewableItems[0].index || 0) + 1;
+    this.setState({ index });
   };
 
   render() {
@@ -79,27 +84,29 @@ class Feed extends PureComponent<Props, State> {
             <View style={views.smallDot} />
           </TouchableOpacity>
         </View>
-        <DoubleTab onDoubleTab={this.toggleLike}>
-          <Swiper
-            showsPagination={false}
-            onIndexChanged={this.handleChangeIndex}
-            height={width}
-            loadMinimal={true}>
-            {feed.images.map((image, index) => (
-              <Image
-                source={{ uri: image }}
-                key={index.toString()}
-                style={views.image}
-              />
-            ))}
-          </Swiper>
+        <View>
+          <FlatList
+            data={feed.images}
+            keyExtractor={(i, index) => index.toString()}
+            viewabilityConfig={{
+              itemVisiblePercentThreshold: 50,
+            }}
+            renderItem={({ item }) => (
+              <DoubleTab onDoubleTab={this.toggleLike}>
+                <Image source={{ uri: item }} style={views.image} />
+              </DoubleTab>
+            )}
+            showsHorizontalScrollIndicator={false}
+            onViewableItemsChanged={this.handleIndexChanged}
+            pagingEnabled
+            horizontal
+          />
           <View style={views.paginateStatus}>
             <Text style={texts.paginate}>{`${this.state.index} / ${
               feed.images.length
             }`}</Text>
           </View>
-        </DoubleTab>
-
+        </View>
         <View style={views.infoWrapper}>
           {[
             {
