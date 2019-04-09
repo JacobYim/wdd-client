@@ -11,12 +11,12 @@ export type Data = { name: string } & any;
 
 interface Props {
   placeholder: string;
-  list: Data[];
   icon: NodeRequire;
+  staticList?: Data[];
   defaultList?: Data[];
-  handleSubmit: (data: Data) => void;
-  handleDismiss: () => void;
-  handleChange?: (keyword: string) => void;
+  onSubmit: (data: Data) => void;
+  onDismiss: () => void;
+  onSearch?: (keyword: string) => Promise<Data[]>;
 }
 
 interface State {
@@ -24,44 +24,58 @@ interface State {
   autocomplete: Data[];
 }
 
-class TextAutocomplete extends Component<Props, State> {
-  state: State = { keyword: '', autocomplete: [] };
+const disassemble = (value: string) =>
+  Hangul.disassembleToString(value.replace(/\s/g, ''));
 
-  getAutocomplete = (value: string) => {
-    if (value.length < 2) return [];
+class TextAutocomplete extends Component<Props, State> {
+  private searchResult: Data[] | undefined;
+  state: State = { keyword: '', autocomplete: this.props.defaultList || [] };
+
+  getAutocomplete = (keyword: string, list: Data[]) => {
     // 한글을 분석해서 자동완성을 함
-    const dValue = Hangul.disassembleToString(value.replace(/\s/g, ''));
-    const regex = new RegExp(dValue);
-    const dList = this.props.list.map((data: Data) => ({
+    const regex = new RegExp(disassemble(keyword));
+    return list.map((data: Data) => ({
       ...data,
-      match: regex.exec(
-        Hangul.disassembleToString(data.name.replace(/\s/g, ''))
-      ),
+      match: regex.exec(disassemble(data.name)),
     }));
-    const filter = dList.filter(data => data.match !== null);
-    return sortBy(filter, data => 1 - Math.pow(1.4, -data.match[0].length));
   };
 
-  handleTextChange = (keyword: string) => {
-    const { handleChange } = this.props;
-    const autocomplete = this.getAutocomplete(keyword);
+  handleTextChange = async (keyword: string) => {
+    const { staticList, defaultList, onSearch } = this.props;
+    let autocomplete: Data[] = defaultList || [];
+    if (disassemble(keyword).length > 4) {
+      let result: Data[] = [];
+      if (staticList !== undefined) {
+        result = this.getAutocomplete(keyword, staticList);
+      } else if (onSearch !== undefined) {
+        if (this.searchResult === undefined) {
+          this.searchResult = await onSearch(keyword);
+        }
+        result = this.getAutocomplete(keyword, this.searchResult);
+      }
+      const filter = result.filter(data => data.match !== null);
+      autocomplete = sortBy(
+        filter,
+        data => 1 - Math.pow(1.4, -data.match[0].length)
+      );
+    } else if (this.searchResult !== undefined) {
+      delete this.searchResult;
+    }
     this.setState({ keyword, autocomplete });
-    if (handleChange) handleChange(keyword.trim());
+  };
+
+  handleInputSubmit = async () => {
+    const { onSearch } = this.props;
+    const { keyword } = this.state;
+    if (onSearch && disassemble(keyword).length > 4) {
+      this.searchResult = await onSearch(keyword);
+      const autocomplete = this.getAutocomplete(keyword, this.searchResult);
+      this.setState({ autocomplete });
+    }
   };
 
   render() {
-    const {
-      placeholder,
-      handleDismiss,
-      handleSubmit,
-      icon,
-      defaultList = [],
-    } = this.props;
-    const list =
-      this.state.autocomplete.length > 0
-        ? this.state.autocomplete
-        : defaultList;
-
+    const { placeholder, onDismiss, onSubmit, icon } = this.props;
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <TopNavbar
@@ -72,15 +86,13 @@ class TextAutocomplete extends Component<Props, State> {
                 source={require('src/assets/icons/ic_close.png')}
               />
             ),
-            handlePress: handleDismiss,
+            handlePress: onDismiss,
           }}
         />
         <View style={views.inputWrapper}>
           <TextInput
-            value={this.state.keyword}
-            placeholder={placeholder}
-            onChangeText={this.handleTextChange}
             style={texts.input}
+            placeholder={placeholder}
             placeholderTextColor={`${color.black}1A`}
             multiline={false}
             autoCorrect={false}
@@ -88,18 +100,20 @@ class TextAutocomplete extends Component<Props, State> {
             clearButtonMode="while-editing"
             autoCapitalize="none"
             returnKeyType="done"
+            onChangeText={this.handleTextChange}
+            onSubmitEditing={this.handleInputSubmit}
           />
         </View>
         <FlatList
           contentContainerStyle={views.autocompleteWrapper}
-          data={list}
+          data={this.state.autocomplete}
           keyExtractor={(d, index) => index.toString()}
           renderItem={data => (
             <TextBox
               data={data.item}
               icon={icon}
               keyword={this.state.keyword}
-              handlePress={handleSubmit}
+              handlePress={onSubmit}
             />
           )}
         />

@@ -224,11 +224,11 @@ class Edit extends PureComponent<Props, State> {
           hardwareAccelerated>
           <TextAutocomplete
             placeholder="찾으시는 품종을 입력해주세요"
-            list={breeds}
+            staticList={breeds}
             icon={require('src/assets/icons/ic_search_gray.png')}
             defaultList={[{ name: '믹스' }, { name: '알 수 없음' }]}
-            handleSubmit={this.handleBreedChange}
-            handleDismiss={this.toggleModal}
+            onSubmit={this.handleBreedChange}
+            onDismiss={this.toggleModal}
           />
         </Modal>
       </PageContainer>
