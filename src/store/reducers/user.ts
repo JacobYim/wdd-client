@@ -7,16 +7,13 @@ import * as dogActions from 'src/store/actions/dog';
 import * as placeActions from 'src/store/actions/place';
 import * as actions from 'src/store/actions/user';
 
-export interface UserState
-  extends Pick<
-    actions.UserInterface,
-    Exclude<keyof actions.UserInterface, '_id'>
-  > {
+export interface UserState extends actions.UserInterface {
   error?: AxiosResponse;
   dogError?: AxiosResponse;
 }
 
 const initialState: UserState = {
+  _id: '',
   email: '',
   lastLogin: new Date(),
   name: '',

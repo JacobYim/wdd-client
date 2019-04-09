@@ -13,6 +13,7 @@ export interface Feed {
   poos: number;
   images: string[];
   memo?: string;
+  likes: { user: string; createdAt: Date }[];
   createdAt: Date;
 }
 
@@ -36,5 +37,19 @@ export const getFeeds = async (p: Params) => {
   if (p.dogs) params.dogs = JSON.stringify(p.dogs);
   if (p.feeds) params.feeds = JSON.stringify(p.feeds);
   const response: AxiosResponse<Feed[]> = await axios.get('/feeds', { params });
+  return response.data;
+};
+
+export const pushLike = async (params: { _id: string }) => {
+  const response: AxiosResponse<Feed> = await axios.patch(
+    `/feeds/${params._id}/like`
+  );
+  return response.data;
+};
+
+export const undoLike = async (params: { _id: string }) => {
+  const response: AxiosResponse<Feed> = await axios.delete(
+    `/feeds/${params._id}/like`
+  );
   return response.data;
 };

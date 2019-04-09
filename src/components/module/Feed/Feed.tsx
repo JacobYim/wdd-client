@@ -1,28 +1,63 @@
+import produce from 'immer';
+import { find } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Image, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import Swiper from 'react-native-swiper';
+import { connect } from 'react-redux';
 import { rangeWithUnit } from 'src/assets/functions/print';
 import DefaultImage from 'src/components/module/DefaultImage';
-import { Feed as FeedInterface } from 'src/services/api/feed';
+import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views, width } from './Feed.styles';
+import {
+  pushLike,
+  undoLike,
+  Feed as FeedInterface,
+} from 'src/services/api/feed';
 
 interface Props {
   feed: FeedInterface;
+  user: ReducerState['user'];
 }
 
 interface State {
   index: number;
+  pushedLike: boolean;
+  likeCount: number;
 }
 
 class Feed extends PureComponent<Props, State> {
   state: State = {
     index: 1,
+    pushedLike: false,
+    likeCount: 0,
   };
+
+  componentDidMount() {
+    const { feed, user } = this.props;
+    this.setState({
+      pushedLike:
+        find(feed.likes, like => user._id === like.user) !== undefined,
+      likeCount: feed.likes.length,
+    });
+  }
 
   handleChangeIndex = (index: number) => {
     this.setState({ index: index + 1 });
+  };
+
+  toggleLike = () => {
+    const { _id } = this.props.feed;
+    this.setState(state =>
+      produce(state, draft => {
+        draft.pushedLike = !state.pushedLike;
+        draft.likeCount = draft.pushedLike
+          ? state.likeCount + 1
+          : state.likeCount - 1;
+        if (draft.pushedLike) pushLike({ _id });
+        else undoLike({ _id });
+      })
+    );
   };
 
   render() {
@@ -43,7 +78,7 @@ class Feed extends PureComponent<Props, State> {
             <View style={views.smallDot} />
           </TouchableOpacity>
         </View>
-        <View>
+        <TouchableOpacity activeOpacity={1} onPress={this.toggleLike}>
           <Swiper
             showsPagination={false}
             onIndexChanged={this.handleChangeIndex}
@@ -62,7 +97,7 @@ class Feed extends PureComponent<Props, State> {
               feed.images.length
             }`}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
         <View style={views.infoWrapper}>
           {[
             {
@@ -90,11 +125,17 @@ class Feed extends PureComponent<Props, State> {
         </View>
         <View style={views.textWrapper}>
           <View style={views.likeInfo}>
-            <Image
-              source={require('src/assets/icons/ic_heart_off.png')}
-              style={icons.heart}
-            />
-            <Text style={texts.likes}>{feed.dog.likes.length}</Text>
+            <TouchableOpacity activeOpacity={0.7} onPress={this.toggleLike}>
+              <Image
+                source={
+                  this.state.pushedLike
+                    ? require('src/assets/icons/ic_heart_on.png')
+                    : require('src/assets/icons/ic_heart_off.png')
+                }
+                style={icons.heart}
+              />
+            </TouchableOpacity>
+            <Text style={texts.likes}>{this.state.likeCount}</Text>
           </View>
           {feed.memo && <Text style={texts.memo}>{feed.memo}</Text>}
         </View>
@@ -103,4 +144,4 @@ class Feed extends PureComponent<Props, State> {
   }
 }
 
-export default Feed;
+export default connect((state: ReducerState) => ({ user: state.user }))(Feed);

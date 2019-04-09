@@ -247,7 +247,7 @@ class Home extends PureComponent<Props, State> {
                 thumbnail={item.thumbnail}
                 index={index}
                 name={item.name}
-                message={item.label}
+                message={item.description}
               />
             )}
           />

@@ -86,12 +86,15 @@ class Detail extends PureComponent<Props, State> {
     });
   };
 
-  renderRow = (label: string, data: string) => (
-    <View style={views.rowWrapper}>
-      <Text style={texts.blackOpacity}>{label}</Text>
-      <Text style={texts.black}>{data}</Text>
-    </View>
-  );
+  renderRow = (label: string, data?: string) =>
+    data && (
+      <View style={views.rowWrapper}>
+        <Text style={texts.blackOpacity}>{label}</Text>
+        <Text numberOfLines={2} style={texts.black}>
+          {data}
+        </Text>
+      </View>
+    );
 
   render() {
     const { thumbnail, images } = this.place;
@@ -125,7 +128,8 @@ class Detail extends PureComponent<Props, State> {
             {this.renderRow('장소', this.place.address)}
             {this.place.officeHour &&
               this.renderRow('시간', showOfficeHour(this.place.officeHour))}
-            {this.place.contact && this.renderRow('문의', this.place.contact)}
+            {this.renderRow('문의', this.place.contact)}
+            {this.renderRow('상세설명', this.place.description)}
           </View>
           <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
             <Text style={[texts.black, { paddingHorizontal: size.horizontal }]}>

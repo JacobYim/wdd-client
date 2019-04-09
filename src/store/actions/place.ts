@@ -20,6 +20,7 @@ export interface PlaceResponse {
   contact: string;
   thumbnail: string;
   icon?: string;
+  description?: string;
   images?: string[];
   officeHour?: {
     default: string;
@@ -28,7 +29,7 @@ export interface PlaceResponse {
   };
   likes?: string[];
   distance: number; // km
-  scraps: { user: string; createdAt: Date };
+  scraps: { user: string; createdAt: Date }[];
 }
 
 // *** CONSTS
