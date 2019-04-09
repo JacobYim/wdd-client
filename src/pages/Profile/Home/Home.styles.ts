@@ -18,6 +18,7 @@ export const views = StyleSheet.create({
   },
   infoWrapper: {
     marginLeft: 20,
+    flex: 1,
     justifyContent: 'center',
   },
   selectDog: {
@@ -27,7 +28,6 @@ export const views = StyleSheet.create({
   updateProfile: {
     width: 80,
     alignItems: 'center',
-    marginTop: 6,
     borderWidth: 1,
     borderColor: color.grayDA,
     borderRadius: 2,
@@ -118,6 +118,11 @@ export const texts = StyleSheet.create({
   addDog: {
     marginLeft: 22,
     color: color.black,
+    fontSize: font.size.medium,
+  },
+  likeInfo: {
+    marginTop: 8,
+    color: '#484848',
     fontSize: font.size.medium,
   },
   signIn: {

@@ -146,7 +146,7 @@ class Home extends PureComponent<Props, State> {
             <FlatList
               data={dogsList}
               contentContainerStyle={views.dogListWrapper}
-              keyExtractor={(d, index) => index.toString()}
+              keyExtractor={(i, index) => index.toString()}
               renderItem={({ item }) => this.renderSelectDog(item)}
             />
             <TouchableOpacity
@@ -188,7 +188,7 @@ class Home extends PureComponent<Props, State> {
         <View style={views.header}>
           <DefaultImage size={75} uri={user.repDog && user.repDog.thumbnail} />
           <View style={views.infoWrapper}>
-            {this.signedIn ? (
+            {currentTab ? (
               <>
                 <TouchableOpacity
                   style={views.selectDog}
@@ -202,12 +202,12 @@ class Home extends PureComponent<Props, State> {
                     style={icons.dropDown}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={views.updateProfile}
-                  activeOpacity={0.7}
-                  onPress={() => navigation.navigate('edit')}>
-                  <Text style={texts.updateProfile}>프로필 수정</Text>
-                </TouchableOpacity>
+                <Text style={texts.likeInfo}>
+                  킁킁{' '}
+                  <Text style={{ fontWeight: '500' }}>
+                    {user.repDog && user.repDog.likes.length}
+                  </Text>
+                </Text>
               </>
             ) : (
               <TouchableOpacity onPress={() => navigation.navigate('session')}>
@@ -215,6 +215,14 @@ class Home extends PureComponent<Props, State> {
               </TouchableOpacity>
             )}
           </View>
+          {currentTab && (
+            <TouchableOpacity
+              style={views.updateProfile}
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('edit')}>
+              <Text style={texts.updateProfile}>프로필 수정</Text>
+            </TouchableOpacity>
+          )}
         </View>
         <TabBar
           onSwitch={this.handleSwitchTab}
