@@ -32,23 +32,21 @@ const styles = StyleSheet.create({
     backgroundColor: color.black33Opacity,
   },
   box: {
-    width: 80,
+    width: 72,
     backgroundColor: color.white,
-    marginTop: navHeight + resultHeight + 8,
+    marginTop: navHeight + resultHeight,
+    paddingVertical: 7,
     marginLeft: size.horizontal,
-    borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 8,
-    borderColor: color.grayB1,
-  },
-  optionWrapper: {
-    height: 48,
-    justifyContent: 'center',
     alignItems: 'center',
   },
-  borderTop: {
-    borderTopWidth: 1,
-    borderColor: color.grayEF,
+  optionWrapper: {
+    paddingVertical: 9,
+    alignItems: 'center',
+  },
+  label: {
+    fontSize: 16,
+    color: color.black,
   },
 });
 
@@ -72,22 +70,21 @@ class Range extends PureComponent<Props, State> {
   };
 
   render() {
-    const { range } = this.props;
-
+    const curRange = this.props.range;
     return (
       <>
         <TouchableOpacity
           style={styles.wrapper}
           onPress={this.handleToggle}
           activeOpacity={0.7}>
-          <Text style={styles.range}>{rangeWithUnit(range)}</Text>
+          <Text style={styles.range}>{rangeWithUnit(curRange)}</Text>
           <Image
             source={require('src/assets/icons/ic_dropdown.png')}
             style={styles.icon}
           />
         </TouchableOpacity>
         <Modal
-          animationType="fade"
+          animationType="none"
           visible={this.state.activated}
           transparent
           hardwareAccelerated
@@ -98,16 +95,19 @@ class Range extends PureComponent<Props, State> {
             activeOpacity={1}>
             <SafeAreaView />
             <View style={styles.box}>
-              {RANGES.map((range, index) => (
+              {RANGES.map(range => (
                 <TouchableOpacity
-                  style={[
-                    styles.optionWrapper,
-                    { ...(index > 0 ? styles.borderTop : null) },
-                  ]}
+                  style={styles.optionWrapper}
                   activeOpacity={0.7}
                   onPress={() => this.handleChange(range)}
                   key={range}>
-                  <Text>{rangeWithUnit(range)}</Text>
+                  <Text
+                    style={[
+                      styles.label,
+                      curRange === range ? { color: color.blue } : null,
+                    ]}>
+                    {rangeWithUnit(range, true)}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </View>
