@@ -7,6 +7,7 @@ import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import { rangeWithUnit } from 'src/assets/functions/print';
 import DefaultImage from 'src/components/module/DefaultImage';
+import DoubleTab from 'src/components/module/DoubleTab';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views, width } from './Feed.styles';
 import {
@@ -78,7 +79,7 @@ class Feed extends PureComponent<Props, State> {
             <View style={views.smallDot} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity activeOpacity={1} onPress={this.toggleLike}>
+        <DoubleTab onDoubleTab={this.toggleLike}>
           <Swiper
             showsPagination={false}
             onIndexChanged={this.handleChangeIndex}
@@ -97,7 +98,8 @@ class Feed extends PureComponent<Props, State> {
               feed.images.length
             }`}</Text>
           </View>
-        </TouchableOpacity>
+        </DoubleTab>
+
         <View style={views.infoWrapper}>
           {[
             {
