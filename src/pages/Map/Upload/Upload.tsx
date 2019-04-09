@@ -109,7 +109,6 @@ class Upload extends PureComponent<Props, State> {
         }}
         showBorder>
         <TextInput
-          value={this.state.memo}
           style={texts.input}
           onChangeText={this.handleChangeMemo}
           multiline={true}

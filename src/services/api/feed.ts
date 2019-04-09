@@ -19,7 +19,7 @@ export interface Feed {
 
 export type Body = Pick<
   Feed,
-  Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt'>
+  Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt' | 'likes'>
 >;
 
 export interface Params {
