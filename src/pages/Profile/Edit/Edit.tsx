@@ -147,6 +147,9 @@ class Edit extends PureComponent<Props, State> {
       if (prevBirth !== undefined) {
         birth = moment(prevBirth).format('YYYY.MM.DD');
       }
+      if (state.weight) {
+        state.weight = parseFloat((state.weight as any) as string);
+      }
       // Call reducer
       if (_id) await updateDog({ ...state, birth, _id });
       else await createDog({ ...state, birth });
@@ -202,6 +205,14 @@ class Edit extends PureComponent<Props, State> {
             { name: 'F', label: '암컷' },
             { name: 'N', label: '중성화' },
           ]}
+        />
+        <TextInput
+          name="weight"
+          label="몸무게"
+          value={this.state.weight ? this.state.weight.toString() : ''}
+          keyboardType="numeric"
+          inputs={this.inputs}
+          handleChange={this.handleChange}
         />
         <TextInput
           name="info"

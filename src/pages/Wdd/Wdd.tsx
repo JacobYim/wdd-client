@@ -83,18 +83,17 @@ class Wdd extends PureComponent<Props, State> {
                 <DefaultImage uri={dog.thumbnail} size={110} showBorder />
                 <Text style={texts.name}>{dog.name}</Text>
                 <View style={views.topRowWrapper}>
-                  {[dog.breed, dog.gender, dog.weight].map(
-                    (data, index) =>
-                      data && (
-                        <View
-                          key={index.toString()}
-                          style={[
-                            views.itemWrapper,
-                            index > 0 ? views.vr : null,
-                          ]}>
-                          <Text style={texts.spec}>{data}</Text>
-                        </View>
-                      )
+                  {[dog.breed, dog.gender].map((data, index) => (
+                    <View
+                      key={index.toString()}
+                      style={[views.itemWrapper, index > 0 ? views.vr : null]}>
+                      <Text style={texts.spec}>{data}</Text>
+                    </View>
+                  ))}
+                  {dog.weight && (
+                    <View style={[views.itemWrapper, views.vr]}>
+                      <Text style={texts.spec}>{dog.weight}kg</Text>
+                    </View>
                   )}
                 </View>
                 {dog.info && <Text style={texts.info}>{dog.info}</Text>}
