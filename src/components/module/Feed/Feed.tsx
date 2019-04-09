@@ -47,7 +47,8 @@ class Feed extends PureComponent<Props, State> {
           <Swiper
             showsPagination={false}
             onIndexChanged={this.handleChangeIndex}
-            height={width}>
+            height={width}
+            loadMinimal={true}>
             {feed.images.map((image, index) => (
               <Image
                 source={{ uri: image }}

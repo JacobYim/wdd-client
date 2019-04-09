@@ -7,8 +7,8 @@ import TopNavbar from 'src/components/module/TopNavbar';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
 import MarkerButton from './MarkerButton';
+import Prepare from './Prepare';
 import StatusButton from './StatusButton';
-import Trailor from './Trailor';
 import { fonts, icons, views } from './Walk.styles';
 import Pedometer, {
   PedometerInterface,
@@ -65,7 +65,7 @@ class Walk extends Component<Props, State> {
     }
   }
 
-  trailorWillUnmount = () => {
+  onPrepareWillUnmount = () => {
     const { updateStatus } = this.props;
     updateStatus('WALKING');
   };
@@ -87,7 +87,7 @@ class Walk extends Component<Props, State> {
     return (
       <SafeAreaView style={views.container}>
         {status === 'READY' ? (
-          <Trailor onFinish={this.trailorWillUnmount} />
+          <Prepare onFinish={this.onPrepareWillUnmount} />
         ) : (
           <>
             <View style={views.topWrapper}>
