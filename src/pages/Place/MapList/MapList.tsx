@@ -2,19 +2,17 @@ import produce from 'immer';
 import { pick } from 'lodash';
 import React, { PureComponent } from 'react';
 import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
+import Carousel, { CarouselStatic } from 'react-native-snap-carousel';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/Map/Map/TrackUser';
 import { SearchParams, searchPlace } from 'src/services/api/place';
 import { Place } from 'src/store/actions/place';
 import Card, { cardWidth } from './Card';
+import Label from './Label';
 import { height, icons, views, width } from './MapList.styles';
 import MarkerView from './MarkerView';
 import Range from './Range';
-import Carousel, {
-  CarouselStatic,
-  AdditionalParallaxProps,
-} from 'react-native-snap-carousel';
 import MapView, {
   LatLng,
   Marker,
@@ -33,7 +31,7 @@ interface State {
   trackUser: boolean;
   userCoord: LatLng;
   mapCoord: LatLng;
-  filter: { keyword?: string; range: number };
+  filter: { range: number; label?: '카페' | '용품' | '병원' | '기타' };
 }
 
 interface Item {
@@ -130,6 +128,16 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
     );
   };
 
+  handleLabelChange = (label?: '카페' | '용품' | '병원' | '기타') => {
+    this.setState(state =>
+      produce(state, draft => {
+        if (label) draft.filter.label = label;
+        else delete draft.filter.label;
+        this.search({ location: state.userCoord, ...draft.filter });
+      })
+    );
+  };
+
   handleSnap = (index: number) => {
     this.setState(state =>
       produce(state, draft => {
@@ -139,7 +147,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
     );
   };
 
-  renderItem = ({ item }: Item, parallaxProps?: AdditionalParallaxProps) => (
+  renderItem = ({ item }: Item) => (
     <Card
       place={item}
       handlePress={() => this.moveToDetail(item)}
@@ -171,6 +179,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
           />
           <View style={views.filterWrapper}>
             <Range range={filter.range} handleChange={this.handleRangeChange} />
+            <Label onChange={this.handleLabelChange} />
           </View>
         </SafeAreaView>
         <View style={views.container}>

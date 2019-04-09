@@ -11,7 +11,7 @@ export const views = StyleSheet.create({
   },
   filterWrapper: {
     height: filterHeight,
-    paddingHorizontal: size.horizontal,
+    paddingLeft: size.horizontal,
     backgroundColor: color.grayF9,
     flexDirection: 'row',
     alignItems: 'center',
