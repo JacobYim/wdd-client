@@ -1,7 +1,6 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { PureComponent } from 'react';
-import { Image, SafeAreaView, ScrollViewProps, View } from 'react-native';
 import Carousel, { CarouselStatic } from 'react-native-snap-carousel';
 import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
@@ -10,15 +9,24 @@ import { SearchParams, searchPlace } from 'src/services/api/place';
 import { Place } from 'src/store/actions/place';
 import Card, { cardWidth } from './Card';
 import Label from './Label';
-import { height, icons, views, width } from './MapList.styles';
+import { height, icons, texts, views, width } from './MapList.styles';
 import MarkerView from './MarkerView';
 import Range from './Range';
+import {
+  Image,
+  SafeAreaView,
+  ScrollViewProps,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import MapView, {
+  EventUserLocation,
   LatLng,
   Marker,
   MapEvent,
   PROVIDER_GOOGLE,
-  EventUserLocation,
+  Region,
 } from 'react-native-maps';
 
 const ASPECT_RATIO = width / height;
@@ -29,6 +37,7 @@ interface State {
   places: Place[];
   curPlace: number;
   trackUser: boolean;
+  showSearch: boolean;
   userCoord: LatLng;
   mapCoord: LatLng;
   filter: { range: number; label?: '카페' | '용품' | '병원' | '기타' };
@@ -52,6 +61,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
     places: [],
     curPlace: 0,
     trackUser: false,
+    showSearch: false,
     userCoord: LOCATION,
     mapCoord: LOCATION,
     filter: {
@@ -61,12 +71,15 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
 
   search = async (params: SearchParams) => {
     const places = await searchPlace(params);
+    const carousel = this.carousel.current;
     this.setState(state =>
       produce(state, draft => {
         draft.places = places;
         draft.curPlace = 0;
+        if (state.showSearch) draft.showSearch = false;
         if (places.length > 0) {
           this.moveCameraToLocation(places[draft.curPlace].location);
+          if (carousel) carousel.snapToItem(draft.curPlace);
         }
       })
     );
@@ -85,7 +98,12 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
   };
 
   stopTrackUser = () => {
-    if (this.state.trackUser) this.setState({ trackUser: false });
+    this.setState(state =>
+      produce(state, draft => {
+        if (state.trackUser) draft.trackUser = false;
+        if (!state.showSearch) draft.showSearch = true;
+      })
+    );
   };
 
   handlePressTrackButton = () => {
@@ -113,7 +131,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
     const { id, coordinate } = e.nativeEvent;
     const curPlace = parseInt(id, 10);
     this.moveCameraToLocation(coordinate);
-    this.setState({ curPlace });
+    this.setState({ curPlace, showSearch: false });
     if (this.carousel.current) {
       this.carousel.current.snapToItem(curPlace);
     }
@@ -123,6 +141,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
     this.setState(state =>
       produce(state, draft => {
         draft.filter.range = range;
+        if (state.showSearch) draft.showSearch = false;
         this.search({ location: state.userCoord, ...draft.filter });
       })
     );
@@ -133,15 +152,26 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
       produce(state, draft => {
         if (label) draft.filter.label = label;
         else delete draft.filter.label;
+        if (state.showSearch) draft.showSearch = false;
         this.search({ location: state.userCoord, ...draft.filter });
       })
     );
+  };
+
+  handleMapLocationSerach = () => {
+    const { mapCoord, filter } = this.state;
+    this.search({ location: mapCoord, ...filter });
+  };
+
+  handleRegionChange = (region: Region) => {
+    this.setState({ mapCoord: pick(region, ['latitude', 'longitude']) });
   };
 
   handleSnap = (index: number) => {
     this.setState(state =>
       produce(state, draft => {
         draft.curPlace = index;
+        if (state.showSearch) draft.showSearch = false;
         this.moveCameraToLocation(state.places[draft.curPlace].location);
       })
     );
@@ -193,6 +223,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
             showsUserLocation={true}
             onTouchStart={this.stopTrackUser}
             onUserLocationChange={this.handleLocationChange}
+            onRegionChangeComplete={this.handleRegionChange}
             onMarkerPress={this.handleMarkerPress}>
             {places &&
               places.map((place, index) => (
@@ -204,6 +235,15 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
                 </Marker>
               ))}
           </MapView>
+          <View>
+            {this.state.showSearch && (
+              <TouchableOpacity
+                style={views.reSearch}
+                onPress={this.handleMapLocationSerach}>
+                <Text style={texts.reSearch}>여기서 재탐색</Text>
+              </TouchableOpacity>
+            )}
+          </View>
           <SafeAreaView>
             <TrackUser
               handlePress={this.handlePressTrackButton}
