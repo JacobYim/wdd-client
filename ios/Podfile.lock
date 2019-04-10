@@ -96,8 +96,6 @@ PODS:
   - RNAWSCognito (3.0.10):
     - JKBigInteger2 (= 0.0.5)
     - React
-  - RNVectorIcons (6.4.2):
-    - React
   - RNViewShot (2.5.0):
     - React
   - yoga (0.59.2.React)
@@ -126,7 +124,6 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RNViewShot (from `../node_modules/react-native-view-shot`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -156,8 +153,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-webview"
   RNAWSCognito:
     :path: "../node_modules/amazon-cognito-identity-js"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   RNViewShot:
     :path: "../node_modules/react-native-view-shot"
   yoga:
@@ -177,10 +172,9 @@ SPEC CHECKSUMS:
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-webview: a42108b827082f8f0333529b0772102031d5960d
   RNAWSCognito: 5f4859d05c2a20dafc8a1bbb15ffc6cc92fa4d0d
-  RNVectorIcons: 8c52e1e8da1153613fdef44748e865c25556cb9c
   RNViewShot: fdf9a64f0621ebc4e7c3392a10d2ffb70a7faee4
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 83322fb4796e18795a562aa944f16b24cf235b3b
+PODFILE CHECKSUM: 870663ae0c59cd19753b18bb05b26370c2066f89
 
 COCOAPODS: 1.5.3

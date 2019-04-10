@@ -77,7 +77,7 @@ class Range extends PureComponent<Props, State> {
           style={styles.wrapper}
           onPress={this.handleToggle}
           activeOpacity={0.7}>
-          <Text style={styles.range}>{rangeWithUnit(curRange)}</Text>
+          <Text style={styles.range}>{rangeWithUnit(curRange, true)}</Text>
           <Image
             source={require('src/assets/icons/ic_dropdown.png')}
             style={styles.icon}

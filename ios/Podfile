@@ -47,7 +47,6 @@ target 'WddClient' do
 
   pod 'RNAWSCognito', :path => '../node_modules/amazon-cognito-identity-js'
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 

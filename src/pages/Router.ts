@@ -46,6 +46,8 @@ const AppNavigator = createBottomTabNavigator(
   {
     initialRouteName: 'map',
     tabBarComponent: BottomTabbar,
+    swipeEnabled: false,
+    animationEnabled: false,
   }
 );
 

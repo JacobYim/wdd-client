@@ -146,7 +146,9 @@ class Feed extends PureComponent<Props, State> {
             </TouchableOpacity>
             <Text style={texts.likes}>{this.state.likeCount}</Text>
           </View>
-          {feed.memo && <Text style={texts.memo}>{feed.memo}</Text>}
+          {feed.memo !== undefined && (
+            <Text style={texts.memo}>{feed.memo}</Text>
+          )}
         </View>
       </View>
     );

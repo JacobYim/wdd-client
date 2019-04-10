@@ -205,7 +205,7 @@ class Home extends PureComponent<Props, State> {
                 <Text style={texts.likeInfo}>
                   킁킁{' '}
                   <Text style={{ fontWeight: '500' }}>
-                    {user.repDog && user.repDog.likes.length}
+                    {user.repDog ? user.repDog.likes.length : 0}
                   </Text>
                 </Text>
               </>
@@ -215,7 +215,7 @@ class Home extends PureComponent<Props, State> {
               </TouchableOpacity>
             )}
           </View>
-          {currentTab && (
+          {this.signedIn && (
             <TouchableOpacity
               style={views.updateProfile}
               activeOpacity={0.7}
@@ -228,7 +228,7 @@ class Home extends PureComponent<Props, State> {
           onSwitch={this.handleSwitchTab}
           currentTab={this.state.currentTab}
         />
-        {currentTab === 'feeds' && user.repDog && (
+        {currentTab === 'feeds' && (
           <FlatList
             data={this.state.feeds}
             keyExtractor={(i, index) => index.toString()}
@@ -268,7 +268,7 @@ class Home extends PureComponent<Props, State> {
             )}
           />
         )}
-        {!currentTab && (
+        {!this.signedIn && (
           <View style={views.signInMessage}>
             <Text style={[texts.signIn, { textAlign: 'center' }]}>
               로그인을 통해 댕댕이와의 추억을{'\n'}쌓아보세요! 😆
