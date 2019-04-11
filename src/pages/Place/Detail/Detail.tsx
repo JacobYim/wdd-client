@@ -2,10 +2,11 @@ import { find } from 'lodash';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
+import call from 'src/assets/functions/phoneCall';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
 import Card from 'src/pages/Place/MapList/Card';
-import { getReivews, Review } from 'src/services/api/review';
+import { getReviews, Review } from 'src/services/api/review';
 import * as actions from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import { size } from 'src/theme';
@@ -58,7 +59,7 @@ class Detail extends PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-    this.setState({ reviews: await getReivews({ place: this.place._id }) });
+    this.setState({ reviews: await getReviews({ place: this.place._id }) });
   }
 
   handleToggleScrap = async () => {
@@ -85,16 +86,6 @@ class Detail extends PureComponent<Props, State> {
       handleAddReview: this.handleCreateReview,
     });
   };
-
-  renderRow = (label: string, data?: string) =>
-    data && (
-      <View style={views.rowWrapper}>
-        <Text style={texts.blackOpacity}>{label}</Text>
-        <Text numberOfLines={2} style={texts.black}>
-          {data}
-        </Text>
-      </View>
-    );
 
   render() {
     const { thumbnail, images } = this.place;
@@ -125,11 +116,35 @@ class Detail extends PureComponent<Props, State> {
                 }
               />
             </View>
-            {this.renderRow('장소', this.place.address)}
-            {this.place.officeHour &&
-              this.renderRow('시간', showOfficeHour(this.place.officeHour))}
-            {this.renderRow('문의', this.place.contact)}
-            {this.renderRow('상세설명', this.place.description)}
+            <FlatList
+              data={[
+                { label: '장소', value: this.place.address },
+                { label: '시간', value: showOfficeHour(this.place.officeHour) },
+                { label: '문의', value: this.place.contact },
+                { label: '상세설명', value: this.place.description },
+              ]}
+              keyExtractor={(i, index) => index.toString()}
+              renderItem={({ item }) =>
+                item.value ? (
+                  <View style={views.rowWrapper}>
+                    <Text style={texts.blackOpacity}>{item.label}</Text>
+                    {item.label === '문의' ? (
+                      <Text
+                        style={texts.black}
+                        onPress={async () =>
+                          await call({ number: item.value as string })
+                        }>
+                        {item.value}
+                      </Text>
+                    ) : (
+                      <Text numberOfLines={2} style={texts.black}>
+                        {item.value}
+                      </Text>
+                    )}
+                  </View>
+                ) : null
+              }
+            />
           </View>
           <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
             <Text style={[texts.black, { paddingHorizontal: size.horizontal }]}>

@@ -22,7 +22,7 @@ export interface PlaceResponse {
   icon?: string;
   description?: string;
   images?: string[];
-  officeHour?: {
+  officeHour: {
     default: string;
     weekend?: string;
     dayoff?: string;

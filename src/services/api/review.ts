@@ -28,7 +28,7 @@ export const createReview = async (body: Body) => {
   return response.data;
 };
 
-export const getReivews = async (params?: Params) => {
+export const getReviews = async (params?: Params) => {
   const response: AxiosResponse<Review[]> = await axios.get('/reviews', {
     params,
   });
