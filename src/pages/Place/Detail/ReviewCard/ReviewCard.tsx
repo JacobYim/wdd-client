@@ -1,6 +1,7 @@
 import moment from 'moment';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { PureComponent } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
 import DefaultImage from 'src/components/module/DefaultImage';
 import { Rating } from 'src/pages/Place/MapList/Card/Card';
 import { Review } from 'src/services/api/review';
@@ -8,6 +9,11 @@ import { color, font, size } from 'src/theme';
 
 interface Props {
   review: Review;
+  isWriter: boolean;
+}
+
+interface State {
+  options: string[];
 }
 
 const styles = StyleSheet.create({
@@ -40,32 +46,87 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   time: {
+    flex: 1,
     marginLeft: 4,
     color: `${color.black}4D`,
     fontSize: font.size.small,
   },
+  headerButton: {
+    paddingLeft: 16,
+    height: '100%',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  smallDot: {
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
+    backgroundColor: color.black,
+    marginLeft: 2,
+  },
 });
 
-const ReviewCard: React.FC<Props> = ({ review }) => {
-  return (
-    <View style={styles.wrapper}>
-      <View style={styles.header}>
-        {review.user.repDog && (
-          <>
-            <DefaultImage size={32} uri={review.user.repDog.thumbnail} />
-            <Text style={styles.userName}>{review.user.repDog.name}</Text>
-          </>
-        )}
-        <Text numberOfLines={2} style={styles.time}>
-          {moment(review.updatedAt).fromNow()}
-        </Text>
+class ReviewCard extends PureComponent<Props, State> {
+  actionSheet = React.createRef<ActionSheet>();
+  constructor(props: Props) {
+    super(props);
+    const options: string[] = props.isWriter ? ['수정', '삭제'] : ['신고'];
+    options.push('취소');
+    this.state = { options };
+  }
+
+  handlePressDots = () => {
+    const actionSheet = this.actionSheet.current;
+    if (actionSheet) {
+      actionSheet.show();
+    }
+  };
+
+  handleActionSheet = (index: number) => {
+    const { isWriter } = this.props;
+    if (isWriter) {
+    } else {
+    }
+  };
+
+  render() {
+    const { review } = this.props;
+
+    return (
+      <View style={styles.wrapper}>
+        <View style={styles.header}>
+          {review.user.repDog && (
+            <>
+              <DefaultImage size={32} uri={review.user.repDog.thumbnail} />
+              <Text style={styles.userName}>{review.user.repDog.name}</Text>
+            </>
+          )}
+          <Text numberOfLines={2} style={styles.time}>
+            {moment(review.updatedAt).fromNow()}
+          </Text>
+          <TouchableOpacity
+            style={styles.headerButton}
+            activeOpacity={0.7}
+            onPress={this.handlePressDots}>
+            <View style={styles.smallDot} />
+            <View style={styles.smallDot} />
+            <View style={styles.smallDot} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.contentWrapper}>
+          <Rating rating={review.rating} />
+          <Text style={styles.description}>{review.description}</Text>
+        </View>
+        <ActionSheet
+          ref={this.actionSheet}
+          options={this.state.options}
+          destructiveButtonIndex={this.state.options.length - 2}
+          cancelButtonIndex={this.state.options.length - 1}
+          onPress={this.handleActionSheet}
+        />
       </View>
-      <View style={styles.contentWrapper}>
-        <Rating rating={review.rating} />
-        <Text style={styles.description}>{review.description}</Text>
-      </View>
-    </View>
-  );
-};
+    );
+  }
+}
 
 export default ReviewCard;

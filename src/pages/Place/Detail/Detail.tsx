@@ -59,7 +59,8 @@ class Detail extends PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-    this.setState({ reviews: await getReviews({ place: this.place._id }) });
+    const reviews = await getReviews({ place: this.place._id });
+    this.setState({ reviews });
   }
 
   handleToggleScrap = async () => {
@@ -172,7 +173,11 @@ class Detail extends PureComponent<Props, State> {
           </View>
           <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
             {this.state.reviews.map((review, index) => (
-              <ReviewCard key={index} review={review} />
+              <ReviewCard
+                key={index}
+                review={review}
+                isWriter={this.props.user._id === review.user._id}
+              />
             ))}
           </View>
         </ScrollView>
