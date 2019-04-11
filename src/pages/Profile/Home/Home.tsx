@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Alert, Image, Modal, Text, View } from 'react-native';
+import { Image, Modal, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';

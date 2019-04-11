@@ -1,6 +1,5 @@
 import { flatten } from 'lodash';
 import React, { PureComponent } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
@@ -15,9 +14,11 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
+  ScrollView,
   View,
   Modal,
   Text,
+  RefreshControl,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -28,12 +29,23 @@ interface State {
   dogs: Dog[];
   feeds: FeedInterface[];
   selectDog?: Dog;
+  refresh: boolean;
 }
 
 class Wdd extends PureComponent<Props, State> {
-  state: State = { dogs: [], feeds: [] };
+  state: State = { dogs: [], feeds: [], refresh: false };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getDataFromServer();
+  }
+
+  handleRefresh = async () => {
+    await this.setState({ refresh: true });
+    await this.getDataFromServer();
+    this.setState({ refresh: false });
+  };
+
+  getDataFromServer = async () => {
     const { coordinates } = this.props.user.location;
     const users = await searchUsers({ coordinates });
     const feeds = await getFeeds({
@@ -43,7 +55,7 @@ class Wdd extends PureComponent<Props, State> {
       .filter(user => user.repDog !== undefined)
       .map(user => user.repDog) as Dog[];
     await this.setState({ feeds, dogs });
-  }
+  };
 
   selectDog = (selectDog: Dog) => {
     this.setState({ selectDog });
@@ -135,7 +147,14 @@ class Wdd extends PureComponent<Props, State> {
             style={icons.logo}
           />
         </View>
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refresh}
+              onRefresh={this.handleRefresh}
+            />
+          }>
           <View style={views.dogsWrapper}>
             <FlatList
               data={this.state.dogs}
