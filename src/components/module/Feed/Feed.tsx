@@ -3,6 +3,7 @@ import { find } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
 import { Image, Text, TouchableOpacity, View, ViewToken } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { rangeWithUnit } from 'src/assets/functions/print';
@@ -29,6 +30,7 @@ interface State {
 }
 
 class Feed extends PureComponent<Props, State> {
+  private actionSheet = React.createRef<ActionSheet>();
   state: State = {
     index: 1,
     pushedLike: false,
@@ -66,8 +68,15 @@ class Feed extends PureComponent<Props, State> {
     this.setState({ index });
   };
 
+  handlePressDots = () => {
+    const actionSheet = this.actionSheet.current;
+    if (actionSheet) actionSheet.show();
+  };
+
+  handleActionSheet = (index: number) => {};
+
   render() {
-    const { feed } = this.props;
+    const { feed, user } = this.props;
     return (
       <View>
         <View style={views.header}>
@@ -78,7 +87,9 @@ class Feed extends PureComponent<Props, State> {
               {moment(feed.createdAt).fromNow()}
             </Text>
           </View>
-          <TouchableOpacity style={views.headerButton}>
+          <TouchableOpacity
+            style={views.headerButton}
+            onPress={this.handlePressDots}>
             <View style={views.smallDot} />
             <View style={views.smallDot} />
             <View style={views.smallDot} />
@@ -150,6 +161,15 @@ class Feed extends PureComponent<Props, State> {
             <Text style={texts.memo}>{feed.memo}</Text>
           )}
         </View>
+        {user._id === feed.user && (
+          <ActionSheet
+            ref={this.actionSheet}
+            options={['삭제', '취소']}
+            destructiveButtonIndex={0}
+            cancelButtonIndex={1}
+            onPress={this.handleActionSheet}
+          />
+        )}
       </View>
     );
   }

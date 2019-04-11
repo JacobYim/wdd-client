@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 });
 
 class ReviewCard extends PureComponent<Props, State> {
-  actionSheet = React.createRef<ActionSheet>();
+  private actionSheet = React.createRef<ActionSheet>();
   constructor(props: Props) {
     super(props);
     const options: string[] = props.isWriter ? ['수정', '삭제'] : ['신고'];
@@ -77,9 +77,7 @@ class ReviewCard extends PureComponent<Props, State> {
 
   handlePressDots = () => {
     const actionSheet = this.actionSheet.current;
-    if (actionSheet) {
-      actionSheet.show();
-    }
+    if (actionSheet) actionSheet.show();
   };
 
   handleActionSheet = (index: number) => {
