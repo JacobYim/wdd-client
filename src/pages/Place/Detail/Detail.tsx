@@ -120,7 +120,12 @@ class Detail extends PureComponent<Props, State> {
             <FlatList
               data={[
                 { label: '장소', value: this.place.address },
-                { label: '시간', value: showOfficeHour(this.place.officeHour) },
+                {
+                  label: '시간',
+                  value: this.place.officeHour
+                    ? showOfficeHour(this.place.officeHour)
+                    : undefined,
+                },
                 { label: '문의', value: this.place.contact },
                 { label: '상세설명', value: this.place.description },
               ]}

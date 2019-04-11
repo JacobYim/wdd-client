@@ -5,7 +5,7 @@ import { Place, PlaceResponse } from 'src/store/actions/place';
 
 export interface SearchParams {
   keyword?: string;
-  label?: '카페' | '용품' | '병원' | '기타';
+  label?: '카페' | '식당' | '술집' | '용품' | '병원' | '기타';
   location?: LatLng;
   range?: number; // km
 }

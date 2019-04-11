@@ -3,12 +3,14 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { color } from 'src/theme';
 
+type LabelType = '카페' | '식당' | '술집' | '용품' | '병원' | '기타';
+
 interface Props {
-  onChange: (label?: '카페' | '용품' | '병원' | '기타') => void;
+  onChange: (label?: LabelType) => void;
 }
 
 interface State {
-  label?: '카페' | '용품' | '병원' | '기타';
+  label?: LabelType;
 }
 
 const height = 30;
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
 class Label extends PureComponent<Props, State> {
   state: State = { label: undefined };
 
-  handleChange = (label?: '카페' | '용품' | '병원' | '기타') => {
+  handleChange = (label?: LabelType) => {
     this.props.onChange(label);
     this.setState({ label });
   };
@@ -48,7 +50,7 @@ class Label extends PureComponent<Props, State> {
     const label = this.state.label || '전체';
     return (
       <FlatList
-        data={['전체', '카페', '용품', '병원', '기타']}
+        data={['전체', '카페', '식당', '술집', '용품', '병원', '기타']}
         keyExtractor={item => item}
         style={styles.container}
         contentContainerStyle={styles.listWrapper}

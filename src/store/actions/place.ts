@@ -15,14 +15,14 @@ export interface PlaceResponse {
   name: string;
   location: GeoJSON;
   address: string;
-  label: '카페' | '용품' | '병원' | '기타';
+  label: '카페' | '식당' | '술집' | '용품' | '병원' | '기타';
   rating: number;
-  contact: string;
   thumbnail: string;
+  contact?: string;
   icon?: string;
   description?: string;
   images?: string[];
-  officeHour: {
+  officeHour?: {
     default: string;
     weekend?: string;
     dayoff?: string;
