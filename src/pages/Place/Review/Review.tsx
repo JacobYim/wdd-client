@@ -21,12 +21,18 @@ class Review extends PureComponent<NavigationScreenProps, State> {
   handleSubmit = async () => {
     const { navigation } = this.props;
     const place = navigation.getParam('place')._id;
-    const review = await createReview({ place, ...this.state });
-    if (review) {
-      navigation.getParam('handleAddReview')(review);
-      Alert.alert('리뷰가 작성되었습니다.');
+    try {
+      const review = await createReview({ place, ...this.state });
+      if (review) {
+        navigation.getParam('handleAddReview')(review);
+        Alert.alert('리뷰가 작성되었습니다.');
+      }
+      navigation.goBack(null);
+    } catch (e) {
+      if (e.response.data.statusCode === 409) {
+        Alert.alert(e.response.data.message);
+      }
     }
-    navigation.goBack(null);
   };
 
   handleChange = (description: string) => {
