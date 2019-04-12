@@ -104,6 +104,7 @@ export const texts = StyleSheet.create({
     fontSize: font.size.small,
   },
   info: {
+    marginTop: 16,
     color: '#484848',
     fontSize: font.size.medium,
     textAlign: 'center',
