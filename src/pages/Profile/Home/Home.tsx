@@ -1,8 +1,6 @@
 import { isEqual } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Image, Modal, Text, View } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
@@ -16,8 +14,17 @@ import { Place as Scrap } from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import Badges from './Badges';
 import { icons, texts, views } from './Home.styles';
-import ListItem from './ListItem';
+import Like from './Like';
+import Place from './Place';
 import TabBar from './Tabbar';
+import {
+  Image,
+  Modal,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 
 interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
@@ -135,13 +142,13 @@ class Home extends PureComponent<Props, State> {
       <Modal
         animationType="none"
         visible={this.state.showSelectDog}
-        onRequestClose={this.toggleModal}
         transparent
-        hardwareAccelerated>
+        hardwareAccelerated
+        onRequestClose={this.toggleModal}>
         <TouchableOpacity
           style={views.modalBackground}
-          activeOpacity={1}
-          onPress={this.toggleModal}>
+          onPress={this.toggleModal}
+          activeOpacity={1}>
           <SafeAreaView style={views.modal}>
             <FlatList
               data={dogsList}
@@ -242,12 +249,12 @@ class Home extends PureComponent<Props, State> {
             keyExtractor={(i, index) => index.toString()}
             contentContainerStyle={[views.listContainer, views.listSpace]}
             renderItem={({ item, index }) => (
-              <ListItem
+              <Place
                 onPress={() => navigation.navigate('place', { place: item })}
-                thumbnail={item.thumbnail}
-                index={index}
                 name={item.name}
-                message={item.description}
+                label={item.label}
+                icon={item.icon}
+                description={item.description}
               />
             )}
           />
@@ -259,7 +266,7 @@ class Home extends PureComponent<Props, State> {
             keyExtractor={(i, index) => index.toString()}
             contentContainerStyle={[views.listContainer, views.listSpace]}
             renderItem={({ item, index }) => (
-              <ListItem
+              <Like
                 thumbnail={item.thumbnail}
                 index={index}
                 name={`${item.name}님이 킁킁을 보냈습니다.`}

@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { color, font, size } from 'src/theme';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
   container: {
@@ -34,8 +34,7 @@ export const views = StyleSheet.create({
     paddingVertical: 6,
   },
   modalBackground: {
-    width,
-    height,
+    height: Platform.OS === 'ios' ? height : height - 20,
     backgroundColor: color.black33Opacity,
   },
   modal: {
