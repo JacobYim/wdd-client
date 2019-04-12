@@ -67,7 +67,7 @@ class TextAutocomplete extends Component<Props, State> {
   handleInputSubmit = async () => {
     const { onSearch } = this.props;
     const { keyword } = this.state;
-    if (onSearch && disassemble(keyword).length > 4) {
+    if (onSearch) {
       this.searchResult = await onSearch(keyword);
       const autocomplete = this.getAutocomplete(keyword, this.searchResult);
       this.setState({ autocomplete });

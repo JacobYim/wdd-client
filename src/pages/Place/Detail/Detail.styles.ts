@@ -62,7 +62,7 @@ export const icons = StyleSheet.create({
 
 export const texts = StyleSheet.create({
   blackOpacity: {
-    flexBasis: 58,
+    flexBasis: 64,
     lineHeight: 24,
     color: color.blackOpacity,
     fontSize: 16,
