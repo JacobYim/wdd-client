@@ -215,7 +215,7 @@ class Home extends PureComponent<Props, State> {
               </TouchableOpacity>
             )}
           </View>
-          {this.signedIn && (
+          {this.signedIn && user.repDog && (
             <TouchableOpacity
               style={views.updateProfile}
               activeOpacity={0.7}

@@ -53,22 +53,24 @@ class Edit extends PureComponent<Props, State> {
     info: React.createRef<Input>(),
   };
 
-  constructor(props: Props) {
-    super(props);
-    const { repDog } = props.user;
-    if (repDog === undefined) return;
-    this.state = {
-      _id: this.create ? '' : repDog._id,
-      name: this.create ? '' : repDog.name,
-      breed: this.create ? '' : repDog.breed,
-      gender: this.create ? '' : repDog.gender,
-      thumbnail: !this.create ? repDog.thumbnail : undefined,
-      birth: !this.create && repDog.birth ? new Date(repDog.birth) : undefined,
-      weight: !this.create && repDog.weight ? repDog.weight : undefined,
-      info: !this.create && repDog.info ? repDog.info : undefined,
-      showModal: false,
-      error: {},
-    };
+  state: State = {
+    _id: '',
+    name: '',
+    breed: '',
+    gender: '',
+    error: {},
+    showModal: false,
+  };
+
+  componentDidMount() {
+    const { user } = this.props;
+    if (!this.create && user.repDog) {
+      const { user: u, likes, feeds, birth, ...data } = user.repDog;
+      this.setState({
+        ...data,
+        birth: birth ? moment(birth.split('.')).toDate() : undefined,
+      });
+    }
   }
 
   toggleModal = () => {

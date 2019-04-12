@@ -37,9 +37,9 @@ export const views = StyleSheet.create({
     width,
     height,
     backgroundColor: color.black33Opacity,
-    justifyContent: 'flex-end',
   },
   modal: {
+    marginTop: 'auto',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     paddingTop: 20,
