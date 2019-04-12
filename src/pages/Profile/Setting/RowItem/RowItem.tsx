@@ -46,29 +46,28 @@ const styles = StyleSheet.create({
   },
 });
 
-const RowItem: React.FC<Props> = ({ item, index }) => (
-  <View style={[styles.wrapper, index === 0 ? { borderTopWidth: 0 } : null]}>
-    <Text style={styles.label}>{item.label}</Text>
-    {item.handlePress && (
-      <TouchableOpacity
-        style={styles.buttonWrapper}
-        onPress={item.handlePress}
-        activeOpacity={0.7}>
-        <Image
-          style={styles.arrow}
-          source={require('src/assets/icons/ic_arrow.png')}
-        />
-      </TouchableOpacity>
-    )}
-    {item.value !== undefined && item.handleValueChange && (
+const RowItem: React.FC<Props> = ({ item, index }) =>
+  item.handleValueChange ? (
+    <View style={[styles.wrapper, index === 0 ? { borderTopWidth: 0 } : null]}>
+      <Text style={styles.label}>{item.label}</Text>
       <Switch
         style={styles.toggle}
         onValueChange={item.handleValueChange}
         value={item.value}
         trackColor={{ false: '#DADCDF', true: '#2699FB' }}
       />
-    )}
-  </View>
-);
+    </View>
+  ) : (
+    <TouchableOpacity
+      style={[styles.wrapper, index === 0 ? { borderTopWidth: 0 } : null]}
+      onPress={item.handlePress}
+      activeOpacity={0.7}>
+      <Text style={styles.label}>{item.label}</Text>
+      <Image
+        style={styles.arrow}
+        source={require('src/assets/icons/ic_arrow.png')}
+      />
+    </TouchableOpacity>
+  );
 
 export default RowItem;
