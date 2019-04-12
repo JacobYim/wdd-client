@@ -136,7 +136,7 @@ class Detail extends PureComponent<Props, State> {
                     <Text style={texts.blackOpacity}>{item.label}</Text>
                     {item.label === '문의' ? (
                       <Text
-                        style={texts.black}
+                        style={texts.blue}
                         onPress={async () =>
                           await call({ number: item.value as string })
                         }>

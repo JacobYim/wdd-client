@@ -72,4 +72,12 @@ export const texts = StyleSheet.create({
     color: color.black,
     fontSize: 16,
   },
+  blue: {
+    textDecorationStyle: 'solid',
+    textDecorationColor: color.blue,
+    textDecorationLine: 'underline',
+    lineHeight: 24,
+    color: color.blue,
+    fontSize: 16,
+  },
 });
