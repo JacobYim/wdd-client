@@ -77,7 +77,7 @@ class Walk extends Component<Props, State> {
 
   render() {
     const { updateLatestPin } = this.props;
-    const { distance, status, seconds, steps } = this.props.walk;
+    const { distance, status, seconds, steps, speed } = this.props.walk;
     const gpsInfoList: WalkInfoInterface[] = [
       { value: distance, unit: 'Km' },
       { value: steps, unit: '걸음' },
@@ -113,7 +113,11 @@ class Walk extends Component<Props, State> {
               />
               <Image
                 style={icons.gif}
-                source={require('src/assets/images/img_running.gif')}
+                source={
+                  speed > 4
+                    ? require('src/assets/images/img_running.gif')
+                    : require('src/assets/images/img_walking.gif')
+                }
               />
               <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>
             </View>
