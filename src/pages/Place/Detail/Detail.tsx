@@ -21,6 +21,8 @@ import {
   View,
   SafeAreaView,
   FlatList,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -97,7 +99,15 @@ class Detail extends PureComponent<Props, State> {
             style={views.headerWrapper}
             source={{ uri: thumbnail }}
             imageStyle={{ resizeMode: 'cover' }}>
-            <View style={views.headerFilter} />
+            <View style={views.headerFilter}>
+              {Platform.OS === 'android' && (
+                <TouchableOpacity
+                  style={views.headerCheat}
+                  activeOpacity={1}
+                  onPress={this.handleToggleScrap}
+                />
+              )}
+            </View>
           </ImageBackground>
           <View style={[views.infoWrapper, { borderTopWidth: 0 }]}>
             <View style={views.infoHover}>

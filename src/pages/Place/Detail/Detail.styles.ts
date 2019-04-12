@@ -19,6 +19,12 @@ export const views = StyleSheet.create({
     flex: 1,
     backgroundColor: `${color.black}78`,
   },
+  headerCheat: {
+    marginTop: 'auto',
+    marginLeft: 'auto',
+    width: size.horizontal + 60,
+    height: cardHeight / 2 + paddingVertical,
+  },
   infoHover: {
     marginTop: -(cardHeight / 2 + paddingVertical),
     marginBottom: 10,
