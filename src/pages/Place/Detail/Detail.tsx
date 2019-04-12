@@ -162,11 +162,12 @@ class Detail extends PureComponent<Props, State> {
               }
             />
           </View>
-          <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
-            <Text style={[texts.black, { paddingHorizontal: size.horizontal }]}>
-              사진
-            </Text>
-            {images && (
+          {images && images.length > 0 && (
+            <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
+              <Text
+                style={[texts.black, { paddingHorizontal: size.horizontal }]}>
+                사진
+              </Text>
               <FlatList
                 contentContainerStyle={views.imageWrapper}
                 data={images}
@@ -177,8 +178,8 @@ class Detail extends PureComponent<Props, State> {
                 showsHorizontalScrollIndicator={false}
                 horizontal
               />
-            )}
-          </View>
+            </View>
+          )}
           <View style={[views.infoWrapper, { alignItems: 'center' }]}>
             <Text style={texts.black}>이 장소에 대한 평점을 남겨주세요.</Text>
             <Rating
