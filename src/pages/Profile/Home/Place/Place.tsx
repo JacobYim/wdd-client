@@ -76,7 +76,9 @@ const Place: React.FC<Props> = ({
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.label}>{label}</Text>
       </View>
-      <Text style={styles.description}>{description}</Text>
+      <Text numberOfLines={1} style={styles.description}>
+        {description}
+      </Text>
     </View>
   </TouchableOpacity>
 );
