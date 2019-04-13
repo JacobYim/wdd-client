@@ -36,6 +36,7 @@ interface State {
   reviews: Review[];
 }
 
+// Helpers
 function showOfficeHour(officeHour: {
   default: string;
   weekend?: string;
@@ -49,6 +50,9 @@ function showOfficeHour(officeHour: {
   if (officeHour.dayoff) message += `\n휴일 ${officeHour.dayoff}`;
   return message;
 }
+
+const isPhoneNumber = (value: string) =>
+  /(^0[0-9]{1,2}-)?[0-9]{3,4}-[0-9]{4}$/g.test(value);
 
 class Detail extends PureComponent<Props, State> {
   place: actions.Place = this.props.navigation.getParam('place');
@@ -144,7 +148,7 @@ class Detail extends PureComponent<Props, State> {
                 item.value ? (
                   <View style={views.rowWrapper}>
                     <Text style={texts.blackOpacity}>{item.label}</Text>
-                    {item.label === '문의' ? (
+                    {isPhoneNumber(item.value) ? (
                       <Text
                         style={texts.blue}
                         onPress={async () =>

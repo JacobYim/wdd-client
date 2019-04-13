@@ -74,6 +74,7 @@ export const texts = StyleSheet.create({
     fontSize: 16,
   },
   black: {
+    flex: 1,
     lineHeight: 24,
     color: color.black,
     fontSize: 16,
