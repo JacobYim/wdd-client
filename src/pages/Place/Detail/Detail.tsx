@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import call from 'src/assets/functions/phoneCall';
+import withMessage, { MessageProps } from 'src/components/base/withMessage';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
 import Card from 'src/pages/Place/MapList/Card';
@@ -13,7 +14,6 @@ import { size } from 'src/theme';
 import { icons, texts, views } from './Detail.styles';
 import ReviewCard from './ReviewCard';
 import {
-  Alert,
   Image,
   ImageBackground,
   ScrollView,
@@ -25,7 +25,7 @@ import {
   Platform,
 } from 'react-native';
 
-interface Props extends NavigationScreenProps {
+interface Props extends NavigationScreenProps, MessageProps {
   user: ReducerState['user'];
   scrap: typeof actions.scrap;
   unScrap: typeof actions.unScrap;
@@ -70,15 +70,16 @@ class Detail extends PureComponent<Props, State> {
   }
 
   handleToggleScrap = async () => {
-    const { scrap, unScrap } = this.props;
+    const { scrap, unScrap, showMessage } = this.props;
     if (this.state.isScrap) {
       await unScrap({ id: this.place._id });
-      Alert.alert('스크랩이 취소되었습니다.');
+      this.setState({ isScrap: false });
+      showMessage('스크랩이 취소되었습니다.');
     } else {
       await scrap({ id: this.place._id });
-      Alert.alert('스크랩되었습니다.');
+      this.setState({ isScrap: true });
+      showMessage('스크랩되었습니다.');
     }
-    this.setState({ isScrap: !this.state.isScrap });
   };
 
   handleCreateReview = (review: Review) => {
@@ -231,4 +232,4 @@ export default connect(
     user: state.user,
   }),
   { scrap: actions.scrap, unScrap: actions.unScrap }
-)(Detail);
+)(withMessage(Detail));

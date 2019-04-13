@@ -87,4 +87,8 @@ export const texts = StyleSheet.create({
     color: color.blue,
     fontSize: 16,
   },
+  message: {
+    fontSize: 15,
+    color: color.white,
+  },
 });
