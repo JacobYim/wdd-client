@@ -17,7 +17,7 @@ export interface PlaceResponse {
   address: string;
   label: '카페' | '식당' | '술집' | '용품' | '병원' | '기타';
   rating: number;
-  thumbnail: string;
+  thumbnail?: string;
   contact?: string;
   icon?: string;
   description?: string;

@@ -101,7 +101,11 @@ class Detail extends PureComponent<Props, State> {
         <ScrollView style={{ flex: 1 }}>
           <ImageBackground
             style={views.headerWrapper}
-            source={{ uri: thumbnail }}
+            source={
+              thumbnail
+                ? { uri: thumbnail }
+                : require('src/assets/images/img_thumbnail_default.png')
+            }
             imageStyle={{ resizeMode: 'cover' }}>
             <View style={views.headerFilter}>
               {Platform.OS === 'android' && (
