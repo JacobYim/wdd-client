@@ -15,12 +15,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pin: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 32,
   },
   place: {
-    width: 33.5,
-    height: 43.7,
+    width: 33,
+    height: 44,
   },
 });
 
@@ -29,8 +29,8 @@ const MarkerView: React.FC<Props> = ({ place, selected }) => (
     <Image
       source={
         selected
-          ? require('src/assets/icons/ic_place.png')
-          : require('src/assets/icons/ic_pin.png')
+          ? require('src/assets/icons/ic_place_on.png')
+          : require('src/assets/icons/ic_place_off.png')
       }
       style={selected ? styles.place : styles.pin}
     />
