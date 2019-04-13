@@ -2,7 +2,6 @@ import produce from 'immer';
 import { find } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Image, Text, TouchableOpacity, View, ViewToken } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
@@ -11,6 +10,14 @@ import DefaultImage from 'src/components/module/DefaultImage';
 import DoubleTab from 'src/components/module/DoubleTab';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Feed.styles';
+import {
+  Animated,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewToken,
+} from 'react-native';
 
 import {
   pushLike,
@@ -27,14 +34,18 @@ interface State {
   index: number;
   pushedLike: boolean;
   likeCount: number;
+  heartSize: Animated.Value;
 }
 
 class Feed extends PureComponent<Props, State> {
   private actionSheet = React.createRef<ActionSheet>();
+  private pushLike = false;
+
   state: State = {
     index: 1,
     pushedLike: false,
     likeCount: 0,
+    heartSize: new Animated.Value(0),
   };
 
   componentDidMount() {
@@ -54,8 +65,29 @@ class Feed extends PureComponent<Props, State> {
         draft.likeCount = draft.pushedLike
           ? state.likeCount + 1
           : state.likeCount - 1;
-        if (draft.pushedLike) pushLike({ _id });
-        else undoLike({ _id });
+        if (draft.pushedLike) {
+          pushLike({ _id });
+          this.pushLike = true;
+          Animated.timing(this.state.heartSize, {
+            toValue: 1,
+            duration: 60,
+            useNativeDriver: true,
+          }).start(bigger => {
+            if (bigger.finished) {
+              setTimeout(() => {
+                Animated.timing(this.state.heartSize, {
+                  toValue: 0,
+                  duration: 120,
+                  useNativeDriver: true,
+                }).start(smaller => {
+                  if (smaller.finished) this.pushLike = false;
+                });
+              }, 1600);
+            }
+          });
+        } else {
+          undoLike({ _id });
+        }
       })
     );
   };
@@ -77,6 +109,7 @@ class Feed extends PureComponent<Props, State> {
 
   render() {
     const { feed, user } = this.props;
+
     return (
       <View>
         <View style={views.header}>
@@ -112,6 +145,24 @@ class Feed extends PureComponent<Props, State> {
             pagingEnabled
             horizontal
           />
+          {this.pushLike && (
+            <View style={views.likeAnimation}>
+              <Animated.Image
+                source={require('src/assets/icons/ic_heart_press.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  transform: [
+                    {
+                      scaleX: this.state.heartSize,
+                      scaleY: this.state.heartSize,
+                    },
+                  ],
+                }}
+              />
+            </View>
+          )}
           <View style={views.paginateStatus}>
             <Text style={texts.paginate}>{`${this.state.index} / ${
               feed.images.length

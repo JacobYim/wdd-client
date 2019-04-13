@@ -72,6 +72,16 @@ export const views = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  likeAnimation: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    margin: 20,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export const texts = StyleSheet.create({
