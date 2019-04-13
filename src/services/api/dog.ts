@@ -37,8 +37,8 @@ export const pushLike = async (params: { _id: string }) => {
     const response: AxiosResponse<{ message: string }> = await axios.patch(
       `/dogs/${params._id}/like`
     );
-    Alert.alert(response.data.message);
-  } catch (e) {
-    Alert.alert(e.response.data.message);
+    return response.data;
+  } catch (err) {
+    Alert.alert(err.response.data.message);
   }
 };

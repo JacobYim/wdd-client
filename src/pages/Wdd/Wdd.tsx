@@ -1,4 +1,5 @@
-import { flatten } from 'lodash';
+import produce from 'immer';
+import { findIndex, flatten } from 'lodash';
 import React, { PureComponent } from 'react';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -19,6 +20,7 @@ import {
   Modal,
   Text,
   RefreshControl,
+  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -43,6 +45,28 @@ class Wdd extends PureComponent<Props, State> {
     await this.setState({ refresh: true });
     await this.getDataFromServer();
     this.setState({ refresh: false });
+  };
+
+  handlePressLike = async (_id: string) => {
+    const { user } = this.props;
+    const data = await pushLike({ _id });
+    if (data) {
+      Alert.alert(data.message);
+      this.setState(state =>
+        produce(state, draft => {
+          if (user.repDog && draft.selectDog) {
+            const pushData = {
+              dog: user.repDog._id,
+              createdAt: new Date(),
+            };
+
+            const index = findIndex(this.state.dogs, dog => dog._id === _id);
+            draft.dogs[index].likes.push(pushData);
+            draft.selectDog.likes.push(pushData);
+          }
+        })
+      );
+    }
   };
 
   getDataFromServer = async () => {
@@ -127,7 +151,7 @@ class Wdd extends PureComponent<Props, State> {
                   ]}
                   activeOpacity={0.7}
                   disabled={!signedIn}
-                  onPress={() => pushLike({ _id: dog._id })}>
+                  onPress={() => this.handlePressLike(dog._id)}>
                   <Text style={texts.like}>킁킁 보내기</Text>
                 </TouchableOpacity>
               </SafeAreaView>
