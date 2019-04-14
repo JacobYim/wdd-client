@@ -34,6 +34,20 @@ interface State {
   refresh: boolean;
 }
 
+// helper
+function mapGender(gender: 'M' | 'F' | 'N' | '') {
+  switch (gender) {
+    case 'M':
+      return '수컷';
+    case 'F':
+      return '암컷';
+    case 'N':
+      return '중성화';
+    default:
+      return '';
+  }
+}
+
 class Wdd extends PureComponent<Props, State> {
   state: State = { dogs: [], feeds: [], refresh: false };
 
@@ -119,20 +133,23 @@ class Wdd extends PureComponent<Props, State> {
                 <DefaultImage uri={dog.thumbnail} size={110} showBorder />
                 <Text style={texts.name}>{dog.name}</Text>
                 <View style={views.topRowWrapper}>
-                  {[dog.breed, dog.gender].map((data, index) => (
-                    <View
-                      key={index.toString()}
-                      style={[views.itemWrapper, index > 0 ? views.vr : null]}>
-                      <Text style={texts.spec}>{data}</Text>
-                    </View>
-                  ))}
+                  <View style={views.itemWrapper}>
+                    <Text style={texts.spec}>{dog.breed}</Text>
+                  </View>
+                  <View style={[views.itemWrapper, views.vr]}>
+                    <Text style={texts.spec}>{mapGender(dog.gender)}</Text>
+                  </View>
                   {dog.weight && (
                     <View style={[views.itemWrapper, views.vr]}>
                       <Text style={texts.spec}>{dog.weight}kg</Text>
                     </View>
                   )}
                 </View>
-                {dog.info && <Text style={texts.info}>{dog.info}</Text>}
+                {dog.info && (
+                  <View style={views.infoWrapper}>
+                    <Text style={texts.info}>{dog.info}</Text>
+                  </View>
+                )}
                 <View style={views.bottomRowWrapper}>
                   {[
                     { label: '킁킁', value: dog.likes.length },
