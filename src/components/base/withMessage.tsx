@@ -1,5 +1,5 @@
 import React, { Component, ComponentType } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Animated, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { color } from 'src/theme';
 
 export interface MessageProps {
@@ -37,12 +37,25 @@ export default function withMessage<P extends MessageProps>(
   WrappedComponent: ComponentType<P>
 ) {
   return class WithMessage extends Component<P, State> {
+    private opacity = new Animated.Value(0);
+
     state: State = { message: undefined };
 
     showMessage = (message: string) => {
       this.setState({ message });
+      Animated.timing(this.opacity, {
+        toValue: 1,
+        duration: 80,
+        useNativeDriver: true,
+      }).start();
       setTimeout(() => {
-        this.setState({ message: undefined });
+        Animated.timing(this.opacity, {
+          toValue: 0,
+          duration: 120,
+          useNativeDriver: true,
+        }).start(e => {
+          if (e.finished) this.setState({ message: undefined });
+        });
       }, 1600);
     };
 
@@ -53,9 +66,10 @@ export default function withMessage<P extends MessageProps>(
           <WrappedComponent {...this.props} showMessage={this.showMessage} />
           {message && (
             <SafeAreaView style={styles.container}>
-              <View style={styles.wrapper}>
+              <Animated.View
+                style={[styles.wrapper, { opacity: this.opacity }]}>
                 <Text style={styles.message}>{message}</Text>
-              </View>
+              </Animated.View>
             </SafeAreaView>
           )}
         </View>

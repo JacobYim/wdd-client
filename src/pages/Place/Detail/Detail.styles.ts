@@ -29,7 +29,6 @@ export const views = StyleSheet.create({
     marginTop: -(cardHeight / 2 + paddingVertical),
     marginBottom: 10,
     height: cardHeight,
-    ...shadow.medium,
   },
   infoWrapper: {
     paddingVertical,
@@ -39,7 +38,7 @@ export const views = StyleSheet.create({
     borderColor: color.grayEF,
   },
   rowWrapper: {
-    marginVertical: 6,
+    marginVertical: 4,
     flexDirection: 'row',
   },
   imageWrapper: {
@@ -71,13 +70,13 @@ export const texts = StyleSheet.create({
     flexBasis: 62,
     lineHeight: 24,
     color: color.blackOpacity,
-    fontSize: 16,
+    fontSize: 15,
   },
   black: {
     flex: 1,
     lineHeight: 24,
-    color: color.black,
-    fontSize: 16,
+    color: color.gray48,
+    fontSize: 15,
   },
   blue: {
     textDecorationStyle: 'solid',
@@ -85,7 +84,7 @@ export const texts = StyleSheet.create({
     textDecorationLine: 'underline',
     lineHeight: 24,
     color: color.blue,
-    fontSize: 16,
+    fontSize: 15,
   },
   message: {
     fontSize: 15,

@@ -24,7 +24,7 @@ interface State {
 
 class Setting extends PureComponent<Props, State> {
   state: State = {
-    pushNotif: true,
+    pushNotif: false,
     showMyFeed: true,
   };
 

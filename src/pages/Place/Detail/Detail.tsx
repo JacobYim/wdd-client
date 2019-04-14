@@ -160,6 +160,7 @@ class Detail extends PureComponent<Props, State> {
                     style={icons.scrap}
                   />
                 }
+                softShadow
               />
             </View>
             <FlatList

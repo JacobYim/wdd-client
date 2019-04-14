@@ -9,6 +9,7 @@ interface Props {
   handlePress: () => void;
   icon: React.ReactNode;
   width?: number | string;
+  softShadow?: boolean;
 }
 
 export const cardWidth = 327;
@@ -81,9 +82,20 @@ export const Rating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-const Info: React.FC<Props> = ({ place, handlePress, icon, width }) => {
+const Info: React.FC<Props> = ({
+  place,
+  handlePress,
+  icon,
+  width,
+  softShadow,
+}) => {
   return (
-    <View style={[styles.wrapper, width ? { width } : null]}>
+    <View
+      style={[
+        styles.wrapper,
+        width ? { width } : null,
+        softShadow ? shadow.soft : null,
+      ]}>
       <DefaultImage size={50} uri={place.icon} />
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{place.name.trim()}</Text>
