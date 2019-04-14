@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     height: btnSize,
     marginTop: width * 0.088 - btnSize / 2,
     borderRadius: btnSize / 2,
-    backgroundColor: color.bluePastel,
+    backgroundColor: color.blue,
     justifyContent: 'center',
     alignItems: 'center',
     ...shadow.shallow,
