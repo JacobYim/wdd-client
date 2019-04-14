@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { Label as LabelType } from 'src/store/actions/place';
 import { color } from 'src/theme';
-
-type LabelType = '카페' | '식당' | '술집' | '용품' | '병원' | '기타';
 
 interface Props {
   onChange: (label?: LabelType) => void;
@@ -50,7 +49,7 @@ class Label extends PureComponent<Props, State> {
     const label = this.state.label || '전체';
     return (
       <FlatList
-        data={['전체', '카페', '식당', '술집', '용품', '병원', '기타']}
+        data={['전체', '카페', '식당', '병원', '용품', '술집', '기타']}
         keyExtractor={item => item}
         style={styles.container}
         contentContainerStyle={styles.listWrapper}

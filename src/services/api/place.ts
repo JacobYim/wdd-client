@@ -1,11 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import { sortBy } from 'lodash';
 import { LatLng } from 'react-native-maps';
-import { Place, PlaceResponse } from 'src/store/actions/place';
+import { Label, Place, PlaceResponse } from 'src/store/actions/place';
 
 export interface SearchParams {
   keyword?: string;
-  label?: '카페' | '식당' | '술집' | '용품' | '병원' | '기타';
+  label?: Label;
   location?: LatLng;
   range?: number; // km
 }
