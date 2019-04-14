@@ -120,13 +120,15 @@ class Feed extends PureComponent<Props, State> {
               {moment(feed.createdAt).fromNow()}
             </Text>
           </View>
-          <TouchableOpacity
-            style={views.headerButton}
-            onPress={this.handlePressDots}>
-            <View style={views.smallDot} />
-            <View style={views.smallDot} />
-            <View style={views.smallDot} />
-          </TouchableOpacity>
+          {user._id === feed.user && (
+            <TouchableOpacity
+              style={views.headerButton}
+              onPress={this.handlePressDots}>
+              <View style={views.smallDot} />
+              <View style={views.smallDot} />
+              <View style={views.smallDot} />
+            </TouchableOpacity>
+          )}
         </View>
         <View>
           <FlatList
@@ -212,15 +214,13 @@ class Feed extends PureComponent<Props, State> {
             <Text style={texts.memo}>{feed.memo}</Text>
           )}
         </View>
-        {user._id === feed.user && (
-          <ActionSheet
-            ref={this.actionSheet}
-            options={['삭제', '취소']}
-            destructiveButtonIndex={0}
-            cancelButtonIndex={1}
-            onPress={this.handleActionSheet}
-          />
-        )}
+        <ActionSheet
+          ref={this.actionSheet}
+          options={['삭제', '취소']}
+          destructiveButtonIndex={0}
+          cancelButtonIndex={1}
+          onPress={this.handleActionSheet}
+        />
       </View>
     );
   }
