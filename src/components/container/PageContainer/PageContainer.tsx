@@ -15,6 +15,7 @@ import {
   View,
   ScrollView,
   Platform,
+  Keyboard,
 } from 'react-native';
 
 interface Props {
@@ -24,6 +25,7 @@ interface Props {
   title?: string;
   subtitle?: string;
   titleNarrow?: boolean;
+  titleOnScroll?: string;
   // top
   left?: {
     navigation: NavigationScreenProp<any>;
@@ -91,16 +93,21 @@ class PageContainer extends PureComponent<Props, State> {
   };
 
   handleScroll = (evt: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { center, title } = this.props;
+    const { center, title, titleOnScroll } = this.props;
     const { contentOffset } = evt.nativeEvent;
     this.setState(state =>
       produce(state, draft => {
         if (contentOffset.y > 84) {
           if (!state.showBorder) draft.showBorder = true;
-          if (title && !center && !state.center) draft.center = title;
+          if (!center && !state.center) {
+            if (title) draft.center = title;
+            if (titleOnScroll) draft.center = titleOnScroll;
+          }
         } else {
           if (state.showBorder) draft.showBorder = false;
-          if (title && state.center) draft.center = undefined;
+          if ((title || titleOnScroll) && state.center) {
+            draft.center = undefined;
+          }
         }
       })
     );
@@ -121,6 +128,7 @@ class PageContainer extends PureComponent<Props, State> {
     } = this.props;
     const navLeft = left && {
       handlePress: () => {
+        Keyboard.dismiss();
         if (left.routeName) left.navigation.navigate(left.routeName);
         else left.navigation.goBack(null);
       },
@@ -132,7 +140,10 @@ class PageContainer extends PureComponent<Props, State> {
       ),
     };
     const navRight = right && {
-      handlePress: right.handlePress,
+      handlePress: () => {
+        Keyboard.dismiss();
+        right.handlePress();
+      },
       view:
         typeof right.view === 'string' ? (
           <Text style={texts.top}>{right.view}</Text>
