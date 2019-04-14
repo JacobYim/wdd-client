@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     paddingRight: size.horizontal,
   },
   description: {
-    marginTop: 6,
-    color: color.black,
+    marginTop: 9,
+    color: '#484848',
   },
   header: {
     paddingHorizontal: size.horizontal,
@@ -53,16 +53,15 @@ const styles = StyleSheet.create({
   },
   headerButton: {
     paddingLeft: 16,
-    height: '100%',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   smallDot: {
     width: 3,
     height: 3,
     borderRadius: 1.5,
-    backgroundColor: color.black,
-    marginLeft: 2,
+    backgroundColor: color.blackOpacity,
+    marginVertical: 1,
   },
 });
 

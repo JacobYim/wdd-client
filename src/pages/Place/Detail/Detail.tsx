@@ -74,11 +74,11 @@ class Detail extends PureComponent<Props, State> {
     if (this.state.isScrap) {
       await unScrap({ id: this.place._id });
       this.setState({ isScrap: false });
-      showMessage('스크랩이 취소되었습니다.');
+      showMessage('내 상점에서 삭제했습니다.');
     } else {
       await scrap({ id: this.place._id });
       this.setState({ isScrap: true });
-      showMessage('스크랩되었습니다.');
+      showMessage('내 상점에 추가되었습니다.');
     }
   };
 
