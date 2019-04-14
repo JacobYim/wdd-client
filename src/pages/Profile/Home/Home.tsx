@@ -247,9 +247,10 @@ class Home extends PureComponent<Props, State> {
             data={this.state.feeds}
             keyExtractor={(i, index) => index.toString()}
             contentContainerStyle={views.listSpace}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <FeedComponent
                 feed={item}
+                prevFeed={index > 0 ? this.state.feeds[index - 1] : null}
                 deleteFromList={this.handleRemoveFeed}
               />
             )}

@@ -5,9 +5,10 @@ import React, { PureComponent } from 'react';
 import ActionSheet from 'react-native-actionsheet';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { rangeWithUnit } from 'src/assets/functions/print';
+import { rangeWithUnit, timeWithUnit } from 'src/assets/functions/print';
 import DefaultImage from 'src/components/module/DefaultImage';
 import DoubleTab from 'src/components/module/DoubleTab';
+import { History } from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Feed.styles';
 import {
@@ -27,6 +28,7 @@ import {
 
 interface Props {
   feed: FeedInterface;
+  prevFeed?: FeedInterface | null;
   user: ReducerState['user'];
   deleteFromList: (id: string) => void;
 }
@@ -119,11 +121,42 @@ class Feed extends PureComponent<Props, State> {
     }
   };
 
+  renderSummery = () => {
+    const { feed, user, prevFeed } = this.props;
+    const yearMonth = moment(feed.createdAt).format('YYYY년 MM월');
+    if (
+      prevFeed === null ||
+      (prevFeed && yearMonth < moment(prevFeed.createdAt).format('YYYY년 MM월'))
+    ) {
+      if (!user.repDog) return;
+      const summery = find(
+        user.repDog.histories,
+        history => history.yearMonth === yearMonth
+      );
+      if (summery) {
+        return (
+          <View style={views.summeryWrapper}>
+            <Text style={texts.summeryDate}>{summery.yearMonth} 산책</Text>
+            <Text style={texts.summeryRight}>{`${
+              summery.count
+            }회 / ${rangeWithUnit(summery.distance)} / ${timeWithUnit(
+              summery.seconds
+            )} / ${summery.steps}걸음 / ${Math.floor(
+              summery.steps / 28.5
+            )}kcal`}</Text>
+          </View>
+        );
+      }
+    }
+    return null;
+  };
+
   render() {
     const { feed, user } = this.props;
 
     return (
       <View>
+        {this.renderSummery()}
         <View style={views.header}>
           <DefaultImage size={32} uri={feed.dog.thumbnail} />
           <Text style={texts.name}>{feed.dog.name}</Text>

@@ -5,6 +5,14 @@ export interface Like {
   createdAt: Date;
 }
 
+export interface History {
+  yearMonth: string;
+  count: number;
+  seconds: number;
+  steps: number;
+  distance: number;
+}
+
 // *** INTERFACES
 export interface DogBase {
   name: string;
@@ -25,12 +33,7 @@ export interface Dog extends DogBase {
   user: string;
   feeds: string[];
   likes: Like[];
-  histories: {
-    yearMonth: string;
-    count: number;
-    seconds: number;
-    steps: number;
-  }[];
+  histories: History[];
 }
 
 // *** CONSTS

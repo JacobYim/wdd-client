@@ -5,6 +5,15 @@ export const { width } = Dimensions.get('window');
 const paginateHeight = 25;
 
 export const views = StyleSheet.create({
+  summeryWrapper: {
+    height: 43,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: size.horizontal,
+    backgroundColor: color.grayF9,
+    borderBottomWidth: 1,
+    borderColor: color.grayEF,
+  },
   header: {
     paddingHorizontal: size.horizontal,
     height: 52,
@@ -117,6 +126,15 @@ export const texts = StyleSheet.create({
     marginTop: 12,
     color: '#484848',
     fontSize: 15,
+  },
+  summeryDate: {
+    flex: 1,
+    color: color.gray48,
+    fontSize: font.size.small,
+  },
+  summeryRight: {
+    fontSize: font.size.small,
+    color: color.blackOpacity,
   },
 });
 
