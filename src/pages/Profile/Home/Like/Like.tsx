@@ -22,8 +22,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: thumbnailSize + verticalSize * 2,
     marginLeft: 12,
-    borderTopWidth: 1,
-    borderColor: color.grayEF,
     justifyContent: 'center',
   },
   name: {
@@ -49,8 +47,7 @@ const ListItem: React.FC<Props> = ({
     onPress={onPress}
     activeOpacity={0.7}>
     <DefaultImage size={thumbnailSize} uri={thumbnail} />
-    <View
-      style={[styles.textWrapper, index === 0 ? { borderTopWidth: 0 } : null]}>
+    <View style={styles.textWrapper}>
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.message}>{message}</Text>
     </View>
