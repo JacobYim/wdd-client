@@ -111,6 +111,7 @@ export const texts = StyleSheet.create({
     color: '#606269',
   },
   selectDogName: {
+    marginLeft: 12,
     color: color.black,
     fontSize: 16,
   },

@@ -121,13 +121,14 @@ class Home extends PureComponent<Props, State> {
       activeOpacity={0.7}
       style={views.dogSelectWrapper}
       onPress={() => this.handleSelectDog(item._id)}>
+      <DefaultImage size={40} />
       <Text style={texts.selectDogName}>{item.name}</Text>
       <Image
         style={icons.check}
         source={
           this.props.user.repDog && this.props.user.repDog._id === item._id
             ? require('src/assets/icons/ic_check_on.png')
-            : require('src/assets/icons/ic_check_off.png')
+            : require('src/assets/icons/ic_check_filled_off.png')
         }
       />
     </TouchableOpacity>
