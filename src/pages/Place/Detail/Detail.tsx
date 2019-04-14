@@ -1,4 +1,4 @@
-import { find } from 'lodash';
+import { find, findIndex } from 'lodash';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -86,11 +86,27 @@ class Detail extends PureComponent<Props, State> {
     this.setState({ reviews: [...this.state.reviews, review] });
   };
 
+  handleUpdateReview = (review: Review) => {
+    const index = findIndex(
+      this.state.reviews,
+      item => item._id === review._id
+    );
+    const reviews = [...this.state.reviews];
+    reviews[index] = review;
+    this.setState({ reviews });
+  };
+
+  handleDeleteReview = (id: string) => {
+    const reviews = this.state.reviews.filter(review => review._id !== id);
+    this.setState({ reviews });
+  };
+
   handleRatingChange = (rating: number) => {
     const { navigation } = this.props;
     navigation.navigate('review', {
       rating,
-      place: this.place,
+      place: this.place._id,
+      title: this.place.name,
       handleAddReview: this.handleCreateReview,
     });
   };
@@ -206,15 +222,22 @@ class Detail extends PureComponent<Props, State> {
               containerStyle={{ marginTop: 20 }}
             />
           </View>
-          <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
-            {this.state.reviews.map((review, index) => (
+          <FlatList
+            data={this.state.reviews}
+            contentContainerStyle={[
+              views.infoWrapper,
+              { paddingHorizontal: 0 },
+            ]}
+            keyExtractor={(i, index) => index.toString()}
+            renderItem={({ item }) => (
               <ReviewCard
-                key={index}
-                review={review}
-                isWriter={this.props.user._id === review.user._id}
+                review={item}
+                onUpdate={this.handleUpdateReview}
+                onDelete={this.handleDeleteReview}
+                isWriter={this.props.user._id === item.user._id}
               />
-            ))}
-          </View>
+            )}
+          />
         </ScrollView>
         <SafeAreaView style={views.navbarWrapper}>
           <TopNavbar

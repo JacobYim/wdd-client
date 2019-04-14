@@ -14,6 +14,7 @@ interface Params {
 }
 
 export interface Review extends Body {
+  _id: string;
   user: UserInterface;
   createdAt: Date;
   updatedAt: Date;
@@ -32,5 +33,30 @@ export const getReviews = async (params?: Params) => {
   const response: AxiosResponse<Review[]> = await axios.get('/reviews', {
     params,
   });
+  return response.data;
+};
+
+export const updateReview = async (body: Body & { _id: string }) => {
+  const { _id, ...data } = body;
+  const response: AxiosResponse<Review> = await axios.patch(
+    `/reviews/${_id}`,
+    data
+  );
+  return response.data;
+};
+
+export const deleteReview = async (id: string) => {
+  const response: AxiosResponse<{ message: string }> = await axios.delete(
+    `/reviews/${id}`
+  );
+  Alert.alert('리뷰가 삭제되었습니다.');
+  return response.data;
+};
+
+export const reportReview = async (id: string) => {
+  const response: AxiosResponse<{ message: string }> = await axios.post(
+    `/reviews/${id}/report`
+  );
+  Alert.alert('신고가 접수되었습니다.');
   return response.data;
 };

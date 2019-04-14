@@ -2,13 +2,16 @@ import moment from 'moment';
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
+import { NavigationScreenProps, withNavigation } from 'react-navigation';
 import DefaultImage from 'src/components/module/DefaultImage';
 import { Rating } from 'src/pages/Place/MapList/Card/Card';
-import { Review } from 'src/services/api/review';
+import { deleteReview, reportReview, Review } from 'src/services/api/review';
 import { color, font, size } from 'src/theme';
 
-interface Props {
+interface Props extends NavigationScreenProps {
   review: Review;
+  onDelete: (id: string) => void;
+  onUpdate: (review: Review) => void;
   isWriter: boolean;
 }
 
@@ -79,10 +82,27 @@ class ReviewCard extends PureComponent<Props, State> {
     if (actionSheet) actionSheet.show();
   };
 
-  handleActionSheet = (index: number) => {
-    const { isWriter } = this.props;
+  handleActionSheet = async (index: number) => {
+    const { review, isWriter, onDelete, onUpdate, navigation } = this.props;
     if (isWriter) {
+      switch (index) {
+        case 0:
+          navigation.navigate('review', {
+            _id: review._id,
+            rating: review.rating,
+            place: review.place,
+            description: review.description,
+            title: '리뷰 수정하기',
+            handleUpdateReview: onUpdate,
+          });
+          break;
+        case 1:
+          await deleteReview(review._id);
+          onDelete(review._id);
+          break;
+      }
     } else {
+      if (index === 0) await reportReview(review._id);
     }
   };
 
@@ -126,4 +146,4 @@ class ReviewCard extends PureComponent<Props, State> {
   }
 }
 
-export default ReviewCard;
+export default withNavigation(ReviewCard);
