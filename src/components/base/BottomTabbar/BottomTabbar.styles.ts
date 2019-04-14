@@ -1,16 +1,18 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { color, font } from 'src/theme';
+import { color } from 'src/theme';
 
 const circleSize = 60;
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
   container: {
-    height: height * 0.087,
+    height: 60,
     backgroundColor: color.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    borderTopWidth: 0.5,
+    borderColor: color.grayB1,
   },
   tabWrapper: {
     flexBasis: width * 0.387,
@@ -25,7 +27,7 @@ export const views = StyleSheet.create({
   centerTab: {
     position: 'absolute',
     zIndex: 99,
-    top: -circleSize / 2,
+    top: -circleSize * 0.32,
     left: '50%',
     marginLeft: -circleSize / 2,
     width: circleSize,
@@ -55,7 +57,7 @@ export const views = StyleSheet.create({
 export const texts = StyleSheet.create({
   tabLabel: {
     marginTop: 2,
-    fontSize: font.size.small,
+    fontSize: 10,
   },
   tabLabelOn: {
     color: color.blue,

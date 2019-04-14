@@ -7,7 +7,7 @@ interface Props {
   active: boolean;
 }
 
-const trackUserSize = 56;
+const trackUserSize = 50;
 
 const styles = StyleSheet.create({
   button: {

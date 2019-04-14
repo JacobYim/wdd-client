@@ -11,6 +11,12 @@ import {
   NavigationActions,
 } from 'react-navigation';
 
+export enum NavigationTabs {
+  MAP,
+  WDD,
+  PROFILE,
+}
+
 const AppNavigator = createBottomTabNavigator(
   {
     map: {
