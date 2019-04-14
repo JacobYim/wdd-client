@@ -257,6 +257,9 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
               sliderWidth={width}
               itemWidth={cardWidth}
               decelerationRate="fast"
+              inactiveSlideScale={0.93}
+              inactiveSlideOpacity={0.9}
+              layoutCardOffset={10}
               onSnapToItem={this.handleSnap}
               renderItem={this.renderItem}
             />
