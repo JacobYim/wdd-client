@@ -179,7 +179,7 @@ class Edit extends PureComponent<Props, State> {
         left={{ navigation }}
         right={{ handlePress: this.handleSubmit, view: '완료' }}
         extraScrollHeight={height * 0.16}
-        extraBottom={height * 0.6}
+        extraBottom={height * 0.32}
         enableScroll>
         <View style={views.thumbnailWrapper}>
           <TouchableOpacity

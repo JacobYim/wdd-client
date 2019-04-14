@@ -26,6 +26,7 @@ interface Props {
   subtitle?: string;
   titleNarrow?: boolean;
   titleOnScroll?: string;
+  alignTitleCenter?: boolean;
   // top
   left?: {
     navigation: NavigationScreenProp<any>;
@@ -119,6 +120,7 @@ class PageContainer extends PureComponent<Props, State> {
       title,
       subtitle,
       titleNarrow,
+      alignTitleCenter,
       left,
       right,
       bottom,
@@ -172,8 +174,22 @@ class PageContainer extends PureComponent<Props, State> {
               {title && (
                 <View
                   style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
-                  <Text style={texts.title}>{title}</Text>
-                  {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
+                  <Text
+                    style={[
+                      texts.title,
+                      alignTitleCenter ? { textAlign: 'center' } : null,
+                    ]}>
+                    {title}
+                  </Text>
+                  {subtitle && (
+                    <Text
+                      style={[
+                        texts.subtitle,
+                        alignTitleCenter ? { textAlign: 'center' } : null,
+                      ]}>
+                      {subtitle}
+                    </Text>
+                  )}
                 </View>
               )}
               {children}
