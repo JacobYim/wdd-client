@@ -144,7 +144,7 @@ class Detail extends PureComponent<Props, State> {
               )
             )}
           </ImageBackground>
-          <View style={[views.infoWrapper, { borderTopWidth: 0 }]}>
+          <View style={views.infoWrapper}>
             <View style={views.infoHover}>
               <Card
                 place={this.place}
@@ -198,23 +198,27 @@ class Detail extends PureComponent<Props, State> {
               }
             />
           </View>
+          <View style={views.hr} />
           {images && images.length > 0 && (
-            <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
-              <Text
-                style={[texts.black, { paddingHorizontal: size.horizontal }]}>
-                사진
-              </Text>
-              <FlatList
-                contentContainerStyle={views.imageWrapper}
-                data={images}
-                keyExtractor={(d, index) => index.toString()}
-                renderItem={image => (
-                  <Image source={{ uri: image.item }} style={views.image} />
-                )}
-                showsHorizontalScrollIndicator={false}
-                horizontal
-              />
-            </View>
+            <>
+              <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
+                <Text
+                  style={[texts.black, { paddingHorizontal: size.horizontal }]}>
+                  사진
+                </Text>
+                <FlatList
+                  contentContainerStyle={views.imageWrapper}
+                  data={images}
+                  keyExtractor={(d, index) => index.toString()}
+                  renderItem={image => (
+                    <Image source={{ uri: image.item }} style={views.image} />
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  horizontal
+                />
+              </View>
+              <View style={views.hr} />
+            </>
           )}
           <View style={[views.infoWrapper, { alignItems: 'center' }]}>
             <Text style={texts.black}>이 장소에 대한 평점을 남겨주세요.</Text>
@@ -223,11 +227,12 @@ class Detail extends PureComponent<Props, State> {
               containerStyle={{ marginTop: 20 }}
             />
           </View>
+          <View style={views.hr} />
           <FlatList
             data={this.state.reviews}
             contentContainerStyle={[
               views.infoWrapper,
-              { paddingHorizontal: 0 },
+              { paddingHorizontal: 0, paddingVertical: 0 },
             ]}
             keyExtractor={(i, index) => index.toString()}
             renderItem={({ item }) => (

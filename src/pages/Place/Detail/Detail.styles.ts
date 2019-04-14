@@ -34,8 +34,10 @@ export const views = StyleSheet.create({
     paddingVertical,
     paddingHorizontal: size.horizontal,
     backgroundColor: color.white,
-    borderTopWidth: 10,
-    borderColor: color.grayEF,
+  },
+  hr: {
+    height: 10,
+    backgroundColor: color.grayEF,
   },
   rowWrapper: {
     marginVertical: 4,
@@ -68,13 +70,11 @@ export const icons = StyleSheet.create({
 export const texts = StyleSheet.create({
   blackOpacity: {
     flexBasis: 62,
-    lineHeight: 24,
     color: color.blackOpacity,
     fontSize: 15,
   },
   black: {
     flex: 1,
-    lineHeight: 24,
     color: color.gray48,
     fontSize: 15,
   },
