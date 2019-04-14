@@ -5,7 +5,7 @@ export const texts = StyleSheet.create({
   label: {
     color: `${color.black}78`,
     fontSize: font.size.small,
-    marginBottom: 8,
+    marginBottom: 12,
   },
 });
 
