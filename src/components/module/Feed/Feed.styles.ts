@@ -67,6 +67,8 @@ export const views = StyleSheet.create({
     paddingHorizontal: size.horizontal,
     paddingTop: 16,
     paddingBottom: 20,
+    borderBottomWidth: 0.5,
+    borderColor: color.grayEF,
   },
   likeInfo: {
     flexDirection: 'row',
