@@ -93,8 +93,6 @@ class Setting extends PureComponent<Props, State> {
               },
               { label: '개인정보 이용 약관', handlePress: () => {} },
               { label: '고객센터', handlePress: () => {} },
-              { label: '로그아웃', handlePress: () => signOut(navigation) },
-              { label: '탈퇴하기', handlePress: () => terminate(navigation) },
               { label: '장소등록 및 수정 요청', handlePress: () => {} },
             ]}
             contentContainerStyle={views.boxWrapper}
