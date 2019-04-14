@@ -18,12 +18,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  thumbnail: {
-    width: thumbnailSize,
-    height: thumbnailSize,
-    borderRadius: 5,
-    resizeMode: 'cover',
-  },
   textWrapper: {
     flex: 1,
     height: thumbnailSize + verticalSize * 2,
@@ -63,21 +57,13 @@ const Place: React.FC<Props> = ({
     onPress={onPress}
     activeOpacity={0.7}>
     <DefaultImage size={thumbnailSize} uri={icon} />
-    {/* <Image
-      source={
-        icon
-          ? { uri: icon }
-          : require('src/assets/icons/ic_icon_default.png')
-      }
-      style={styles.thumbnail}
-    /> */}
     <View style={styles.textWrapper}>
       <View style={styles.headWrapper}>
-        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.name}>{name.trim()}</Text>
         <Text style={styles.label}>{label}</Text>
       </View>
       <Text numberOfLines={1} style={styles.description}>
-        {description}
+        {description || '상세설명이 없습니다.'}
       </Text>
     </View>
   </TouchableOpacity>

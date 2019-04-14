@@ -150,7 +150,7 @@ class Home extends PureComponent<Props, State> {
           style={views.modalBackground}
           onPress={this.toggleModal}
           activeOpacity={1}>
-          <SafeAreaView style={views.modal}>
+          <View style={views.modal}>
             <FlatList
               data={dogsList}
               contentContainerStyle={views.dogListWrapper}
@@ -170,7 +170,8 @@ class Home extends PureComponent<Props, State> {
               />
               <Text style={texts.addDog}>반려견 추가</Text>
             </TouchableOpacity>
-          </SafeAreaView>
+            <SafeAreaView />
+          </View>
         </TouchableOpacity>
       </Modal>
     );
