@@ -67,7 +67,7 @@ const Place: React.FC<Props> = ({
       source={
         icon
           ? { uri: icon }
-          : require('src/assets/icons/ic_thumbnail_default.png')
+          : require('src/assets/icons/ic_icon_default.png')
       }
       style={styles.thumbnail}
     /> */}

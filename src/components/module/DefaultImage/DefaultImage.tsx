@@ -19,9 +19,7 @@ const DefaultImage: React.FC<Props> = ({ size, uri, showBorder }) => (
       },
       showBorder ? { borderWidth: 1.5, borderColor: `${color.black}14` } : null,
     ]}
-    source={
-      uri ? { uri } : require('src/assets/icons/ic_thumbnail_default.png')
-    }
+    source={uri ? { uri } : require('src/assets/icons/ic_icon_default.png')}
   />
 );
 
