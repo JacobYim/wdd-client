@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
+import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
@@ -13,6 +14,10 @@ import { fonts, icons, views } from './Walk.styles';
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
+import {
+  checkPermission,
+  PICTURE_PERMISSIONS,
+} from 'src/assets/functions/validate';
 
 interface WalkInfoInterface {
   unit: 'Km' | '걸음' | 'Kcal';
@@ -65,6 +70,19 @@ class Walk extends Component<Props, State> {
     }
   }
 
+  launchCamera = async () => {
+    const options = {
+      cameraType: 'back' as 'back',
+      mediaType: 'photo' as 'photo',
+      storageOptions: {
+        cameraRoll: true,
+      },
+    };
+    if (await checkPermission(PICTURE_PERMISSIONS)) {
+      ImagePicker.launchCamera(options, res => {});
+    }
+  };
+
   onPrepareWillUnmount = () => {
     const { updateStatus } = this.props;
     updateStatus('WALKING');
@@ -102,7 +120,7 @@ class Walk extends Component<Props, State> {
                   ),
                 }}
                 right={{
-                  handlePress: () => {},
+                  handlePress: this.launchCamera,
                   view: (
                     <Image
                       style={icons.top}
