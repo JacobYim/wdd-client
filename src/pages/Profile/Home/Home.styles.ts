@@ -90,7 +90,7 @@ export const icons = StyleSheet.create({
     height: 4,
   },
   check: {
-    alignSelf: 'flex-end',
+    marginLeft: 'auto',
     width: 24,
     height: 24,
   },
