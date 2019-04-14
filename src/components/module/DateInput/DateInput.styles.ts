@@ -5,6 +5,7 @@ export const views = StyleSheet.create({
   datePicker: {
     // outer size
     width: '100%',
+    marginTop: 4,
   },
   dateInput: {
     // border styles
