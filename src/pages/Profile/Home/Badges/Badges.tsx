@@ -1,3 +1,4 @@
+import { find } from 'lodash';
 import React from 'react';
 import { ReducerState } from 'src/store/reducers';
 import { font } from 'src/theme';
@@ -36,8 +37,20 @@ const styles = StyleSheet.create({
 });
 
 const Badges: React.FC<{ user: ReducerState['user'] }> = ({ user }) => {
-  const feedLength = user.repDog ? user.repDog.feeds.length : 0;
-  const scrapLength = user.places.length;
+  let distance = 0;
+  let feedLength = 0;
+  let scrapLength = 0;
+  let firstPee = false;
+  let firstPoo = false;
+  if (user.repDog) {
+    feedLength = user.repDog.feeds.length;
+    scrapLength = user.places.length;
+    user.repDog.histories.forEach(history => {
+      distance += history.distance;
+      if (!firstPee && history.pees > 0) firstPee = true;
+      if (!firstPoo && history.poos > 0) firstPoo = true;
+    });
+  }
 
   return (
     <View style={{ flex: 1, paddingHorizontal: space / 2, marginTop: -8 }}>
@@ -48,56 +61,56 @@ const Badges: React.FC<{ user: ReducerState['user'] }> = ({ user }) => {
             name: 'first_profile',
             iconOn: require('src/assets/badges/badge_first_profile_on.png'),
             iconOff: require('src/assets/badges/badge_first_profile_off.png'),
-            achieve: user.repDog !== undefined,
+            achieve: user.repDog ? user.repDog.thumbnail : false,
           },
           {
             label: '첫 킁킁 보내기',
             name: 'first_like',
             iconOn: require('src/assets/badges/badge_first_like_on.png'),
             iconOff: require('src/assets/badges/badge_first_like_off.png'),
-            achieve: false,
+            achieve: user.repDog ? user.repDog.badges.firstLike : false,
           },
           {
             label: '첫 산책 오줌',
             name: 'first_pee',
             iconOn: require('src/assets/badges/badge_first_pee_on.png'),
             iconOff: require('src/assets/badges/badge_first_pee_off.png'),
-            achieve: false,
+            achieve: firstPee,
           },
           {
             label: '첫 산책 똥',
             name: 'first_poo',
             iconOn: require('src/assets/badges/badge_first_poo_on.png'),
             iconOff: require('src/assets/badges/badge_first_poo_off.png'),
-            achieve: false,
+            achieve: firstPoo,
           },
           {
             label: '1km',
             name: '1km',
             iconOn: require('src/assets/badges/badge_1km_on.png'),
             iconOff: require('src/assets/badges/badge_1km_off.png'),
-            achieve: false,
+            achieve: distance >= 1,
           },
           {
             label: '3km',
             name: '3km',
             iconOn: require('src/assets/badges/badge_3km_on.png'),
             iconOff: require('src/assets/badges/badge_3km_off.png'),
-            achieve: false,
+            achieve: distance >= 3,
           },
           {
             label: '5km',
             name: '5km',
             iconOn: require('src/assets/badges/badge_5km_on.png'),
             iconOff: require('src/assets/badges/badge_5km_off.png'),
-            achieve: false,
+            achieve: distance >= 5,
           },
           {
             label: '10km',
             name: '10km',
             iconOn: require('src/assets/badges/badge_10km_on.png'),
             iconOff: require('src/assets/badges/badge_10km_off.png'),
-            achieve: false,
+            achieve: distance >= 10,
           },
           {
             label: '산책 1회',

@@ -11,6 +11,8 @@ export interface History {
   seconds: number;
   steps: number;
   distance: number;
+  pees: number;
+  poos: number;
 }
 
 // *** INTERFACES
@@ -31,6 +33,9 @@ export interface UpdateDog extends DogBase {
 export interface Dog extends DogBase {
   _id: string;
   user: string;
+  badges: {
+    firstLike: boolean;
+  };
   feeds: string[];
   likes: Like[];
   histories: History[];
