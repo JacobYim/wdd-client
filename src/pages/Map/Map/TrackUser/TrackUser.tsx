@@ -36,8 +36,12 @@ const TrackUser: React.FC<Props> = ({ handlePress, active }) => (
     activeOpacity={1}
     onPress={handlePress}>
     <Image
-      style={[{ opacity: active ? 1 : 0.4 }, styles.icon]}
-      source={require('src/assets/icons/ic_location.png')}
+      style={styles.icon}
+      source={
+        active
+          ? require('src/assets/icons/ic_location_on.png')
+          : require('src/assets/icons/ic_location_off.png')
+      }
     />
   </TouchableOpacity>
 );
