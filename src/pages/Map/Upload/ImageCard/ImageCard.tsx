@@ -24,7 +24,7 @@ const ImageWrapper: React.FC<{
     {onPressDelete && (
       <TouchableOpacity style={views.deleteButton} onPress={onPressDelete}>
         <Image
-          source={require('src/assets/icons/ic_close.png')}
+          source={require('src/assets/icons/ic_close_round.png')}
           style={icons.delete}
         />
       </TouchableOpacity>

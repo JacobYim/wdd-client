@@ -113,7 +113,7 @@ class TextAutocomplete extends Component<Props, State> {
           {this.state.keyword.length > 0 && (
             <TouchableOpacity onPress={() => this.setState({ keyword: '' })}>
               <Image
-                source={require('src/assets/icons/ic_close_round.png')}
+                source={require('src/assets/icons/ic_close_filled.png')}
                 style={icons.clear}
               />
             </TouchableOpacity>

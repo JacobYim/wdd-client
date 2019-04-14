@@ -27,12 +27,6 @@ export const views = StyleSheet.create({
     right: -deleteSize / 2,
     width: deleteSize,
     height: deleteSize,
-    borderRadius: deleteSize / 2,
-    backgroundColor: color.white,
-    borderWidth: 1,
-    borderColor: color.grayDA,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
@@ -42,7 +36,7 @@ export const icons = StyleSheet.create({
     height: 23.6,
   },
   delete: {
-    width: 9,
-    height: 9,
+    width: '100%',
+    height: '100%',
   },
 });

@@ -112,7 +112,7 @@ class Wdd extends PureComponent<Props, State> {
                   activeOpacity={0.7}
                   onPress={this.dismissModal}>
                   <Image
-                    source={require('src/assets/icons/ic_close_round.png')}
+                    source={require('src/assets/icons/ic_close_filled.png')}
                     style={icons.close}
                   />
                 </TouchableOpacity>
