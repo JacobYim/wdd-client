@@ -40,6 +40,9 @@ export const AddImageCard: React.FC<AddProps> = ({ handleLoad }) => {
   const showImagePicker = async () => {
     const options = {
       title: '산책 사진 선택',
+      takePhotoButtonTitle: '사진 찍기',
+      chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
+      cancelButtonTitle: '취소',
       storageOptions: { skipBackup: true, path: 'images' },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {
