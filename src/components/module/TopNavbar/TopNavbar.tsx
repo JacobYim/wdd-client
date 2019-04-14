@@ -17,7 +17,7 @@ interface Props {
     view: ReactNode;
     handlePress: () => void;
   };
-  center?: string;
+  center?: string | ReactNode;
   showBorder?: boolean;
   transparent?: boolean;
 }
@@ -63,11 +63,14 @@ const TopNavbar: React.FC<Props> = ({
       showBorder ? { borderBottomWidth: 1 } : null,
       { backgroundColor: transparent ? 'transparent' : color.white },
     ]}>
-    {center && (
-      <View style={styles.center}>
-        <Text style={styles.text}>{center}</Text>
-      </View>
-    )}
+    {center &&
+      (typeof center === 'string' ? (
+        <View style={styles.center}>
+          <Text style={styles.text}>{center}</Text>
+        </View>
+      ) : (
+        center
+      ))}
     {left && (
       <TouchableOpacity
         onPress={left.handlePress}

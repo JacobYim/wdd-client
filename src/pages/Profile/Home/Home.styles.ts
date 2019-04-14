@@ -73,8 +73,16 @@ export const views = StyleSheet.create({
     paddingBottom: height * 0.1,
   },
   signInMessage: {
-    flex: 1,
+    marginTop: height * 0.22,
+    alignItems: 'center',
+  },
+  topWrapper: {
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centerButton: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
 });
@@ -133,5 +141,9 @@ export const texts = StyleSheet.create({
     textDecorationColor: color.grayB1,
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
+  },
+  center: {
+    fontSize: font.size.large,
+    color: color.black,
   },
 });

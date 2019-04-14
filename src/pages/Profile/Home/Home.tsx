@@ -23,6 +23,9 @@ import {
   Text,
   View,
   TouchableOpacity,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  ScrollView,
   FlatList,
 } from 'react-native';
 
@@ -33,6 +36,7 @@ interface Props extends NavigationScreenProps {
 
 interface State {
   showSelectDog: boolean;
+  showCenter: boolean;
   currentTab: string;
   feeds: Feed[];
   scraps: Scrap[];
@@ -44,6 +48,7 @@ class Home extends PureComponent<Props, State> {
 
   state: State = {
     showSelectDog: false,
+    showCenter: false,
     currentTab: this.signedIn ? 'feeds' : '',
     feeds: [],
     scraps: [],
@@ -121,6 +126,15 @@ class Home extends PureComponent<Props, State> {
     this.setState({ feeds });
   };
 
+  handleScroll = async (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset } = e.nativeEvent;
+    if (contentOffset.y > 152) {
+      if (!this.state.showCenter) this.setState({ showCenter: true });
+    } else {
+      if (this.state.showCenter) this.setState({ showCenter: false });
+    }
+  };
+
   renderSelectDog = (item: { _id: string; name: string }) => (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -185,6 +199,7 @@ class Home extends PureComponent<Props, State> {
   render() {
     const { user, navigation } = this.props;
     const { currentTab } = this.state;
+    const name = user.repDog ? user.repDog.name : '댕댕이 선택';
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -198,103 +213,131 @@ class Home extends PureComponent<Props, State> {
             ),
             handlePress: () => navigation.navigate('setting'),
           }}
-        />
-        <View style={views.header}>
-          <DefaultImage size={75} uri={user.repDog && user.repDog.thumbnail} />
-          <View style={views.infoWrapper}>
-            {currentTab ? (
-              <>
+          center={
+            this.state.showCenter ? (
+              <View style={views.topWrapper}>
                 <TouchableOpacity
-                  style={views.selectDog}
+                  style={views.centerButton}
                   activeOpacity={0.7}
                   onPress={this.toggleModal}>
-                  <Text style={texts.name} numberOfLines={1}>
-                    {user.repDog ? user.repDog.name : '댕댕이 선택'}
-                  </Text>
+                  <Text style={texts.center}>{name}</Text>
                   <Image
                     source={require('src/assets/icons/ic_dropdown_black.png')}
                     style={icons.dropDown}
                   />
                 </TouchableOpacity>
-                <Text style={texts.likeInfo}>
-                  킁킁{' '}
-                  <Text style={{ fontWeight: '500' }}>
-                    {user.repDog ? user.repDog.likes.length : 0}
+              </View>
+            ) : null
+          }
+          showBorder={this.state.showCenter}
+        />
+        <ScrollView
+          style={{ flex: 1 }}
+          onScroll={this.handleScroll}
+          scrollEventThrottle={160}>
+          <View style={views.header}>
+            <DefaultImage
+              size={75}
+              uri={user.repDog && user.repDog.thumbnail}
+            />
+            <View style={views.infoWrapper}>
+              {currentTab ? (
+                <>
+                  <TouchableOpacity
+                    style={views.selectDog}
+                    activeOpacity={0.7}
+                    onPress={this.toggleModal}>
+                    <Text style={texts.name} numberOfLines={1}>
+                      {name}
+                    </Text>
+                    <Image
+                      source={require('src/assets/icons/ic_dropdown_black.png')}
+                      style={icons.dropDown}
+                    />
+                  </TouchableOpacity>
+                  <Text style={texts.likeInfo}>
+                    킁킁{' '}
+                    <Text style={{ fontWeight: '500' }}>
+                      {user.repDog ? user.repDog.likes.length : 0}
+                    </Text>
                   </Text>
-                </Text>
-              </>
-            ) : (
-              <TouchableOpacity onPress={() => navigation.navigate('session')}>
-                <Text style={[texts.signIn, texts.underline]}>로그인 하기</Text>
+                </>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('session')}>
+                  <Text style={[texts.signIn, texts.underline]}>
+                    로그인 하기
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            {this.signedIn && user.repDog && (
+              <TouchableOpacity
+                style={views.updateProfile}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('edit')}>
+                <Text style={texts.updateProfile}>프로필 수정</Text>
               </TouchableOpacity>
             )}
           </View>
-          {this.signedIn && user.repDog && (
-            <TouchableOpacity
-              style={views.updateProfile}
-              activeOpacity={0.7}
-              onPress={() => navigation.navigate('edit')}>
-              <Text style={texts.updateProfile}>프로필 수정</Text>
-            </TouchableOpacity>
+          <TabBar
+            onSwitch={this.handleSwitchTab}
+            currentTab={this.state.currentTab}
+          />
+          {currentTab === 'feeds' && (
+            <FlatList
+              data={this.state.feeds}
+              keyExtractor={(i, index) => index.toString()}
+              contentContainerStyle={views.listSpace}
+              renderItem={({ item, index }) => (
+                <FeedComponent
+                  feed={item}
+                  prevFeed={index > 0 ? this.state.feeds[index - 1] : null}
+                  deleteFromList={this.handleRemoveFeed}
+                />
+              )}
+            />
           )}
-        </View>
-        <TabBar
-          onSwitch={this.handleSwitchTab}
-          currentTab={this.state.currentTab}
-        />
-        {currentTab === 'feeds' && (
-          <FlatList
-            data={this.state.feeds}
-            keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={views.listSpace}
-            renderItem={({ item, index }) => (
-              <FeedComponent
-                feed={item}
-                prevFeed={index > 0 ? this.state.feeds[index - 1] : null}
-                deleteFromList={this.handleRemoveFeed}
-              />
-            )}
-          />
-        )}
-        {currentTab === 'scrap' && (
-          <FlatList
-            data={this.state.scraps}
-            keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={[views.listContainer, views.listSpace]}
-            renderItem={({ item, index }) => (
-              <Place
-                onPress={() => navigation.navigate('place', { place: item })}
-                name={item.name}
-                label={item.label}
-                icon={item.icon}
-                description={item.description}
-              />
-            )}
-          />
-        )}
-        {currentTab === 'badge' && <Badges user={user} />}
-        {currentTab === 'likes' && (
-          <FlatList
-            data={this.state.likes}
-            keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={[views.listContainer, views.listSpace]}
-            renderItem={({ item, index }) => (
-              <Like
-                thumbnail={item.thumbnail}
-                index={index}
-                name={`${item.name}님이 킁킁을 보냈습니다.`}
-                message={moment(item.createdAt).fromNow()}
-              />
-            )}
-          />
-        )}
-        {!this.signedIn && (
-          <View style={views.signInMessage}>
-            <Text style={[texts.signIn, { textAlign: 'center' }]}>
-              로그인을 통해 댕댕이와의 추억을{'\n'}쌓아보세요! 😆
-            </Text>
-          </View>
-        )}
+          {currentTab === 'scrap' && (
+            <FlatList
+              data={this.state.scraps}
+              keyExtractor={(i, index) => index.toString()}
+              contentContainerStyle={[views.listContainer, views.listSpace]}
+              renderItem={({ item, index }) => (
+                <Place
+                  onPress={() => navigation.navigate('place', { place: item })}
+                  name={item.name}
+                  label={item.label}
+                  icon={item.icon}
+                  description={item.description}
+                />
+              )}
+            />
+          )}
+          {currentTab === 'badge' && <Badges user={user} />}
+          {currentTab === 'likes' && (
+            <FlatList
+              data={this.state.likes}
+              keyExtractor={(i, index) => index.toString()}
+              contentContainerStyle={[views.listContainer, views.listSpace]}
+              renderItem={({ item, index }) => (
+                <Like
+                  thumbnail={item.thumbnail}
+                  index={index}
+                  name={`${item.name}님이 킁킁을 보냈습니다.`}
+                  message={moment(item.createdAt).fromNow()}
+                />
+              )}
+            />
+          )}
+          {!this.signedIn && (
+            <View style={views.signInMessage}>
+              <Text style={[texts.signIn, { textAlign: 'center' }]}>
+                로그인을 통해 댕댕이와의 추억을{'\n'}쌓아보세요! 😆
+              </Text>
+            </View>
+          )}
+        </ScrollView>
         {this.renderModal()}
       </SafeAreaView>
     );
