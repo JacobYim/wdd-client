@@ -108,15 +108,25 @@ class Detail extends PureComponent<Props, State> {
                 : require('src/assets/images/img_thumbnail_default.png')
             }
             imageStyle={{ resizeMode: 'cover' }}>
-            <View style={views.headerFilter}>
-              {Platform.OS === 'android' && (
+            {thumbnail ? (
+              <View style={views.headerFilter}>
+                {Platform.OS === 'android' && (
+                  <TouchableOpacity
+                    style={views.headerCheat}
+                    activeOpacity={1}
+                    onPress={this.handleToggleScrap}
+                  />
+                )}
+              </View>
+            ) : (
+              Platform.OS === 'android' && (
                 <TouchableOpacity
                   style={views.headerCheat}
                   activeOpacity={1}
                   onPress={this.handleToggleScrap}
                 />
-              )}
-            </View>
+              )
+            )}
           </ImageBackground>
           <View style={[views.infoWrapper, { borderTopWidth: 0 }]}>
             <View style={views.infoHover}>

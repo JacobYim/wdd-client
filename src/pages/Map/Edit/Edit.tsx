@@ -110,26 +110,37 @@ class Edit extends PureComponent<Props, State> {
             {
               handlePress: this.handleClear,
               text: '없음',
+              style: {},
             },
             {
               handlePress: () => this.handleToggle('time'),
               icon: require('src/assets/icons/ic_time_black.png'),
+              style: { width: 32, height: 30 },
             },
             {
               handlePress: () => this.handleToggle('distance'),
-              icon: require('src/assets/icons/ic_distance.png'),
+              icon: require('src/assets/icons/ic_km.png'),
+              style: { width: 41, height: 33 },
             },
             {
               handlePress: () => this.handleToggle('poos'),
-              icon: require('src/assets/icons/ic_poo_gray.png'),
+              icon: require('src/assets/icons/ic_poo_black.png'),
+              style: { width: 28, height: 27 },
             },
             {
               handlePress: () => this.handleToggle('pees'),
-              icon: require('src/assets/icons/ic_pee_gray.png'),
+              icon: require('src/assets/icons/ic_pee_black.png'),
+              style: { width: 18, height: 28 },
+            },
+            {
+              handlePress: () => this.handleLogo('GO'),
+              icon: require('src/assets/icons/ic_go_black.png'),
+              style: { width: 48, height: 26 },
             },
             {
               handlePress: () => this.handleLogo('LOGO'),
-              icon: require('src/assets/icons/logo_text.png'),
+              icon: require('src/assets/icons/logo_text_black.png'),
+              style: { width: 58, height: 10 },
             },
           ]}
           showsVerticalScrollIndicator={false}
@@ -139,7 +150,7 @@ class Edit extends PureComponent<Props, State> {
           keyExtractor={(i, index) => index.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity style={views.button} onPress={item.handlePress}>
-              {item.icon && <Image source={item.icon} style={icons.button} />}
+              {item.icon && <Image source={item.icon} style={item.style} />}
               {item.text && <Text style={texts.clear}>{item.text}</Text>}
             </TouchableOpacity>
           )}

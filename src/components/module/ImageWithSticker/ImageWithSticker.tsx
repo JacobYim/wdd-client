@@ -32,14 +32,17 @@ const ImageWithSticker: React.FC<Props> = ({ image, walk, size, style }) => (
       <>
         {image.stickers.top && (
           <View style={views.topWrapper}>
-            <Image
-              source={
-                image.stickers.top === 'LOGO'
-                  ? require('src/assets/icons/logo_text.png')
-                  : require('src/assets/icons/logo_text.png')
-              }
-              style={icons.logo}
-            />
+            {image.stickers.top === 'LOGO' ? (
+              <Image
+                source={require('src/assets/icons/logo_text_white.png')}
+                style={icons.logo}
+              />
+            ) : (
+              <Image
+                source={require('src/assets/icons/ic_go_white.png')}
+                style={icons.go}
+              />
+            )}
           </View>
         )}
         <View style={views.bottomWrapper}>
