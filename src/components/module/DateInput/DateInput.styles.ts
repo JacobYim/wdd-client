@@ -11,7 +11,7 @@ export const views = StyleSheet.create({
     height: 49,
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: color.grayDA,
+    borderColor: color.grayEF,
     paddingHorizontal: 12,
   },
 });

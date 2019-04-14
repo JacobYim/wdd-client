@@ -177,7 +177,9 @@ class PageContainer extends PureComponent<Props, State> {
                 </View>
               )}
               {children}
-              {bottomBox && <View style={{ height: extraScrollHeight }} />}
+              {(enableScroll || bottomBox) && (
+                <View style={{ height: extraScrollHeight }} />
+              )}
             </ScrollView>
             {bottom && (
               <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>

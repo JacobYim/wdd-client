@@ -24,5 +24,5 @@ export const inputs = StyleSheet.create({
     fontSize: font.size.medium,
   },
   focused: { borderColor: color.blue },
-  unFocused: { borderColor: color.grayDA },
+  unFocused: { borderColor: color.grayEF },
 });

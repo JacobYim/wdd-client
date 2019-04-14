@@ -118,7 +118,7 @@ class CreateDog extends Component<Props, State> {
         }}
         titleOnScroll="댕댕이 정보 입력"
         extraScrollHeight={height * 0.25}
-        extraBottom={height * 0.48}>
+        extraBottom={height * 0.6}>
         <View style={views.thumbnailWrapper}>
           <TouchableOpacity
             activeOpacity={0.7}

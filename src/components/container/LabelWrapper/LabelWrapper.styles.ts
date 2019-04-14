@@ -3,8 +3,8 @@ import { color, font } from 'src/theme';
 
 export const texts = StyleSheet.create({
   label: {
-    color: `${color.black}78`,
-    fontSize: font.size.small,
+    color: color.black33Opacity,
+    fontSize: font.size.medium,
     marginBottom: 12,
   },
 });

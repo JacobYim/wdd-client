@@ -1,7 +1,6 @@
 import produce from 'immer';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Image, Modal, TextInput as Input, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
@@ -18,6 +17,13 @@ import { uploadImage } from 'src/services/aws/s3';
 import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, views } from './Edit.styles';
+import {
+  Image,
+  Modal,
+  TextInput as Input,
+  View,
+  Dimensions,
+} from 'react-native';
 import {
   checkPermission,
   PICTURE_PERMISSIONS,
@@ -42,6 +48,8 @@ interface State
     gender?: string;
   };
 }
+
+const { height } = Dimensions.get('window');
 
 class Edit extends PureComponent<Props, State> {
   private create: boolean = this.props.navigation.getParam('createMode');
@@ -170,7 +178,8 @@ class Edit extends PureComponent<Props, State> {
         center={this.create ? '반려견 추가' : '프로필 수정'}
         left={{ navigation }}
         right={{ handlePress: this.handleSubmit, view: '완료' }}
-        extraBottom={80}
+        extraScrollHeight={height * 0.16}
+        extraBottom={height * 0.6}
         enableScroll>
         <View style={views.thumbnailWrapper}>
           <TouchableOpacity
