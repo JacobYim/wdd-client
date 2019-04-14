@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     height,
     width: '100%',
     flexDirection: 'row',
-    borderBottomColor: '#70707014',
+    borderBottomColor: '#EBEBEB',
   },
   button: {
     paddingHorizontal: width * 0.04,

@@ -206,6 +206,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
               ),
               handlePress: () => this.props.navigation.goBack(null),
             }}
+            showBorder
           />
           <View style={views.filterWrapper}>
             <Range range={filter.range} handleChange={this.handleRangeChange} />

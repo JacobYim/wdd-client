@@ -16,7 +16,7 @@ const height = 30;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 10,
   },
   listWrapper: {
     paddingRight: 12,
