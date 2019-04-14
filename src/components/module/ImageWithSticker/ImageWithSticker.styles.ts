@@ -1,12 +1,12 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { color, font } from 'src/theme';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
   topWrapper: {
     alignItems: 'flex-end',
-    padding: 45,
+    padding: 44,
   },
   bottomWrapper: {
     marginTop: 'auto',
@@ -23,7 +23,7 @@ export const views = StyleSheet.create({
 export const icons = StyleSheet.create({
   logo: {
     width: width * 0.416,
-    height: height * 0.04,
+    height: width * 0.072,
     resizeMode: 'contain',
   },
   go: {

@@ -62,13 +62,13 @@ const ImageWithSticker: React.FC<Props> = ({ image, walk, size, style }) => (
           )}
           {image.stickers.poos && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_poo.png')} />
+              <Image source={require('src/assets/icons/ic_poo_white.png')} />
               <Text style={texts.info}>{walk.poos}회</Text>
             </View>
           )}
           {image.stickers.pees && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_pee.png')} />
+              <Image source={require('src/assets/icons/ic_pee_white.png')} />
               <Text style={texts.info}>{walk.pees}회</Text>
             </View>
           )}
