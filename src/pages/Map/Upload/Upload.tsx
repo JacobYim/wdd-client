@@ -35,6 +35,7 @@ class Upload extends PureComponent<Props, State> {
     const { navigation, walk, toggleLoading, getUser } = this.props;
     if (this.state.images.length === 0) {
       Alert.alert('사진을 1장 이상 업로드 해주세요.');
+      return;
     }
     const uris = this.state.images.map(image => image.nextUri || image.uri);
     const images = await uploadImages({
@@ -60,7 +61,7 @@ class Upload extends PureComponent<Props, State> {
   handleAddImage = (image: ImageInterface) => {
     this.setState(state =>
       produce(state, draft => {
-        draft.images.push(image);
+        draft.images = [image, ...state.images];
       })
     );
   };

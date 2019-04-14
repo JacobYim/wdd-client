@@ -12,7 +12,7 @@ export const views = StyleSheet.create({
 
 export const texts = StyleSheet.create({
   input: {
-    marginTop: 20,
+    marginTop: 18,
     color: color.black,
     fontSize: font.size.large,
   },
