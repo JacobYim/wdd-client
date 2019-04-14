@@ -61,6 +61,11 @@ class Wdd extends PureComponent<Props, State> {
     this.setState({ refresh: false });
   };
 
+  handleDelete = (id: string) => {
+    const feeds = this.state.feeds.filter(feed => feed._id !== id);
+    this.setState({ feeds });
+  };
+
   handlePressLike = async (_id: string) => {
     const { user } = this.props;
     const data = await pushLike({ _id });
@@ -217,7 +222,9 @@ class Wdd extends PureComponent<Props, State> {
             data={this.state.feeds}
             keyExtractor={(i, index) => index.toString()}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => <Feed feed={item} />}
+            renderItem={({ item }) => (
+              <Feed feed={item} deleteFromList={this.handleDelete} />
+            )}
           />
         </ScrollView>
         {this.renderModal()}

@@ -18,8 +18,8 @@ import {
   View,
   ViewToken,
 } from 'react-native';
-
 import {
+  deleteFeed,
   pushLike,
   undoLike,
   Feed as FeedInterface,
@@ -28,6 +28,7 @@ import {
 interface Props {
   feed: FeedInterface;
   user: ReducerState['user'];
+  deleteFromList: (id: string) => void;
 }
 
 interface State {
@@ -35,6 +36,11 @@ interface State {
   pushedLike: boolean;
   likeCount: number;
   heartSize: Animated.Value;
+}
+
+enum Actions {
+  Delete,
+  Cancel,
 }
 
 class Feed extends PureComponent<Props, State> {
@@ -105,7 +111,13 @@ class Feed extends PureComponent<Props, State> {
     if (actionSheet) actionSheet.show();
   };
 
-  handleActionSheet = (index: number) => {};
+  handleActionSheet = async (index: number) => {
+    if (Actions.Delete === index) {
+      const { _id } = this.props.feed;
+      await deleteFeed({ _id });
+      this.props.deleteFromList(_id);
+    }
+  };
 
   render() {
     const { feed, user } = this.props;
@@ -217,8 +229,8 @@ class Feed extends PureComponent<Props, State> {
         <ActionSheet
           ref={this.actionSheet}
           options={['삭제', '취소']}
-          destructiveButtonIndex={0}
-          cancelButtonIndex={1}
+          destructiveButtonIndex={Actions.Delete}
+          cancelButtonIndex={Actions.Cancel}
           onPress={this.handleActionSheet}
         />
       </View>

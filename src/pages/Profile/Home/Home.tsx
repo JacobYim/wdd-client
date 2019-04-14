@@ -116,6 +116,11 @@ class Home extends PureComponent<Props, State> {
     }
   };
 
+  handleRemoveFeed = async (id: string) => {
+    const feeds = this.state.feeds.filter(feed => feed._id !== id);
+    this.setState({ feeds });
+  };
+
   renderSelectDog = (item: { _id: string; name: string }) => (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -242,7 +247,12 @@ class Home extends PureComponent<Props, State> {
             data={this.state.feeds}
             keyExtractor={(i, index) => index.toString()}
             contentContainerStyle={views.listSpace}
-            renderItem={({ item }) => <FeedComponent feed={item} />}
+            renderItem={({ item }) => (
+              <FeedComponent
+                feed={item}
+                deleteFromList={this.handleRemoveFeed}
+              />
+            )}
           />
         )}
         {currentTab === 'scrap' && (
