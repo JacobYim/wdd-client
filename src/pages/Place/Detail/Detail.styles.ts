@@ -13,7 +13,7 @@ export const views = StyleSheet.create({
     right: 0,
   },
   headerWrapper: {
-    height: height * 0.41,
+    height: height * 0.253,
   },
   headerFilter: {
     flex: 1,
@@ -29,7 +29,7 @@ export const views = StyleSheet.create({
     marginTop: -(cardHeight / 2 + paddingVertical),
     marginBottom: 10,
     height: cardHeight,
-    ...shadow.shallow,
+    ...shadow.medium,
   },
   infoWrapper: {
     paddingVertical,
@@ -68,7 +68,7 @@ export const icons = StyleSheet.create({
 
 export const texts = StyleSheet.create({
   blackOpacity: {
-    flexBasis: 64,
+    flexBasis: 62,
     lineHeight: 24,
     color: color.blackOpacity,
     fontSize: 16,

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   describe: {
     fontSize: font.size.medium,
-    marginTop: 2,
+    marginTop: 4,
     color: color.blackOpacity,
     lineHeight: 16,
   },
@@ -86,7 +86,7 @@ const Info: React.FC<Props> = ({ place, handlePress, icon, width }) => {
     <View style={[styles.wrapper, width ? { width } : null]}>
       <DefaultImage size={50} uri={place.icon} />
       <View style={styles.infoWrapper}>
-        <Text style={styles.name}>{place.name}</Text>
+        <Text style={styles.name}>{place.name.trim()}</Text>
         <Text style={styles.describe}>{place.label}</Text>
         <Rating rating={place.rating} />
       </View>

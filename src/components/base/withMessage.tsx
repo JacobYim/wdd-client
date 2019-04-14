@@ -14,7 +14,7 @@ const messageHeight = 40;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 16,
     left: 0,
     right: 0,
     alignItems: 'center',
