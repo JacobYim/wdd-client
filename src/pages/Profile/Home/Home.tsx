@@ -128,10 +128,11 @@ class Home extends PureComponent<Props, State> {
 
   handleScroll = async (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset } = e.nativeEvent;
+    const { showCenter } = this.state;
     if (contentOffset.y > 152) {
-      if (!this.state.showCenter) this.setState({ showCenter: true });
+      if (!showCenter) this.setState({ showCenter: true });
     } else {
-      if (this.state.showCenter) this.setState({ showCenter: false });
+      if (showCenter) this.setState({ showCenter: false });
     }
   };
 
