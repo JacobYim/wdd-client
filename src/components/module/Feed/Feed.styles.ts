@@ -5,6 +5,15 @@ export const { width } = Dimensions.get('window');
 const paginateHeight = 25;
 
 export const views = StyleSheet.create({
+  summeryWrapper: {
+    height: 43,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: size.horizontal,
+    backgroundColor: color.grayF9,
+    borderBottomWidth: 1,
+    borderColor: color.grayEF,
+  },
   header: {
     paddingHorizontal: size.horizontal,
     height: 52,
@@ -25,7 +34,7 @@ export const views = StyleSheet.create({
     width: 3,
     height: 3,
     borderRadius: 1.5,
-    backgroundColor: color.black,
+    backgroundColor: color.black33Opacity,
     marginLeft: 2,
   },
   image: {
@@ -67,9 +76,21 @@ export const views = StyleSheet.create({
     paddingHorizontal: size.horizontal,
     paddingTop: 16,
     paddingBottom: 20,
+    borderBottomWidth: 0.5,
+    borderColor: color.grayEF,
   },
   likeInfo: {
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  likeAnimation: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    margin: 20,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });
@@ -105,6 +126,15 @@ export const texts = StyleSheet.create({
     marginTop: 12,
     color: '#484848',
     fontSize: 15,
+  },
+  summeryDate: {
+    flex: 1,
+    color: color.gray48,
+    fontSize: font.size.small,
+  },
+  summeryRight: {
+    fontSize: font.size.small,
+    color: color.blackOpacity,
   },
 });
 

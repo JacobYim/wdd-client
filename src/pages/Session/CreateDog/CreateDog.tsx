@@ -25,6 +25,8 @@ import {
   TouchableOpacity,
   View,
   Modal,
+  Keyboard,
+  Dimensions,
 } from 'react-native';
 
 interface Props extends LoadingProps, NavigationScreenProps {
@@ -34,16 +36,19 @@ interface Props extends LoadingProps, NavigationScreenProps {
 
 interface State extends actions.DogBase {
   showModal: boolean;
+  thumbnailHeight: number;
 }
+
+const { height } = Dimensions.get('window');
 
 class CreateDog extends Component<Props, State> {
   private inputs = {
     name: React.createRef<Input>(),
-    breed: React.createRef<Input>(),
   };
 
   state: State = {
     showModal: false,
+    thumbnailHeight: 0,
     name: '',
     breed: '',
     gender: '',
@@ -65,7 +70,10 @@ class CreateDog extends Component<Props, State> {
   handleImagePicker = async () => {
     const options = {
       title: '프로필 선택',
-      customButtons: [{ name: 'default', title: '기본 이미지' }],
+      takePhotoButtonTitle: '사진 찍기',
+      chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
+      customButtons: [{ name: 'default', title: '우동댕 기본 이미지' }],
+      cancelButtonTitle: '취소',
       storageOptions: { skipBackup: true, path: 'images' },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {
@@ -79,6 +87,7 @@ class CreateDog extends Component<Props, State> {
   handleSubmit = async () => {
     const { createDog, email, navigation, toggleLoading } = this.props;
     const state = pick(this.state, ['name', 'thumbnail', 'breed', 'gender']);
+    Keyboard.dismiss();
     if (state.thumbnail) {
       const url = await uploadImage({
         table: 'dogs',
@@ -107,7 +116,9 @@ class CreateDog extends Component<Props, State> {
           handlePress: this.handleSubmit,
           disable: !name || !breed || !gender,
         }}
-        extraScrollHeight={200}>
+        titleOnScroll="댕댕이 정보 입력"
+        extraScrollHeight={height * 0.25}
+        extraBottom={height * 0.32}>
         <View style={views.thumbnailWrapper}>
           <TouchableOpacity
             activeOpacity={0.7}

@@ -9,6 +9,7 @@ interface Props {
   handlePress: () => void;
   icon: React.ReactNode;
   width?: number | string;
+  softShadow?: boolean;
 }
 
 export const cardWidth = 327;
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   },
   describe: {
     fontSize: font.size.medium,
-    marginTop: 2,
+    marginTop: 4,
     color: color.blackOpacity,
     lineHeight: 16,
   },
@@ -81,12 +82,23 @@ export const Rating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-const Info: React.FC<Props> = ({ place, handlePress, icon, width }) => {
+const Info: React.FC<Props> = ({
+  place,
+  handlePress,
+  icon,
+  width,
+  softShadow,
+}) => {
   return (
-    <View style={[styles.wrapper, width ? { width } : null]}>
+    <View
+      style={[
+        styles.wrapper,
+        width ? { width } : null,
+        softShadow ? shadow.soft : null,
+      ]}>
       <DefaultImage size={50} uri={place.icon} />
       <View style={styles.infoWrapper}>
-        <Text style={styles.name}>{place.name}</Text>
+        <Text style={styles.name}>{place.name.trim()}</Text>
         <Text style={styles.describe}>{place.label}</Text>
         <Rating rating={place.rating} />
       </View>

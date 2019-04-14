@@ -1,7 +1,6 @@
 import produce from 'immer';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Image, Modal, TextInput as Input, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
@@ -18,6 +17,13 @@ import { uploadImage } from 'src/services/aws/s3';
 import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, views } from './Edit.styles';
+import {
+  Image,
+  Modal,
+  TextInput as Input,
+  View,
+  Dimensions,
+} from 'react-native';
 import {
   checkPermission,
   PICTURE_PERMISSIONS,
@@ -43,6 +49,8 @@ interface State
   };
 }
 
+const { height } = Dimensions.get('window');
+
 class Edit extends PureComponent<Props, State> {
   private create: boolean = this.props.navigation.getParam('createMode');
   private inputs = {
@@ -53,22 +61,24 @@ class Edit extends PureComponent<Props, State> {
     info: React.createRef<Input>(),
   };
 
-  constructor(props: Props) {
-    super(props);
-    const { repDog } = props.user;
-    if (repDog === undefined) return;
-    this.state = {
-      _id: this.create ? '' : repDog._id,
-      name: this.create ? '' : repDog.name,
-      breed: this.create ? '' : repDog.breed,
-      gender: this.create ? '' : repDog.gender,
-      thumbnail: !this.create ? repDog.thumbnail : undefined,
-      birth: !this.create && repDog.birth ? new Date(repDog.birth) : undefined,
-      weight: !this.create && repDog.weight ? repDog.weight : undefined,
-      info: !this.create && repDog.info ? repDog.info : undefined,
-      showModal: false,
-      error: {},
-    };
+  state: State = {
+    _id: '',
+    name: '',
+    breed: '',
+    gender: '',
+    error: {},
+    showModal: false,
+  };
+
+  componentDidMount() {
+    const { user } = this.props;
+    if (!this.create && user.repDog) {
+      const { user: u, likes, feeds, birth, ...data } = user.repDog;
+      this.setState({
+        ...data,
+        birth: birth ? moment(birth.split('.')).toDate() : undefined,
+      });
+    }
   }
 
   toggleModal = () => {
@@ -101,7 +111,10 @@ class Edit extends PureComponent<Props, State> {
   handleImagePicker = async () => {
     const options = {
       title: '프로필 선택',
-      customButtons: [{ name: 'default', title: '기본 이미지' }],
+      takePhotoButtonTitle: '사진 찍기',
+      chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
+      customButtons: [{ name: 'default', title: '우동댕 기본 이미지' }],
+      cancelButtonTitle: '취소',
       storageOptions: { skipBackup: true, path: 'images' },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {
@@ -165,7 +178,8 @@ class Edit extends PureComponent<Props, State> {
         center={this.create ? '반려견 추가' : '프로필 수정'}
         left={{ navigation }}
         right={{ handlePress: this.handleSubmit, view: '완료' }}
-        extraBottom={80}
+        extraScrollHeight={height * 0.16}
+        extraBottom={height * 0.32}
         enableScroll>
         <View style={views.thumbnailWrapper}>
           <TouchableOpacity

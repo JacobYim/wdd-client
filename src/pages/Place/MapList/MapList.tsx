@@ -6,7 +6,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import TopNavbar from 'src/components/module/TopNavbar';
 import TrackUser from 'src/pages/Map/Map/TrackUser';
 import { SearchParams, searchPlace } from 'src/services/api/place';
-import { Place } from 'src/store/actions/place';
+import { Label as LabelType, Place } from 'src/store/actions/place';
 import Card, { cardWidth } from './Card';
 import Label from './Label';
 import { height, icons, texts, views, width } from './MapList.styles';
@@ -40,7 +40,7 @@ interface State {
   showSearch: boolean;
   userCoord: LatLng;
   mapCoord: LatLng;
-  filter: { range: number; label?: '카페' | '용품' | '병원' | '기타' };
+  filter: { range: number; label?: LabelType };
 }
 
 interface Item {
@@ -147,7 +147,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
     );
   };
 
-  handleLabelChange = (label?: '카페' | '용품' | '병원' | '기타') => {
+  handleLabelChange = (label?: LabelType) => {
     this.setState(state =>
       produce(state, draft => {
         if (label) draft.filter.label = label;
@@ -206,6 +206,7 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
               ),
               handlePress: () => this.props.navigation.goBack(null),
             }}
+            showBorder
           />
           <View style={views.filterWrapper}>
             <Range range={filter.range} handleChange={this.handleRangeChange} />
@@ -256,6 +257,9 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
               sliderWidth={width}
               itemWidth={cardWidth}
               decelerationRate="fast"
+              inactiveSlideScale={0.93}
+              inactiveSlideOpacity={0.9}
+              layoutCardOffset={10}
               onSnapToItem={this.handleSnap}
               renderItem={this.renderItem}
             />

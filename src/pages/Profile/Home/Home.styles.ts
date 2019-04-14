@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { color, font, size } from 'src/theme';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 export const views = StyleSheet.create({
   container: {
@@ -34,12 +34,11 @@ export const views = StyleSheet.create({
     paddingVertical: 6,
   },
   modalBackground: {
-    width,
-    height,
+    height: Platform.OS === 'ios' ? height : height - 20,
     backgroundColor: color.black33Opacity,
-    justifyContent: 'flex-end',
   },
   modal: {
+    marginTop: 'auto',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     paddingTop: 20,
@@ -74,8 +73,16 @@ export const views = StyleSheet.create({
     paddingBottom: height * 0.1,
   },
   signInMessage: {
-    flex: 1,
+    marginTop: height * 0.22,
+    alignItems: 'center',
+  },
+  topWrapper: {
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centerButton: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
 });
@@ -91,7 +98,7 @@ export const icons = StyleSheet.create({
     height: 4,
   },
   check: {
-    alignSelf: 'flex-end',
+    marginLeft: 'auto',
     width: 24,
     height: 24,
   },
@@ -112,6 +119,7 @@ export const texts = StyleSheet.create({
     color: '#606269',
   },
   selectDogName: {
+    marginLeft: 12,
     color: color.black,
     fontSize: 16,
   },
@@ -133,5 +141,9 @@ export const texts = StyleSheet.create({
     textDecorationColor: color.grayB1,
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
+  },
+  center: {
+    fontSize: font.size.large,
+    color: color.black,
   },
 });

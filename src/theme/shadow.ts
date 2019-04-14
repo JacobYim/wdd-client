@@ -1,7 +1,13 @@
 export default {
   deep: {
-    elevation: 2,
+    elevation: 4,
     shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+  },
+  center: {
+    elevation: 2,
     shadowRadius: 12,
     shadowColor: '#000',
     shadowOpacity: 0.18,
@@ -13,10 +19,11 @@ export default {
     shadowColor: '#000',
     shadowOpacity: 0.12,
   },
-  center: {
-    elevation: 2,
+  soft: {
+    elevation: 1,
+    shadowOffset: { width: 0, height: 4 },
     shadowRadius: 12,
     shadowColor: '#000',
-    shadowOpacity: 0.18,
+    shadowOpacity: 0.09,
   },
 };

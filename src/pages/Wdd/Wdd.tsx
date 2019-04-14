@@ -1,6 +1,6 @@
-import { flatten } from 'lodash';
+import produce from 'immer';
+import { findIndex, flatten } from 'lodash';
 import React, { PureComponent } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
@@ -15,9 +15,12 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
+  ScrollView,
   View,
   Modal,
   Text,
+  RefreshControl,
+  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -28,12 +31,64 @@ interface State {
   dogs: Dog[];
   feeds: FeedInterface[];
   selectDog?: Dog;
+  refresh: boolean;
+}
+
+// helper
+function mapGender(gender: 'M' | 'F' | 'N' | '') {
+  switch (gender) {
+    case 'M':
+      return '수컷';
+    case 'F':
+      return '암컷';
+    case 'N':
+      return '중성화';
+    default:
+      return '';
+  }
 }
 
 class Wdd extends PureComponent<Props, State> {
-  state: State = { dogs: [], feeds: [] };
+  state: State = { dogs: [], feeds: [], refresh: false };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getDataFromServer();
+  }
+
+  handleRefresh = async () => {
+    await this.setState({ refresh: true });
+    await this.getDataFromServer();
+    this.setState({ refresh: false });
+  };
+
+  handleDelete = (id: string) => {
+    const feeds = this.state.feeds.filter(feed => feed._id !== id);
+    this.setState({ feeds });
+  };
+
+  handlePressLike = async (_id: string) => {
+    const { user } = this.props;
+    const data = await pushLike({ _id });
+    if (data) {
+      Alert.alert(data.message);
+      this.setState(state =>
+        produce(state, draft => {
+          if (user.repDog && draft.selectDog) {
+            const pushData = {
+              dog: user.repDog._id,
+              createdAt: new Date(),
+            };
+
+            const index = findIndex(this.state.dogs, dog => dog._id === _id);
+            draft.dogs[index].likes.push(pushData);
+            draft.selectDog.likes.push(pushData);
+          }
+        })
+      );
+    }
+  };
+
+  getDataFromServer = async () => {
     const { coordinates } = this.props.user.location;
     const users = await searchUsers({ coordinates });
     const feeds = await getFeeds({
@@ -43,7 +98,7 @@ class Wdd extends PureComponent<Props, State> {
       .filter(user => user.repDog !== undefined)
       .map(user => user.repDog) as Dog[];
     await this.setState({ feeds, dogs });
-  }
+  };
 
   selectDog = (selectDog: Dog) => {
     this.setState({ selectDog });
@@ -76,27 +131,30 @@ class Wdd extends PureComponent<Props, State> {
                   activeOpacity={0.7}
                   onPress={this.dismissModal}>
                   <Image
-                    source={require('src/assets/icons/ic_close_round.png')}
+                    source={require('src/assets/icons/ic_close_filled.png')}
                     style={icons.close}
                   />
                 </TouchableOpacity>
                 <DefaultImage uri={dog.thumbnail} size={110} showBorder />
                 <Text style={texts.name}>{dog.name}</Text>
                 <View style={views.topRowWrapper}>
-                  {[dog.breed, dog.gender].map((data, index) => (
-                    <View
-                      key={index.toString()}
-                      style={[views.itemWrapper, index > 0 ? views.vr : null]}>
-                      <Text style={texts.spec}>{data}</Text>
-                    </View>
-                  ))}
+                  <View style={views.itemWrapper}>
+                    <Text style={texts.spec}>{dog.breed}</Text>
+                  </View>
+                  <View style={[views.itemWrapper, views.vr]}>
+                    <Text style={texts.spec}>{mapGender(dog.gender)}</Text>
+                  </View>
                   {dog.weight && (
                     <View style={[views.itemWrapper, views.vr]}>
                       <Text style={texts.spec}>{dog.weight}kg</Text>
                     </View>
                   )}
                 </View>
-                {dog.info && <Text style={texts.info}>{dog.info}</Text>}
+                {dog.info && (
+                  <View style={views.infoWrapper}>
+                    <Text style={texts.info}>{dog.info}</Text>
+                  </View>
+                )}
                 <View style={views.bottomRowWrapper}>
                   {[
                     { label: '킁킁', value: dog.likes.length },
@@ -115,7 +173,7 @@ class Wdd extends PureComponent<Props, State> {
                   ]}
                   activeOpacity={0.7}
                   disabled={!signedIn}
-                  onPress={() => pushLike({ _id: dog._id })}>
+                  onPress={() => this.handlePressLike(dog._id)}>
                   <Text style={texts.like}>킁킁 보내기</Text>
                 </TouchableOpacity>
               </SafeAreaView>
@@ -135,7 +193,14 @@ class Wdd extends PureComponent<Props, State> {
             style={icons.logo}
           />
         </View>
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refresh}
+              onRefresh={this.handleRefresh}
+            />
+          }>
           <View style={views.dogsWrapper}>
             <FlatList
               data={this.state.dogs}
@@ -157,7 +222,9 @@ class Wdd extends PureComponent<Props, State> {
             data={this.state.feeds}
             keyExtractor={(i, index) => index.toString()}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => <Feed feed={item} />}
+            renderItem={({ item }) => (
+              <Feed feed={item} deleteFromList={this.handleDelete} />
+            )}
           />
         </ScrollView>
         {this.renderModal()}

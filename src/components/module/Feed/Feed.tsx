@@ -2,16 +2,25 @@ import produce from 'immer';
 import { find } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Image, Text, TouchableOpacity, View, ViewToken } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { rangeWithUnit } from 'src/assets/functions/print';
+import { rangeWithUnit, timeWithUnit } from 'src/assets/functions/print';
 import DefaultImage from 'src/components/module/DefaultImage';
 import DoubleTab from 'src/components/module/DoubleTab';
+import { History } from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Feed.styles';
-
 import {
+  Animated,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewToken,
+} from 'react-native';
+import {
+  deleteFeed,
   pushLike,
   undoLike,
   Feed as FeedInterface,
@@ -19,20 +28,32 @@ import {
 
 interface Props {
   feed: FeedInterface;
+  prevFeed?: FeedInterface | null;
   user: ReducerState['user'];
+  deleteFromList: (id: string) => void;
 }
 
 interface State {
   index: number;
   pushedLike: boolean;
   likeCount: number;
+  heartSize: Animated.Value;
+}
+
+enum Actions {
+  Delete,
+  Cancel,
 }
 
 class Feed extends PureComponent<Props, State> {
+  private actionSheet = React.createRef<ActionSheet>();
+  private pushLike = false;
+
   state: State = {
     index: 1,
     pushedLike: false,
     likeCount: 0,
+    heartSize: new Animated.Value(0),
   };
 
   componentDidMount() {
@@ -52,8 +73,29 @@ class Feed extends PureComponent<Props, State> {
         draft.likeCount = draft.pushedLike
           ? state.likeCount + 1
           : state.likeCount - 1;
-        if (draft.pushedLike) pushLike({ _id });
-        else undoLike({ _id });
+        if (draft.pushedLike) {
+          pushLike({ _id });
+          this.pushLike = true;
+          Animated.timing(this.state.heartSize, {
+            toValue: 1,
+            duration: 60,
+            useNativeDriver: true,
+          }).start(bigger => {
+            if (bigger.finished) {
+              setTimeout(() => {
+                Animated.timing(this.state.heartSize, {
+                  toValue: 0,
+                  duration: 120,
+                  useNativeDriver: true,
+                }).start(smaller => {
+                  if (smaller.finished) this.pushLike = false;
+                });
+              }, 1600);
+            }
+          });
+        } else {
+          undoLike({ _id });
+        }
       })
     );
   };
@@ -66,10 +108,55 @@ class Feed extends PureComponent<Props, State> {
     this.setState({ index });
   };
 
+  handlePressDots = () => {
+    const actionSheet = this.actionSheet.current;
+    if (actionSheet) actionSheet.show();
+  };
+
+  handleActionSheet = async (index: number) => {
+    if (Actions.Delete === index) {
+      const { _id } = this.props.feed;
+      await deleteFeed({ _id });
+      this.props.deleteFromList(_id);
+    }
+  };
+
+  renderSummery = () => {
+    const { feed, user, prevFeed } = this.props;
+    const yearMonth = moment(feed.createdAt).format('YYYY년 MM월');
+    if (
+      prevFeed === null ||
+      (prevFeed && yearMonth < moment(prevFeed.createdAt).format('YYYY년 MM월'))
+    ) {
+      if (!user.repDog) return;
+      const summery = find(
+        user.repDog.histories,
+        history => history.yearMonth === yearMonth
+      );
+      if (summery) {
+        return (
+          <View style={views.summeryWrapper}>
+            <Text style={texts.summeryDate}>{summery.yearMonth} 산책</Text>
+            <Text style={texts.summeryRight}>{`${
+              summery.count
+            }회 / ${rangeWithUnit(summery.distance)} / ${timeWithUnit(
+              summery.seconds
+            )} / ${summery.steps}걸음 / ${Math.floor(
+              summery.steps / 28.5
+            )}kcal`}</Text>
+          </View>
+        );
+      }
+    }
+    return null;
+  };
+
   render() {
-    const { feed } = this.props;
+    const { feed, user } = this.props;
+
     return (
       <View>
+        {this.renderSummery()}
         <View style={views.header}>
           <DefaultImage size={32} uri={feed.dog.thumbnail} />
           <Text style={texts.name}>{feed.dog.name}</Text>
@@ -78,11 +165,15 @@ class Feed extends PureComponent<Props, State> {
               {moment(feed.createdAt).fromNow()}
             </Text>
           </View>
-          <TouchableOpacity style={views.headerButton}>
-            <View style={views.smallDot} />
-            <View style={views.smallDot} />
-            <View style={views.smallDot} />
-          </TouchableOpacity>
+          {user._id === feed.user && (
+            <TouchableOpacity
+              style={views.headerButton}
+              onPress={this.handlePressDots}>
+              <View style={views.smallDot} />
+              <View style={views.smallDot} />
+              <View style={views.smallDot} />
+            </TouchableOpacity>
+          )}
         </View>
         <View>
           <FlatList
@@ -101,6 +192,24 @@ class Feed extends PureComponent<Props, State> {
             pagingEnabled
             horizontal
           />
+          {this.pushLike && (
+            <View style={views.likeAnimation}>
+              <Animated.Image
+                source={require('src/assets/icons/ic_heart_press.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  transform: [
+                    {
+                      scaleX: this.state.heartSize,
+                      scaleY: this.state.heartSize,
+                    },
+                  ],
+                }}
+              />
+            </View>
+          )}
           <View style={views.paginateStatus}>
             <Text style={texts.paginate}>{`${this.state.index} / ${
               feed.images.length
@@ -150,6 +259,13 @@ class Feed extends PureComponent<Props, State> {
             <Text style={texts.memo}>{feed.memo}</Text>
           )}
         </View>
+        <ActionSheet
+          ref={this.actionSheet}
+          options={['삭제', '취소']}
+          destructiveButtonIndex={Actions.Delete}
+          cancelButtonIndex={Actions.Cancel}
+          onPress={this.handleActionSheet}
+        />
       </View>
     );
   }

@@ -4,7 +4,7 @@ import { color } from 'src/theme';
 export const views = StyleSheet.create({
   header: {
     paddingTop: 20,
-    paddingBottom: 4,
+    paddingBottom: 12,
     alignItems: 'center',
     flexDirection: 'row',
     borderBottomWidth: 1,

@@ -24,7 +24,7 @@ const ImageWrapper: React.FC<{
     {onPressDelete && (
       <TouchableOpacity style={views.deleteButton} onPress={onPressDelete}>
         <Image
-          source={require('src/assets/icons/ic_close.png')}
+          source={require('src/assets/icons/ic_close_round.png')}
           style={icons.delete}
         />
       </TouchableOpacity>
@@ -40,6 +40,9 @@ export const AddImageCard: React.FC<AddProps> = ({ handleLoad }) => {
   const showImagePicker = async () => {
     const options = {
       title: '산책 사진 선택',
+      takePhotoButtonTitle: '사진 찍기',
+      chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
+      cancelButtonTitle: '취소',
       storageOptions: { skipBackup: true, path: 'images' },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {

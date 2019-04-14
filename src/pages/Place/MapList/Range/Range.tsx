@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   box: {
     width: 72,
     backgroundColor: color.white,
-    marginTop: navHeight + resultHeight,
+    marginTop: navHeight + resultHeight - 10,
     paddingVertical: 7,
     marginLeft: size.horizontal,
     borderRadius: 5,

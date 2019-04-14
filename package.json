@@ -1,6 +1,6 @@
 {
   "name": "WddClient",
-  "version": "0.4.4",
+  "version": "0.4.10",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -21,8 +21,10 @@
     "moment": "^2.24.0",
     "react": "16.8.3",
     "react-native": "^0.59.2",
+    "react-native-actionsheet": "^2.4.2",
     "react-native-background-timer": "^2.1.1",
     "react-native-datepicker": "^1.7.2",
+    "react-native-fs": "^2.13.3",
     "react-native-geolocation-service": "^2.0.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-image-picker": "^0.28.1",

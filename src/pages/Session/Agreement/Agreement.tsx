@@ -36,11 +36,6 @@ class Agreement extends Component<NavigationScreenProps, State> {
         agree: false,
         link: 'http://policy.woodongdang.com/',
       },
-      {
-        title: '개인정보 이용 약관',
-        agree: false,
-        link: '',
-      },
     ],
   };
 

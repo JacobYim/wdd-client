@@ -1,11 +1,18 @@
 import * as Hangul from 'hangul-js';
 import { sortBy } from 'lodash';
 import React, { Component } from 'react';
-import { FlatList, Image, SafeAreaView, TextInput, View } from 'react-native';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { color } from 'src/theme';
 import { icons, texts, views } from './TextAutocomplete.styles';
 import TextBox from './TextBox';
+import {
+  FlatList,
+  Image,
+  SafeAreaView,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 
 export type Data = { name: string } & any;
 
@@ -67,7 +74,7 @@ class TextAutocomplete extends Component<Props, State> {
   handleInputSubmit = async () => {
     const { onSearch } = this.props;
     const { keyword } = this.state;
-    if (onSearch && disassemble(keyword).length > 4) {
+    if (onSearch && keyword.length !== 0) {
       this.searchResult = await onSearch(keyword);
       const autocomplete = this.getAutocomplete(keyword, this.searchResult);
       this.setState({ autocomplete });
@@ -92,17 +99,25 @@ class TextAutocomplete extends Component<Props, State> {
         <View style={views.inputWrapper}>
           <TextInput
             style={texts.input}
+            value={this.state.keyword}
             placeholder={placeholder}
             placeholderTextColor={`${color.black}1A`}
             multiline={false}
             autoCorrect={false}
             autoFocus={true}
-            clearButtonMode="while-editing"
             autoCapitalize="none"
             returnKeyType="done"
             onChangeText={this.handleTextChange}
             onSubmitEditing={this.handleInputSubmit}
           />
+          {this.state.keyword.length > 0 && (
+            <TouchableOpacity onPress={() => this.setState({ keyword: '' })}>
+              <Image
+                source={require('src/assets/icons/ic_close_filled.png')}
+                style={icons.clear}
+              />
+            </TouchableOpacity>
+          )}
         </View>
         <FlatList
           contentContainerStyle={views.autocompleteWrapper}

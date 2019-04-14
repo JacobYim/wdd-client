@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { BottomTabBarProps, NavigationRoute } from 'react-navigation';
 import { connect } from 'react-redux';
+import { NavigationTabs } from 'src/pages/Router';
 import { ReducerState } from 'src/store/reducers';
 import { texts, views } from './BottomTabbar.styles';
 
@@ -19,7 +20,7 @@ const BottomNavbar: React.FC<Props> = ({ navigation, walk }) => {
     const isCurrentIndex = index === navigation.state.index;
     const isActive = walk.status === 'WALKING';
 
-    if (index > 0) {
+    if (index !== NavigationTabs.MAP) {
       const { iconOn, iconOff, label } = route.params;
       return (
         <View style={views.tabWrapper} key={route.routeName}>

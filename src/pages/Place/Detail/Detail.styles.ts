@@ -13,27 +13,34 @@ export const views = StyleSheet.create({
     right: 0,
   },
   headerWrapper: {
-    height: height * 0.41,
+    height: height * 0.253,
   },
   headerFilter: {
     flex: 1,
     backgroundColor: `${color.black}78`,
   },
+  headerCheat: {
+    marginTop: 'auto',
+    marginLeft: 'auto',
+    width: size.horizontal + 60,
+    height: cardHeight / 2 + paddingVertical,
+  },
   infoHover: {
     marginTop: -(cardHeight / 2 + paddingVertical),
     marginBottom: 10,
     height: cardHeight,
-    ...shadow.shallow,
   },
   infoWrapper: {
     paddingVertical,
     paddingHorizontal: size.horizontal,
     backgroundColor: color.white,
-    borderTopWidth: 10,
-    borderColor: color.grayEF,
+  },
+  hr: {
+    height: 10,
+    backgroundColor: color.grayEF,
   },
   rowWrapper: {
-    marginVertical: 6,
+    marginVertical: 4,
     flexDirection: 'row',
   },
   imageWrapper: {
@@ -62,14 +69,25 @@ export const icons = StyleSheet.create({
 
 export const texts = StyleSheet.create({
   blackOpacity: {
-    flexBasis: 58,
-    lineHeight: 24,
+    flexBasis: 62,
     color: color.blackOpacity,
-    fontSize: 16,
+    fontSize: 15,
   },
   black: {
+    flex: 1,
+    color: color.gray48,
+    fontSize: 15,
+  },
+  blue: {
+    textDecorationStyle: 'solid',
+    textDecorationColor: color.blue,
+    textDecorationLine: 'underline',
     lineHeight: 24,
-    color: color.black,
-    fontSize: 16,
+    color: color.blue,
+    fontSize: 15,
+  },
+  message: {
+    fontSize: 15,
+    color: color.white,
   },
 });

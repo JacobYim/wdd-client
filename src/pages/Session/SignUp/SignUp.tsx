@@ -1,6 +1,6 @@
 import produce from 'immer';
 import React, { Component } from 'react';
-import { TextInput as Input } from 'react-native';
+import { Keyboard, TextInput as Input } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { validateEmail, validatePassword } from 'src/assets/functions/validate';
@@ -93,6 +93,7 @@ class SignUp extends Component<Props, State> {
     const { name, email, password, passwordCheck } = this.state;
 
     if (name.valid && email.valid && password.valid && passwordCheck.valid) {
+      Keyboard.dismiss();
       signUp(
         {
           name: name.value,

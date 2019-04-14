@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, SafeAreaView, Text, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
+import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
@@ -13,6 +14,10 @@ import { fonts, icons, views } from './Walk.styles';
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
+import {
+  checkPermission,
+  PICTURE_PERMISSIONS,
+} from 'src/assets/functions/validate';
 
 interface WalkInfoInterface {
   unit: 'Km' | '걸음' | 'Kcal';
@@ -65,6 +70,19 @@ class Walk extends Component<Props, State> {
     }
   }
 
+  launchCamera = async () => {
+    const options = {
+      cameraType: 'back' as 'back',
+      mediaType: 'photo' as 'photo',
+      storageOptions: {
+        cameraRoll: true,
+      },
+    };
+    if (await checkPermission(PICTURE_PERMISSIONS)) {
+      ImagePicker.launchCamera(options, res => {});
+    }
+  };
+
   onPrepareWillUnmount = () => {
     const { updateStatus } = this.props;
     updateStatus('WALKING');
@@ -77,7 +95,7 @@ class Walk extends Component<Props, State> {
 
   render() {
     const { updateLatestPin } = this.props;
-    const { distance, status, seconds, steps } = this.props.walk;
+    const { distance, status, seconds, steps, speed } = this.props.walk;
     const gpsInfoList: WalkInfoInterface[] = [
       { value: distance, unit: 'Km' },
       { value: steps, unit: '걸음' },
@@ -102,7 +120,7 @@ class Walk extends Component<Props, State> {
                   ),
                 }}
                 right={{
-                  handlePress: () => {},
+                  handlePress: this.launchCamera,
                   view: (
                     <Image
                       style={icons.top}
@@ -113,7 +131,11 @@ class Walk extends Component<Props, State> {
               />
               <Image
                 style={icons.gif}
-                source={require('src/assets/images/img_running.gif')}
+                source={
+                  speed > 4
+                    ? require('src/assets/images/img_running.gif')
+                    : require('src/assets/images/img_walking.gif')
+                }
               />
               <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>
             </View>

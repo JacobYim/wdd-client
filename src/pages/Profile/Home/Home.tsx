@@ -1,8 +1,6 @@
 import { isEqual } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
-import { Alert, Image, Modal, Text, View } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
@@ -16,8 +14,20 @@ import { Place as Scrap } from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
 import Badges from './Badges';
 import { icons, texts, views } from './Home.styles';
-import ListItem from './ListItem';
+import Like from './Like';
+import Place from './Place';
 import TabBar from './Tabbar';
+import {
+  Image,
+  Modal,
+  Text,
+  View,
+  TouchableOpacity,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 
 interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
@@ -26,6 +36,7 @@ interface Props extends NavigationScreenProps {
 
 interface State {
   showSelectDog: boolean;
+  showCenter: boolean;
   currentTab: string;
   feeds: Feed[];
   scraps: Scrap[];
@@ -37,6 +48,7 @@ class Home extends PureComponent<Props, State> {
 
   state: State = {
     showSelectDog: false,
+    showCenter: false,
     currentTab: this.signedIn ? 'feeds' : '',
     feeds: [],
     scraps: [],
@@ -109,18 +121,34 @@ class Home extends PureComponent<Props, State> {
     }
   };
 
+  handleRemoveFeed = async (id: string) => {
+    const feeds = this.state.feeds.filter(feed => feed._id !== id);
+    this.setState({ feeds });
+  };
+
+  handleScroll = async (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset } = e.nativeEvent;
+    const { showCenter } = this.state;
+    if (contentOffset.y > 152) {
+      if (!showCenter) this.setState({ showCenter: true });
+    } else {
+      if (showCenter) this.setState({ showCenter: false });
+    }
+  };
+
   renderSelectDog = (item: { _id: string; name: string }) => (
     <TouchableOpacity
       activeOpacity={0.7}
       style={views.dogSelectWrapper}
       onPress={() => this.handleSelectDog(item._id)}>
+      <DefaultImage size={40} />
       <Text style={texts.selectDogName}>{item.name}</Text>
       <Image
         style={icons.check}
         source={
           this.props.user.repDog && this.props.user.repDog._id === item._id
             ? require('src/assets/icons/ic_check_on.png')
-            : require('src/assets/icons/ic_check_off.png')
+            : require('src/assets/icons/ic_check_filled_off.png')
         }
       />
     </TouchableOpacity>
@@ -135,14 +163,14 @@ class Home extends PureComponent<Props, State> {
       <Modal
         animationType="none"
         visible={this.state.showSelectDog}
-        onRequestClose={this.toggleModal}
         transparent
-        hardwareAccelerated>
+        hardwareAccelerated
+        onRequestClose={this.toggleModal}>
         <TouchableOpacity
           style={views.modalBackground}
-          activeOpacity={1}
-          onPress={this.toggleModal}>
-          <SafeAreaView style={views.modal}>
+          onPress={this.toggleModal}
+          activeOpacity={1}>
+          <View style={views.modal}>
             <FlatList
               data={dogsList}
               contentContainerStyle={views.dogListWrapper}
@@ -162,7 +190,8 @@ class Home extends PureComponent<Props, State> {
               />
               <Text style={texts.addDog}>반려견 추가</Text>
             </TouchableOpacity>
-          </SafeAreaView>
+            <SafeAreaView />
+          </View>
         </TouchableOpacity>
       </Modal>
     );
@@ -171,6 +200,7 @@ class Home extends PureComponent<Props, State> {
   render() {
     const { user, navigation } = this.props;
     const { currentTab } = this.state;
+    const name = user.repDog ? user.repDog.name : '댕댕이 선택';
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -184,97 +214,131 @@ class Home extends PureComponent<Props, State> {
             ),
             handlePress: () => navigation.navigate('setting'),
           }}
-        />
-        <View style={views.header}>
-          <DefaultImage size={75} uri={user.repDog && user.repDog.thumbnail} />
-          <View style={views.infoWrapper}>
-            {currentTab ? (
-              <>
+          center={
+            this.state.showCenter ? (
+              <View style={views.topWrapper}>
                 <TouchableOpacity
-                  style={views.selectDog}
+                  style={views.centerButton}
                   activeOpacity={0.7}
                   onPress={this.toggleModal}>
-                  <Text style={texts.name} numberOfLines={1}>
-                    {user.repDog ? user.repDog.name : '댕댕이 선택'}
-                  </Text>
+                  <Text style={texts.center}>{name}</Text>
                   <Image
                     source={require('src/assets/icons/ic_dropdown_black.png')}
                     style={icons.dropDown}
                   />
                 </TouchableOpacity>
-                <Text style={texts.likeInfo}>
-                  킁킁{' '}
-                  <Text style={{ fontWeight: '500' }}>
-                    {user.repDog ? user.repDog.likes.length : 0}
+              </View>
+            ) : null
+          }
+          showBorder={this.state.showCenter}
+        />
+        <ScrollView
+          style={{ flex: 1 }}
+          onScroll={this.handleScroll}
+          scrollEventThrottle={160}>
+          <View style={views.header}>
+            <DefaultImage
+              size={75}
+              uri={user.repDog && user.repDog.thumbnail}
+            />
+            <View style={views.infoWrapper}>
+              {currentTab ? (
+                <>
+                  <TouchableOpacity
+                    style={views.selectDog}
+                    activeOpacity={0.7}
+                    onPress={this.toggleModal}>
+                    <Text style={texts.name} numberOfLines={1}>
+                      {name}
+                    </Text>
+                    <Image
+                      source={require('src/assets/icons/ic_dropdown_black.png')}
+                      style={icons.dropDown}
+                    />
+                  </TouchableOpacity>
+                  <Text style={texts.likeInfo}>
+                    킁킁{' '}
+                    <Text style={{ fontWeight: '500' }}>
+                      {user.repDog ? user.repDog.likes.length : 0}
+                    </Text>
                   </Text>
-                </Text>
-              </>
-            ) : (
-              <TouchableOpacity onPress={() => navigation.navigate('session')}>
-                <Text style={[texts.signIn, texts.underline]}>로그인 하기</Text>
+                </>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('session')}>
+                  <Text style={[texts.signIn, texts.underline]}>
+                    로그인 하기
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            {this.signedIn && user.repDog && (
+              <TouchableOpacity
+                style={views.updateProfile}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('edit')}>
+                <Text style={texts.updateProfile}>프로필 수정</Text>
               </TouchableOpacity>
             )}
           </View>
-          {this.signedIn && (
-            <TouchableOpacity
-              style={views.updateProfile}
-              activeOpacity={0.7}
-              onPress={() => navigation.navigate('edit')}>
-              <Text style={texts.updateProfile}>프로필 수정</Text>
-            </TouchableOpacity>
+          <TabBar
+            onSwitch={this.handleSwitchTab}
+            currentTab={this.state.currentTab}
+          />
+          {currentTab === 'feeds' && (
+            <FlatList
+              data={this.state.feeds}
+              keyExtractor={(i, index) => index.toString()}
+              contentContainerStyle={views.listSpace}
+              renderItem={({ item, index }) => (
+                <FeedComponent
+                  feed={item}
+                  prevFeed={index > 0 ? this.state.feeds[index - 1] : null}
+                  deleteFromList={this.handleRemoveFeed}
+                />
+              )}
+            />
           )}
-        </View>
-        <TabBar
-          onSwitch={this.handleSwitchTab}
-          currentTab={this.state.currentTab}
-        />
-        {currentTab === 'feeds' && (
-          <FlatList
-            data={this.state.feeds}
-            keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={views.listSpace}
-            renderItem={({ item }) => <FeedComponent feed={item} />}
-          />
-        )}
-        {currentTab === 'scrap' && (
-          <FlatList
-            data={this.state.scraps}
-            keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={[views.listContainer, views.listSpace]}
-            renderItem={({ item, index }) => (
-              <ListItem
-                onPress={() => navigation.navigate('place', { place: item })}
-                thumbnail={item.thumbnail}
-                index={index}
-                name={item.name}
-                message={item.description}
-              />
-            )}
-          />
-        )}
-        {currentTab === 'badge' && <Badges user={user} />}
-        {currentTab === 'likes' && (
-          <FlatList
-            data={this.state.likes}
-            keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={[views.listContainer, views.listSpace]}
-            renderItem={({ item, index }) => (
-              <ListItem
-                thumbnail={item.thumbnail}
-                index={index}
-                name={`${item.name}님이 킁킁을 보냈습니다.`}
-                message={moment(item.createdAt).fromNow()}
-              />
-            )}
-          />
-        )}
-        {!this.signedIn && (
-          <View style={views.signInMessage}>
-            <Text style={[texts.signIn, { textAlign: 'center' }]}>
-              로그인을 통해 댕댕이와의 추억을{'\n'}쌓아보세요! 😆
-            </Text>
-          </View>
-        )}
+          {currentTab === 'scrap' && (
+            <FlatList
+              data={this.state.scraps}
+              keyExtractor={(i, index) => index.toString()}
+              contentContainerStyle={[views.listContainer, views.listSpace]}
+              renderItem={({ item, index }) => (
+                <Place
+                  onPress={() => navigation.navigate('place', { place: item })}
+                  name={item.name}
+                  label={item.label}
+                  icon={item.icon}
+                  description={item.description}
+                />
+              )}
+            />
+          )}
+          {currentTab === 'badge' && <Badges user={user} />}
+          {currentTab === 'likes' && (
+            <FlatList
+              data={this.state.likes}
+              keyExtractor={(i, index) => index.toString()}
+              contentContainerStyle={[views.listContainer, views.listSpace]}
+              renderItem={({ item, index }) => (
+                <Like
+                  thumbnail={item.thumbnail}
+                  index={index}
+                  name={`${item.name}님이 킁킁을 보냈습니다.`}
+                  message={moment(item.createdAt).fromNow()}
+                />
+              )}
+            />
+          )}
+          {!this.signedIn && (
+            <View style={views.signInMessage}>
+              <Text style={[texts.signIn, { textAlign: 'center' }]}>
+                로그인을 통해 댕댕이와의 추억을{'\n'}쌓아보세요! 😆
+              </Text>
+            </View>
+          )}
+        </ScrollView>
         {this.renderModal()}
       </SafeAreaView>
     );

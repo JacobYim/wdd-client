@@ -1,24 +1,36 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { Label as LabelType } from 'src/store/actions/place';
 import { color } from 'src/theme';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 interface Props {
-  onChange: (label?: '카페' | '용품' | '병원' | '기타') => void;
+  onChange: (label?: LabelType) => void;
 }
 
 interface State {
-  label?: '카페' | '용품' | '병원' | '기타';
+  isScroll: boolean;
+  label?: LabelType;
 }
 
 const height = 30;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 10,
   },
   listWrapper: {
     paddingRight: 12,
+  },
+  borderLeft: {
+    borderLeftWidth: 1,
+    borderColor: color.grayDA,
   },
   itemWrapper: {
     height,
@@ -37,20 +49,34 @@ const styles = StyleSheet.create({
 });
 
 class Label extends PureComponent<Props, State> {
-  state: State = { label: undefined };
+  state: State = { isScroll: false, label: undefined };
 
-  handleChange = (label?: '카페' | '용품' | '병원' | '기타') => {
+  handleChange = (label?: LabelType) => {
     this.props.onChange(label);
     this.setState({ label });
+  };
+
+  handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset } = e.nativeEvent;
+    const { isScroll } = this.state;
+    if (contentOffset.x > 0) {
+      if (!isScroll) this.setState({ isScroll: true });
+    } else {
+      if (isScroll) this.setState({ isScroll: false });
+    }
   };
 
   render() {
     const label = this.state.label || '전체';
     return (
       <FlatList
-        data={['전체', '카페', '용품', '병원', '기타']}
+        data={['전체', '카페', '식당', '병원', '용품', '술집', '기타']}
         keyExtractor={item => item}
-        style={styles.container}
+        style={[
+          styles.container,
+          this.state.isScroll ? styles.borderLeft : null,
+        ]}
+        onScroll={this.handleScroll}
         contentContainerStyle={styles.listWrapper}
         renderItem={({ item, index }) => (
           <TouchableOpacity

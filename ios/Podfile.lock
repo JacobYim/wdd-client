@@ -96,6 +96,8 @@ PODS:
   - RNAWSCognito (3.0.10):
     - JKBigInteger2 (= 0.0.5)
     - React
+  - RNFS (2.13.3):
+    - React
   - RNViewShot (2.5.0):
     - React
   - yoga (0.59.2.React)
@@ -124,6 +126,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNViewShot (from `../node_modules/react-native-view-shot`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -153,6 +156,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-webview"
   RNAWSCognito:
     :path: "../node_modules/amazon-cognito-identity-js"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNViewShot:
     :path: "../node_modules/react-native-view-shot"
   yoga:
@@ -172,9 +177,10 @@ SPEC CHECKSUMS:
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-webview: a42108b827082f8f0333529b0772102031d5960d
   RNAWSCognito: 5f4859d05c2a20dafc8a1bbb15ffc6cc92fa4d0d
+  RNFS: bbb1a64eb245763daf34aea86f97c97c4e85f74c
   RNViewShot: fdf9a64f0621ebc4e7c3392a10d2ffb70a7faee4
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 870663ae0c59cd19753b18bb05b26370c2066f89
+PODFILE CHECKSUM: 09caa090451a8e3ce175bc1a0680bd52217b1da5
 
 COCOAPODS: 1.5.3

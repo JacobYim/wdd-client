@@ -5,6 +5,8 @@ export interface GeoJSON {
   coordinates: [number, number];
 }
 
+export type Label = '카페' | '식당' | '병원' | '용품' | '술집' | '기타';
+
 // *** INTERFACES
 export interface Place
   extends Pick<PlaceResponse, Exclude<keyof PlaceResponse, 'location'>> {
@@ -15,10 +17,10 @@ export interface PlaceResponse {
   name: string;
   location: GeoJSON;
   address: string;
-  label: '카페' | '용품' | '병원' | '기타';
+  label: Label;
   rating: number;
-  contact: string;
-  thumbnail: string;
+  thumbnail?: string;
+  contact?: string;
   icon?: string;
   description?: string;
   images?: string[];

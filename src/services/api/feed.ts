@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { Alert } from 'react-native';
 import { Dog } from 'src/store/actions/dog';
 
 export interface Feed {
@@ -17,10 +18,13 @@ export interface Feed {
   createdAt: Date;
 }
 
-export type Body = Pick<
-  Feed,
-  Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt' | 'likes'>
->;
+export interface Body
+  extends Pick<
+    Feed,
+    Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt' | 'likes'>
+  > {
+  steps: number;
+}
 
 export interface Params {
   dogs?: string[];
@@ -37,6 +41,14 @@ export const getFeeds = async (p: Params) => {
   if (p.dogs) params.dogs = JSON.stringify(p.dogs);
   if (p.feeds) params.feeds = JSON.stringify(p.feeds);
   const response: AxiosResponse<Feed[]> = await axios.get('/feeds', { params });
+  return response.data;
+};
+
+export const deleteFeed = async (body: { _id: string }) => {
+  const response: AxiosResponse<{ message: string }> = await axios.delete(
+    `/feeds/${body._id}`
+  );
+  Alert.alert('피드가 삭제되었습니다.');
   return response.data;
 };
 

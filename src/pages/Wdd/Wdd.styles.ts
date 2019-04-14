@@ -78,6 +78,14 @@ export const views = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  infoWrapper: {
+    marginTop: 10,
+    width: '100%',
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    backgroundColor: color.grayEF,
+    borderRadius: 5,
+  },
 });
 
 export const icons = StyleSheet.create({

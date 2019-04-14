@@ -32,14 +32,17 @@ const ImageWithSticker: React.FC<Props> = ({ image, walk, size, style }) => (
       <>
         {image.stickers.top && (
           <View style={views.topWrapper}>
-            <Image
-              source={
-                image.stickers.top === 'LOGO'
-                  ? require('src/assets/icons/logo_text.png')
-                  : require('src/assets/icons/logo_text.png')
-              }
-              style={icons.logo}
-            />
+            {image.stickers.top === 'LOGO' ? (
+              <Image
+                source={require('src/assets/icons/logo_text_white.png')}
+                style={icons.logo}
+              />
+            ) : (
+              <Image
+                source={require('src/assets/icons/ic_go_white.png')}
+                style={icons.go}
+              />
+            )}
           </View>
         )}
         <View style={views.bottomWrapper}>
@@ -59,13 +62,13 @@ const ImageWithSticker: React.FC<Props> = ({ image, walk, size, style }) => (
           )}
           {image.stickers.poos && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_poo.png')} />
+              <Image source={require('src/assets/icons/ic_poo_white.png')} />
               <Text style={texts.info}>{walk.poos}회</Text>
             </View>
           )}
           {image.stickers.pees && (
             <View style={views.item}>
-              <Image source={require('src/assets/icons/ic_pee.png')} />
+              <Image source={require('src/assets/icons/ic_pee_white.png')} />
               <Text style={texts.info}>{walk.pees}회</Text>
             </View>
           )}

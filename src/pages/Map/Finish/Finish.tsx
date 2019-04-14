@@ -25,6 +25,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ImageEditor,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -43,6 +44,7 @@ interface State {
 const CENTER = { x: 0.5, y: 0.5 };
 
 class Finish extends PureComponent<Props, State> {
+  private mapWrapper = createRef<View>();
   private map = createRef<MapView>();
 
   state: State = {
@@ -78,20 +80,38 @@ class Finish extends PureComponent<Props, State> {
     navigation.popToTop();
   };
 
-  handleUpload = async () => {
+  handleUpload = () => {
     const { navigation } = this.props;
     const map = this.map.current;
-    if (!map) return;
-    const snapshot = await map.takeSnapshot({
-      width: 800,
-      height: 800,
-      format: 'png',
-      quality: 0.8,
-      result: 'file',
-    });
-    navigation.navigate('upload', {
-      snapshot,
-      handleDismiss: this.handleDismiss,
+    const mapWrapper = this.mapWrapper.current;
+    if (!map || !mapWrapper) return;
+    mapWrapper.measure(async (x, y, width, height) => {
+      const snapshot = await map.takeSnapshot({
+        width,
+        height,
+        format: 'png',
+      });
+      Image.getSize(
+        snapshot,
+        (imgWidth, imgHeight) => {
+          const options = {
+            offset: { x: 0, y: (imgHeight - imgWidth) / 2 },
+            size: { width: imgWidth, height: imgWidth },
+          };
+          ImageEditor.cropImage(
+            snapshot,
+            options,
+            uri => {
+              navigation.navigate('upload', {
+                snapshot: uri,
+                handleDismiss: this.handleDismiss,
+              });
+            },
+            err => {}
+          );
+        },
+        err => {}
+      );
     });
   };
 
@@ -118,7 +138,7 @@ class Finish extends PureComponent<Props, State> {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+        <View ref={this.mapWrapper} style={{ flex: 1 }}>
           <MapView
             ref={this.map}
             onLayout={this.googleMapDidMount}

@@ -17,5 +17,4 @@ export default {
   grayF9: '#F9F9F9',
   // signature
   blue: '#127EFF',
-  bluePastel: '#5887F9',
 };

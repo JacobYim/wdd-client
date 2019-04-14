@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { pick } from 'lodash';
 import React, { PureComponent } from 'react';
-import { TextInput } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -33,6 +33,10 @@ class Upload extends PureComponent<Props, State> {
 
   handleSave = async () => {
     const { navigation, walk, toggleLoading, getUser } = this.props;
+    if (this.state.images.length === 0) {
+      Alert.alert('사진을 1장 이상 업로드 해주세요.');
+      return;
+    }
     const uris = this.state.images.map(image => image.nextUri || image.uri);
     const images = await uploadImages({
       uris,
@@ -57,7 +61,7 @@ class Upload extends PureComponent<Props, State> {
   handleAddImage = (image: ImageInterface) => {
     this.setState(state =>
       produce(state, draft => {
-        draft.images.push(image);
+        draft.images = [image, ...state.images];
       })
     );
   };
@@ -111,6 +115,7 @@ class Upload extends PureComponent<Props, State> {
         <TextInput
           style={texts.input}
           onChangeText={this.handleChangeMemo}
+          autoFocus={true}
           multiline={true}
           autoCapitalize="none"
           autoCorrect={false}

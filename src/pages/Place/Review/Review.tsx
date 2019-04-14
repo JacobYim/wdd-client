@@ -3,7 +3,7 @@ import { Alert, Text, TextInput, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
 import Rating from 'src/components/module/Rating';
-import { createReview } from 'src/services/api/review';
+import { createReview, updateReview } from 'src/services/api/review';
 import { color } from 'src/theme';
 import { texts, views } from './Review.styles';
 
@@ -12,21 +12,49 @@ interface State {
   description: string;
 }
 
+/**
+ * params
+ * {
+ *   place: string;
+ *   rating: number;
+ *   name: string;
+ *   id: string;
+ *   description?: string;
+ *   handleAddReview?: (review: Review) => void;
+ *   handleUpdateReview?: (review: Review) => void;
+ * }
+ */
 class Review extends PureComponent<NavigationScreenProps, State> {
   state: State = {
     rating: this.props.navigation.getParam('rating'),
-    description: '',
+    description: this.props.navigation.getParam('description') || '',
   };
 
   handleSubmit = async () => {
     const { navigation } = this.props;
-    const place = navigation.getParam('place')._id;
-    const review = await createReview({ place, ...this.state });
-    if (review) {
-      navigation.getParam('handleAddReview')(review);
-      Alert.alert('리뷰가 작성되었습니다.');
+    const place = navigation.getParam('place');
+    const _id = navigation.getParam('_id');
+    try {
+      if (_id) {
+        const review = await updateReview({ _id, place, ...this.state });
+        if (review) {
+          navigation.getParam('handleUpdateReview')(review);
+          Alert.alert('리뷰가 수정되었습니다.');
+          navigation.goBack(null);
+        }
+      } else {
+        const review = await createReview({ place, ...this.state });
+        if (review) {
+          navigation.getParam('handleAddReview')(review);
+          Alert.alert('리뷰가 작성되었습니다.');
+          navigation.goBack(null);
+        }
+      }
+    } catch (e) {
+      if (e.response.data.statusCode === 409) {
+        Alert.alert(e.response.data.message);
+      }
     }
-    navigation.goBack(null);
   };
 
   handleChange = (description: string) => {
@@ -43,7 +71,7 @@ class Review extends PureComponent<NavigationScreenProps, State> {
     return (
       <PageContainer
         left={{ navigation }}
-        center={navigation.getParam('place').name}
+        center={navigation.getParam('title')}
         right={{ handlePress: this.handleSubmit, view: '저장' }}
         showBorder>
         <View style={views.header}>
@@ -59,6 +87,7 @@ class Review extends PureComponent<NavigationScreenProps, State> {
             multiline={true}
             onChangeText={this.handleChange}
             onSubmitEditing={this.handleSubmit}
+            autoFocus={true}
             returnKeyType="done"
             autoCapitalize="none"
             autoCorrect={false}

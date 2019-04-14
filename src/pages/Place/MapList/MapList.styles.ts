@@ -16,9 +16,8 @@ export const views = StyleSheet.create({
     backgroundColor: color.grayF9,
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: color.grayB1,
+    borderBottomWidth: 0.5,
+    borderColor: '#DADCDF',
   },
   map: {
     ...StyleSheet.absoluteFillObject,

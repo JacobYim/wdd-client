@@ -27,11 +27,6 @@ export const icons = StyleSheet.create({
     width: 16,
     height: 18,
   },
-  button: {
-    height: 28,
-    width: 42,
-    resizeMode: 'contain',
-  },
 });
 
 export const texts = StyleSheet.create({

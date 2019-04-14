@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Image, SafeAreaView, ScrollView, View } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
 import WebModal from 'src/components/module/WebModal';
@@ -24,7 +24,7 @@ interface State {
 
 class Setting extends PureComponent<Props, State> {
   state: State = {
-    pushNotif: true,
+    pushNotif: false,
     showMyFeed: true,
   };
 
@@ -51,8 +51,8 @@ class Setting extends PureComponent<Props, State> {
           showBorder
         />
         <ScrollView style={views.container}>
-          <View style={[views.boxWrapper, { marginTop: 0, borderTopWidth: 0 }]}>
-            {[
+          <FlatList
+            data={[
               {
                 label: '푸시 알림',
                 value: pushNotif,
@@ -67,12 +67,18 @@ class Setting extends PureComponent<Props, State> {
                   this.setState({ showMyFeed });
                 },
               },
-            ].map((item, index) => (
-              <RowItem item={item} index={index} key={item.label} />
-            ))}
-          </View>
-          <View style={views.boxWrapper}>
-            {[
+            ]}
+            contentContainerStyle={[
+              views.boxWrapper,
+              { marginTop: 0, borderTopWidth: 0 },
+            ]}
+            keyExtractor={(i, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <RowItem item={item} index={index} />
+            )}
+          />
+          <FlatList
+            data={[
               { label: '공지사항', handlePress: () => {} },
               {
                 label: '서비스 약관',
@@ -87,13 +93,25 @@ class Setting extends PureComponent<Props, State> {
               },
               { label: '개인정보 이용 약관', handlePress: () => {} },
               { label: '고객센터', handlePress: () => {} },
+              { label: '장소등록 및 수정 요청', handlePress: () => {} },
+            ]}
+            contentContainerStyle={views.boxWrapper}
+            keyExtractor={(i, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <RowItem item={item} index={index} />
+            )}
+          />
+          <FlatList
+            data={[
               { label: '로그아웃', handlePress: () => signOut(navigation) },
               { label: '탈퇴하기', handlePress: () => terminate(navigation) },
-              { label: '장소등록 및 수정 요청', handlePress: () => {} },
-            ].map((item, index) => (
-              <RowItem item={item} index={index} key={item.label} />
-            ))}
-          </View>
+            ]}
+            contentContainerStyle={views.boxWrapper}
+            keyExtractor={(i, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <RowItem item={item} index={index} />
+            )}
+          />
         </ScrollView>
         <WebModal hideModal={this.hideModal} data={this.state.web} />
       </SafeAreaView>
