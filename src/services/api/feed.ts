@@ -18,10 +18,13 @@ export interface Feed {
   createdAt: Date;
 }
 
-export type Body = Pick<
-  Feed,
-  Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt' | 'likes'>
->;
+export interface Body
+  extends Pick<
+    Feed,
+    Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt' | 'likes'>
+  > {
+  steps: number;
+}
 
 export interface Params {
   dogs?: string[];

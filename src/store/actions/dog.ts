@@ -25,6 +25,12 @@ export interface Dog extends DogBase {
   user: string;
   feeds: string[];
   likes: Like[];
+  histories: {
+    yearMonth: string;
+    count: number;
+    seconds: number;
+    steps: number;
+  }[];
 }
 
 // *** CONSTS
