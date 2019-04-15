@@ -1,6 +1,7 @@
 import { isEqual } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
@@ -28,6 +29,7 @@ import {
   NativeScrollEvent,
   ScrollView,
   FlatList,
+  Platform,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -189,7 +191,13 @@ class Home extends PureComponent<Props, State> {
               />
               <Text style={texts.addDog}>반려견 추가</Text>
             </TouchableOpacity>
-            <SafeAreaView />
+            {Platform.OS === 'ios' ? (
+              <SafeAreaView />
+            ) : (
+              <View
+                style={{ height: ExtraDimensions.getSoftMenuBarHeight() }}
+              />
+            )}
           </View>
         </TouchableOpacity>
       </Modal>
