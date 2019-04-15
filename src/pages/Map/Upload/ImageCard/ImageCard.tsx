@@ -80,13 +80,14 @@ const ImageCard: React.FC<Props> = ({
   const handleEdit = (nextImage: ImageInterface) => {
     handleUpdate(nextImage, index);
   };
+  console.log(image.uri);
   return (
     <ImageWrapper
       onPress={() =>
         navigate('edit', {
           image,
           handleEdit,
-          blackMode: /^rct-image-store/g.test(image.uri),
+          blackMode: /^rct-image-store|woodongdang/g.test(image.uri),
         })
       }
       onPressDelete={() => handleDelete(index)}>

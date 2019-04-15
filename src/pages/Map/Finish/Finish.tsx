@@ -78,8 +78,8 @@ class Finish extends PureComponent<Props, State> {
 
   handleDismiss = () => {
     const { navigation, updateStatus } = this.props;
-    updateStatus('READY');
     navigation.popToTop();
+    updateStatus('READY');
   };
 
   handleUpload = () => {

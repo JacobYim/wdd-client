@@ -111,6 +111,12 @@ class Home extends PureComponent<Props, State> {
     }
   };
 
+  navToSignIn = () => {
+    const { navigate } = this.props.navigation;
+    navigate('session');
+    navigate('signIn');
+  };
+
   handleSelectDog = async (_id: string) => {
     const { selectDog } = this.props;
     await selectDog({ _id });
@@ -271,8 +277,7 @@ class Home extends PureComponent<Props, State> {
                   </Text>
                 </>
               ) : (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('session')}>
+                <TouchableOpacity onPress={this.navToSignIn}>
                   <Text style={[texts.signIn, texts.underline]}>
                     로그인 하기
                   </Text>
