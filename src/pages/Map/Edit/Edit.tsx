@@ -82,7 +82,7 @@ class Edit extends PureComponent<Props, State> {
   };
 
   render() {
-    const { walk } = this.props;
+    const { walk, navigation } = this.props;
     return (
       <SafeAreaView>
         <TopNavbar
@@ -103,7 +103,12 @@ class Edit extends PureComponent<Props, State> {
           showBorder
         />
         <ViewShot ref={this.snapshot} options={{ format: 'png', quality: 0.9 }}>
-          <ImageWithSticker image={this.state.image} walk={walk} size={width} />
+          <ImageWithSticker
+            image={this.state.image}
+            walk={walk}
+            size={width}
+            blackMode={navigation.getParam('blackMode')}
+          />
         </ViewShot>
         <FlatList
           data={[

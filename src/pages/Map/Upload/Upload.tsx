@@ -109,7 +109,7 @@ class Upload extends PureComponent<Props, State> {
               ))}
             </ScrollView>
           ),
-          styles: { paddingHorizontal: 0, flexDirection: 'row' },
+          styles: views.bottom,
         }}
         showBorder>
         <TextInput
