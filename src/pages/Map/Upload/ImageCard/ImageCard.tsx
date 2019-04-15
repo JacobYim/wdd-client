@@ -80,7 +80,6 @@ const ImageCard: React.FC<Props> = ({
   const handleEdit = (nextImage: ImageInterface) => {
     handleUpdate(nextImage, index);
   };
-  console.log(image.uri);
   return (
     <ImageWrapper
       onPress={() =>

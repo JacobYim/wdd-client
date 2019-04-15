@@ -105,10 +105,7 @@ class Finish extends PureComponent<Props, State> {
             snapshot,
             options,
             uri => {
-              navigation.navigate('upload', {
-                snapshot: uri,
-                handleDismiss: this.handleDismiss,
-              });
+              navigation.navigate('upload', { snapshot: uri });
             },
             err => {}
           );

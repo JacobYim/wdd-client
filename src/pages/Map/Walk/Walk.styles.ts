@@ -51,7 +51,7 @@ export const views = StyleSheet.create({
   },
   gpsInfoWrapper: {
     width: '100%',
-    marginTop: height * 0.045,
+    marginTop: 50,
     paddingHorizontal: '11.5%',
     flexDirection: 'row',
     justifyContent: 'space-between',

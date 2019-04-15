@@ -3,7 +3,6 @@ import { pick } from 'lodash';
 import React, { PureComponent } from 'react';
 import { Alert, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
@@ -11,12 +10,19 @@ import { ImageInterface } from 'src/components/module/ImageWithSticker/ImageWith
 import { createFeed } from 'src/services/api/feed';
 import { uploadImages } from 'src/services/aws/s3';
 import * as userActions from 'src/store/actions/user';
+import * as walkActions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
 import ImageCard, { AddImageCard } from './ImageCard';
 import { texts, views } from './Upload.styles';
+import {
+  NavigationScreenProps,
+  NavigationActions,
+  StackActions,
+} from 'react-navigation';
 
 interface Props extends LoadingProps, NavigationScreenProps {
   walk: ReducerState['walk'];
+  updateStatus: typeof walkActions.updateStatus;
   getUser: typeof userActions.getUser;
 }
 
@@ -32,7 +38,13 @@ class Upload extends PureComponent<Props, State> {
   };
 
   handleSave = async () => {
-    const { navigation, walk, toggleLoading, getUser } = this.props;
+    const {
+      navigation,
+      walk,
+      toggleLoading,
+      getUser,
+      updateStatus,
+    } = this.props;
     if (this.state.images.length === 0) {
       Alert.alert('사진을 1장 이상 업로드 해주세요.');
       return;
@@ -50,8 +62,12 @@ class Upload extends PureComponent<Props, State> {
       ...pick(walk, ['seconds', 'distance', 'steps', 'pees', 'poos']),
     });
     await getUser();
-    navigation.popToTop();
-    navigation.getParam('handleDismiss')();
+    updateStatus('READY');
+    const action = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'map' })],
+    });
+    navigation.dispatch(action);
   };
 
   handleChangeMemo = (memo: string) => {
@@ -132,6 +148,7 @@ export default connect(
     walk: state.walk,
   }),
   {
+    updateStatus: walkActions.updateStatus,
     getUser: userActions.getUser,
   }
 )(withLoading(Upload));
