@@ -30,6 +30,7 @@ import {
 
 interface Props extends NavigationScreenProps {
   walk: ReducerState['walk'];
+  user: ReducerState['user'];
   updateStatus: typeof actions.updateStatus;
   updateCount: typeof actions.updateCount;
 }
@@ -133,7 +134,7 @@ class Finish extends PureComponent<Props, State> {
   };
 
   render() {
-    const { walk } = this.props;
+    const { walk, user } = this.props;
     const { pees, poos, start, end } = this.state;
 
     return (
@@ -213,12 +214,14 @@ class Finish extends PureComponent<Props, State> {
               {moment(walk.createdAt).format('YYYY년 MM월 DD일 dddd')}
             </Text>
           </View>
-          <TouchableOpacity
-            style={views.upload}
-            onPress={this.handleUpload}
-            activeOpacity={0.7}>
-            <Text style={texts.upload}>내 피드 올리기</Text>
-          </TouchableOpacity>
+          {user.email && (
+            <TouchableOpacity
+              style={views.upload}
+              onPress={this.handleUpload}
+              activeOpacity={0.7}>
+              <Text style={texts.upload}>내 피드 올리기</Text>
+            </TouchableOpacity>
+          )}
         </SafeAreaView>
       </View>
     );
@@ -226,6 +229,6 @@ class Finish extends PureComponent<Props, State> {
 }
 
 export default connect(
-  ({ walk }: ReducerState) => ({ walk }),
+  (state: ReducerState) => ({ walk: state.walk, user: state.user }),
   { updateStatus: actions.updateStatus, updateCount: actions.updateCount }
 )(Finish);
