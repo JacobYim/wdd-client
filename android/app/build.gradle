@@ -152,7 +152,6 @@ android {
 }
 dependencies {
     implementation project(':react-native-extra-dimensions-android')
-    implementation project(':react-native-fs')
     implementation project(':react-native-webview')
     implementation project(':amazon-cognito-identity-js')
     implementation project(':@JWWon_react-native-universal-pedometer')

@@ -5,7 +5,6 @@ import android.app.Application;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
-import com.rnfs.RNFSPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.amazonaws.RNAWSCognitoPackage;
 import com.emesonsantana.BMDPedometer.BMDPedometer;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new ExtraDimensionsPackage(),
-            new RNFSPackage(),
             new RNCWebViewPackage(),
             new RNAWSCognitoPackage(),
             new BMDPedometer(),
