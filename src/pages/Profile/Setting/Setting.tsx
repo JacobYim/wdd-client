@@ -1,14 +1,16 @@
 import React, { PureComponent } from 'react';
-import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { Image, SafeAreaView, ScrollView } from 'react-native';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import TopNavbar from 'src/components/module/TopNavbar';
 import WebModal from 'src/components/module/WebModal';
 import * as userActions from 'src/store/actions/user';
+import { ReducerState } from 'src/store/reducers';
 import RowItem from './RowItem';
 import { icons, views } from './Setting.styles';
 
 interface Props extends NavigationScreenProps {
+  user: ReducerState['user'];
   signOut: typeof userActions.signOut;
   terminate: typeof userActions.terminate;
 }
@@ -33,8 +35,9 @@ class Setting extends PureComponent<Props, State> {
   };
 
   render() {
-    const { navigation, signOut, terminate } = this.props;
+    const { navigation, signOut, terminate, user } = this.props;
     const { pushNotif, showMyFeed } = this.state;
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <TopNavbar
@@ -101,11 +104,27 @@ class Setting extends PureComponent<Props, State> {
               <RowItem item={item} index={index} />
             )}
           />
+
           <FlatList
-            data={[
-              { label: '로그아웃', handlePress: () => signOut(navigation) },
-              { label: '탈퇴하기', handlePress: () => terminate(navigation) },
-            ]}
+            data={
+              user.email
+                ? [
+                    {
+                      label: '로그아웃',
+                      handlePress: () => signOut(navigation),
+                    },
+                    {
+                      label: '탈퇴하기',
+                      handlePress: () => terminate(navigation),
+                    },
+                  ]
+                : [
+                    {
+                      label: '로그인',
+                      handlePress: () => navigation.navigate('session'),
+                    },
+                  ]
+            }
             contentContainerStyle={views.boxWrapper}
             keyExtractor={(i, index) => index.toString()}
             renderItem={({ item, index }) => (
@@ -120,6 +139,6 @@ class Setting extends PureComponent<Props, State> {
 }
 
 export default connect(
-  null,
+  (state: ReducerState) => ({ user: state.user }),
   { signOut: userActions.signOut, terminate: userActions.terminate }
 )(Setting);

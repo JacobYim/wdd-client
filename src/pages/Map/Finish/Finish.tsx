@@ -26,6 +26,7 @@ import {
   Text,
   View,
   ImageEditor,
+  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -86,6 +87,7 @@ class Finish extends PureComponent<Props, State> {
     const map = this.map.current;
     const mapWrapper = this.mapWrapper.current;
     if (!map || !mapWrapper) return;
+
     mapWrapper.measure(async (x, y, width, height) => {
       const snapshot = await map.takeSnapshot({
         width,
@@ -214,7 +216,7 @@ class Finish extends PureComponent<Props, State> {
               {moment(walk.createdAt).format('YYYY년 MM월 DD일 dddd')}
             </Text>
           </View>
-          {user.email && (
+          {user.email.length !== 0 && (
             <TouchableOpacity
               style={views.upload}
               onPress={this.handleUpload}
