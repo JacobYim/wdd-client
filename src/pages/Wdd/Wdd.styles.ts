@@ -35,6 +35,7 @@ export const views = StyleSheet.create({
     width: width * 0.7,
     backgroundColor: color.white,
     paddingHorizontal: 20,
+    paddingBottom: 20,
     borderRadius: 8,
     alignItems: 'center',
     ...shadow.center,
@@ -69,7 +70,6 @@ export const views = StyleSheet.create({
   },
   likeButton: {
     marginTop: 30,
-    marginBottom: 20,
     width: '100%',
     height: 46,
     backgroundColor: color.blue,

@@ -125,7 +125,7 @@ class Wdd extends PureComponent<Props, State> {
           onPress={this.dismissModal}>
           {dog && (
             <TouchableOpacity activeOpacity={1} onPress={() => {}}>
-              <SafeAreaView style={views.modal}>
+              <View style={views.modal}>
                 <TouchableOpacity
                   style={views.closeWrapper}
                   activeOpacity={0.7}
@@ -166,17 +166,16 @@ class Wdd extends PureComponent<Props, State> {
                     </View>
                   ))}
                 </View>
-                <TouchableOpacity
-                  style={[
-                    views.likeButton,
-                    !signedIn ? { opacity: 0.3 } : null,
-                  ]}
-                  activeOpacity={0.7}
-                  disabled={!signedIn}
-                  onPress={() => this.handlePressLike(dog._id)}>
-                  <Text style={texts.like}>킁킁 보내기</Text>
-                </TouchableOpacity>
-              </SafeAreaView>
+                {signedIn && (
+                  <TouchableOpacity
+                    style={views.likeButton}
+                    activeOpacity={0.7}
+                    disabled={!signedIn}
+                    onPress={() => this.handlePressLike(dog._id)}>
+                    <Text style={texts.like}>킁킁 보내기</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </TouchableOpacity>
           )}
         </TouchableOpacity>
