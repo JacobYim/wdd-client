@@ -36,6 +36,7 @@ interface Props {
 interface State {
   index: number;
   pushedLike: boolean;
+  showAnimation: boolean;
   likeCount: number;
   heartSize: Animated.Value;
 }
@@ -47,11 +48,11 @@ enum Actions {
 
 class Feed extends PureComponent<Props, State> {
   private actionSheet = React.createRef<ActionSheet>();
-  private pushLike = false;
 
   state: State = {
     index: 1,
     pushedLike: false,
+    showAnimation: false,
     likeCount: 0,
     heartSize: new Animated.Value(0),
   };
@@ -67,37 +68,39 @@ class Feed extends PureComponent<Props, State> {
 
   toggleLike = () => {
     const { _id } = this.props.feed;
-    this.setState(state =>
-      produce(state, draft => {
-        draft.pushedLike = !state.pushedLike;
-        draft.likeCount = draft.pushedLike
-          ? state.likeCount + 1
-          : state.likeCount - 1;
-        if (draft.pushedLike) {
-          pushLike({ _id });
-          this.pushLike = true;
-          Animated.timing(this.state.heartSize, {
-            toValue: 1,
-            duration: 60,
-            useNativeDriver: true,
-          }).start(bigger => {
-            if (bigger.finished) {
-              setTimeout(() => {
-                Animated.timing(this.state.heartSize, {
-                  toValue: 0,
-                  duration: 120,
-                  useNativeDriver: true,
-                }).start(smaller => {
-                  if (smaller.finished) this.pushLike = false;
-                });
-              }, 1600);
-            }
-          });
-        } else {
-          undoLike({ _id });
+    const pushedLike = !this.state.pushedLike;
+    this.setState({
+      pushedLike,
+      likeCount: pushedLike
+        ? this.state.likeCount + 1
+        : this.state.likeCount - 1,
+      showAnimation: pushedLike,
+    });
+
+    if (pushedLike) {
+      pushLike({ _id });
+      Animated.timing(this.state.heartSize, {
+        toValue: 1,
+        duration: 60,
+        useNativeDriver: true,
+      }).start(bigger => {
+        if (bigger.finished) {
+          setTimeout(() => {
+            Animated.timing(this.state.heartSize, {
+              toValue: 0,
+              duration: 120,
+              useNativeDriver: true,
+            }).start(smaller => {
+              if (smaller.finished) {
+                this.setState({ showAnimation: false });
+              }
+            });
+          }, 1600);
         }
-      })
-    );
+      });
+    } else {
+      undoLike({ _id });
+    }
   };
 
   handleIndexChanged = (info: {
@@ -192,13 +195,13 @@ class Feed extends PureComponent<Props, State> {
             pagingEnabled
             horizontal
           />
-          {this.pushLike && (
+          {this.state.showAnimation && (
             <View style={views.likeAnimation}>
               <Animated.Image
                 source={require('src/assets/icons/ic_heart_press.png')}
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 80,
+                  height: 72,
                   resizeMode: 'contain',
                   transform: [
                     {
