@@ -304,7 +304,7 @@ class Home extends PureComponent<Props, State> {
               data={this.state.scraps}
               keyExtractor={(i, index) => index.toString()}
               contentContainerStyle={[views.listContainer, views.listSpace]}
-              renderItem={({ item, index }) => (
+              renderItem={({ item }) => (
                 <Place
                   onPress={() => navigation.navigate('place', { place: item })}
                   name={item.name}

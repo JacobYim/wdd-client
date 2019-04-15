@@ -66,7 +66,7 @@ export const views = StyleSheet.create({
     flexDirection: 'row',
   },
   listContainer: {
-    paddingLeft: size.horizontal,
+    paddingHorizontal: size.horizontal,
     paddingTop: 11.5,
   },
   listSpace: {
