@@ -1,4 +1,3 @@
-import produce from 'immer';
 import { find } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
@@ -8,7 +7,6 @@ import { connect } from 'react-redux';
 import { rangeWithUnit, timeWithUnit } from 'src/assets/functions/print';
 import DefaultImage from 'src/components/module/DefaultImage';
 import DoubleTab from 'src/components/module/DoubleTab';
-import { History } from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Feed.styles';
 import {
@@ -223,7 +221,7 @@ class Feed extends PureComponent<Props, State> {
           {[
             {
               icon: require('src/assets/icons/ic_time.png'),
-              value: `${Math.floor(feed.seconds / 60)}분`,
+              value: timeWithUnit(feed.seconds),
             },
             {
               icon: require('src/assets/icons/ic_distance.png'),
