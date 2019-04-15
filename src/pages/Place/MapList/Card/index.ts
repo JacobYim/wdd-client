@@ -1,1 +1,1 @@
-export { default, cardWidth, cardHeight } from './Card';
+export { default, cardWidth } from './Card';

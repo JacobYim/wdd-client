@@ -222,7 +222,7 @@ class Feed extends PureComponent<Props, State> {
         <View style={views.infoWrapper}>
           {[
             {
-              icon: require('src/assets/icons/ic_time_black.png'),
+              icon: require('src/assets/icons/ic_time.png'),
               value: `${Math.floor(feed.seconds / 60)}분`,
             },
             {

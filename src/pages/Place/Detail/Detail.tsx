@@ -179,17 +179,17 @@ class Detail extends PureComponent<Props, State> {
               renderItem={({ item }) =>
                 item.value ? (
                   <View style={views.rowWrapper}>
-                    <Text style={texts.blackOpacity}>{item.label}</Text>
+                    <Text style={texts.label}>{item.label}</Text>
                     {isPhoneNumber(item.value) ? (
                       <Text
-                        style={texts.blue}
+                        style={texts.phone}
                         onPress={async () =>
                           await call({ number: item.value as string })
                         }>
                         {item.value}
                       </Text>
                     ) : (
-                      <Text numberOfLines={2} style={texts.black}>
+                      <Text numberOfLines={2} style={texts.content}>
                         {item.value}
                       </Text>
                     )}
@@ -202,10 +202,7 @@ class Detail extends PureComponent<Props, State> {
           {images && images.length > 0 && (
             <>
               <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
-                <Text
-                  style={[texts.black, { paddingHorizontal: size.horizontal }]}>
-                  사진
-                </Text>
+                <Text style={texts.title}>사진</Text>
                 <FlatList
                   contentContainerStyle={views.imageWrapper}
                   data={images}
@@ -221,7 +218,7 @@ class Detail extends PureComponent<Props, State> {
             </>
           )}
           <View style={[views.infoWrapper, { alignItems: 'center' }]}>
-            <Text style={texts.black}>이 장소에 대한 평점을 남겨주세요.</Text>
+            <Text style={texts.content}>이 장소에 대한 평점을 남겨주세요.</Text>
             <Rating
               onRatingChange={this.handleRatingChange}
               containerStyle={{ marginTop: 20 }}
