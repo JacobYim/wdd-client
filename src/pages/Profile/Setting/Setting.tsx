@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Image, SafeAreaView, ScrollView } from 'react-native';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
-import { email } from 'src/assets/functions/link';
+import { email, web } from 'src/assets/functions/link';
 import TopNavbar from 'src/components/module/TopNavbar';
 import WebModal from 'src/components/module/WebModal';
 import * as userActions from 'src/store/actions/user';
@@ -25,6 +25,7 @@ interface State {
   };
 }
 
+// tslint:disable:max-line-length
 class Setting extends PureComponent<Props, State> {
   state: State = {
     pushNotif: false,
@@ -107,9 +108,9 @@ class Setting extends PureComponent<Props, State> {
               {
                 label: '장소등록 및 수정 요청',
                 handlePress: async () =>
-                  await email({
-                    receiver: 'info@woodongdang.com',
-                    subject: `장소등록 및 수정 | ${user.email || '비로그인'}`,
+                  await web({
+                    link:
+                      'https://docs.google.com/forms/d/1GrcHIpFtpihf8eZMna0wWLMfX423aOGPEaKs9VbIbHI/edit',
                   }),
               },
             ]}

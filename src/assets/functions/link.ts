@@ -35,3 +35,7 @@ export const email = (args: { receiver: string; subject: string }) => {
   const url = `mailto:${args.receiver}?subject=${args.subject}`;
   return openLink(url);
 };
+
+export const web = (args: { link: string }) => {
+  return openLink(args.link);
+};
