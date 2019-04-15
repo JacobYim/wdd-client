@@ -36,6 +36,8 @@ const disassemble = (value: string) =>
 
 class TextAutocomplete extends Component<Props, State> {
   private searchResult: Data[] | undefined;
+  private input = React.createRef<TextInput>();
+
   state: State = { keyword: '', autocomplete: this.props.defaultList || [] };
 
   getAutocomplete = (keyword: string, list: Data[]) => {
@@ -98,8 +100,8 @@ class TextAutocomplete extends Component<Props, State> {
         />
         <View style={views.inputWrapper}>
           <TextInput
+            ref={this.input}
             style={texts.input}
-            value={this.state.keyword}
             placeholder={placeholder}
             placeholderTextColor={`${color.black}1A`}
             multiline={false}
@@ -111,7 +113,10 @@ class TextAutocomplete extends Component<Props, State> {
             onSubmitEditing={this.handleInputSubmit}
           />
           {this.state.keyword.length > 0 && (
-            <TouchableOpacity onPress={() => this.setState({ keyword: '' })}>
+            <TouchableOpacity
+              onPress={() => {
+                if (this.input.current) this.input.current.clear();
+              }}>
               <Image
                 source={require('src/assets/icons/ic_close_filled.png')}
                 style={icons.clear}
