@@ -85,6 +85,9 @@ export const views = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  emptyListTop: {
+    marginTop: height * 0.1,
+  },
 });
 
 export const icons = StyleSheet.create({

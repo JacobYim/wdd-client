@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react';
 import { NavigationScreenProps, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
+import EmptyList from 'src/components/module/EmptyList';
 import FeedComponent from 'src/components/module/Feed';
 import TopNavbar from 'src/components/module/TopNavbar';
 import { LinkedLike, searchDogs } from 'src/services/api/dog';
@@ -49,7 +50,7 @@ class Home extends PureComponent<Props, State> {
   state: State = {
     showSelectDog: false,
     showCenter: false,
-    currentTab: this.signedIn ? 'feeds' : '',
+    currentTab: 'feeds',
     feeds: [],
     scraps: [],
     likes: [],
@@ -115,10 +116,8 @@ class Home extends PureComponent<Props, State> {
   };
 
   handleSwitchTab = (currentTab: string) => {
-    if (this.signedIn) {
-      this.setState({ currentTab });
-      this.loadingDataByTab(currentTab);
-    }
+    this.setState({ currentTab });
+    if (this.signedIn) this.loadingDataByTab(currentTab);
   };
 
   handleRemoveFeed = async (id: string) => {
@@ -242,7 +241,7 @@ class Home extends PureComponent<Props, State> {
               uri={user.repDog && user.repDog.thumbnail}
             />
             <View style={views.infoWrapper}>
-              {currentTab ? (
+              {this.signedIn ? (
                 <>
                   <TouchableOpacity
                     style={views.selectDog}
@@ -285,59 +284,75 @@ class Home extends PureComponent<Props, State> {
             onSwitch={this.handleSwitchTab}
             currentTab={this.state.currentTab}
           />
-          {currentTab === 'feeds' && (
-            <FlatList
-              data={this.state.feeds}
-              keyExtractor={(i, index) => index.toString()}
-              contentContainerStyle={views.listSpace}
-              renderItem={({ item, index }) => (
-                <FeedComponent
-                  feed={item}
-                  prevFeed={index > 0 ? this.state.feeds[index - 1] : null}
-                  deleteFromList={this.handleRemoveFeed}
-                />
-              )}
-            />
-          )}
-          {currentTab === 'scrap' && (
-            <FlatList
-              data={this.state.scraps}
-              keyExtractor={(i, index) => index.toString()}
-              contentContainerStyle={[views.listContainer, views.listSpace]}
-              renderItem={({ item }) => (
-                <Place
-                  onPress={() => navigation.navigate('place', { place: item })}
-                  name={item.name}
-                  label={item.label}
-                  icon={item.icon}
-                  description={item.description}
-                />
-              )}
-            />
-          )}
+          {currentTab === 'feeds' &&
+            (this.state.feeds.length !== 0 ? (
+              <FlatList
+                data={this.state.feeds}
+                keyExtractor={(i, index) => index.toString()}
+                contentContainerStyle={views.listSpace}
+                renderItem={({ item, index }) => (
+                  <FeedComponent
+                    feed={item}
+                    prevFeed={index > 0 ? this.state.feeds[index - 1] : null}
+                    deleteFromList={this.handleRemoveFeed}
+                  />
+                )}
+              />
+            ) : (
+              <EmptyList
+                source={require('src/assets/images/img_no_feed.png')}
+                message={'산책을 하고 첫 게시물을\n등록해 보세요!'}
+                style={views.emptyListTop}
+              />
+            ))}
+          {currentTab === 'scrap' &&
+            (this.state.scraps.length !== 0 ? (
+              <FlatList
+                data={this.state.scraps}
+                keyExtractor={(i, index) => index.toString()}
+                contentContainerStyle={[views.listContainer, views.listSpace]}
+                renderItem={({ item }) => (
+                  <Place
+                    onPress={() =>
+                      navigation.navigate('place', { place: item })
+                    }
+                    name={item.name}
+                    label={item.label}
+                    icon={item.icon}
+                    description={item.description}
+                  />
+                )}
+              />
+            ) : (
+              <EmptyList
+                source={require('src/assets/images/img_no_scrap.png')}
+                message={'내가 좋아하는 상점을\n등록해 보세요!'}
+                style={views.emptyListTop}
+              />
+            ))}
           {currentTab === 'badge' && <Badges user={user} />}
-          {currentTab === 'likes' && (
-            <FlatList
-              data={this.state.likes}
-              keyExtractor={(i, index) => index.toString()}
-              contentContainerStyle={[views.listContainer, views.listSpace]}
-              renderItem={({ item, index }) => (
-                <Like
-                  thumbnail={item.thumbnail}
-                  index={index}
-                  name={`${item.name}님이 킁킁을 보냈습니다.`}
-                  message={moment(item.createdAt).fromNow()}
-                />
-              )}
-            />
-          )}
-          {!this.signedIn && (
-            <View style={views.signInMessage}>
-              <Text style={[texts.signIn, { textAlign: 'center' }]}>
-                로그인을 통해 댕댕이와의 추억을{'\n'}쌓아보세요! 😆
-              </Text>
-            </View>
-          )}
+          {currentTab === 'likes' &&
+            (this.state.likes.length !== 0 ? (
+              <FlatList
+                data={this.state.likes}
+                keyExtractor={(i, index) => index.toString()}
+                contentContainerStyle={[views.listContainer, views.listSpace]}
+                renderItem={({ item, index }) => (
+                  <Like
+                    thumbnail={item.thumbnail}
+                    index={index}
+                    name={`${item.name}님이 킁킁을 보냈습니다.`}
+                    message={moment(item.createdAt).fromNow()}
+                  />
+                )}
+              />
+            ) : (
+              <EmptyList
+                source={require('src/assets/images/img_no_like.png')}
+                message={'내 주변 댕댕이에게\n킁킁을 받아보세요!'}
+                style={views.emptyListTop}
+              />
+            ))}
         </ScrollView>
         {this.renderModal()}
       </SafeAreaView>

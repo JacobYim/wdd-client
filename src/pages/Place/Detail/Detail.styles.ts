@@ -39,7 +39,7 @@ export const views = StyleSheet.create({
     backgroundColor: color.grayEF,
   },
   rowWrapper: {
-    marginVertical: 4,
+    marginVertical: 2,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
@@ -90,5 +90,8 @@ export const texts = StyleSheet.create({
     fontSize: 16,
     color: color.black,
     paddingHorizontal: size.horizontal,
+  },
+  lineHeight: {
+    lineHeight: 24,
   },
 });

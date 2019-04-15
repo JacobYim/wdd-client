@@ -178,17 +178,21 @@ class Detail extends PureComponent<Props, State> {
               renderItem={({ item }) =>
                 item.value ? (
                   <View style={views.rowWrapper}>
-                    <Text style={texts.label}>{item.label}</Text>
+                    <Text style={[texts.label, texts.lineHeight]}>
+                      {item.label}
+                    </Text>
                     {isPhoneNumber(item.value) ? (
                       <Text
-                        style={texts.phone}
+                        style={[texts.phone, texts.lineHeight]}
                         onPress={async () =>
                           await call({ number: item.value as string })
                         }>
                         {item.value}
                       </Text>
                     ) : (
-                      <Text style={texts.content}>{item.value}</Text>
+                      <Text style={[texts.content, texts.lineHeight]}>
+                        {item.value}
+                      </Text>
                     )}
                   </View>
                 ) : null
