@@ -132,9 +132,11 @@ class Walk extends Component<Props, State> {
               <Image
                 style={icons.gif}
                 source={
-                  speed > 4
-                    ? require('src/assets/images/img_running.gif')
-                    : require('src/assets/images/img_walking.gif')
+                  status === 'WALKING'
+                    ? speed > 1.11
+                      ? require('src/assets/images/img_running.gif')
+                      : require('src/assets/images/img_walking.gif')
+                    : require('src/assets/images/img_standing.jpg')
                 }
               />
               <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>
