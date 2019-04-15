@@ -85,6 +85,9 @@ export const views = StyleSheet.create({
     backgroundColor: color.grayEF,
     borderRadius: 5,
   },
+  emptyListMargin: {
+    marginTop: height * 0.18,
+  },
 });
 
 export const icons = StyleSheet.create({

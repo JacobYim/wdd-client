@@ -44,7 +44,7 @@ export const icons = StyleSheet.create({
     height: 17,
   },
   pee: {
-    width: 10,
+    width: 11,
     height: 17,
   },
 });

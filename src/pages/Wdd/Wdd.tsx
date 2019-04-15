@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
+import EmptyList from 'src/components/module/EmptyList';
 import Feed from 'src/components/module/Feed';
 import { pushLike } from 'src/services/api/dog';
 import { Feed as FeedInterface, getFeeds } from 'src/services/api/feed';
@@ -200,30 +201,40 @@ class Wdd extends PureComponent<Props, State> {
               onRefresh={this.handleRefresh}
             />
           }>
-          <FlatList
-            style={views.dogsWrapper}
-            data={this.state.dogs}
-            keyExtractor={(i, index) => index.toString()}
-            contentContainerStyle={views.dogsListWrapper}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={views.dogItem}
-                activeOpacity={0.7}
-                onPress={() => this.selectDog(item)}>
-                <DefaultImage uri={item.thumbnail} size={56} />
-              </TouchableOpacity>
-            )}
-            horizontal
-          />
-          <FlatList
-            data={this.state.feeds}
-            keyExtractor={(i, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Feed feed={item} deleteFromList={this.handleDelete} />
-            )}
-          />
+          {this.state.dogs ? (
+            <>
+              <FlatList
+                style={views.dogsWrapper}
+                data={this.state.dogs}
+                keyExtractor={(i, index) => index.toString()}
+                contentContainerStyle={views.dogsListWrapper}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={views.dogItem}
+                    activeOpacity={0.7}
+                    onPress={() => this.selectDog(item)}>
+                    <DefaultImage uri={item.thumbnail} size={56} />
+                  </TouchableOpacity>
+                )}
+                horizontal
+              />
+              <FlatList
+                data={this.state.feeds}
+                keyExtractor={(i, index) => index.toString()}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <Feed feed={item} deleteFromList={this.handleDelete} />
+                )}
+              />
+            </>
+          ) : (
+            <EmptyList
+              source={require('src/assets/images/img_no_dog.png')}
+              message="내 주변 댕댕이가 없어요 ㅠㅠ"
+              style={views.emptyListMargin}
+            />
+          )}
         </ScrollView>
         {this.renderModal()}
       </SafeAreaView>
