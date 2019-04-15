@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Image, SafeAreaView, ScrollView } from 'react-native';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
+import { email } from 'src/assets/functions/link';
 import TopNavbar from 'src/components/module/TopNavbar';
 import WebModal from 'src/components/module/WebModal';
 import * as userActions from 'src/store/actions/user';
@@ -94,9 +95,23 @@ class Setting extends PureComponent<Props, State> {
                   });
                 },
               },
-              { label: '개인정보 이용 약관', handlePress: () => {} },
-              { label: '고객센터', handlePress: () => {} },
-              { label: '장소등록 및 수정 요청', handlePress: () => {} },
+              // { label: '개인정보 이용 약관', handlePress: () => {} },
+              {
+                label: '고객센터',
+                handlePress: async () =>
+                  await email({
+                    receiver: 'info@woodongdang.com',
+                    subject: `서비스 문의 | ${user.email || '비로그인'}`,
+                  }),
+              },
+              {
+                label: '장소등록 및 수정 요청',
+                handlePress: async () =>
+                  await email({
+                    receiver: 'info@woodongdang.com',
+                    subject: `장소등록 및 수정 | ${user.email || '비로그인'}`,
+                  }),
+              },
             ]}
             contentContainerStyle={views.boxWrapper}
             keyExtractor={(i, index) => index.toString()}

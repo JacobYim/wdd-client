@@ -167,7 +167,7 @@ class Wdd extends PureComponent<Props, State> {
                     </View>
                   ))}
                 </View>
-                {signedIn && (
+                {signedIn && dog.user !== this.props.user._id && (
                   <TouchableOpacity
                     style={views.likeButton}
                     activeOpacity={0.7}

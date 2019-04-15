@@ -2,7 +2,7 @@ import { find, findIndex } from 'lodash';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
-import call from 'src/assets/functions/phoneCall';
+import { call } from 'src/assets/functions/link';
 import withMessage, { MessageProps } from 'src/components/base/withMessage';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
