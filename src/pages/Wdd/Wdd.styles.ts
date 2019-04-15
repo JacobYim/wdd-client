@@ -16,7 +16,6 @@ export const views = StyleSheet.create({
   dogsWrapper: {
     borderBottomWidth: 1,
     borderColor: color.grayEF,
-    alignItems: 'center',
   },
   dogsListWrapper: {
     paddingHorizontal: size.horizontal - dogItemSpace,

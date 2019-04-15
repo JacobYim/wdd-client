@@ -201,23 +201,22 @@ class Wdd extends PureComponent<Props, State> {
               onRefresh={this.handleRefresh}
             />
           }>
-          <View style={views.dogsWrapper}>
-            <FlatList
-              data={this.state.dogs}
-              keyExtractor={(i, index) => index.toString()}
-              contentContainerStyle={views.dogsListWrapper}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={views.dogItem}
-                  activeOpacity={0.7}
-                  onPress={() => this.selectDog(item)}>
-                  <DefaultImage uri={item.thumbnail} size={56} />
-                </TouchableOpacity>
-              )}
-              horizontal
-            />
-          </View>
+          <FlatList
+            style={views.dogsWrapper}
+            data={this.state.dogs}
+            keyExtractor={(i, index) => index.toString()}
+            contentContainerStyle={views.dogsListWrapper}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={views.dogItem}
+                activeOpacity={0.7}
+                onPress={() => this.selectDog(item)}>
+                <DefaultImage uri={item.thumbnail} size={56} />
+              </TouchableOpacity>
+            )}
+            horizontal
+          />
           <FlatList
             data={this.state.feeds}
             keyExtractor={(i, index) => index.toString()}
