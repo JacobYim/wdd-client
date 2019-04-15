@@ -10,7 +10,6 @@ import Card from 'src/pages/Place/MapList/Card';
 import { getReviews, Review } from 'src/services/api/review';
 import * as actions from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
-import { size } from 'src/theme';
 import { icons, texts, views } from './Detail.styles';
 import ReviewCard from './ReviewCard';
 import {
@@ -189,9 +188,7 @@ class Detail extends PureComponent<Props, State> {
                         {item.value}
                       </Text>
                     ) : (
-                      <Text numberOfLines={2} style={texts.content}>
-                        {item.value}
-                      </Text>
+                      <Text style={texts.content}>{item.value}</Text>
                     )}
                   </View>
                 ) : null
