@@ -94,6 +94,7 @@ class Prepare extends PureComponent<Props, State> {
             data={images}
             style={{ flex: 1 }}
             showsVerticalScrollIndicator={false}
+            onScrollToIndexFailed={() => {}}
             keyExtractor={(i, index) => index.toString()}
             renderItem={({ item }) => (
               <Image source={item.ic_num} style={styles.icon} />

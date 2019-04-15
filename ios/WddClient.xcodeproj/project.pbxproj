@@ -27,6 +27,7 @@
 		5535B8892213EBB1003C3BC8 /* NanumSquareRoundB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */; };
 		5535B88A2213EBB1003C3BC8 /* NanumSquareRoundR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */; };
 		5535B88B2213EBB1003C3BC8 /* NanumSquareRoundEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */; };
+		55ED1EEB2265479B00C1A7AD /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55ED1EEA2265479B00C1A7AD /* libRCTCameraRoll.a */; };
 		7BE83AF8E24E4C75B31B6307 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34234F54CB48401884AD9265 /* libRNGestureHandler.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		91B284EFA369441481773C2A /* libBMDPedometer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC633DE5CC9046E3BFFBFF66 /* libBMDPedometer.a */; };
@@ -362,6 +363,7 @@
 		5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundB.ttf; sourceTree = "<group>"; };
 		5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundR.ttf; sourceTree = "<group>"; };
 		5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundEB.ttf; sourceTree = "<group>"; };
+		55ED1EEA2265479B00C1A7AD /* libRCTCameraRoll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRCTCameraRoll.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7A4F252190FF492AAB86F41C /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55ED1EEB2265479B00C1A7AD /* libRCTCameraRoll.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -532,6 +535,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55ED1EEA2265479B00C1A7AD /* libRCTCameraRoll.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				8C07010584D0D7943131F998 /* libPods-WddClient.a */,

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Image, SafeAreaView, Text, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
@@ -11,6 +10,14 @@ import MarkerButton from './MarkerButton';
 import Prepare from './Prepare';
 import StatusButton from './StatusButton';
 import { fonts, icons, views } from './Walk.styles';
+import {
+  CameraRoll,
+  Image,
+  SafeAreaView,
+  Text,
+  View,
+  Platform,
+} from 'react-native';
 import Pedometer, {
   PedometerInterface,
 } from '@JWWon/react-native-universal-pedometer';
@@ -75,7 +82,9 @@ class Walk extends Component<Props, State> {
       cameraType: 'back' as 'back',
       mediaType: 'photo' as 'photo',
       storageOptions: {
-        cameraRoll: true,
+        cameraRoll: Platform.OS === 'ios',
+        skipBackup: true,
+        waitUntilSaved: true,
       },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {

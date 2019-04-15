@@ -4,9 +4,7 @@ export const rangeWithUnit = (range: number, integer?: boolean) =>
     : `${integer ? Math.floor(range) : range.toFixed(2)}km`;
 
 export const timeWithUnit = (seconds: number) => {
-  const calcSecond = seconds / 60;
-  if (calcSecond < 1) return `${seconds}초`;
-  const calcMinute = calcSecond / 60;
-  if (calcMinute < 1) return `${Math.floor(calcMinute)}분`;
-  return `${Math.floor(calcMinute / 60)}시간`;
+  if (seconds < 60) return `${seconds}초`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}분`;
+  return `${Math.floor(seconds / 3600)}시간`;
 };
