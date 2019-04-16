@@ -16,6 +16,7 @@ import MapView, {
   Marker,
   LatLng,
   Polyline,
+  Polygon,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import {
@@ -41,17 +42,19 @@ interface State {
   end: LatLng;
   pees: ReducerState['walk']['pins'];
   poos: ReducerState['walk']['pins'];
+  mapBoundaries?: { northEast: LatLng; southWest: LatLng };
 }
 
 const CENTER = { x: 0.5, y: 0.5 };
+const DEFAULT_LATLNG = { latitude: 0, longitude: 0 };
 
 class Finish extends PureComponent<Props, State> {
   private mapWrapper = createRef<View>();
   private map = createRef<MapView>();
 
   state: State = {
-    start: { latitude: 0, longitude: 0 },
-    end: { latitude: 0, longitude: 0 },
+    start: DEFAULT_LATLNG,
+    end: DEFAULT_LATLNG,
     pees: [],
     poos: [],
   };
@@ -115,7 +118,7 @@ class Finish extends PureComponent<Props, State> {
     });
   };
 
-  googleMapDidMount = (e: LayoutChangeEvent) => {
+  googleMapDidMount = async (e: LayoutChangeEvent) => {
     const map = this.map.current;
     if (!map) return;
     const { width, height } = e.nativeEvent.layout;
@@ -130,11 +133,12 @@ class Finish extends PureComponent<Props, State> {
         right: horizontal,
       },
     });
+    this.setState({ mapBoundaries: await map.getMapBoundaries() });
   };
 
   render() {
     const { walk, user } = this.props;
-    const { pees, poos, start, end } = this.state;
+    const { pees, poos, start, end, mapBoundaries } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -149,6 +153,23 @@ class Finish extends PureComponent<Props, State> {
             rotateEnabled={false}
             pitchEnabled={false}
             toolbarEnabled={false}>
+            {mapBoundaries !== undefined && (
+              <Polygon
+                coordinates={[
+                  mapBoundaries.northEast,
+                  {
+                    latitude: mapBoundaries.northEast.latitude,
+                    longitude: mapBoundaries.southWest.longitude,
+                  },
+                  mapBoundaries.southWest,
+                  {
+                    latitude: mapBoundaries.southWest.latitude,
+                    longitude: mapBoundaries.northEast.longitude,
+                  },
+                ]}
+                fillColor="rgba(256,256,256,0.4)"
+              />
+            )}
             <Polyline
               coordinates={walk.pins}
               lineCap="round"
