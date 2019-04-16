@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Text, View } from 'react-native';
 import LabelWrapper from 'src/components/container/LabelWrapper';
 import { HandleChangeSelector } from './index';
@@ -23,7 +23,7 @@ interface State {
   selected: string;
 }
 
-class Selector extends Component<Props, State> {
+class Selector extends PureComponent<Props, State> {
   state: State = { selected: this.props.value || '' };
 
   handleSelect = (value: string) => {

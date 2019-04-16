@@ -62,21 +62,22 @@ class Edit extends PureComponent<Props, State> {
     info: React.createRef<Input>(),
   };
 
-  state: State = {
-    _id: '',
-    name: '',
-    breed: '',
-    gender: '',
-    error: {},
-    showModal: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    const { repDog } = props.user;
+    let state: State = {
+      _id: '',
+      name: '',
+      breed: '',
+      gender: '',
+      error: {},
+      showModal: false,
+    };
 
-  componentDidMount() {
-    const { user } = this.props;
-    if (!this.create && user.repDog) {
-      this.setState({
-        ...this.state,
-        ...pick(user.repDog, [
+    if (!this.create && repDog) {
+      state = {
+        ...state,
+        ...pick(repDog, [
           '_id',
           'name',
           'breed',
@@ -85,11 +86,13 @@ class Edit extends PureComponent<Props, State> {
           'weight',
           'info',
         ]),
-        birth: user.repDog.birth
-          ? moment(user.repDog.birth.split('.')).toDate()
+        birth: repDog.birth
+          ? moment(repDog.birth.split('.')).toDate()
           : undefined,
-      });
+      };
     }
+
+    this.state = state;
   }
 
   toggleModal = () => {
