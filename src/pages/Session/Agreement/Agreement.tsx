@@ -34,7 +34,19 @@ class Agreement extends Component<NavigationScreenProps, State> {
         title: '서비스 이용 약관',
         force: true,
         agree: false,
-        link: 'http://policy.woodongdang.com/',
+        link: 'http://policy.woodongdang.com/term_of_use.html',
+      },
+      {
+        title: '개인정보 이용 약관',
+        force: true,
+        agree: false,
+        link: 'http://policy.woodongdang.com/privacy.html',
+      },
+      {
+        title: '위치정보 이용 약관',
+        force: true,
+        agree: false,
+        link: 'http://policy.woodongdang.com/location.html',
       },
     ],
   };
