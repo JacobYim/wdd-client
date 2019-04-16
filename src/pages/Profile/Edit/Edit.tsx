@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { pick } from 'lodash';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -73,10 +74,20 @@ class Edit extends PureComponent<Props, State> {
   componentDidMount() {
     const { user } = this.props;
     if (!this.create && user.repDog) {
-      const { user: u, likes, feeds, birth, ...data } = user.repDog;
       this.setState({
-        ...data,
-        birth: birth ? moment(birth.split('.')).toDate() : undefined,
+        ...this.state,
+        ...pick(user.repDog, [
+          '_id',
+          'name',
+          'breed',
+          'gender',
+          'thumbnail',
+          'weight',
+          'info',
+        ]),
+        birth: user.repDog.birth
+          ? moment(user.repDog.birth.split('.')).toDate()
+          : undefined,
       });
     }
   }
