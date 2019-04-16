@@ -236,6 +236,7 @@ class Edit extends PureComponent<Props, State> {
           label="몸무게"
           value={this.state.weight ? this.state.weight.toString() : ''}
           keyboardType="numeric"
+          unit="Kg"
           inputs={this.inputs}
           handleChange={this.handleChange}
         />

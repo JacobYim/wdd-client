@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import LabelWrapper from 'src/components/container/LabelWrapper';
 import { HandleChangeText } from './index';
-import { inputs as inputStyle, texts } from './TextInput.styles';
+import { inputs as inputStyle, texts, views } from './TextInput.styles';
 import {
   PageContext,
   ContextInterface,
@@ -11,6 +11,7 @@ import {
   TextInput as Input,
   NativeSyntheticEvent,
   TextInputFocusEventData,
+  View,
 } from 'react-native';
 
 interface InputsInterface {
@@ -23,6 +24,7 @@ interface Props {
   value?: string;
   alert?: string;
   inputs?: InputsInterface;
+  unit?: string;
   handleChange: (data: HandleChangeText) => void;
   returnKeyType?: 'next' | 'done' | 'send' | 'search';
   [x: string]: any;
@@ -83,6 +85,7 @@ class TextInput extends PureComponent<Props, State> {
       label,
       value,
       alert,
+      unit,
       inputs,
       returnKeyType,
       ...options
@@ -92,28 +95,36 @@ class TextInput extends PureComponent<Props, State> {
       <LabelWrapper label={label}>
         <PageContext.Consumer>
           {context => (
-            <Input
-              value={value}
-              multiline={false}
-              onChangeText={this.handleChangeWithName}
-              onFocus={e => this.handleFocus(e, context)}
-              onBlur={this.handleBlur}
-              returnKeyType={returnKeyType || 'default'}
-              autoCapitalize="none"
-              autoCorrect={false}
+            <View
               style={[
-                inputStyle.text,
-                inputStyle[this.state.isFocus ? 'focused' : 'unFocused'],
-              ]}
-              {...options}
-              {...inputs && { ref: inputs[name] }}
-              {...(returnKeyType === 'next'
-                ? {
-                    onSubmitEditing: this.handleFocusNext,
-                    blurOnSubmit: false,
-                  }
-                : {})}
-            />
+                views.inputWrapper,
+                this.state.isFocus ? views.focused : views.unFocused,
+              ]}>
+              <Input
+                value={value}
+                multiline={false}
+                onChangeText={this.handleChangeWithName}
+                onFocus={e => this.handleFocus(e, context)}
+                onBlur={this.handleBlur}
+                returnKeyType={returnKeyType || 'default'}
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={inputStyle.text}
+                {...options}
+                {...inputs && { ref: inputs[name] }}
+                {...(returnKeyType === 'next'
+                  ? {
+                      onSubmitEditing: this.handleFocusNext,
+                      blurOnSubmit: false,
+                    }
+                  : {})}
+              />
+              {unit && (
+                <View style={views.unitWrapper}>
+                  <Text style={texts.unit}>{value ? unit : ''}</Text>
+                </View>
+              )}
+            </View>
           )}
         </PageContext.Consumer>
         {alert && <Text style={texts.alert}>{alert}</Text>}
