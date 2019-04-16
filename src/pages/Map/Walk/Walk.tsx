@@ -11,12 +11,12 @@ import Prepare from './Prepare';
 import StatusButton from './StatusButton';
 import { fonts, icons, views } from './Walk.styles';
 import {
-  CameraRoll,
   Image,
   SafeAreaView,
   Text,
   View,
   Platform,
+  Animated,
 } from 'react-native';
 import Pedometer, {
   PedometerInterface,
@@ -41,6 +41,8 @@ interface Props extends NavigationScreenProps {
 
 interface State {
   status: ReducerState['walk']['status'];
+  showAnimation?: 'pee' | 'poo';
+  iconSize: Animated.Value;
 }
 
 const timeFormat = (time: number) => `${time < 10 ? '0' : ''}${time}`;
@@ -54,6 +56,7 @@ function convertSecToTime(time: number) {
 class Walk extends Component<Props, State> {
   state: State = {
     status: this.props.walk.status,
+    iconSize: new Animated.Value(0),
   };
 
   componentDidUpdate() {
@@ -92,6 +95,32 @@ class Walk extends Component<Props, State> {
     }
   };
 
+  handlePressPin = (type: 'poo' | 'pee') => {
+    const { updateLatestPin } = this.props;
+    updateLatestPin(type);
+    this.setState({ showAnimation: type });
+
+    Animated.timing(this.state.iconSize, {
+      toValue: 1,
+      duration: 60,
+      useNativeDriver: true,
+    }).start(bigger => {
+      if (bigger.finished) {
+        setTimeout(() => {
+          Animated.timing(this.state.iconSize, {
+            toValue: 0,
+            duration: 120,
+            useNativeDriver: true,
+          }).start(smaller => {
+            if (smaller.finished) {
+              this.setState({ showAnimation: undefined });
+            }
+          });
+        }, 800);
+      }
+    });
+  };
+
   onPrepareWillUnmount = () => {
     const { updateStatus } = this.props;
     updateStatus('WALKING');
@@ -103,13 +132,17 @@ class Walk extends Component<Props, State> {
   };
 
   render() {
-    const { updateLatestPin } = this.props;
+    const { showAnimation } = this.state;
     const { distance, status, seconds, steps, speed } = this.props.walk;
     const gpsInfoList: WalkInfoInterface[] = [
       { value: distance, unit: 'Km' },
       { value: steps, unit: '걸음' },
       { value: Math.floor(steps / 28.5), unit: 'Kcal' },
     ];
+    const size = this.state.iconSize.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 80],
+    });
 
     return (
       <SafeAreaView style={views.container}>
@@ -138,16 +171,42 @@ class Walk extends Component<Props, State> {
                   ),
                 }}
               />
-              <Image
-                style={icons.gif}
-                source={
-                  status === 'WALKING'
-                    ? speed > 1.11
-                      ? require('src/assets/images/img_running.gif')
-                      : require('src/assets/images/img_walking.gif')
-                    : require('src/assets/images/img_standing.jpg')
-                }
-              />
+              <View style={views.gifWrapper}>
+                <Image
+                  style={icons.gif}
+                  source={
+                    status === 'WALKING'
+                      ? speed > 1.11
+                        ? require('src/assets/images/img_running.gif')
+                        : require('src/assets/images/img_walking.gif')
+                      : require('src/assets/images/img_standing.jpg')
+                  }
+                />
+                {showAnimation && (
+                  <View style={views.gifModal}>
+                    <View style={views.gitModalWrapper}>
+                      <Animated.Image
+                        source={
+                          showAnimation === 'pee'
+                            ? require('src/assets/icons/ic_pee.png')
+                            : require('src/assets/icons/ic_poo.png')
+                        }
+                        style={{
+                          width: 60,
+                          height: 60,
+                          resizeMode: 'contain',
+                          transform: [
+                            {
+                              scaleX: this.state.iconSize,
+                              scaleY: this.state.iconSize,
+                            },
+                          ],
+                        }}
+                      />
+                    </View>
+                  </View>
+                )}
+              </View>
               <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>
             </View>
             <View style={views.bottomWrapper}>
@@ -155,7 +214,7 @@ class Walk extends Component<Props, State> {
               <View style={views.bottomButtonWrapper}>
                 <MarkerButton
                   icon={require('src/assets/icons/ic_poo.png')}
-                  onPress={() => updateLatestPin('poo')}
+                  onPress={() => this.handlePressPin('poo')}
                 />
                 <StatusButton
                   walk={this.props.walk}
@@ -163,7 +222,7 @@ class Walk extends Component<Props, State> {
                 />
                 <MarkerButton
                   icon={require('src/assets/icons/ic_pee.png')}
-                  onPress={() => updateLatestPin('pee')}
+                  onPress={() => this.handlePressPin('pee')}
                 />
               </View>
               <View style={views.gpsInfoWrapper}>

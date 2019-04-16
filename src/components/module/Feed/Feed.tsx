@@ -93,7 +93,7 @@ class Feed extends PureComponent<Props, State> {
                 this.setState({ showAnimation: false });
               }
             });
-          }, 1600);
+          }, 800);
         }
       });
     } else {
