@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 import produce from 'immer';
+import { pick } from 'lodash';
 import { handleActions } from 'redux-actions';
 import { removeHeader } from 'src/services/api/axios';
 import { removeUserStorage } from 'src/services/storage/user';
@@ -59,7 +60,7 @@ export default handleActions<UserState, any>(
       produce(state, draft => {
         const dog = action.payload as dogActions.Dog;
         draft.repDog = dog;
-        draft.dogs[dog._id] = dog.name;
+        draft.dogs[dog._id] = pick(dog, ['name', 'thumbnail']);
       }),
     [dogActions.SET_DOG_FAILURE]: (state, action) =>
       produce(state, draft => {
