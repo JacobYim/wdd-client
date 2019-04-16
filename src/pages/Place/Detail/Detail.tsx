@@ -69,15 +69,19 @@ class Detail extends PureComponent<Props, State> {
   }
 
   handleToggleScrap = async () => {
-    const { scrap, unScrap, showMessage } = this.props;
+    const { scrap, unScrap, showMessage, user } = this.props;
     if (this.state.isScrap) {
       await unScrap({ id: this.place._id });
       this.setState({ isScrap: false });
       showMessage('내 상점에서 삭제했습니다.');
     } else {
-      await scrap({ id: this.place._id });
-      this.setState({ isScrap: true });
-      showMessage('내 상점에 추가되었습니다.');
+      if (user.email.length !== 0) {
+        await scrap({ id: this.place._id });
+        this.setState({ isScrap: true });
+        showMessage('내 상점에 추가되었습니다.');
+      } else {
+        showMessage('로그인 후 이용 가능합니다.');
+      }
     }
   };
 
