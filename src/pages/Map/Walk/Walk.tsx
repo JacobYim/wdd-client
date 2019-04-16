@@ -186,8 +186,8 @@ class Walk extends Component<Props, State> {
                     <Image
                       source={
                         showAnimation === 'pee'
-                          ? require('src/assets/icons/ic_pee.gif')
-                          : require('src/assets/icons/ic_poo.gif')
+                          ? require('src/assets/icons/ic_pee_motion.gif')
+                          : require('src/assets/icons/ic_poo_motion.gif')
                       }
                       style={icons.absolute}
                     />
