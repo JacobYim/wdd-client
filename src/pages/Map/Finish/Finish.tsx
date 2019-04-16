@@ -153,23 +153,25 @@ class Finish extends PureComponent<Props, State> {
             rotateEnabled={false}
             pitchEnabled={false}
             toolbarEnabled={false}>
-            {mapBoundaries !== undefined && (
-              <Polygon
-                coordinates={[
-                  mapBoundaries.northEast,
-                  {
-                    latitude: mapBoundaries.northEast.latitude,
-                    longitude: mapBoundaries.southWest.longitude,
-                  },
-                  mapBoundaries.southWest,
-                  {
-                    latitude: mapBoundaries.southWest.latitude,
-                    longitude: mapBoundaries.northEast.longitude,
-                  },
-                ]}
-                fillColor="rgba(256,256,256,0.4)"
-              />
-            )}
+            <Polygon
+              coordinates={
+                mapBoundaries
+                  ? [
+                      mapBoundaries.northEast,
+                      {
+                        latitude: mapBoundaries.northEast.latitude,
+                        longitude: mapBoundaries.southWest.longitude,
+                      },
+                      mapBoundaries.southWest,
+                      {
+                        latitude: mapBoundaries.southWest.latitude,
+                        longitude: mapBoundaries.northEast.longitude,
+                      },
+                    ]
+                  : []
+              }
+              fillColor="#FFFFFF7F"
+            />
             <Polyline
               coordinates={walk.pins}
               lineCap="round"

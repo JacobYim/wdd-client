@@ -110,7 +110,8 @@ class Wdd extends PureComponent<Props, State> {
 
   renderModal = () => {
     const { selectDog: dog } = this.state;
-    const signedIn = this.props.user.email.length > 0;
+    const { user } = this.props;
+    const signedIn = user.email.length !== 0;
 
     return (
       <Modal
@@ -166,7 +167,7 @@ class Wdd extends PureComponent<Props, State> {
                     </View>
                   ))}
                 </View>
-                {signedIn && dog.user !== this.props.user._id && (
+                {signedIn && dog.user !== user._id && (
                   <TouchableOpacity
                     style={views.likeButton}
                     activeOpacity={0.7}
@@ -184,6 +185,12 @@ class Wdd extends PureComponent<Props, State> {
   };
 
   render() {
+    const { dogs, feeds, refresh } = this.state;
+    const { repDog } = this.props.user;
+    const dogsFilter = repDog
+      ? dogs.filter(dog => dog._id !== repDog._id)
+      : dogs;
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={views.header}>
@@ -196,15 +203,21 @@ class Wdd extends PureComponent<Props, State> {
           style={{ flex: 1 }}
           refreshControl={
             <RefreshControl
-              refreshing={this.state.refresh}
+              refreshing={refresh}
               onRefresh={this.handleRefresh}
             />
           }>
-          {this.state.dogs ? (
+          {dogsFilter.length === 0 ? (
+            <EmptyList
+              source={require('src/assets/images/img_no_dog.png')}
+              message="내 주변 댕댕이가 없어요 ㅠㅠ"
+              style={views.emptyListMargin}
+            />
+          ) : (
             <>
               <FlatList
                 style={views.dogsWrapper}
-                data={this.state.dogs}
+                data={dogs}
                 keyExtractor={(i, index) => index.toString()}
                 contentContainerStyle={views.dogsListWrapper}
                 showsHorizontalScrollIndicator={false}
@@ -219,7 +232,7 @@ class Wdd extends PureComponent<Props, State> {
                 horizontal
               />
               <FlatList
-                data={this.state.feeds}
+                data={feeds}
                 keyExtractor={(i, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
@@ -227,12 +240,6 @@ class Wdd extends PureComponent<Props, State> {
                 )}
               />
             </>
-          ) : (
-            <EmptyList
-              source={require('src/assets/images/img_no_dog.png')}
-              message="내 주변 댕댕이가 없어요 ㅠㅠ"
-              style={views.emptyListMargin}
-            />
           )}
         </ScrollView>
         {this.renderModal()}

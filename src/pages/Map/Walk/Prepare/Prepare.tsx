@@ -68,20 +68,25 @@ const styles = StyleSheet.create({
 
 class Prepare extends PureComponent<Props, State> {
   private scroll = React.createRef<FlatList<ImageInterface>>();
+  private interval: any;
   state: State = { index: 0 };
 
   componentDidMount() {
     const scroll = this.scroll.current;
-    const interval = setInterval(() => {
+    this.interval = setInterval(() => {
       const index = this.state.index + 1;
       if (index === images.length) {
-        clearInterval(interval);
+        clearInterval(this.interval);
         this.props.onFinish();
       } else {
         this.setState({ index });
         if (scroll) scroll.scrollToIndex({ index, animated: true });
       }
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {

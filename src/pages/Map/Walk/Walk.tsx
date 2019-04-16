@@ -139,10 +139,6 @@ class Walk extends Component<Props, State> {
       { value: steps, unit: '걸음' },
       { value: Math.floor(steps / 28.5), unit: 'Kcal' },
     ];
-    const size = this.state.iconSize.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 80],
-    });
 
     return (
       <SafeAreaView style={views.container}>
