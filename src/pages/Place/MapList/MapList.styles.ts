@@ -46,7 +46,10 @@ export const icons = StyleSheet.create({
   back: {
     width: 18,
     height: 16,
-    resizeMode: 'contain',
+  },
+  search: {
+    width: 17,
+    height: 17,
   },
   show: {
     width: 40,

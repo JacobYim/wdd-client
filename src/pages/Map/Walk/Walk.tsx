@@ -12,10 +12,10 @@ import StatusButton from './StatusButton';
 import { fonts, icons, views } from './Walk.styles';
 import {
   Image,
+  Platform,
   SafeAreaView,
   Text,
   View,
-  Platform,
   Animated,
 } from 'react-native';
 import Pedometer, {
@@ -41,8 +41,8 @@ interface Props extends NavigationScreenProps {
 
 interface State {
   status: ReducerState['walk']['status'];
+  opacity: Animated.Value;
   showAnimation?: 'pee' | 'poo';
-  iconSize: Animated.Value;
 }
 
 const timeFormat = (time: number) => `${time < 10 ? '0' : ''}${time}`;
@@ -56,7 +56,7 @@ function convertSecToTime(time: number) {
 class Walk extends Component<Props, State> {
   state: State = {
     status: this.props.walk.status,
-    iconSize: new Animated.Value(0),
+    opacity: new Animated.Value(0),
   };
 
   componentDidUpdate() {
@@ -96,29 +96,28 @@ class Walk extends Component<Props, State> {
   };
 
   handlePressPin = (type: 'poo' | 'pee') => {
-    const { updateLatestPin } = this.props;
-    updateLatestPin(type);
-    this.setState({ showAnimation: type });
-
-    Animated.timing(this.state.iconSize, {
-      toValue: 1,
-      duration: 60,
-      useNativeDriver: true,
-    }).start(bigger => {
-      if (bigger.finished) {
-        setTimeout(() => {
-          Animated.timing(this.state.iconSize, {
-            toValue: 0,
-            duration: 120,
-            useNativeDriver: true,
-          }).start(smaller => {
-            if (smaller.finished) {
-              this.setState({ showAnimation: undefined });
-            }
-          });
-        }, 800);
-      }
-    });
+    const { updateLatestPin, walk } = this.props;
+    if (walk.status === 'WALKING') {
+      updateLatestPin(type);
+      this.setState({ showAnimation: type });
+      Animated.timing(this.state.opacity, {
+        toValue: 1,
+        duration: 280,
+        useNativeDriver: true,
+      }).start(show => {
+        if (show.finished) {
+          setTimeout(() => {
+            Animated.timing(this.state.opacity, {
+              toValue: 0,
+              duration: 280,
+              useNativeDriver: true,
+            }).start(hide => {
+              if (hide.finished) this.setState({ showAnimation: undefined });
+            });
+          }, 880);
+        }
+      });
+    }
   };
 
   onPrepareWillUnmount = () => {
@@ -132,8 +131,8 @@ class Walk extends Component<Props, State> {
   };
 
   render() {
-    const { showAnimation } = this.state;
     const { distance, status, seconds, steps, speed } = this.props.walk;
+    const { showAnimation } = this.state;
     const gpsInfoList: WalkInfoInterface[] = [
       { value: distance, unit: 'Km' },
       { value: steps, unit: '걸음' },
@@ -179,28 +178,20 @@ class Walk extends Component<Props, State> {
                   }
                 />
                 {showAnimation && (
-                  <View style={views.gifModal}>
-                    <View style={views.gitModalWrapper}>
-                      <Animated.Image
-                        source={
-                          showAnimation === 'pee'
-                            ? require('src/assets/icons/ic_pee.png')
-                            : require('src/assets/icons/ic_poo.png')
-                        }
-                        style={{
-                          width: 60,
-                          height: 60,
-                          resizeMode: 'contain',
-                          transform: [
-                            {
-                              scaleX: this.state.iconSize,
-                              scaleY: this.state.iconSize,
-                            },
-                          ],
-                        }}
-                      />
-                    </View>
-                  </View>
+                  <Animated.View
+                    style={{
+                      ...views.gifAbsolute,
+                      opacity: this.state.opacity,
+                    }}>
+                    <Image
+                      source={
+                        showAnimation === 'pee'
+                          ? require('src/assets/icons/ic_pee.gif')
+                          : require('src/assets/icons/ic_poo.gif')
+                      }
+                      style={icons.absolute}
+                    />
+                  </Animated.View>
                 )}
               </View>
               <Text style={fonts.walkTime}>{convertSecToTime(seconds)}</Text>

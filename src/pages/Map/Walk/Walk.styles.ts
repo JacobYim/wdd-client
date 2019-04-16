@@ -70,18 +70,11 @@ export const views = StyleSheet.create({
     width: width * 0.7,
     height: height * 0.3,
   },
-  gifModal: {
+  gifAbsolute: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  gitModalWrapper: {
-    width: 100,
-    height: 100,
-    borderRadius: 5,
-    backgroundColor: `${color.gray66}78`,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: color.white,
   },
 });
 
@@ -94,6 +87,11 @@ export const icons = StyleSheet.create({
   gif: {
     width: '100%',
     height: '100%',
+    resizeMode: 'contain',
+  },
+  absolute: {
+    width: '60%',
+    height: '60%',
     resizeMode: 'contain',
   },
 });

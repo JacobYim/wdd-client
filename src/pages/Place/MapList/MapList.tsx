@@ -206,6 +206,15 @@ class MapList extends PureComponent<NavigationScreenProps, State> {
               ),
               handlePress: () => this.props.navigation.goBack(null),
             }}
+            right={{
+              view: (
+                <Image
+                  style={icons.search}
+                  source={require('src/assets/icons/ic_search_black.png')}
+                />
+              ),
+              handlePress: () => this.props.navigation.navigate('placeSearch'),
+            }}
             showBorder
           />
           <View style={views.filterWrapper}>
