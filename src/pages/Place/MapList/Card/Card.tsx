@@ -13,13 +13,11 @@ interface Props {
 }
 
 export const cardWidth = 327;
-export const cardHeight = 104;
 
 const styles = StyleSheet.create({
   wrapper: {
     width: cardWidth,
     padding: 16,
-    height: cardHeight,
     borderRadius: 5,
     flexDirection: 'row',
     backgroundColor: color.white,
@@ -31,13 +29,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   name: {
-    fontSize: 16,
+    fontSize: font.size.large,
     color: color.black,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   describe: {
     fontSize: font.size.medium,
     marginTop: 4,
+    marginBottom: 10,
     color: color.blackOpacity,
     lineHeight: 16,
   },
@@ -98,7 +97,9 @@ const Info: React.FC<Props> = ({
       ]}>
       <DefaultImage size={50} uri={place.icon} />
       <View style={styles.infoWrapper}>
-        <Text style={styles.name}>{place.name.trim()}</Text>
+        <Text numberOfLines={2} style={styles.name}>
+          {place.name.trim()}
+        </Text>
         <Text style={styles.describe}>{place.label}</Text>
         <Rating rating={place.rating} />
       </View>

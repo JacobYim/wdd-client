@@ -3,9 +3,17 @@ import { color, font, shadow } from 'src/theme';
 
 const { width, height } = Dimensions.get('window');
 export const statusBtn = width * 0.293;
+
+const bottomPadding = width * 0.128;
 const whiteBackRadius =
   (Math.pow(width / 2, 2) + Math.pow(statusBtn / 2, 2)) / statusBtn;
-const bottomPadding = width * 0.128;
+
+// helper
+const scaleWidth = width / 375;
+const scaleHeight = height / 667;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const scaledSize = (size: number) => Math.ceil(size * scale);
 
 export const views = StyleSheet.create({
   container: {
@@ -43,7 +51,7 @@ export const views = StyleSheet.create({
   },
   gpsInfoWrapper: {
     width: '100%',
-    marginTop: height * 0.045,
+    marginTop: 50,
     paddingHorizontal: '11.5%',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -78,7 +86,7 @@ export const fonts = StyleSheet.create({
     marginTop: 'auto',
     marginBottom: 12,
     color: color.blue,
-    fontSize: 68,
+    fontSize: scaledSize(68),
     fontFamily: font.family.NanumSquareRoundEB,
     letterSpacing: -4,
   },

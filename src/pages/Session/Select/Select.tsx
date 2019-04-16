@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
-import Splash from 'src/components/module/Splash';
 import { texts, views } from './Select.styles';
 
 const BottomButtons: React.FC<NavigationScreenProps> = ({ navigation }) => (
@@ -22,8 +21,13 @@ const BottomButtons: React.FC<NavigationScreenProps> = ({ navigation }) => (
 );
 
 const Select: React.FC<NavigationScreenProps> = ({ navigation }) => (
-  <>
-    <Splash />
+  <View style={{ flex: 1 }}>
+    <View style={views.background}>
+      <Image
+        source={require('src/assets/images/img_background.jpg')}
+        style={views.image}
+      />
+    </View>
     <PageContainer
       bottom={{
         view: <BottomButtons navigation={navigation} />,
@@ -42,7 +46,7 @@ const Select: React.FC<NavigationScreenProps> = ({ navigation }) => (
         </TouchableOpacity>
       </View>
     </PageContainer>
-  </>
+  </View>
 );
 
 export default Select;

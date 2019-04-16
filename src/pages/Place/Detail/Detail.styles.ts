@@ -1,8 +1,8 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { cardHeight } from 'src/pages/Place/MapList/Card';
-import { color, shadow, size } from 'src/theme';
+import { color, size } from 'src/theme';
 
 const { height } = Dimensions.get('window');
+const cardMarginTop = 56;
 const paddingVertical = 20;
 
 export const views = StyleSheet.create({
@@ -23,12 +23,11 @@ export const views = StyleSheet.create({
     marginTop: 'auto',
     marginLeft: 'auto',
     width: size.horizontal + 60,
-    height: cardHeight / 2 + paddingVertical,
+    height: cardMarginTop,
   },
   infoHover: {
-    marginTop: -(cardHeight / 2 + paddingVertical),
+    marginTop: -cardMarginTop,
     marginBottom: 10,
-    height: cardHeight,
   },
   infoWrapper: {
     paddingVertical,
@@ -40,11 +39,12 @@ export const views = StyleSheet.create({
     backgroundColor: color.grayEF,
   },
   rowWrapper: {
-    marginVertical: 4,
+    marginVertical: 2,
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   imageWrapper: {
-    marginTop: 4,
+    marginTop: 10,
     paddingHorizontal: size.horizontal,
   },
   image: {
@@ -68,26 +68,30 @@ export const icons = StyleSheet.create({
 });
 
 export const texts = StyleSheet.create({
-  blackOpacity: {
+  label: {
     flexBasis: 62,
     color: color.blackOpacity,
     fontSize: 15,
+    alignSelf: 'flex-start',
   },
-  black: {
+  content: {
     flex: 1,
     color: color.gray48,
     fontSize: 15,
   },
-  blue: {
+  phone: {
     textDecorationStyle: 'solid',
     textDecorationColor: color.blue,
     textDecorationLine: 'underline',
-    lineHeight: 24,
     color: color.blue,
     fontSize: 15,
   },
-  message: {
-    fontSize: 15,
-    color: color.white,
+  title: {
+    fontSize: 16,
+    color: color.black,
+    paddingHorizontal: size.horizontal,
+  },
+  lineHeight: {
+    lineHeight: 24,
   },
 });

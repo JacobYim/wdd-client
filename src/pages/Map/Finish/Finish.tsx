@@ -26,10 +26,12 @@ import {
   Text,
   View,
   ImageEditor,
+  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
   walk: ReducerState['walk'];
+  user: ReducerState['user'];
   updateStatus: typeof actions.updateStatus;
   updateCount: typeof actions.updateCount;
 }
@@ -76,8 +78,8 @@ class Finish extends PureComponent<Props, State> {
 
   handleDismiss = () => {
     const { navigation, updateStatus } = this.props;
-    updateStatus('READY');
     navigation.popToTop();
+    updateStatus('READY');
   };
 
   handleUpload = () => {
@@ -85,6 +87,7 @@ class Finish extends PureComponent<Props, State> {
     const map = this.map.current;
     const mapWrapper = this.mapWrapper.current;
     if (!map || !mapWrapper) return;
+
     mapWrapper.measure(async (x, y, width, height) => {
       const snapshot = await map.takeSnapshot({
         width,
@@ -102,10 +105,7 @@ class Finish extends PureComponent<Props, State> {
             snapshot,
             options,
             uri => {
-              navigation.navigate('upload', {
-                snapshot: uri,
-                handleDismiss: this.handleDismiss,
-              });
+              navigation.navigate('upload', { snapshot: uri });
             },
             err => {}
           );
@@ -133,7 +133,7 @@ class Finish extends PureComponent<Props, State> {
   };
 
   render() {
-    const { walk } = this.props;
+    const { walk, user } = this.props;
     const { pees, poos, start, end } = this.state;
 
     return (
@@ -213,12 +213,14 @@ class Finish extends PureComponent<Props, State> {
               {moment(walk.createdAt).format('YYYY년 MM월 DD일 dddd')}
             </Text>
           </View>
-          <TouchableOpacity
-            style={views.upload}
-            onPress={this.handleUpload}
-            activeOpacity={0.7}>
-            <Text style={texts.upload}>내 피드 올리기</Text>
-          </TouchableOpacity>
+          {user.email.length !== 0 && (
+            <TouchableOpacity
+              style={views.upload}
+              onPress={this.handleUpload}
+              activeOpacity={0.7}>
+              <Text style={texts.upload}>내 피드 올리기</Text>
+            </TouchableOpacity>
+          )}
         </SafeAreaView>
       </View>
     );
@@ -226,6 +228,6 @@ class Finish extends PureComponent<Props, State> {
 }
 
 export default connect(
-  ({ walk }: ReducerState) => ({ walk }),
+  (state: ReducerState) => ({ walk: state.walk, user: state.user }),
   { updateStatus: actions.updateStatus, updateCount: actions.updateCount }
 )(Finish);

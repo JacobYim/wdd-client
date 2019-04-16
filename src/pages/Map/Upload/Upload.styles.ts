@@ -8,6 +8,11 @@ export const views = StyleSheet.create({
   listView: {
     paddingHorizontal: size.horizontal - 8,
   },
+  bottom: {
+    paddingHorizontal: 0,
+    marginBottom: size.horizontal,
+    flexDirection: 'row',
+  },
 });
 
 export const texts = StyleSheet.create({

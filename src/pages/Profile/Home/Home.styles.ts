@@ -1,4 +1,4 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { color, font, size } from 'src/theme';
 
 const { height } = Dimensions.get('window');
@@ -34,7 +34,7 @@ export const views = StyleSheet.create({
     paddingVertical: 6,
   },
   modalBackground: {
-    height: Platform.OS === 'ios' ? height : height - 20,
+    height,
     backgroundColor: color.black33Opacity,
   },
   modal: {
@@ -66,7 +66,7 @@ export const views = StyleSheet.create({
     flexDirection: 'row',
   },
   listContainer: {
-    paddingLeft: size.horizontal,
+    paddingHorizontal: size.horizontal,
     paddingTop: 11.5,
   },
   listSpace: {
@@ -84,6 +84,9 @@ export const views = StyleSheet.create({
   centerButton: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  emptyListTop: {
+    marginTop: height * 0.1,
   },
 });
 

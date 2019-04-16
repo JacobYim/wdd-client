@@ -43,6 +43,16 @@ export const views = StyleSheet.create({
     backgroundColor: `${color.black}1A`,
     marginHorizontal: 12,
   },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    paddingHorizontal: 6,
+    backgroundColor: color.white,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
 });
 
 export const texts = StyleSheet.create({

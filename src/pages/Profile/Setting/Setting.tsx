@@ -1,14 +1,17 @@
 import React, { PureComponent } from 'react';
-import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { Image, SafeAreaView, ScrollView } from 'react-native';
 import { FlatList, NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
+import { email, web } from 'src/assets/functions/link';
 import TopNavbar from 'src/components/module/TopNavbar';
 import WebModal from 'src/components/module/WebModal';
 import * as userActions from 'src/store/actions/user';
+import { ReducerState } from 'src/store/reducers';
 import RowItem from './RowItem';
 import { icons, views } from './Setting.styles';
 
 interface Props extends NavigationScreenProps {
+  user: ReducerState['user'];
   signOut: typeof userActions.signOut;
   terminate: typeof userActions.terminate;
 }
@@ -22,6 +25,7 @@ interface State {
   };
 }
 
+// tslint:disable:max-line-length
 class Setting extends PureComponent<Props, State> {
   state: State = {
     pushNotif: false,
@@ -33,8 +37,9 @@ class Setting extends PureComponent<Props, State> {
   };
 
   render() {
-    const { navigation, signOut, terminate } = this.props;
+    const { navigation, signOut, terminate, user } = this.props;
     const { pushNotif, showMyFeed } = this.state;
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <TopNavbar
@@ -91,9 +96,23 @@ class Setting extends PureComponent<Props, State> {
                   });
                 },
               },
-              { label: '개인정보 이용 약관', handlePress: () => {} },
-              { label: '고객센터', handlePress: () => {} },
-              { label: '장소등록 및 수정 요청', handlePress: () => {} },
+              // { label: '개인정보 이용 약관', handlePress: () => {} },
+              {
+                label: '고객센터',
+                handlePress: async () =>
+                  await email({
+                    receiver: 'info@woodongdang.com',
+                    subject: `서비스 문의 | ${user.email || '비로그인'}`,
+                  }),
+              },
+              {
+                label: '장소등록 및 수정 요청',
+                handlePress: async () =>
+                  await web({
+                    link:
+                      'https://docs.google.com/forms/d/1GrcHIpFtpihf8eZMna0wWLMfX423aOGPEaKs9VbIbHI/edit',
+                  }),
+              },
             ]}
             contentContainerStyle={views.boxWrapper}
             keyExtractor={(i, index) => index.toString()}
@@ -101,11 +120,27 @@ class Setting extends PureComponent<Props, State> {
               <RowItem item={item} index={index} />
             )}
           />
+
           <FlatList
-            data={[
-              { label: '로그아웃', handlePress: () => signOut(navigation) },
-              { label: '탈퇴하기', handlePress: () => terminate(navigation) },
-            ]}
+            data={
+              user.email
+                ? [
+                    {
+                      label: '로그아웃',
+                      handlePress: () => signOut(navigation),
+                    },
+                    {
+                      label: '탈퇴하기',
+                      handlePress: () => terminate(navigation),
+                    },
+                  ]
+                : [
+                    {
+                      label: '로그인',
+                      handlePress: () => navigation.navigate('session'),
+                    },
+                  ]
+            }
             contentContainerStyle={views.boxWrapper}
             keyExtractor={(i, index) => index.toString()}
             renderItem={({ item, index }) => (
@@ -120,6 +155,6 @@ class Setting extends PureComponent<Props, State> {
 }
 
 export default connect(
-  null,
+  (state: ReducerState) => ({ user: state.user }),
   { signOut: userActions.signOut, terminate: userActions.terminate }
 )(Setting);

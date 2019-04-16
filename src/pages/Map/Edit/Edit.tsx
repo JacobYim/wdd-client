@@ -14,6 +14,8 @@ import {
   SafeAreaView,
   Text,
   TouchableOpacity,
+  CameraRoll,
+  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -31,6 +33,15 @@ class Edit extends PureComponent<Props, State> {
 
   state: State = {
     image: this.props.navigation.getParam('image'),
+  };
+
+  handleDownload = async () => {
+    const snapshot = this.snapshot.current;
+    if (snapshot) {
+      const uri = await (snapshot as any).capture();
+      await CameraRoll.saveToCameraRoll(`file://${uri}`);
+      Alert.alert('저장되었습니다.');
+    }
   };
 
   handleClear = () => {
@@ -82,7 +93,7 @@ class Edit extends PureComponent<Props, State> {
   };
 
   render() {
-    const { walk } = this.props;
+    const { walk, navigation } = this.props;
     return (
       <SafeAreaView>
         <TopNavbar
@@ -93,7 +104,7 @@ class Edit extends PureComponent<Props, State> {
                 style={icons.save}
               />
             ),
-            handlePress: () => {},
+            handlePress: this.handleDownload,
           }}
           center="이미지 편집"
           right={{
@@ -103,7 +114,12 @@ class Edit extends PureComponent<Props, State> {
           showBorder
         />
         <ViewShot ref={this.snapshot} options={{ format: 'png', quality: 0.9 }}>
-          <ImageWithSticker image={this.state.image} walk={walk} size={width} />
+          <ImageWithSticker
+            image={this.state.image}
+            walk={walk}
+            size={width}
+            blackMode={navigation.getParam('blackMode')}
+          />
         </ViewShot>
         <FlatList
           data={[

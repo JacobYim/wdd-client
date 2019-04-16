@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { NavigationScreenProps, withNavigation } from 'react-navigation';
 import * as actions from 'src/store/actions/walk';
 import { ReducerState } from 'src/store/reducers';
-import { color } from 'src/theme';
+import { color, font } from 'src/theme';
 import { statusBtn } from '../Walk.styles';
 import {
   TouchableOpacity,
@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Animated,
   View,
+  Text,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -70,6 +71,19 @@ const styles = StyleSheet.create({
   afterHalf: {
     right: 0,
     backgroundColor: '#FF6A67',
+  },
+  actionIndicator: {
+    position: 'absolute',
+    left: 0,
+    bottom: -25,
+    right: 0,
+    width: statusBtn,
+    alignItems: 'center',
+  },
+  indicatorText: {
+    fontSize: 13,
+    fontFamily: font.family.NanumSquareRoundB,
+    color: color.gray48,
   },
 });
 
@@ -178,6 +192,11 @@ class StatusButton extends PureComponent<Props, State> {
                 styles[this.state.passHalf ? 'afterHalf' : 'beforeHalf'],
               ]}
             />
+          </View>
+        )}
+        {status === 'WALKING' && (
+          <View style={styles.actionIndicator}>
+            <Text style={styles.indicatorText}>길게 눌러서 종료</Text>
           </View>
         )}
         <TouchableOpacity

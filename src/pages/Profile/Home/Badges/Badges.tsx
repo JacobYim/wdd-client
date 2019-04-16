@@ -53,7 +53,11 @@ const Badges: React.FC<{ user: ReducerState['user'] }> = ({ user }) => {
   }
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: space / 2, marginTop: -8 }}>
+    <>
+      <Image
+        source={require('src/assets/images/img_banner_wdd.png')}
+        style={{ width, height: width * 0.144, resizeMode: 'contain' }}
+      />
       <FlatList
         data={[
           {
@@ -173,6 +177,7 @@ const Badges: React.FC<{ user: ReducerState['user'] }> = ({ user }) => {
         showsHorizontalScrollIndicator={false}
         numColumns={4}
         keyExtractor={(i, index) => index.toString()}
+        style={{ flex: 1, paddingHorizontal: space / 2, marginTop: -8 }}
         columnWrapperStyle={styles.container}
         renderItem={({ item }) => (
           <View style={styles.wrapper}>
@@ -184,7 +189,7 @@ const Badges: React.FC<{ user: ReducerState['user'] }> = ({ user }) => {
           </View>
         )}
       />
-    </View>
+    </>
   );
 };
 

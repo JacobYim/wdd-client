@@ -2,7 +2,7 @@ import { find, findIndex } from 'lodash';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
-import call from 'src/assets/functions/phoneCall';
+import { call } from 'src/assets/functions/link';
 import withMessage, { MessageProps } from 'src/components/base/withMessage';
 import Rating from 'src/components/module/Rating';
 import TopNavbar from 'src/components/module/TopNavbar';
@@ -10,7 +10,6 @@ import Card from 'src/pages/Place/MapList/Card';
 import { getReviews, Review } from 'src/services/api/review';
 import * as actions from 'src/store/actions/place';
 import { ReducerState } from 'src/store/reducers';
-import { size } from 'src/theme';
 import { icons, texts, views } from './Detail.styles';
 import ReviewCard from './ReviewCard';
 import {
@@ -179,17 +178,19 @@ class Detail extends PureComponent<Props, State> {
               renderItem={({ item }) =>
                 item.value ? (
                   <View style={views.rowWrapper}>
-                    <Text style={texts.blackOpacity}>{item.label}</Text>
+                    <Text style={[texts.label, texts.lineHeight]}>
+                      {item.label}
+                    </Text>
                     {isPhoneNumber(item.value) ? (
                       <Text
-                        style={texts.blue}
+                        style={[texts.phone, texts.lineHeight]}
                         onPress={async () =>
                           await call({ number: item.value as string })
                         }>
                         {item.value}
                       </Text>
                     ) : (
-                      <Text numberOfLines={2} style={texts.black}>
+                      <Text style={[texts.content, texts.lineHeight]}>
                         {item.value}
                       </Text>
                     )}
@@ -202,10 +203,7 @@ class Detail extends PureComponent<Props, State> {
           {images && images.length > 0 && (
             <>
               <View style={[views.infoWrapper, { paddingHorizontal: 0 }]}>
-                <Text
-                  style={[texts.black, { paddingHorizontal: size.horizontal }]}>
-                  사진
-                </Text>
+                <Text style={texts.title}>사진</Text>
                 <FlatList
                   contentContainerStyle={views.imageWrapper}
                   data={images}
@@ -221,7 +219,7 @@ class Detail extends PureComponent<Props, State> {
             </>
           )}
           <View style={[views.infoWrapper, { alignItems: 'center' }]}>
-            <Text style={texts.black}>이 장소에 대한 평점을 남겨주세요.</Text>
+            <Text style={texts.content}>이 장소에 대한 평점을 남겨주세요.</Text>
             <Rating
               onRatingChange={this.handleRatingChange}
               containerStyle={{ marginTop: 20 }}

@@ -12,7 +12,7 @@ const openLink = (url: string) => {
   });
 };
 
-const call = (args: { number: string; prompt?: boolean }) => {
+export const call = (args: { number: string; prompt?: boolean }) => {
   const settings = Object.assign({ prompt: true }, args);
   if (!settings.number) {
     return createError('no number provided');
@@ -31,4 +31,11 @@ const call = (args: { number: string; prompt?: boolean }) => {
   return openLink(url);
 };
 
-export default call;
+export const email = (args: { receiver: string; subject: string }) => {
+  const url = `mailto:${args.receiver}?subject=${args.subject}`;
+  return openLink(url);
+};
+
+export const web = (args: { link: string }) => {
+  return openLink(args.link);
+};

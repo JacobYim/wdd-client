@@ -82,7 +82,13 @@ const ImageCard: React.FC<Props> = ({
   };
   return (
     <ImageWrapper
-      onPress={() => navigate('edit', { image, handleEdit })}
+      onPress={() =>
+        navigate('edit', {
+          image,
+          handleEdit,
+          blackMode: /^rct-image-store|woodongdang/g.test(image.uri),
+        })
+      }
       onPressDelete={() => handleDelete(index)}>
       <Image source={{ uri: image.uri }} style={views.image} />
     </ImageWrapper>

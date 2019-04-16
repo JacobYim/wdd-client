@@ -75,8 +75,8 @@ class Prepare extends PureComponent<Props, State> {
     const interval = setInterval(() => {
       const index = this.state.index + 1;
       if (index === images.length) {
-        this.props.onFinish();
         clearInterval(interval);
+        this.props.onFinish();
       } else {
         this.setState({ index });
         if (scroll) scroll.scrollToIndex({ index, animated: true });
@@ -94,6 +94,7 @@ class Prepare extends PureComponent<Props, State> {
             data={images}
             style={{ flex: 1 }}
             showsVerticalScrollIndicator={false}
+            onScrollToIndexFailed={() => {}}
             keyExtractor={(i, index) => index.toString()}
             renderItem={({ item }) => (
               <Image source={item.ic_num} style={styles.icon} />
