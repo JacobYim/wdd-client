@@ -5,7 +5,7 @@ export interface GeoJSON {
   coordinates: [number, number];
 }
 
-export type Label = '카페' | '식당' | '병원' | '용품' | '술집' | '기타';
+export type Label = '카페' | '식당' | '페스티벌' | '병원' | '용품' | '기타';
 
 // *** INTERFACES
 export interface Place
