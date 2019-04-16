@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import DefaultImage from 'src/components/module/DefaultImage';
 import EmptyList from 'src/components/module/EmptyList';
 import Feed from 'src/components/module/Feed';
-import { pushLike } from 'src/services/api/dog';
 import { Feed as FeedInterface, getFeeds } from 'src/services/api/feed';
 import { searchUsers } from 'src/services/api/user';
-import { Dog } from 'src/store/actions/dog';
+import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { icons, texts, views } from './Wdd.styles';
+
 import {
   Image,
   SafeAreaView,
@@ -21,17 +21,17 @@ import {
   Modal,
   Text,
   RefreshControl,
-  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
   user: ReducerState['user'];
+  pushLike: typeof dogActions.pushLike;
 }
 
 interface State {
-  dogs: Dog[];
+  dogs: dogActions.Dog[];
   feeds: FeedInterface[];
-  selectDog?: Dog;
+  selectDog?: dogActions.Dog;
   refresh: boolean;
 }
 
@@ -68,10 +68,9 @@ class Wdd extends PureComponent<Props, State> {
   };
 
   handlePressLike = async (_id: string) => {
-    const { user } = this.props;
+    const { user, pushLike } = this.props;
     const data = await pushLike({ _id });
     if (data) {
-      Alert.alert(data.message);
       this.setState(state =>
         produce(state, draft => {
           if (user.repDog && draft.selectDog) {
@@ -97,11 +96,11 @@ class Wdd extends PureComponent<Props, State> {
     });
     const dogs = users
       .filter(user => user.repDog !== undefined)
-      .map(user => user.repDog) as Dog[];
+      .map(user => user.repDog) as dogActions.Dog[];
     await this.setState({ feeds, dogs });
   };
 
-  selectDog = (selectDog: Dog) => {
+  selectDog = (selectDog: dogActions.Dog) => {
     this.setState({ selectDog });
   };
 
@@ -242,4 +241,7 @@ class Wdd extends PureComponent<Props, State> {
   }
 }
 
-export default connect((state: ReducerState) => ({ user: state.user }))(Wdd);
+export default connect(
+  (state: ReducerState) => ({ user: state.user }),
+  { pushLike: dogActions.pushLike }
+)(Wdd);
