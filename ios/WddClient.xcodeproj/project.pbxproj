@@ -27,13 +27,13 @@
 		5535B8892213EBB1003C3BC8 /* NanumSquareRoundB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */; };
 		5535B88A2213EBB1003C3BC8 /* NanumSquareRoundR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */; };
 		5535B88B2213EBB1003C3BC8 /* NanumSquareRoundEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */; };
+		55ED1EEB2265479B00C1A7AD /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55ED1EEA2265479B00C1A7AD /* libRCTCameraRoll.a */; };
 		7BE83AF8E24E4C75B31B6307 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34234F54CB48401884AD9265 /* libRNGestureHandler.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		91B284EFA369441481773C2A /* libBMDPedometer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC633DE5CC9046E3BFFBFF66 /* libBMDPedometer.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		F3140FCB2A8440F0B3F7D2D0 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 131B140406B044E9BC52EDFC /* libRNImagePicker.a */; };
-		F9CDAEA6061F4D419EA67270 /* libRNAWSCognito.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA1E9D63749E47DBB053B909 /* libRNAWSCognito.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -240,13 +240,6 @@
 			remoteGlobalIDString = 3D3CD9321DE5FBEE00167DC4;
 			remoteInfo = "cxxreact-tvOS";
 		};
-		553E098C21FF4F3B00006157 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 935B8A8294874C488BB51B12 /* RNAWSCognito.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNAWSCognito;
-		};
 		553E098F21FF4F3B00006157 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */;
@@ -370,17 +363,16 @@
 		5535B8862213EBB1003C3BC8 /* NanumSquareRoundB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundB.ttf; sourceTree = "<group>"; };
 		5535B8872213EBB1003C3BC8 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundR.ttf; sourceTree = "<group>"; };
 		5535B8882213EBB1003C3BC8 /* NanumSquareRoundEB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumSquareRoundEB.ttf; sourceTree = "<group>"; };
+		55ED1EEA2265479B00C1A7AD /* libRCTCameraRoll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRCTCameraRoll.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7A4F252190FF492AAB86F41C /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8C07010584D0D7943131F998 /* libPods-WddClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WddClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		935B8A8294874C488BB51B12 /* RNAWSCognito.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNAWSCognito.xcodeproj; path = "../node_modules/amazon-cognito-identity-js/ios/RNAWSCognito.xcodeproj"; sourceTree = "<group>"; };
 		9D78A190941B4EE447858796 /* Pods-WddClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WddClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WddClient/Pods-WddClient.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE5E350CE91B45B8868713E7 /* NanumSquareRoundEB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundEB.ttf; path = ../src/assets/fonts/NanumSquareRoundEB.ttf; sourceTree = "<group>"; };
 		BC633DE5CC9046E3BFFBFF66 /* libBMDPedometer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBMDPedometer.a; sourceTree = "<group>"; };
-		EA1E9D63749E47DBB053B909 /* libRNAWSCognito.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAWSCognito.a; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		F8B3C7E1F97E45B18E232F89 /* NanumSquareRoundB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundB.ttf; path = ../src/assets/fonts/NanumSquareRoundB.ttf; sourceTree = "<group>"; };
@@ -399,6 +391,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55ED1EEB2265479B00C1A7AD /* libRCTCameraRoll.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -413,7 +406,6 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				7BE83AF8E24E4C75B31B6307 /* libRNGestureHandler.a in Frameworks */,
-				F9CDAEA6061F4D419EA67270 /* libRNAWSCognito.a in Frameworks */,
 				F3140FCB2A8440F0B3F7D2D0 /* libRNImagePicker.a in Frameworks */,
 				1EE99741B2B0C9AE054A4818 /* libPods-WddClient.a in Frameworks */,
 				91B284EFA369441481773C2A /* libBMDPedometer.a in Frameworks */,
@@ -543,6 +535,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55ED1EEA2265479B00C1A7AD /* libRCTCameraRoll.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				8C07010584D0D7943131F998 /* libPods-WddClient.a */,
@@ -575,19 +568,10 @@
 			isa = PBXGroup;
 			children = (
 				34234F54CB48401884AD9265 /* libRNGestureHandler.a */,
-				EA1E9D63749E47DBB053B909 /* libRNAWSCognito.a */,
 				131B140406B044E9BC52EDFC /* libRNImagePicker.a */,
 				BC633DE5CC9046E3BFFBFF66 /* libBMDPedometer.a */,
 			);
 			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		553E098521FF4F3A00006157 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				553E098D21FF4F3B00006157 /* libRNAWSCognito.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		553E098721FF4F3A00006157 /* Products */ = {
@@ -649,7 +633,6 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				F75415774022409ABF75C902 /* RNGestureHandler.xcodeproj */,
-				935B8A8294874C488BB51B12 /* RNAWSCognito.xcodeproj */,
 				7A4F252190FF492AAB86F41C /* RNImagePicker.xcodeproj */,
 				4AFDB46EA92C430DAE503908 /* BMDPedometer.xcodeproj */,
 			);
@@ -832,10 +815,6 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-				},
-				{
-					ProductGroup = 553E098521FF4F3A00006157 /* Products */;
-					ProjectRef = 935B8A8294874C488BB51B12 /* RNAWSCognito.xcodeproj */;
 				},
 				{
 					ProductGroup = 553E098721FF4F3A00006157 /* Products */;
@@ -1049,13 +1028,6 @@
 			fileType = archive.ar;
 			path = libcxxreact.a;
 			remoteRef = 3DAD3EAA1DF850E9000B6D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		553E098D21FF4F3B00006157 /* libRNAWSCognito.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNAWSCognito.a;
-			remoteRef = 553E098C21FF4F3B00006157 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		553E099021FF4F3B00006157 /* libRNGestureHandler.a */ = {
@@ -1278,7 +1250,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
 					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",
@@ -1286,10 +1257,7 @@
 				INFOPLIST_FILE = WddClientTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1308,7 +1276,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
 					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",
@@ -1316,10 +1283,7 @@
 				INFOPLIST_FILE = WddClientTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1347,7 +1311,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
 					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",
@@ -1381,7 +1344,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/amazon-cognito-identity-js/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-daummap/ios/DaumMap",
 					"$(SRCROOT)/../node_modules/@JWWon/react-native-universal-pedometer/ios/BMDPedometer",

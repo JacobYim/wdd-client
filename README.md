@@ -10,6 +10,7 @@
 
 1. `npm` 혹은 `yarn` 설치
 2. `cocoapod` 설치
+3. `aws init` 실행
 
 ### 실행하기
 
@@ -30,8 +31,9 @@
 }
 ```
 
-6. `~/wdd-client& npm run dev`
-7. 서비스 실행
+6. `~/wdd-client$ amplify push` (AWS Amplify 세팅)
+7. `~/wdd-client$ npm run dev`
+8. 서비스 실행
 
 - Android
   1. 에뮬레이터 혹은 안드로이드 디바이스 연결

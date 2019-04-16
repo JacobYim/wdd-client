@@ -1,22 +1,19 @@
 import { AxiosResponse } from 'axios';
 import produce from 'immer';
-import { pick } from 'lodash';
 import { handleActions } from 'redux-actions';
 import { removeHeader } from 'src/services/api/axios';
 import { removeUserStorage } from 'src/services/storage/user';
 import * as dogActions from 'src/store/actions/dog';
+import * as placeActions from 'src/store/actions/place';
 import * as actions from 'src/store/actions/user';
 
-export interface UserState
-  extends Pick<
-    actions.UserInterface,
-    Exclude<keyof actions.UserInterface, '_id'>
-  > {
+export interface UserState extends actions.UserInterface {
   error?: AxiosResponse;
   dogError?: AxiosResponse;
 }
 
 const initialState: UserState = {
+  _id: '',
   email: '',
   lastLogin: new Date(),
   name: '',
@@ -24,6 +21,8 @@ const initialState: UserState = {
   gender: '',
   status: 'TERMINATED',
   dogs: {},
+  location: { type: 'Point', coordinates: [0, 0] },
+  places: [],
 };
 
 export default handleActions<UserState, any>(
@@ -46,6 +45,10 @@ export default handleActions<UserState, any>(
         draft.error = action.payload;
       });
     },
+    [actions.UPDATE_LOCAL]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
     [actions.REMOVE_USER]: (state, action) => initialState,
     // *** HANDLE DOG ACTIONS
     [dogActions.SET_DOG_REQUEST]: (state, action) =>
@@ -54,7 +57,7 @@ export default handleActions<UserState, any>(
       }),
     [dogActions.SET_DOG_SUCCESS]: (state, action) =>
       produce(state, draft => {
-        const dog = action.payload as dogActions.DogInterface;
+        const dog = action.payload as dogActions.Dog;
         draft.repDog = dog;
         draft.dogs[dog._id] = dog.name;
       }),
@@ -68,6 +71,19 @@ export default handleActions<UserState, any>(
          * 406: NotAcceptable, 비활성 계정
          */
         draft.dogError = action.payload;
+      }),
+    // *** HANDLE PLACE ACTIONS
+    [placeActions.SET_PLACE_REQUEST]: (state, action) =>
+      produce(state, draft => {
+        delete draft.error;
+      }),
+    [placeActions.SET_PLACE_SUCCESS]: (state, action) =>
+      produce(state, draft => {
+        draft.places = action.payload;
+      }),
+    [placeActions.SET_PLACE_FAILURE]: (state, action) =>
+      produce(state, draft => {
+        draft.error = action.payload;
       }),
   },
   initialState

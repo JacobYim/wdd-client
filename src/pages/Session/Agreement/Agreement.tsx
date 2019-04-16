@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
+import WebModal from 'src/components/module/WebModal';
 import { icons, texts, views } from './Agreement.styles';
-import Detail from './Detail';
 
 interface Term {
   title: string;
@@ -20,7 +20,7 @@ interface RenderTermInterface extends Term {
 interface State {
   checkAll: boolean;
   terms: Term[];
-  detail?: {
+  web?: {
     title: string;
     link: string;
   };
@@ -36,21 +36,16 @@ class Agreement extends Component<NavigationScreenProps, State> {
         agree: false,
         link: 'http://policy.woodongdang.com/',
       },
-      {
-        title: '개인정보 이용 약관',
-        agree: false,
-        link: '',
-      },
     ],
   };
 
-  hideDetail = () => {
-    this.setState({ detail: undefined });
+  hideModal = () => {
+    this.setState({ web: undefined });
   };
 
-  showDetail = (detail: State['detail']) => {
-    if (detail && !this.state.detail) {
-      this.setState({ detail });
+  showWebModal = (web: State['web']) => {
+    if (web && !this.state.web) {
+      this.setState({ web });
     }
   };
 
@@ -99,7 +94,7 @@ class Agreement extends Component<NavigationScreenProps, State> {
       <TouchableOpacity
         style={views.termMore}
         activeOpacity={0.95}
-        onPress={() => this.showDetail({ title, link })}>
+        onPress={() => this.showWebModal({ title, link })}>
         <Image
           style={icons.more}
           source={require('src/assets/icons/ic_arrow.png')}
@@ -141,7 +136,7 @@ class Agreement extends Component<NavigationScreenProps, State> {
           />
         </TouchableOpacity>
         {terms.map((term, index) => this.renderTerm({ ...term, index }))}
-        <Detail hideDetail={this.hideDetail} detail={this.state.detail} />
+        <WebModal hideModal={this.hideModal} data={this.state.web} />
       </PageContainer>
     );
   }

@@ -2,33 +2,32 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import PageContainer from 'src/components/container/PageContainer';
-import Splash from 'src/components/module/Splash';
-import { checkPermission } from 'src/store/sagas/user';
 import { texts, views } from './Select.styles';
 
-const BottomButtons: React.FC<NavigationScreenProps> = ({ navigation }) => {
-  const navToApp = async () => {
-    if (await checkPermission()) navigation.navigate('app');
-  };
-
-  return (
-    <View style={views.buttons}>
-      <TouchableOpacity activeOpacity={0.7} onPress={navToApp}>
-        <Text style={texts.bottom}>비회원으로 시작하기</Text>
-      </TouchableOpacity>
-      <View style={views.vr} />
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => navigation.navigate('signUp')}>
-        <Text style={texts.bottom}>회원가입</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+const BottomButtons: React.FC<NavigationScreenProps> = ({ navigation }) => (
+  <View style={views.buttons}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => navigation.navigate('app')}>
+      <Text style={texts.bottom}>비회원으로 시작하기</Text>
+    </TouchableOpacity>
+    <View style={views.vr} />
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => navigation.navigate('signUp')}>
+      <Text style={texts.bottom}>회원가입</Text>
+    </TouchableOpacity>
+  </View>
+);
 
 const Select: React.FC<NavigationScreenProps> = ({ navigation }) => (
-  <>
-    <Splash />
+  <View style={{ flex: 1 }}>
+    <View style={views.background}>
+      <Image
+        source={require('src/assets/images/img_background.jpg')}
+        style={views.image}
+      />
+    </View>
     <PageContainer
       bottom={{
         view: <BottomButtons navigation={navigation} />,
@@ -47,7 +46,7 @@ const Select: React.FC<NavigationScreenProps> = ({ navigation }) => (
         </TouchableOpacity>
       </View>
     </PageContainer>
-  </>
+  </View>
 );
 
 export default Select;

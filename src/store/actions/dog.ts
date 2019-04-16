@@ -1,32 +1,44 @@
 import { NavigationScreenProp } from 'react-navigation';
 
+export interface Like {
+  dog: string;
+  createdAt: Date;
+}
+
+export interface History {
+  yearMonth: string;
+  count: number;
+  seconds: number;
+  steps: number;
+  distance: number;
+  pees: number;
+  poos: number;
+}
+
 // *** INTERFACES
-export interface CreateDogInterface {
+export interface DogBase {
   name: string;
   thumbnail?: string;
   breed: string;
   gender: 'M' | 'F' | 'N' | '';
-  birth?: string; // YYYY.MM.DD
+  birth?: string;
   weight?: number;
   info?: string;
-  feeds: string[];
-  likes: string[];
 }
 
-export interface UpdateDogInterface {
+export interface UpdateDog extends DogBase {
   _id: string;
-  name?: string;
-  thumbnail?: string;
-  breed?: string;
-  gender?: 'M' | 'F' | 'N';
-  birth?: string; // YYYY.MM.DD
-  weight?: number;
-  info?: string;
 }
 
-export interface DogInterface extends CreateDogInterface {
+export interface Dog extends DogBase {
   _id: string;
   user: string;
+  badges: {
+    firstLike: boolean;
+  };
+  feeds: string[];
+  likes: Like[];
+  histories: History[];
 }
 
 // *** CONSTS
@@ -45,20 +57,20 @@ export const selectDog = (payload: { _id: string }) => ({
   type: SELECT_DOG,
 });
 export const createDog = (
-  payload: CreateDogInterface,
+  payload: DogBase,
   navigation?: NavigationScreenProp<any>
 ) => ({
   payload,
   navigation,
   type: CREATE_DOG,
 });
-export const updateDog = (payload: UpdateDogInterface) => ({
+export const updateDog = (payload: UpdateDog) => ({
   payload,
   type: UPDATE_DOG,
 });
 
 export const setDogRequest = () => ({ type: SET_DOG_REQUEST });
-export const setDogSuccess = (payload: DogInterface) => ({
+export const setDogSuccess = (payload: Dog) => ({
   payload,
   type: SET_DOG_SUCCESS,
 });

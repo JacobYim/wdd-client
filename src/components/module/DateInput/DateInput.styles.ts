@@ -5,13 +5,14 @@ export const views = StyleSheet.create({
   datePicker: {
     // outer size
     width: '100%',
+    marginTop: 4,
   },
   dateInput: {
     // border styles
     height: 49,
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: color.grayDA,
+    borderColor: color.grayEF,
     paddingHorizontal: 12,
   },
 });

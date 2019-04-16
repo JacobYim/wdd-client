@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import LabelWrapper from 'src/components/container/LabelWrapper';
 import { HandleChangeSelector } from './index';
-import { views } from './Selector.styles';
+import { texts, views } from './Selector.styles';
 import ToggleBox from './ToggleBox';
 
 interface Data {
@@ -15,6 +15,7 @@ interface Props {
   name: string;
   list: Data[];
   value?: string;
+  alert?: string;
   handleChange: (data: HandleChangeSelector) => void;
 }
 
@@ -32,7 +33,7 @@ class Selector extends Component<Props, State> {
   };
 
   render() {
-    const { label, list } = this.props;
+    const { label, list, alert } = this.props;
     return (
       <LabelWrapper label={label}>
         <View style={views.boxWrapper}>
@@ -46,6 +47,7 @@ class Selector extends Component<Props, State> {
             />
           ))}
         </View>
+        {alert && <Text style={texts.alert}>{alert}</Text>}
       </LabelWrapper>
     );
   }

@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { pick } from 'lodash';
 import React, { Component } from 'react';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationScreenProps } from 'react-navigation';
@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import breeds from 'src/assets/consts/breeds.json';
 import withLoading, { LoadingProps } from 'src/components/base/withLoading';
 import PageContainer from 'src/components/container/PageContainer';
+import DefaultImage from 'src/components/module/DefaultImage';
 import Selector, { HandleChangeSelector } from 'src/components/module/Selector';
 import TextAutocomplete from 'src/components/module/TextAutocomplete';
 import TextInput, { HandleChangeText } from 'src/components/module/TextInput';
@@ -14,12 +15,18 @@ import * as actions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import { texts, views } from './CreateDog.styles';
 import {
+  PICTURE_PERMISSIONS,
+  checkPermission,
+} from 'src/assets/functions/validate';
+import {
   Image,
   Text,
   TextInput as Input,
   TouchableOpacity,
   View,
   Modal,
+  Keyboard,
+  Dimensions,
 } from 'react-native';
 
 interface Props extends LoadingProps, NavigationScreenProps {
@@ -27,18 +34,21 @@ interface Props extends LoadingProps, NavigationScreenProps {
   email: ReducerState['user']['email'];
 }
 
-interface State extends actions.CreateDogInterface {
+interface State extends actions.DogBase {
   showModal: boolean;
+  thumbnailHeight: number;
 }
+
+const { height } = Dimensions.get('window');
 
 class CreateDog extends Component<Props, State> {
   private inputs = {
     name: React.createRef<Input>(),
-    breed: React.createRef<Input>(),
   };
 
   state: State = {
     showModal: false,
+    thumbnailHeight: 0,
     name: '',
     breed: '',
     gender: '',
@@ -57,47 +67,37 @@ class CreateDog extends Component<Props, State> {
     this.toggleModal();
   };
 
-  handleImagePicker = () => {
+  handleImagePicker = async () => {
     const options = {
       title: '프로필 선택',
-      customButtons: [{ name: 'default', title: '기본 이미지' }],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
+      takePhotoButtonTitle: '사진 찍기',
+      chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
+      customButtons: [{ name: 'default', title: '우동댕 기본 이미지' }],
+      cancelButtonTitle: '취소',
+      storageOptions: { skipBackup: true, path: 'images' },
     };
-
-    ImagePicker.showImagePicker(options, res => {
-      if (res.didCancel || res.error) return;
-      if (res.customButton) {
-        this.setState(state =>
-          produce(state, draft => {
-            draft.thumbnail = '';
-          })
-        );
-      }
-
-      this.setState(state =>
-        produce(state, draft => {
-          draft.thumbnail = res.uri;
-        })
-      );
-    });
+    if (await checkPermission(PICTURE_PERMISSIONS)) {
+      ImagePicker.showImagePicker(options, res => {
+        if (res.didCancel || res.error) return;
+        this.setState({ thumbnail: res.customButton ? '' : res.uri });
+      });
+    }
   };
 
   handleSubmit = async () => {
     const { createDog, email, navigation, toggleLoading } = this.props;
-    const { name, ...others } = this.state;
-    let thumbnail = undefined;
-    if (this.state.thumbnail) {
-      thumbnail = await uploadImage({
-        name,
-        email,
+    const state = pick(this.state, ['name', 'thumbnail', 'breed', 'gender']);
+    Keyboard.dismiss();
+    if (state.thumbnail) {
+      const url = await uploadImage({
         table: 'dogs',
-        uri: this.state.thumbnail,
+        label: email,
+        name: state.name,
+        uri: state.thumbnail,
       })(toggleLoading);
+      state.thumbnail = url;
     }
-    await createDog({ name, thumbnail, ...others }, navigation);
+    await createDog(state, navigation);
   };
 
   render() {
@@ -116,19 +116,14 @@ class CreateDog extends Component<Props, State> {
           handlePress: this.handleSubmit,
           disable: !name || !breed || !gender,
         }}
-        extraScrollHeight={200}>
+        titleOnScroll="댕댕이 정보 입력"
+        extraScrollHeight={height * 0.25}
+        extraBottom={height * 0.32}>
         <View style={views.thumbnailWrapper}>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={this.handleImagePicker}>
-            <Image
-              style={views.thumbnail}
-              source={
-                thumbnail
-                  ? { uri: thumbnail }
-                  : require('src/assets/icons/ic_thumbnail.png')
-              }
-            />
+            <DefaultImage size={100} uri={thumbnail} showBorder />
             <Image
               style={views.edit}
               source={require('src/assets/icons/ic_edit.png')}
@@ -166,14 +161,16 @@ class CreateDog extends Component<Props, State> {
         <Modal
           animationType="slide"
           transparent={false}
-          visible={this.state.showModal}>
+          onRequestClose={this.toggleModal}
+          visible={this.state.showModal}
+          hardwareAccelerated>
           <TextAutocomplete
             placeholder="찾으시는 품종을 입력해주세요"
-            list={breeds}
             icon={require('src/assets/icons/ic_search_gray.png')}
+            staticList={breeds}
             defaultList={[{ name: '믹스' }, { name: '알 수 없음' }]}
-            handleSubmit={this.handleBreedChange}
-            handleDismiss={this.toggleModal}
+            onSubmit={this.handleBreedChange}
+            onDismiss={this.toggleModal}
           />
         </Modal>
       </PageContainer>

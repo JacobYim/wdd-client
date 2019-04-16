@@ -8,7 +8,7 @@ export default {
   red: '#FF6060',
   redLight: '#FF615E',
   // gray
-  gary55: '#555555',
+  gray48: '#484848',
   gray66: '#666666',
   gray84: '#848484',
   grayDA: '#DADCDF',
@@ -17,5 +17,4 @@ export default {
   grayF9: '#F9F9F9',
   // signature
   blue: '#127EFF',
-  bluePastel: '#5887F9',
 };

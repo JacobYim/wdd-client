@@ -1,0 +1,19 @@
+{
+    "root": {
+        "awscloudformation": {
+            "AuthRoleName": "wdd-client-20190405203644-authRole",
+            "UnauthRoleArn": "arn:aws:iam::367420475204:role/wdd-client-20190405203644-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::367420475204:role/wdd-client-20190405203644-authRole",
+            "Region": "ap-northeast-2",
+            "DeploymentBucketName": "wdd-client-20190405203644-deployment",
+            "UnauthRoleName": "wdd-client-20190405203644-unauthRole",
+            "StackName": "wdd-client-20190405203644",
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:367420475204:stack/wdd-client-20190405203644/16b15770-5797-11e9-bff8-06b6987b4582"
+        },
+        "categories": {
+            "auth": {
+                "cognitoc670f476": {}
+            }
+        }
+    }
+}

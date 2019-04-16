@@ -1,9 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
+import { Alert } from 'react-native';
+import { Dog } from 'src/store/actions/dog';
 
-interface Feed {
+export interface Feed {
   _id: string;
   user: string;
-  dog: string;
+  dog: Dog;
   pins: string; // JSON.stringify(pins)
   seconds: number;
   distance: number; // km
@@ -12,16 +14,21 @@ interface Feed {
   poos: number;
   images: string[];
   memo?: string;
+  likes: { user: string; createdAt: Date }[];
   createdAt: Date;
 }
 
-export type Body = Pick<
-  Feed,
-  Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt'>
->;
+export interface Body
+  extends Pick<
+    Feed,
+    Exclude<keyof Feed, '_id' | 'user' | 'dog' | 'createdAt' | 'likes'>
+  > {
+  steps: number;
+}
 
 export interface Params {
-  user?: string;
+  dogs?: string[];
+  feeds?: string[];
 }
 
 export const createFeed = async (params: Body) => {
@@ -29,7 +36,32 @@ export const createFeed = async (params: Body) => {
   return response.data;
 };
 
-export const getFeeds = async (params?: Params) => {
+export const getFeeds = async (p: Params) => {
+  const params: { dogs?: string; feeds?: string } = {};
+  if (p.dogs) params.dogs = JSON.stringify(p.dogs);
+  if (p.feeds) params.feeds = JSON.stringify(p.feeds);
   const response: AxiosResponse<Feed[]> = await axios.get('/feeds', { params });
+  return response.data;
+};
+
+export const deleteFeed = async (body: { _id: string }) => {
+  const response: AxiosResponse<{ message: string }> = await axios.delete(
+    `/feeds/${body._id}`
+  );
+  Alert.alert('피드가 삭제되었습니다.');
+  return response.data;
+};
+
+export const pushLike = async (params: { _id: string }) => {
+  const response: AxiosResponse<Feed> = await axios.patch(
+    `/feeds/${params._id}/like`
+  );
+  return response.data;
+};
+
+export const undoLike = async (params: { _id: string }) => {
+  const response: AxiosResponse<Feed> = await axios.delete(
+    `/feeds/${params._id}/like`
+  );
   return response.data;
 };

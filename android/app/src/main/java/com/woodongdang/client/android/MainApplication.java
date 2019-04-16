@@ -4,13 +4,14 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
+import com.amazonaws.RNAWSCognitoPackage;
 import com.emesonsantana.BMDPedometer.BMDPedometer;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.amazonaws.RNAWSCognitoPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -32,14 +33,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ExtraDimensionsPackage(),
+            new RNCWebViewPackage(),
+            new RNAWSCognitoPackage(),
             new BMDPedometer(),
             new RNViewShotPackage(),
-            new RNCWebViewPackage(),
             new BackgroundTimerPackage(),
             new MapsPackage(),
             new RNFusedLocationPackage(),
             new ImagePickerPackage(),
-            new RNAWSCognitoPackage(),
             new RNGestureHandlerPackage()
       );
     }

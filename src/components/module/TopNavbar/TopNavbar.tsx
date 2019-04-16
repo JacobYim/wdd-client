@@ -17,19 +17,19 @@ interface Props {
     view: ReactNode;
     handlePress: () => void;
   };
-  center?: string;
+  center?: string | ReactNode;
   showBorder?: boolean;
   transparent?: boolean;
 }
 
 const { width } = Dimensions.get('window');
-export const height = 45;
+export const height = 55;
 const styles = StyleSheet.create({
   wrapper: {
     height,
     width: '100%',
     flexDirection: 'row',
-    borderBottomColor: '#70707014',
+    borderBottomColor: '#EBEBEB',
   },
   button: {
     paddingHorizontal: width * 0.04,
@@ -63,11 +63,14 @@ const TopNavbar: React.FC<Props> = ({
       showBorder ? { borderBottomWidth: 1 } : null,
       { backgroundColor: transparent ? 'transparent' : color.white },
     ]}>
-    {center && (
-      <View style={styles.center}>
-        <Text style={styles.text}>{center}</Text>
-      </View>
-    )}
+    {center &&
+      (typeof center === 'string' ? (
+        <View style={styles.center}>
+          <Text style={styles.text}>{center}</Text>
+        </View>
+      ) : (
+        center
+      ))}
     {left && (
       <TouchableOpacity
         onPress={left.handlePress}

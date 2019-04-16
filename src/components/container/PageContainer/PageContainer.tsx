@@ -15,6 +15,7 @@ import {
   View,
   ScrollView,
   Platform,
+  Keyboard,
 } from 'react-native';
 
 interface Props {
@@ -24,6 +25,8 @@ interface Props {
   title?: string;
   subtitle?: string;
   titleNarrow?: boolean;
+  titleOnScroll?: string;
+  alignTitleCenter?: boolean;
   // top
   left?: {
     navigation: NavigationScreenProp<any>;
@@ -34,7 +37,6 @@ interface Props {
     handlePress: () => void;
   };
   center?: string;
-  showBorder?: boolean;
   // bottom
   bottom?: {
     view: ReactNode;
@@ -46,8 +48,10 @@ interface Props {
     disable: boolean;
   };
   // option
+  showBorder?: boolean;
   extraScrollHeight?: number;
   extraBottom?: number;
+  enableScroll?: boolean;
 }
 
 interface State {
@@ -90,16 +94,21 @@ class PageContainer extends PureComponent<Props, State> {
   };
 
   handleScroll = (evt: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { center, title } = this.props;
+    const { center, title, titleOnScroll } = this.props;
     const { contentOffset } = evt.nativeEvent;
     this.setState(state =>
       produce(state, draft => {
-        if (contentOffset && contentOffset.y > 84) {
+        if (contentOffset.y > 84) {
           if (!state.showBorder) draft.showBorder = true;
-          if (title && !center && !state.center) draft.center = title;
+          if (!center && !state.center) {
+            if (title) draft.center = title;
+            if (titleOnScroll) draft.center = titleOnScroll;
+          }
         } else {
           if (state.showBorder) draft.showBorder = false;
-          if (state.center) delete draft.center;
+          if ((title || titleOnScroll) && state.center) {
+            draft.center = undefined;
+          }
         }
       })
     );
@@ -111,14 +120,17 @@ class PageContainer extends PureComponent<Props, State> {
       title,
       subtitle,
       titleNarrow,
+      alignTitleCenter,
       left,
       right,
       bottom,
       bottomBox,
+      enableScroll,
       extraBottom: extraScrollHeight = 85,
     } = this.props;
     const navLeft = left && {
       handlePress: () => {
+        Keyboard.dismiss();
         if (left.routeName) left.navigation.navigate(left.routeName);
         else left.navigation.goBack(null);
       },
@@ -130,7 +142,10 @@ class PageContainer extends PureComponent<Props, State> {
       ),
     };
     const navRight = right && {
-      handlePress: right.handlePress,
+      handlePress: () => {
+        Keyboard.dismiss();
+        right.handlePress();
+      },
       view:
         typeof right.view === 'string' ? (
           <Text style={texts.top}>{right.view}</Text>
@@ -154,17 +169,33 @@ class PageContainer extends PureComponent<Props, State> {
               style={views.contentWrapper}
               onScroll={this.handleScroll}
               scrollEventThrottle={160}
-              scrollEnabled={bottomBox !== undefined}
+              scrollEnabled={enableScroll || bottomBox !== undefined}
               showsVerticalScrollIndicator={false}>
               {title && (
                 <View
                   style={views[titleNarrow ? 'titleNarrow' : 'titleWrapper']}>
-                  <Text style={texts.title}>{title}</Text>
-                  {subtitle && <Text style={texts.subtitle}>{subtitle}</Text>}
+                  <Text
+                    style={[
+                      texts.title,
+                      alignTitleCenter ? { textAlign: 'center' } : null,
+                    ]}>
+                    {title}
+                  </Text>
+                  {subtitle && (
+                    <Text
+                      style={[
+                        texts.subtitle,
+                        alignTitleCenter ? { textAlign: 'center' } : null,
+                      ]}>
+                      {subtitle}
+                    </Text>
+                  )}
                 </View>
               )}
               {children}
-              {bottomBox && <View style={{ height: extraScrollHeight }} />}
+              {(enableScroll || bottomBox) && (
+                <View style={{ height: extraScrollHeight }} />
+              )}
             </ScrollView>
             {bottom && (
               <View style={[views.bottom, bottom.styles]}>{bottom.view}</View>

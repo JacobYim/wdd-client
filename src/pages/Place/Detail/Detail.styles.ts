@@ -1,9 +1,8 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { horizontalSize } from 'src/components/container/PageContainer/PageContainer.styles';
-import { cardHeight } from 'src/pages/Place/Map/Card';
-import { color, shadow } from 'src/theme';
+import { color, size } from 'src/theme';
 
 const { height } = Dimensions.get('window');
+const cardMarginTop = 56;
 const paddingVertical = 20;
 
 export const views = StyleSheet.create({
@@ -14,34 +13,39 @@ export const views = StyleSheet.create({
     right: 0,
   },
   headerWrapper: {
-    height: height * 0.41,
+    height: height * 0.253,
   },
   headerFilter: {
     flex: 1,
     backgroundColor: `${color.black}78`,
   },
+  headerCheat: {
+    marginTop: 'auto',
+    marginLeft: 'auto',
+    width: size.horizontal + 60,
+    height: cardMarginTop,
+  },
   infoHover: {
-    marginTop: -(cardHeight / 2 + paddingVertical),
+    marginTop: -cardMarginTop,
     marginBottom: 10,
-    height: cardHeight,
-    borderRadius: 5,
-    backgroundColor: color.white,
-    ...shadow.shallow,
   },
   infoWrapper: {
     paddingVertical,
-    paddingHorizontal: horizontalSize,
+    paddingHorizontal: size.horizontal,
     backgroundColor: color.white,
-    borderTopWidth: 10,
-    borderColor: color.grayEF,
+  },
+  hr: {
+    height: 10,
+    backgroundColor: color.grayEF,
   },
   rowWrapper: {
-    marginVertical: 6,
+    marginVertical: 2,
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   imageWrapper: {
-    marginTop: 4,
-    paddingHorizontal: horizontalSize,
+    marginTop: 10,
+    paddingHorizontal: size.horizontal,
   },
   image: {
     width: 140,
@@ -64,15 +68,30 @@ export const icons = StyleSheet.create({
 });
 
 export const texts = StyleSheet.create({
-  blackOpacity: {
-    flexBasis: 58,
-    lineHeight: 24,
+  label: {
+    flexBasis: 62,
     color: color.blackOpacity,
-    fontSize: 16,
+    fontSize: 15,
+    alignSelf: 'flex-start',
   },
-  black: {
-    lineHeight: 24,
-    color: color.black,
+  content: {
+    flex: 1,
+    color: color.gray48,
+    fontSize: 15,
+  },
+  phone: {
+    textDecorationStyle: 'solid',
+    textDecorationColor: color.blue,
+    textDecorationLine: 'underline',
+    color: color.blue,
+    fontSize: 15,
+  },
+  title: {
     fontSize: 16,
+    color: color.black,
+    paddingHorizontal: size.horizontal,
+  },
+  lineHeight: {
+    lineHeight: 24,
   },
 });

@@ -36,6 +36,10 @@ class CreateMeta extends PureComponent<Props, State> {
     return null;
   }
 
+  handleChange = ({ name, value }: HandleChangeSelector | HandleChangeDate) => {
+    this.setState(state => ({ ...state, [name]: value }));
+  };
+
   handleSubmit = () => {
     const { createMeta, navigation } = this.props;
     const { birth, gender } = this.state;
@@ -46,14 +50,6 @@ class CreateMeta extends PureComponent<Props, State> {
       };
       createMeta(payload, navigation);
     }
-  };
-
-  handleGenderChange = ({ name, value }: HandleChangeSelector) => {
-    this.setState(state => ({ ...state, [name]: value }));
-  };
-
-  handleDateChange = ({ name, value }: HandleChangeDate) => {
-    this.setState(state => ({ ...state, [name]: value }));
   };
 
   render() {
@@ -81,13 +77,13 @@ class CreateMeta extends PureComponent<Props, State> {
           label="성별"
           value={gender}
           list={[{ name: 'M', label: '남자' }, { name: 'F', label: '여자' }]}
-          handleChange={this.handleGenderChange}
+          handleChange={this.handleChange}
         />
         <DateInput
           name="birth"
           label="생년월일"
           value={birth}
-          handleChange={this.handleDateChange}
+          handleChange={this.handleChange}
         />
       </PageContainer>
     );

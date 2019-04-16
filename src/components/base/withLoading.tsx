@@ -1,6 +1,6 @@
 import React, { Component, ComponentType } from 'react';
-import { Animated, Easing, Modal, View } from 'react-native';
-import { color } from 'src/theme';
+import { Animated, Easing, Modal, Text, View } from 'react-native';
+import { color, font } from 'src/theme';
 
 export interface LoadingProps {
   toggleLoading: () => {};
@@ -44,29 +44,40 @@ export default function withLoading<P extends LoadingProps>(
 
       return (
         <>
-          <Modal visible={this.state.showLoading} transparent={true}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: color.black33Opacity,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Animated.Image
-                source={require('src/assets/icons/logo_img.png')}
-                style={{
-                  width: 100,
-                  height: 100,
-                  resizeMode: 'contain',
-                  transform: [{ rotate: spin }],
-                }}
-              />
-            </View>
-          </Modal>
           <WrappedComponent
             {...this.props}
             toggleLoading={this.toggleLoading}
           />
+          <Modal
+            visible={this.state.showLoading}
+            transparent={false}
+            hardwareAccelerated>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: color.white,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Animated.Image
+                source={require('src/assets/icons/ic_loading.png')}
+                style={{
+                  width: 60,
+                  height: 60,
+                  resizeMode: 'contain',
+                  transform: [{ rotate: spin }],
+                }}
+              />
+              <Text
+                style={{
+                  marginTop: 10,
+                  color: color.blackOpacity,
+                  fontSize: font.size.medium,
+                }}>
+                저장중입니다.
+              </Text>
+            </View>
+          </Modal>
         </>
       );
     }
