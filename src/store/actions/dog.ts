@@ -69,8 +69,9 @@ export const updateDog = (payload: UpdateDog) => ({
   payload,
   type: UPDATE_DOG,
 });
-export const pushLike = (payload: { _id: string }) => ({
+export const pushLike = (payload: { _id: string }, event: () => void) => ({
   payload,
+  event,
   type: PUSH_LIKE,
 });
 

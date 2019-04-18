@@ -45,6 +45,7 @@ function* pushLike(action: ReturnType<typeof actions.pushLike>) {
     yield put(actions.setDogRequest());
     const data = yield call(api.pushLike, action.payload);
     Alert.alert('킁킁을 보냈습니다.');
+    yield call(action.event);
     yield put(actions.setDogSuccess(data));
   } catch (e) {
     Alert.alert(e.response.data.message);

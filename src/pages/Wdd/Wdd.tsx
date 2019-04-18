@@ -67,10 +67,9 @@ class Wdd extends PureComponent<Props, State> {
     this.setState({ feeds });
   };
 
-  handlePressLike = async (_id: string) => {
+  handlePressLike = (_id: string) => {
     const { user, pushLike } = this.props;
-    const data = await pushLike({ _id });
-    if (data) {
+    pushLike({ _id }, () =>
       this.setState(state =>
         produce(state, draft => {
           if (user.repDog && draft.selectDog) {
@@ -84,8 +83,8 @@ class Wdd extends PureComponent<Props, State> {
             draft.selectDog.likes.push(pushData);
           }
         })
-      );
-    }
+      )
+    );
   };
 
   getDataFromServer = async () => {
