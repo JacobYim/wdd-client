@@ -36,20 +36,6 @@ interface State {
 }
 
 // Helpers
-function showOfficeHour(officeHour: {
-  default: string;
-  weekend?: string;
-  dayoff?: string;
-}) {
-  if (!officeHour.weekend && !officeHour.dayoff) {
-    return `매일 ${officeHour.default}`;
-  }
-  let message = `평일 ${officeHour.default}`;
-  if (officeHour.weekend) message += `\n주말 ${officeHour.weekend}`;
-  if (officeHour.dayoff) message += `\n휴일 ${officeHour.dayoff}`;
-  return message;
-}
-
 const isPhoneNumber = (value: string) =>
   /(^0[0-9]{1,2}-)?[0-9]{3,4}-[0-9]{4}$/g.test(value);
 
@@ -172,7 +158,7 @@ class Detail extends PureComponent<Props, State> {
                 {
                   label: '시간',
                   value: this.place.officeHour
-                    ? showOfficeHour(this.place.officeHour)
+                    ? this.place.officeHour.join('\n')
                     : undefined,
                 },
                 { label: '문의', value: this.place.contact },

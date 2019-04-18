@@ -23,12 +23,8 @@ export interface PlaceResponse {
   contact?: string;
   icon?: string;
   description?: string;
+  officeHour: string[];
   images?: string[];
-  officeHour?: {
-    default: string;
-    weekend?: string;
-    dayoff?: string;
-  };
   likes?: string[];
   distance: number; // km
   scraps: { user: string; createdAt: Date }[];
