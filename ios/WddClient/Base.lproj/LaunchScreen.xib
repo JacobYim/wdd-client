@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,22 +13,27 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="img_splash" translatesAutoresizingMaskIntoConstraints="NO" id="vgt-D8-3bB">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoText" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sDc-ms-Ldq" userLabel="LogoText">
+                    <rect key="frame" x="90" y="192.66666666666666" width="195" height="40.333333333333343"/>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="sDc-ms-Ldq" firstAttribute="top" secondItem="imr-Jg-vSi" secondAttribute="top" multiplier="0.285" constant="180" id="7Lm-XH-fXS"/>
+                <constraint firstItem="sDc-ms-Ldq" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="CMh-LM-kPP"/>
+                <constraint firstItem="sDc-ms-Ldq" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.05" id="Vgc-Sp-Eg4"/>
+                <constraint firstItem="sDc-ms-Ldq" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.52" id="eUJ-49-4fx"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="imr-Jg-vSi"/>
-            <point key="canvasLocation" x="547.20000000000005" y="454.43349753694582"/>
+            <point key="canvasLocation" x="546.37681159420299" y="456.02678571428567"/>
         </view>
     </objects>
     <resources>
-        <image name="img_splash" width="1000" height="1779"/>
+        <image name="LogoText" width="156" height="27"/>
     </resources>
 </document>
