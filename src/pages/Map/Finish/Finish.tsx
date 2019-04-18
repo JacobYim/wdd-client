@@ -27,7 +27,6 @@ import {
   Text,
   View,
   ImageEditor,
-  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -153,25 +152,23 @@ class Finish extends PureComponent<Props, State> {
             rotateEnabled={false}
             pitchEnabled={false}
             toolbarEnabled={false}>
-            <Polygon
-              coordinates={
-                mapBoundaries
-                  ? [
-                      mapBoundaries.northEast,
-                      {
-                        latitude: mapBoundaries.northEast.latitude,
-                        longitude: mapBoundaries.southWest.longitude,
-                      },
-                      mapBoundaries.southWest,
-                      {
-                        latitude: mapBoundaries.southWest.latitude,
-                        longitude: mapBoundaries.northEast.longitude,
-                      },
-                    ]
-                  : []
-              }
-              fillColor="#FFFFFF7F"
-            />
+            {mapBoundaries && (
+              <Polygon
+                coordinates={[
+                  mapBoundaries.northEast,
+                  {
+                    latitude: mapBoundaries.northEast.latitude,
+                    longitude: mapBoundaries.southWest.longitude,
+                  },
+                  mapBoundaries.southWest,
+                  {
+                    latitude: mapBoundaries.southWest.latitude,
+                    longitude: mapBoundaries.northEast.longitude,
+                  },
+                ]}
+                fillColor="#FFFFFF7F"
+              />
+            )}
             <Polyline
               coordinates={walk.pins}
               lineCap="round"
