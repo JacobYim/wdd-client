@@ -95,6 +95,7 @@ class Finish extends PureComponent<Props, State> {
         width,
         height,
         format: 'png',
+        quality: 0.8,
       });
       Image.getSize(
         snapshot,

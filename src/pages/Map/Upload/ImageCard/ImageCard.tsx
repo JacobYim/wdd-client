@@ -43,6 +43,7 @@ export const AddImageCard: React.FC<AddProps> = ({ handleLoad }) => {
       takePhotoButtonTitle: '사진 찍기',
       chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
       cancelButtonTitle: '취소',
+      quality: 0.7,
       storageOptions: { skipBackup: true, path: 'images' },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {

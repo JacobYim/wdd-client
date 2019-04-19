@@ -129,6 +129,7 @@ class Edit extends PureComponent<Props, State> {
       chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
       customButtons: [{ name: 'default', title: '우동댕 기본 이미지' }],
       cancelButtonTitle: '취소',
+      quality: 0.6,
       storageOptions: { skipBackup: true, path: 'images' },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {
