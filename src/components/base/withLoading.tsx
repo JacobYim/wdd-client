@@ -4,6 +4,7 @@ import { color, font } from 'src/theme';
 
 export interface LoadingProps {
   toggleLoading: () => {};
+  hideLoading: () => {};
 }
 
 interface State {
@@ -23,6 +24,10 @@ export default function withLoading<P extends LoadingProps>(
     toggleLoading = async () => {
       await this.setState({ showLoading: !this.state.showLoading });
       if (this.state.showLoading) this.spinning();
+    };
+
+    hideLoading = () => {
+      this.setState({ showLoading: false });
     };
 
     spinning = () => {
@@ -47,6 +52,7 @@ export default function withLoading<P extends LoadingProps>(
           <WrappedComponent
             {...this.props}
             toggleLoading={this.toggleLoading}
+            hideLoading={this.hideLoading}
           />
           <Modal
             visible={this.state.showLoading}
