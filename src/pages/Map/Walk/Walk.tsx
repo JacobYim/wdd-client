@@ -66,6 +66,10 @@ class Walk extends Component<Props, State> {
 
   componentWillMount() {
     if (this.state.status === 'WALKING') this.countSeconds();
+    if (this.state.status === 'PAUSE') {
+      const { seconds } = this.props.walk;
+      this.setState({ seconds });
+    }
   }
 
   componentDidUpdate() {
