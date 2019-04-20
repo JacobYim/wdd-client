@@ -6,7 +6,7 @@ export interface Feed {
   _id: string;
   user: string;
   dog: Dog;
-  pins: string; // JSON.stringify(pins)
+  coordinates: string;
   seconds: number;
   distance: number; // km
   steps: number;

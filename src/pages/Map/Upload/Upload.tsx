@@ -31,6 +31,10 @@ interface State {
   images: ImageInterface[];
 }
 
+// helpers
+const pinsToCoord = (pins: ReducerState['walk']['pins']) =>
+  pins.map(pin => [pin.longitude, pin.latitude]);
+
 class Upload extends PureComponent<Props, State> {
   state: State = {
     memo: '',
@@ -58,7 +62,7 @@ class Upload extends PureComponent<Props, State> {
     await createFeed({
       images,
       memo: this.state.memo,
-      pins: JSON.stringify(walk.pins),
+      coordinates: JSON.stringify(pinsToCoord(walk.pins)),
       ...pick(walk, ['seconds', 'distance', 'steps', 'pees', 'poos']),
     });
     await getUser();

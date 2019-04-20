@@ -23,7 +23,7 @@ export interface PlaceResponse {
   contact?: string;
   icon?: string;
   description?: string;
-  officeHour: string[];
+  officeHour?: string[];
   images?: string[];
   likes?: string[];
   distance: number; // km
