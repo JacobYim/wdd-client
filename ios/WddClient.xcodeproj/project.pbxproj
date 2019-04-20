@@ -1235,6 +1235,7 @@
 			name = LaunchScreen.xib;
 			path = WddClient;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 /* End PBXVariantGroup section */
 

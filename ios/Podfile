@@ -38,18 +38,12 @@ target 'WddClient' do
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 
-  # react-native-background-timer dependencies
-  pod 'react-native-background-timer', path: '../node_modules/react-native-background-timer'
-
   # react-native-webview dependencies
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   pod 'RNViewShot', :path => '../node_modules/react-native-view-shot'
 
   pod 'RNAWSCognito', :path => '../node_modules/amazon-cognito-identity-js'
-
-
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
-
 
   # target 'WddClientTests' do
   #   inherit! :search_paths

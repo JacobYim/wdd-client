@@ -70,7 +70,7 @@ class Label extends PureComponent<Props, State> {
     const label = this.state.label || '전체';
     return (
       <FlatList
-        data={['전체', '카페', '식당', '병원', '용품', '술집', '기타']}
+        data={['전체', '카페', '식당', '페스티벌', '병원', '용품', '기타']}
         keyExtractor={item => item}
         style={[
           styles.container,

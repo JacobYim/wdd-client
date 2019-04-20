@@ -65,6 +65,17 @@ export const views = StyleSheet.create({
     alignItems: 'center',
     ...shadow.shallow,
   },
+  gifWrapper: {
+    marginTop: 11,
+    width: width * 0.7,
+    height: height * 0.3,
+  },
+  gifAbsolute: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: color.white,
+  },
 });
 
 export const icons = StyleSheet.create({
@@ -74,9 +85,13 @@ export const icons = StyleSheet.create({
     resizeMode: 'contain',
   },
   gif: {
-    marginTop: 11,
-    width: width * 0.7,
-    height: height * 0.3,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  absolute: {
+    width: '60%',
+    height: '60%',
     resizeMode: 'contain',
   },
 });

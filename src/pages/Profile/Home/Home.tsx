@@ -143,12 +143,16 @@ class Home extends PureComponent<Props, State> {
     }
   };
 
-  renderSelectDog = (item: { _id: string; name: string }) => (
+  renderSelectDog = (item: {
+    _id: string;
+    name: string;
+    thumbnail?: string;
+  }) => (
     <TouchableOpacity
       activeOpacity={0.7}
       style={views.dogSelectWrapper}
       onPress={() => this.handleSelectDog(item._id)}>
-      <DefaultImage size={40} />
+      <DefaultImage uri={item.thumbnail} size={40} />
       <Text style={texts.selectDogName}>{item.name}</Text>
       <Image
         style={icons.check}
@@ -164,7 +168,8 @@ class Home extends PureComponent<Props, State> {
   renderModal = () => {
     const dogsList = Object.keys(this.props.user.dogs).map(_id => ({
       _id,
-      name: this.props.user.dogs[_id],
+      name: this.props.user.dogs[_id].name,
+      thumbnail: this.props.user.dogs[_id].thumbnail,
     }));
     return (
       <Modal

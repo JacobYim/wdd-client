@@ -9,9 +9,10 @@ const getWalk = (state: ReducerState) => state.walk;
 function* updateStatus(action: ReturnType<typeof actions.updateStatus>) {
   try {
     yield put(actions.setWalkRequest());
-    const { status: prevStatus }: ReturnType<typeof getWalk> = yield select(
-      getWalk
-    );
+    const {
+      status: prevStatus,
+      prevSeconds,
+    }: ReturnType<typeof getWalk> = yield select(getWalk);
     const status = action.payload;
     const payload = { status } as ReducerState['walk'];
     switch (status) {
@@ -20,6 +21,7 @@ function* updateStatus(action: ReturnType<typeof actions.updateStatus>) {
         break;
       case 'WALKING':
         if (prevStatus === 'READY') payload.createdAt = new Date();
+        payload.prevSeconds = { ...prevSeconds, date: new Date() };
       default:
         yield put(actions.setWalkSuccess(payload));
         break;

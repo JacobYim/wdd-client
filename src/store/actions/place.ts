@@ -5,7 +5,7 @@ export interface GeoJSON {
   coordinates: [number, number];
 }
 
-export type Label = '카페' | '식당' | '병원' | '용품' | '술집' | '기타';
+export type Label = '카페' | '식당' | '페스티벌' | '병원' | '용품' | '기타';
 
 // *** INTERFACES
 export interface Place
@@ -23,12 +23,8 @@ export interface PlaceResponse {
   contact?: string;
   icon?: string;
   description?: string;
+  officeHour?: string[];
   images?: string[];
-  officeHour?: {
-    default: string;
-    weekend?: string;
-    dayoff?: string;
-  };
   likes?: string[];
   distance: number; // km
   scraps: { user: string; createdAt: Date }[];

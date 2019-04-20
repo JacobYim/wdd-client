@@ -3,6 +3,10 @@ import { handleActions } from 'redux-actions';
 import * as actions from 'src/store/actions/walk';
 
 export interface WalkState extends actions.WalkInterface {
+  prevSeconds: {
+    value: number;
+    date: Date;
+  };
   error?: any;
 }
 
@@ -16,13 +20,21 @@ const initialState: WalkState = {
   steps: 0,
   poos: 0,
   pees: 0,
+  prevSeconds: {
+    value: 0,
+    date: new Date(),
+  },
 };
 
 export default handleActions<WalkState, any>(
   {
     [actions.UPDATE_SECONDS]: (state, action) =>
       produce(state, draft => {
-        draft.seconds += 1;
+        draft.seconds = action.payload.seconds;
+        draft.prevSeconds = {
+          value: action.payload.seconds,
+          date: new Date(),
+        };
       }),
     [actions.UPDATE_STEPS]: (state, action) =>
       produce(state, draft => {

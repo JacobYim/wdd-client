@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { Alert } from 'react-native';
 import { Dog, DogBase, Like, UpdateDog } from 'src/store/actions/dog';
 
 export type LinkedLike = Dog & { createdAt: Date };
@@ -33,12 +32,8 @@ export const updateDog = async (body: UpdateDog) => {
 };
 
 export const pushLike = async (params: { _id: string }) => {
-  try {
-    const response: AxiosResponse<{ message: string }> = await axios.patch(
-      `/dogs/${params._id}/like`
-    );
-    return response.data;
-  } catch (err) {
-    Alert.alert(err.response.data.message);
-  }
+  const response: AxiosResponse<Dog> = await axios.patch(
+    `/dogs/${params._id}/like`
+  );
+  return response.data;
 };

@@ -62,21 +62,22 @@ class Edit extends PureComponent<Props, State> {
     info: React.createRef<Input>(),
   };
 
-  state: State = {
-    _id: '',
-    name: '',
-    breed: '',
-    gender: '',
-    error: {},
-    showModal: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    const { repDog } = props.user;
+    let state: State = {
+      _id: '',
+      name: '',
+      breed: '',
+      gender: '',
+      error: {},
+      showModal: false,
+    };
 
-  componentDidMount() {
-    const { user } = this.props;
-    if (!this.create && user.repDog) {
-      this.setState({
-        ...this.state,
-        ...pick(user.repDog, [
+    if (!this.create && repDog) {
+      state = {
+        ...state,
+        ...pick(repDog, [
           '_id',
           'name',
           'breed',
@@ -85,11 +86,13 @@ class Edit extends PureComponent<Props, State> {
           'weight',
           'info',
         ]),
-        birth: user.repDog.birth
-          ? moment(user.repDog.birth.split('.')).toDate()
+        birth: repDog.birth
+          ? moment(repDog.birth.split('.')).toDate()
           : undefined,
-      });
+      };
     }
+
+    this.state = state;
   }
 
   toggleModal = () => {
@@ -126,6 +129,7 @@ class Edit extends PureComponent<Props, State> {
       chooseFromLibraryButtonTitle: '앨범에서 사진 선택',
       customButtons: [{ name: 'default', title: '우동댕 기본 이미지' }],
       cancelButtonTitle: '취소',
+      quality: 0.6,
       storageOptions: { skipBackup: true, path: 'images' },
     };
     if (await checkPermission(PICTURE_PERMISSIONS)) {
@@ -236,6 +240,7 @@ class Edit extends PureComponent<Props, State> {
           label="몸무게"
           value={this.state.weight ? this.state.weight.toString() : ''}
           keyboardType="numeric"
+          unit="Kg"
           inputs={this.inputs}
           handleChange={this.handleChange}
         />

@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import * as api from 'src/services/api/dog';
 import { removeNextStep } from 'src/services/storage/user';
@@ -39,8 +40,22 @@ function* updateDog(action: ReturnType<typeof actions.updateDog>) {
   }
 }
 
+function* pushLike(action: ReturnType<typeof actions.pushLike>) {
+  try {
+    yield put(actions.setDogRequest());
+    const data = yield call(api.pushLike, action.payload);
+    Alert.alert('킁킁을 보냈습니다.');
+    yield call(action.event);
+    yield put(actions.setDogSuccess(data));
+  } catch (e) {
+    Alert.alert(e.response.data.message);
+    yield put(actions.setDogFailure(e.response));
+  }
+}
+
 export default function* root() {
   yield takeEvery(actions.SELECT_DOG, selectDog);
   yield takeEvery(actions.CREATE_DOG, createDog);
   yield takeEvery(actions.UPDATE_DOG, updateDog);
+  yield takeEvery(actions.PUSH_LIKE, pushLike);
 }

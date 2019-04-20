@@ -104,8 +104,8 @@ android {
         applicationId "com.woodongdang.client.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
-        versionName "0.4.12"
+        versionCode 38
+        versionName "1.0.3"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -156,7 +156,6 @@ dependencies {
     implementation project(':amazon-cognito-identity-js')
     implementation project(':@JWWon_react-native-universal-pedometer')
     implementation project(':react-native-view-shot')
-    implementation project(':react-native-background-timer')
     implementation project(':react-native-maps')
     implementation project(':react-native-geolocation-service')
     implementation project(':react-native-image-picker')

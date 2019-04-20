@@ -11,7 +11,7 @@ export interface UserInterface {
   birth: string;
   gender: string; // 'M' | 'F'
   status: 'ACTIVE' | 'PAUSED' | 'TERMINATED';
-  dogs: { [_id: string]: string };
+  dogs: { [_id: string]: { name: string; thumbnail?: string } };
   location: { type: string; coordinates: number[] };
   places: string[];
   repDog?: Dog;

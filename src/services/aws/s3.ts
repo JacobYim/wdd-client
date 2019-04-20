@@ -29,9 +29,7 @@ const uploadToS3 = async ({ table, label, name, uri }: UploadImage) => {
     level: 'public',
     contentType: 'image/png',
   })) as S3ResponseType;
-  return `https://s3.ap-northeast-2.amazonaws.com/${
-    awsmobile.aws_user_files_s3_bucket
-  }/public/${S3Response.key}`;
+  return `https://storage.woodongdang.com/public/${S3Response.key}`;
 };
 
 export const uploadImage = (data: UploadImage) => async (

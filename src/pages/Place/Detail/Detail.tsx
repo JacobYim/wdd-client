@@ -36,20 +36,6 @@ interface State {
 }
 
 // Helpers
-function showOfficeHour(officeHour: {
-  default: string;
-  weekend?: string;
-  dayoff?: string;
-}) {
-  if (!officeHour.weekend && !officeHour.dayoff) {
-    return `매일 ${officeHour.default}`;
-  }
-  let message = `평일 ${officeHour.default}`;
-  if (officeHour.weekend) message += `\n주말 ${officeHour.weekend}`;
-  if (officeHour.dayoff) message += `\n휴일 ${officeHour.dayoff}`;
-  return message;
-}
-
 const isPhoneNumber = (value: string) =>
   /(^0[0-9]{1,2}-)?[0-9]{3,4}-[0-9]{4}$/g.test(value);
 
@@ -69,15 +55,19 @@ class Detail extends PureComponent<Props, State> {
   }
 
   handleToggleScrap = async () => {
-    const { scrap, unScrap, showMessage } = this.props;
+    const { scrap, unScrap, showMessage, user } = this.props;
     if (this.state.isScrap) {
       await unScrap({ id: this.place._id });
       this.setState({ isScrap: false });
       showMessage('내 상점에서 삭제했습니다.');
     } else {
-      await scrap({ id: this.place._id });
-      this.setState({ isScrap: true });
-      showMessage('내 상점에 추가되었습니다.');
+      if (user.email.length !== 0) {
+        await scrap({ id: this.place._id });
+        this.setState({ isScrap: true });
+        showMessage('내 상점에 추가되었습니다.');
+      } else {
+        showMessage('로그인 후 이용 가능합니다.');
+      }
     }
   };
 
@@ -168,7 +158,7 @@ class Detail extends PureComponent<Props, State> {
                 {
                   label: '시간',
                   value: this.place.officeHour
-                    ? showOfficeHour(this.place.officeHour)
+                    ? this.place.officeHour.join('\n')
                     : undefined,
                 },
                 { label: '문의', value: this.place.contact },

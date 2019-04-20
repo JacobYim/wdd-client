@@ -45,6 +45,7 @@ export interface Dog extends DogBase {
 export const SELECT_DOG = 'dog/SELECT_DOG';
 export const CREATE_DOG = 'dog/CREATE_DOG';
 export const UPDATE_DOG = 'dog/UPDATE_DOG';
+export const PUSH_LIKE = 'dog/PUSH_LIKE';
 
 export const SET_DOG_REQUEST = 'dog/SET_DOG_REQUEST';
 export const SET_DOG_SUCCESS = 'dog/SET_DOG_SUCCESS';
@@ -67,6 +68,11 @@ export const createDog = (
 export const updateDog = (payload: UpdateDog) => ({
   payload,
   type: UPDATE_DOG,
+});
+export const pushLike = (payload: { _id: string }, event: () => void) => ({
+  payload,
+  event,
+  type: PUSH_LIKE,
 });
 
 export const setDogRequest = () => ({ type: SET_DOG_REQUEST });

@@ -91,12 +91,33 @@ class Setting extends PureComponent<Props, State> {
                   this.setState({
                     web: {
                       title: '서비스 약관',
-                      link: 'http://policy.woodongdang.com/',
+                      link: 'http://policy.woodongdang.com/term_of_use.html',
                     },
                   });
                 },
               },
-              // { label: '개인정보 이용 약관', handlePress: () => {} },
+              {
+                label: '개인정보 이용 약관',
+                handlePress: () => {
+                  this.setState({
+                    web: {
+                      title: '개인정보 이용 약관',
+                      link: 'http://policy.woodongdang.com/privacy.html',
+                    },
+                  });
+                },
+              },
+              {
+                label: '위치정보 이용 약관',
+                handlePress: () => {
+                  this.setState({
+                    web: {
+                      title: '위치정보 이용 약관',
+                      link: 'http://policy.woodongdang.com/location.html',
+                    },
+                  });
+                },
+              },
               {
                 label: '고객센터',
                 handlePress: async () =>
