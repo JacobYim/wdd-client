@@ -64,12 +64,12 @@ class Upload extends PureComponent<Props, State> {
       await createFeed({
         images,
         memo: this.state.memo,
-        coordinates: JSON.stringify(pinsToCoord(walk.pins)),
+        pins: JSON.stringify(pinsToCoord(walk.pins)),
         ...pick(walk, ['seconds', 'distance', 'steps', 'pees', 'poos']),
       });
       await getUser();
     } catch (e) {
-      hideLoading();
+      await hideLoading();
       Alert.alert('업로드 중 문제가 발생했습니다.');
     }
     updateStatus('READY');
