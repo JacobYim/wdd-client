@@ -9,7 +9,6 @@ import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.amazonaws.RNAWSCognitoPackage;
 import com.emesonsantana.BMDPedometer.BMDPedometer;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
-import com.ocetnik.timer.BackgroundTimerPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -38,7 +37,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNAWSCognitoPackage(),
             new BMDPedometer(),
             new RNViewShotPackage(),
-            new BackgroundTimerPackage(),
             new MapsPackage(),
             new RNFusedLocationPackage(),
             new ImagePickerPackage(),

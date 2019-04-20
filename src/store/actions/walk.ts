@@ -55,7 +55,10 @@ export const updateStatus = (payload: Status) => ({
   payload,
   type: UPDATE_STATUS,
 });
-export const updateSeconds = () => ({ type: UPDATE_SECONDS });
+export const updateSeconds = (payload: { seconds: number }) => ({
+  payload,
+  type: UPDATE_SECONDS,
+});
 export const updateSteps = (payload: number) => ({
   payload,
   type: UPDATE_STEPS,
