@@ -16,24 +16,25 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoText" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sDc-ms-Ldq" userLabel="LogoText">
-                    <rect key="frame" x="90" y="192.66666666666666" width="195" height="40.333333333333343"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="Vcg-Eh-844">
+                    <rect key="frame" x="6" y="0.0" width="363" height="812"/>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="sDc-ms-Ldq" firstAttribute="top" secondItem="imr-Jg-vSi" secondAttribute="top" multiplier="0.285" constant="180" id="7Lm-XH-fXS"/>
-                <constraint firstItem="sDc-ms-Ldq" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="CMh-LM-kPP"/>
-                <constraint firstItem="sDc-ms-Ldq" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.05" id="Vgc-Sp-Eg4"/>
-                <constraint firstItem="sDc-ms-Ldq" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.52" id="eUJ-49-4fx"/>
+                <constraint firstAttribute="bottom" secondItem="Vcg-Eh-844" secondAttribute="bottom" id="Lyg-eS-c91"/>
+                <constraint firstItem="Vcg-Eh-844" firstAttribute="centerX" secondItem="imr-Jg-vSi" secondAttribute="centerX" id="QEj-2d-vIF"/>
+                <constraint firstItem="Vcg-Eh-844" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="gMU-Tq-Dnz"/>
+                <constraint firstItem="Vcg-Eh-844" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.968" id="waa-KO-ove"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="imr-Jg-vSi"/>
-            <point key="canvasLocation" x="546.37681159420299" y="456.02678571428567"/>
+            <point key="canvasLocation" x="544.79999999999995" y="455.9113300492611"/>
         </view>
     </objects>
     <resources>
-        <image name="LogoText" width="156" height="27"/>
+        <image name="Splash" width="1000" height="1779"/>
     </resources>
 </document>
