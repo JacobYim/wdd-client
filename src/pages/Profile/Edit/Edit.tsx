@@ -167,7 +167,7 @@ class Edit extends PureComponent<Props, State> {
         const url = await uploadImage({
           table: 'dogs',
           label: user.email,
-          name: state.name,
+          name: `${state.name}_${moment().toISOString()}`,
           uri: state.thumbnail,
         })(toggleLoading);
         state.thumbnail = url;
