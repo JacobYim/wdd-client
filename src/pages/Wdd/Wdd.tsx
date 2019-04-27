@@ -10,7 +10,8 @@ import { Feed as FeedInterface, getFeeds } from 'src/services/api/feed';
 import { searchUsers } from 'src/services/api/user';
 import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
-import { icons, texts, views } from './Wdd.styles';
+import DogProfile from './DogProfile';
+import { icons, views } from './Wdd.styles';
 
 import {
   Image,
@@ -33,20 +34,6 @@ interface State {
   feeds: FeedInterface[];
   selectDog?: dogActions.Dog;
   refresh: boolean;
-}
-
-// helper
-function mapGender(gender: 'M' | 'F' | 'N' | '') {
-  switch (gender) {
-    case 'M':
-      return '수컷';
-    case 'F':
-      return '암컷';
-    case 'N':
-      return '중성화';
-    default:
-      return '';
-  }
 }
 
 class Wdd extends PureComponent<Props, State> {
@@ -107,82 +94,6 @@ class Wdd extends PureComponent<Props, State> {
     this.setState({ selectDog: undefined });
   };
 
-  renderModal = () => {
-    const { selectDog: dog } = this.state;
-    const { user } = this.props;
-    const signedIn = user.email.length !== 0;
-
-    return (
-      <Modal
-        animationType="none"
-        visible={dog !== undefined}
-        onRequestClose={this.dismissModal}
-        transparent
-        hardwareAccelerated>
-        <TouchableOpacity
-          style={views.modalBackground}
-          activeOpacity={1}
-          onPress={this.dismissModal}>
-          {dog && (
-            <TouchableOpacity activeOpacity={1} onPress={() => {}}>
-              <View style={views.modal}>
-                <TouchableOpacity
-                  style={views.closeWrapper}
-                  activeOpacity={0.7}
-                  onPress={this.dismissModal}>
-                  <Image
-                    source={require('src/assets/icons/ic_close_filled.png')}
-                    style={icons.close}
-                  />
-                </TouchableOpacity>
-                <DefaultImage uri={dog.thumbnail} size={110} showBorder />
-                <Text style={texts.name}>{dog.name}</Text>
-                <View style={views.topRowWrapper}>
-                  <View style={views.itemWrapper}>
-                    <Text style={texts.spec}>{dog.breed}</Text>
-                  </View>
-                  <View style={[views.itemWrapper, views.vr]}>
-                    <Text style={texts.spec}>{mapGender(dog.gender)}</Text>
-                  </View>
-                  {dog.weight && (
-                    <View style={[views.itemWrapper, views.vr]}>
-                      <Text style={texts.spec}>{dog.weight}kg</Text>
-                    </View>
-                  )}
-                </View>
-                {dog.info && (
-                  <View style={views.infoWrapper}>
-                    <Text style={texts.info}>{dog.info}</Text>
-                  </View>
-                )}
-                <View style={views.bottomRowWrapper}>
-                  {[
-                    { label: '킁킁', value: dog.likes.length },
-                    { label: '산책횟수', value: dog.feeds.length },
-                  ].map((data, index) => (
-                    <View key={index.toString()} style={views.bottomItem}>
-                      <Text style={texts.bottomLabel}>{data.label}</Text>
-                      <Text style={texts.bottomValue}>{data.value}</Text>
-                    </View>
-                  ))}
-                </View>
-                {signedIn && dog.user !== user._id && (
-                  <TouchableOpacity
-                    style={views.likeButton}
-                    activeOpacity={0.7}
-                    disabled={!signedIn}
-                    onPress={() => this.handlePressLike(dog._id)}>
-                    <Text style={texts.like}>킁킁 보내기</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </TouchableOpacity>
-          )}
-        </TouchableOpacity>
-      </Modal>
-    );
-  };
-
   render() {
     const { dogs, feeds, refresh } = this.state;
     const { repDog } = this.props.user;
@@ -241,7 +152,12 @@ class Wdd extends PureComponent<Props, State> {
             </>
           )}
         </ScrollView>
-        {this.renderModal()}
+        <DogProfile
+          dog={this.state.selectDog}
+          user={this.props.user}
+          dismissModal={this.dismissModal}
+          onPressLike={this.handlePressLike}
+        />
       </SafeAreaView>
     );
   }
