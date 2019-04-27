@@ -18,7 +18,7 @@ export const searchDogs = async (params: { likes: Like[] }) => {
     ...dog,
     createdAt: params.likes[index].createdAt,
   }));
-  return sortBy(data, item => -item.createdAt.getTime());
+  return sortBy(data, item => -item.createdAt);
 };
 
 export const createDog = async (body: DogBase) => {
