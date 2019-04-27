@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { sortBy } from 'lodash';
 import { Dog, DogBase, Like, UpdateDog } from 'src/store/actions/dog';
 
 export type LinkedLike = Dog & { createdAt: Date };
@@ -17,7 +18,7 @@ export const searchDogs = async (params: { likes: Like[] }) => {
     ...dog,
     createdAt: params.likes[index].createdAt,
   }));
-  return data;
+  return sortBy(data, item => -item.createdAt.getTime());
 };
 
 export const createDog = async (body: DogBase) => {

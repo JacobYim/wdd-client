@@ -35,13 +35,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ListItem: React.FC<Props> = ({
-  onPress,
-  thumbnail,
-  index,
-  name,
-  message,
-}) => (
+const ListItem: React.FC<Props> = ({ onPress, thumbnail, name, message }) => (
   <TouchableOpacity
     style={styles.wrapper}
     onPress={onPress}
