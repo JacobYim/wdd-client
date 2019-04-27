@@ -18,6 +18,9 @@ import {
   TouchableOpacity,
   View,
   RefreshControl,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  Dimensions,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -33,8 +36,12 @@ interface State {
   refresh: boolean;
 }
 
+// helpers
+const { width } = Dimensions.get('window');
+
 class Wdd extends PureComponent<Props, State> {
-  private holdFeedUpdate = false;
+  private holdFeedUpdate = true;
+  private dogs: dogActions.Dog[] = []; // All dog list(save for pagination)
   state: State = { dogIds: [], dogs: [], feeds: [], refresh: false };
 
   componentDidMount() {
@@ -75,12 +82,25 @@ class Wdd extends PureComponent<Props, State> {
   getDataFromServer = async () => {
     const { coordinates } = this.props.user.location;
     const users = await searchUsers({ coordinates });
-    const dogIds = flatten(users.map(user => Object.keys(user.dogs)));
-    const feeds = await getFeeds({ dogs: dogIds, length: 0 });
-    const dogs = users
+    this.dogs = users
       .filter(user => user.repDog !== undefined)
       .map(user => user.repDog) as dogActions.Dog[];
+
+    // set variables for update state
+    const dogIds = flatten(users.map(user => Object.keys(user.dogs)));
+    const feeds = await getFeeds({ dogs: dogIds, length: 0 });
+    const dogs = this.dogs.slice(0, 6);
     this.setState({ dogIds, dogs, feeds });
+  };
+
+  getMoreDogs = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { x } = e.nativeEvent.contentOffset;
+    const { length } = this.state.dogs;
+    // 76 = 56(thumbnail size) + 10(paddingHorizontal) * 2
+    if (x > 76 * length - width && this.dogs.length > length) {
+      const dogs = this.dogs.slice(0, this.state.dogs.length + 6);
+      this.setState({ dogs });
+    }
   };
 
   getMoreFeeds = async () => {
@@ -147,6 +167,7 @@ class Wdd extends PureComponent<Props, State> {
                 keyExtractor={(i, index) => index.toString()}
                 contentContainerStyle={views.dogsListWrapper}
                 showsHorizontalScrollIndicator={false}
+                onScroll={this.getMoreDogs}
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     style={views.dogItem}

@@ -29,7 +29,7 @@ export interface Body
 export interface Params {
   dogs?: string[];
   feeds?: string[];
-  length: number;
+  length?: number;
 }
 
 export const createFeed = async (params: Body) => {
@@ -38,11 +38,10 @@ export const createFeed = async (params: Body) => {
 };
 
 export const getFeeds = async (p: Params) => {
-  const params: { dogs?: string; feeds?: string; length: number } = {
-    length: p.length,
-  };
-  if (p.dogs) params.dogs = JSON.stringify(p.dogs);
-  if (p.feeds) params.feeds = JSON.stringify(p.feeds);
+  const params: { dogs?: string; feeds?: string; length?: string } = {};
+  if (p.dogs !== undefined) params.dogs = JSON.stringify(p.dogs);
+  if (p.feeds !== undefined) params.feeds = JSON.stringify(p.feeds);
+  if (p.length !== undefined) params.length = p.length.toString();
   const response: AxiosResponse<Feed[]> = await axios.get('/feeds', { params });
   return response.data;
 };
