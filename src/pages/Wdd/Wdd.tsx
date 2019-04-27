@@ -12,15 +12,11 @@ import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import DogProfile from './DogProfile';
 import { icons, views } from './Wdd.styles';
-
 import {
   Image,
   SafeAreaView,
   TouchableOpacity,
-  ScrollView,
   View,
-  Modal,
-  Text,
   RefreshControl,
 } from 'react-native';
 
@@ -30,6 +26,7 @@ interface Props extends NavigationScreenProps {
 }
 
 interface State {
+  dogIds: string[]; // All nearby dogs' id list
   dogs: dogActions.Dog[];
   feeds: FeedInterface[];
   selectDog?: dogActions.Dog;
@@ -37,7 +34,8 @@ interface State {
 }
 
 class Wdd extends PureComponent<Props, State> {
-  state: State = { dogs: [], feeds: [], refresh: false };
+  private holdFeedUpdate = false;
+  state: State = { dogIds: [], dogs: [], feeds: [], refresh: false };
 
   componentDidMount() {
     this.getDataFromServer();
@@ -77,13 +75,21 @@ class Wdd extends PureComponent<Props, State> {
   getDataFromServer = async () => {
     const { coordinates } = this.props.user.location;
     const users = await searchUsers({ coordinates });
-    const feeds = await getFeeds({
-      dogs: flatten(users.map(user => Object.keys(user.dogs))),
-    });
+    const dogIds = flatten(users.map(user => Object.keys(user.dogs)));
+    const feeds = await getFeeds({ dogs: dogIds, length: 0 });
     const dogs = users
       .filter(user => user.repDog !== undefined)
       .map(user => user.repDog) as dogActions.Dog[];
-    await this.setState({ feeds, dogs });
+    this.setState({ dogIds, dogs, feeds });
+  };
+
+  getMoreFeeds = async () => {
+    if (!this.holdFeedUpdate) {
+      this.holdFeedUpdate = true;
+      const length = this.state.feeds.length;
+      const moreFeeds = await getFeeds({ length, dogs: this.state.dogIds });
+      this.setState({ feeds: [...this.state.feeds, ...moreFeeds] });
+    }
   };
 
   selectDog = (selectDog: dogActions.Dog) => {
@@ -109,22 +115,32 @@ class Wdd extends PureComponent<Props, State> {
             style={icons.logo}
           />
         </View>
-        <ScrollView
-          style={{ flex: 1 }}
-          refreshControl={
-            <RefreshControl
-              refreshing={refresh}
-              onRefresh={this.handleRefresh}
-            />
-          }>
-          {dogsFilter.length === 0 ? (
-            <EmptyList
-              source={require('src/assets/images/img_no_dog.png')}
-              message="내 주변 댕댕이가 없어요 ㅠㅠ"
-              style={views.emptyListMargin}
-            />
-          ) : (
-            <>
+        {dogsFilter.length === 0 ? (
+          <EmptyList
+            source={require('src/assets/images/img_no_dog.png')}
+            message="내 주변 댕댕이가 없어요 ㅠㅠ"
+            style={views.emptyListMargin}
+          />
+        ) : (
+          <FlatList
+            data={feeds}
+            keyExtractor={(i, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            onEndReached={this.getMoreFeeds}
+            onEndReachedThreshold={0.5}
+            onMomentumScrollBegin={() => {
+              this.holdFeedUpdate = false;
+            }}
+            renderItem={({ item }) => (
+              <Feed feed={item} deleteFromList={this.handleDelete} />
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refresh}
+                onRefresh={this.handleRefresh}
+              />
+            }
+            ListHeaderComponent={
               <FlatList
                 style={views.dogsWrapper}
                 data={dogs}
@@ -141,17 +157,16 @@ class Wdd extends PureComponent<Props, State> {
                 )}
                 horizontal
               />
-              <FlatList
-                data={feeds}
-                keyExtractor={(i, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <Feed feed={item} deleteFromList={this.handleDelete} />
-                )}
+            }
+            ListEmptyComponent={
+              <EmptyList
+                source={require('src/assets/images/img_no_dog.png')}
+                message="피드가 아직 없어요 ㅠ"
+                style={views.emptyListMargin}
               />
-            </>
-          )}
-        </ScrollView>
+            }
+          />
+        )}
         <DogProfile
           dog={this.state.selectDog}
           user={this.props.user}
