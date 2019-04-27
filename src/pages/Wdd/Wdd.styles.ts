@@ -23,6 +23,7 @@ export const views = StyleSheet.create({
   dogItem: {
     paddingVertical: 16,
     paddingHorizontal: dogItemSpace,
+    alignItems: 'center',
   },
   emptyListMargin: {
     marginTop: height * 0.18,
@@ -34,5 +35,13 @@ export const icons = StyleSheet.create({
     width: 160,
     height: 18,
     resizeMode: 'contain',
+  },
+});
+
+export const texts = StyleSheet.create({
+  name: {
+    fontSize: 10,
+    color: '#777777',
+    marginTop: 6,
   },
 });

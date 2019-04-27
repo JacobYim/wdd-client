@@ -11,7 +11,7 @@ import { searchUsers } from 'src/services/api/user';
 import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
 import DogProfile from './DogProfile';
-import { icons, views } from './Wdd.styles';
+import { icons, texts, views } from './Wdd.styles';
 import {
   Image,
   SafeAreaView,
@@ -21,6 +21,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   Dimensions,
+  Text,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -174,6 +175,7 @@ class Wdd extends PureComponent<Props, State> {
                     activeOpacity={0.7}
                     onPress={() => this.selectDog(item)}>
                     <DefaultImage uri={item.thumbnail} size={56} />
+                    <Text style={texts.name}>{item.name}</Text>
                   </TouchableOpacity>
                 )}
                 horizontal
