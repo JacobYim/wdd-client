@@ -119,7 +119,7 @@ class ReviewCard extends PureComponent<Props, State> {
             </>
           )}
           <Text numberOfLines={2} style={styles.time}>
-            {moment(review.updatedAt).fromNow()}
+            {moment(review.createdAt).fromNow()}
           </Text>
           <TouchableOpacity
             style={styles.headerButton}
