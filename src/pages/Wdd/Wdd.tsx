@@ -10,17 +10,18 @@ import { Feed as FeedInterface, getFeeds } from 'src/services/api/feed';
 import { searchUsers } from 'src/services/api/user';
 import * as dogActions from 'src/store/actions/dog';
 import { ReducerState } from 'src/store/reducers';
+import DogProfile from './DogProfile';
 import { icons, texts, views } from './Wdd.styles';
-
 import {
   Image,
   SafeAreaView,
   TouchableOpacity,
-  ScrollView,
   View,
-  Modal,
-  Text,
   RefreshControl,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  Dimensions,
+  Text,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps {
@@ -29,28 +30,20 @@ interface Props extends NavigationScreenProps {
 }
 
 interface State {
+  dogIds: string[]; // All nearby dogs' id list
   dogs: dogActions.Dog[];
   feeds: FeedInterface[];
   selectDog?: dogActions.Dog;
   refresh: boolean;
 }
 
-// helper
-function mapGender(gender: 'M' | 'F' | 'N' | '') {
-  switch (gender) {
-    case 'M':
-      return '수컷';
-    case 'F':
-      return '암컷';
-    case 'N':
-      return '중성화';
-    default:
-      return '';
-  }
-}
+// helpers
+const { width } = Dimensions.get('window');
 
 class Wdd extends PureComponent<Props, State> {
-  state: State = { dogs: [], feeds: [], refresh: false };
+  private holdFeedUpdate = true;
+  private dogs: dogActions.Dog[] = []; // All dog list(save for pagination)
+  state: State = { dogIds: [], dogs: [], feeds: [], refresh: false };
 
   componentDidMount() {
     this.getDataFromServer();
@@ -90,13 +83,34 @@ class Wdd extends PureComponent<Props, State> {
   getDataFromServer = async () => {
     const { coordinates } = this.props.user.location;
     const users = await searchUsers({ coordinates });
-    const feeds = await getFeeds({
-      dogs: flatten(users.map(user => Object.keys(user.dogs))),
-    });
-    const dogs = users
+    this.dogs = users
       .filter(user => user.repDog !== undefined)
       .map(user => user.repDog) as dogActions.Dog[];
-    await this.setState({ feeds, dogs });
+
+    // set variables for update state
+    const dogIds = flatten(users.map(user => Object.keys(user.dogs)));
+    const feeds = await getFeeds({ dogs: dogIds, length: 0 });
+    const dogs = this.dogs.slice(0, 6);
+    this.setState({ dogIds, dogs, feeds });
+  };
+
+  getMoreDogs = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { x } = e.nativeEvent.contentOffset;
+    const { length } = this.state.dogs;
+    // 76 = 56(thumbnail size) + 10(paddingHorizontal) * 2
+    if (x > 76 * length - width && this.dogs.length > length) {
+      const dogs = this.dogs.slice(0, this.state.dogs.length + 6);
+      this.setState({ dogs });
+    }
+  };
+
+  getMoreFeeds = async () => {
+    if (!this.holdFeedUpdate) {
+      this.holdFeedUpdate = true;
+      const length = this.state.feeds.length;
+      const moreFeeds = await getFeeds({ length, dogs: this.state.dogIds });
+      this.setState({ feeds: [...this.state.feeds, ...moreFeeds] });
+    }
   };
 
   selectDog = (selectDog: dogActions.Dog) => {
@@ -105,82 +119,6 @@ class Wdd extends PureComponent<Props, State> {
 
   dismissModal = () => {
     this.setState({ selectDog: undefined });
-  };
-
-  renderModal = () => {
-    const { selectDog: dog } = this.state;
-    const { user } = this.props;
-    const signedIn = user.email.length !== 0;
-
-    return (
-      <Modal
-        animationType="none"
-        visible={dog !== undefined}
-        onRequestClose={this.dismissModal}
-        transparent
-        hardwareAccelerated>
-        <TouchableOpacity
-          style={views.modalBackground}
-          activeOpacity={1}
-          onPress={this.dismissModal}>
-          {dog && (
-            <TouchableOpacity activeOpacity={1} onPress={() => {}}>
-              <View style={views.modal}>
-                <TouchableOpacity
-                  style={views.closeWrapper}
-                  activeOpacity={0.7}
-                  onPress={this.dismissModal}>
-                  <Image
-                    source={require('src/assets/icons/ic_close_filled.png')}
-                    style={icons.close}
-                  />
-                </TouchableOpacity>
-                <DefaultImage uri={dog.thumbnail} size={110} showBorder />
-                <Text style={texts.name}>{dog.name}</Text>
-                <View style={views.topRowWrapper}>
-                  <View style={views.itemWrapper}>
-                    <Text style={texts.spec}>{dog.breed}</Text>
-                  </View>
-                  <View style={[views.itemWrapper, views.vr]}>
-                    <Text style={texts.spec}>{mapGender(dog.gender)}</Text>
-                  </View>
-                  {dog.weight && (
-                    <View style={[views.itemWrapper, views.vr]}>
-                      <Text style={texts.spec}>{dog.weight}kg</Text>
-                    </View>
-                  )}
-                </View>
-                {dog.info && (
-                  <View style={views.infoWrapper}>
-                    <Text style={texts.info}>{dog.info}</Text>
-                  </View>
-                )}
-                <View style={views.bottomRowWrapper}>
-                  {[
-                    { label: '킁킁', value: dog.likes.length },
-                    { label: '산책횟수', value: dog.feeds.length },
-                  ].map((data, index) => (
-                    <View key={index.toString()} style={views.bottomItem}>
-                      <Text style={texts.bottomLabel}>{data.label}</Text>
-                      <Text style={texts.bottomValue}>{data.value}</Text>
-                    </View>
-                  ))}
-                </View>
-                {signedIn && dog.user !== user._id && (
-                  <TouchableOpacity
-                    style={views.likeButton}
-                    activeOpacity={0.7}
-                    disabled={!signedIn}
-                    onPress={() => this.handlePressLike(dog._id)}>
-                    <Text style={texts.like}>킁킁 보내기</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </TouchableOpacity>
-          )}
-        </TouchableOpacity>
-      </Modal>
-    );
   };
 
   render() {
@@ -198,50 +136,66 @@ class Wdd extends PureComponent<Props, State> {
             style={icons.logo}
           />
         </View>
-        <ScrollView
-          style={{ flex: 1 }}
-          refreshControl={
-            <RefreshControl
-              refreshing={refresh}
-              onRefresh={this.handleRefresh}
-            />
-          }>
-          {dogsFilter.length === 0 ? (
-            <EmptyList
-              source={require('src/assets/images/img_no_dog.png')}
-              message="내 주변 댕댕이가 없어요 ㅠㅠ"
-              style={views.emptyListMargin}
-            />
-          ) : (
-            <>
+        {dogsFilter.length === 0 ? (
+          <EmptyList
+            source={require('src/assets/images/img_no_dog.png')}
+            message="내 주변 댕댕이가 없어요 ㅠㅠ"
+            style={views.emptyListMargin}
+          />
+        ) : (
+          <FlatList
+            data={feeds}
+            keyExtractor={(i, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            onEndReached={this.getMoreFeeds}
+            onEndReachedThreshold={0.5}
+            onMomentumScrollBegin={() => {
+              this.holdFeedUpdate = false;
+            }}
+            renderItem={({ item }) => (
+              <Feed feed={item} deleteFromList={this.handleDelete} />
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refresh}
+                onRefresh={this.handleRefresh}
+              />
+            }
+            ListHeaderComponent={
               <FlatList
                 style={views.dogsWrapper}
                 data={dogs}
                 keyExtractor={(i, index) => index.toString()}
                 contentContainerStyle={views.dogsListWrapper}
                 showsHorizontalScrollIndicator={false}
+                onScroll={this.getMoreDogs}
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     style={views.dogItem}
                     activeOpacity={0.7}
                     onPress={() => this.selectDog(item)}>
                     <DefaultImage uri={item.thumbnail} size={56} />
+                    <Text style={texts.name}>{item.name}</Text>
                   </TouchableOpacity>
                 )}
                 horizontal
               />
-              <FlatList
-                data={feeds}
-                keyExtractor={(i, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <Feed feed={item} deleteFromList={this.handleDelete} />
-                )}
+            }
+            ListEmptyComponent={
+              <EmptyList
+                source={require('src/assets/images/img_no_dog.png')}
+                message="피드가 아직 없어요 ㅠ"
+                style={views.emptyListMargin}
               />
-            </>
-          )}
-        </ScrollView>
-        {this.renderModal()}
+            }
+          />
+        )}
+        <DogProfile
+          dog={this.state.selectDog}
+          user={this.props.user}
+          dismissModal={this.dismissModal}
+          onPressLike={this.handlePressLike}
+        />
       </SafeAreaView>
     );
   }

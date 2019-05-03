@@ -104,7 +104,10 @@ class Home extends PureComponent<Props, State> {
             likes.map(like => like._id)
           )
         ) {
-          this.setState({ likes: await searchDogs({ likes: repDog.likes }) });
+          const dogs = await searchDogs({ likes: repDog.likes });
+          this.setState({
+            likes: dogs.sort((x, y) => moment(y.createdAt).diff(x.createdAt)),
+          });
         }
         return;
       }
