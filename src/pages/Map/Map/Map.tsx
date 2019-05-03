@@ -76,7 +76,7 @@ class Map extends Component<Props, State> {
                     pick(previous, ['latitude', 'longitude']),
                     current
                   );
-                  if (pinInfo.addDistance > 0.0098) pushPin(pinInfo);
+                  if (pinInfo.addDistance > 0.005) pushPin(pinInfo);
                 }
               }
               // Default Actions
