@@ -32,9 +32,6 @@ export interface Params {
   length?: number;
 }
 
-const instance = axios.create();
-instance.defaults.headers.common = {};
-
 export const createFeed = async (params: Body) => {
   const response: AxiosResponse<Feed> = await axios.post('/feeds', params);
   return response.data;
@@ -45,8 +42,14 @@ export const getFeeds = async (p: Params) => {
   if (p.dogs !== undefined) params.dogs = JSON.stringify(p.dogs);
   if (p.feeds !== undefined) params.feeds = JSON.stringify(p.feeds);
   if (p.length !== undefined) params.length = p.length.toString();
-  const response: AxiosResponse<Feed[]> = await instance.get('/feeds', {
+  const response: AxiosResponse<Feed[]> = await axios.get('/feeds', {
     params,
+    transformRequest: [
+      (data, headers) => {
+        delete headers.common.authorization;
+        return data;
+      },
+    ],
   });
   return response.data;
 };
