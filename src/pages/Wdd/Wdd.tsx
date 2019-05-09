@@ -81,11 +81,16 @@ class Wdd extends PureComponent<Props, State> {
   };
 
   getDataFromServer = async () => {
+    const { repDog } = this.props.user;
     const { coordinates } = this.props.user.location;
+
     const users = await searchUsers({ coordinates });
     this.dogs = users
       .filter(user => user.repDog !== undefined)
       .map(user => user.repDog) as dogActions.Dog[];
+    if (repDog) {
+      this.dogs = [repDog, ...this.dogs.filter(dog => dog._id !== repDog._id)];
+    }
 
     // set variables for update state
     const dogIds = flatten(users.map(user => Object.keys(user.dogs)));
