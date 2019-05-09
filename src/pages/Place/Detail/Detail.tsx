@@ -22,6 +22,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  Alert,
 } from 'react-native';
 
 interface Props extends NavigationScreenProps, MessageProps {
@@ -91,13 +92,17 @@ class Detail extends PureComponent<Props, State> {
   };
 
   handleRatingChange = (rating: number) => {
-    const { navigation } = this.props;
-    navigation.navigate('review', {
-      rating,
-      place: this.place._id,
-      title: this.place.name,
-      handleAddReview: this.handleCreateReview,
-    });
+    const { navigation, user } = this.props;
+    if (user.email) {
+      navigation.navigate('review', {
+        rating,
+        place: this.place._id,
+        title: this.place.name,
+        handleAddReview: this.handleCreateReview,
+      });
+    } else {
+      Alert.alert('로그인 후 리뷰를 남겨주세요.');
+    }
   };
 
   render() {
