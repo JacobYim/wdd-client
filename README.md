@@ -51,3 +51,11 @@
 - 디버깅 모드
   - iOS : `CMD` + `D` 혹은 `핸드폰 흔들기` -> Debug JS Remotely
   - Android : `CMD` + `M` 혹은 `핸드폰 흔들기` -> Debug JS Remotely
+
+###  버전 업데이트
+```
+yarn add react-native-document-picker@3.4.0       # Rollback to 3.4.0 version
+cd ios && pod deintegrate && pod install --repo-update      # Reinstall pods
+yarn add react-native-document-picker     # Update to version 3.5.1
+cd ios && pod install --repo-update  # Update pods without deintegrate
+```
