@@ -1,10 +1,10 @@
-import Amplify from 'aws-amplify';
+// import Amplify from 'aws-amplify';
 import moment from 'moment';
 import 'moment/locale/ko';
 import React, { PureComponent } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
-import awsmobile from 'src/aws-exports';
+// import awsmobile from 'src/aws-exports';
 import Splash from 'src/components/module/Splash';
 import configAxios from 'src/services/api/axios';
 import * as userActions from 'src/store/actions/user';
@@ -17,7 +17,7 @@ class Core extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     configAxios();
-    Amplify.configure(awsmobile);
+    // Amplify.configure(awsmobile);
     moment.locale('ko');
   }
 

@@ -1,6 +1,6 @@
-import { Storage } from 'aws-amplify';
+// import { Storage } from 'aws-amplify';
 import moment from 'moment';
-import awsmobile from 'src/aws-exports';
+// import awsmobile from 'src/aws-exports';
 
 interface Base {
   table: 'dogs' | 'places' | 'feeds';
@@ -25,19 +25,20 @@ const uploadToS3 = async ({ table, label, name, uri }: UploadImage) => {
   const data = await response.blob();
   const key = `${markDev}${table}/${label ||
     moment().format('YYYY.MM.DD')}/${name}.png`;
-  const S3Response = (await Storage.put(key, data, {
-    level: 'public',
-    contentType: 'image/png',
-  })) as S3ResponseType;
-  return `https://storage.woodongdang.com/public/${S3Response.key}`;
+  // const S3Response = (await Storage.put(key, data, {
+  //   level: 'public',
+  //   contentType: 'image/png',
+  // })) as S3ResponseType;
+  // return `https://storage.woodongdang.com/public/${S3Response.key}`;
+  return '';
 };
 
 export const uploadImage = (data: UploadImage) => async (
   toggleLoading: ToggleLoading
 ) => {
-  await toggleLoading();
+  toggleLoading();
   const url = await uploadToS3(data);
-  await toggleLoading();
+  toggleLoading();
   return url;
 };
 
@@ -47,12 +48,12 @@ export const uploadImages = ({
   name,
   uris,
 }: UploadImages) => async (toggleLoading: ToggleLoading) => {
-  await toggleLoading();
+  toggleLoading();
   const uriList: string[] = await Promise.all(
     uris.map(async (uri, index) =>
       uploadToS3({ uri, table, label, name: `${name}_${index}` })
     )
   );
-  await toggleLoading();
+  toggleLoading();
   return uriList;
 };
