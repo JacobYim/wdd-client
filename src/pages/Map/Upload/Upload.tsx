@@ -44,35 +44,35 @@ class Upload extends PureComponent<Props, State> {
   handleSave = async () => {
     const {
       navigation,
-      walk,
-      getUser,
-      updateStatus,
-      toggleLoading,
-      hideLoading,
+      // walk,
+      // getUser,
+      // updateStatus,
+      // toggleLoading,
+      // hideLoading,
     } = this.props;
     if (this.state.images.length === 0) {
       Alert.alert('사진을 1장 이상 업로드 해주세요.');
       return;
     }
-    const uris = this.state.images.map(image => image.nextUri || image.uri);
-    try {
-      const images = await uploadImages({
-        uris,
-        table: 'feeds',
-        name: JSON.stringify(walk.pins[0]),
-      })(toggleLoading);
-      await createFeed({
-        images,
-        memo: this.state.memo,
-        pins: JSON.stringify(pinsToCoord(walk.pins)),
-        ...pick(walk, ['seconds', 'distance', 'steps', 'pees', 'poos']),
-      });
-      await getUser();
-    } catch (e) {
-      await hideLoading();
-      Alert.alert('업로드 중 문제가 발생했습니다.');
-    }
-    updateStatus('READY');
+    // const uris = this.state.images.map(image => image.nextUri || image.uri);
+    // try {
+    //   const images = await uploadImages({
+    //     uris,
+    //     table: 'feeds',
+    //     name: JSON.stringify(walk.pins[0]),
+    //   })(toggleLoading);
+      // await createFeed({
+      //   images,
+      //   memo: this.state.memo,
+      //   pins: JSON.stringify(pinsToCoord(walk.pins)),
+      //   ...pick(walk, ['seconds', 'distance', 'steps', 'pees', 'poos']),
+      // });
+      // await getUser();
+    // } catch (e) {
+    //   await hideLoading();
+    //   Alert.alert('업로드 중 문제가 발생했습니다.');
+    // }
+    // updateStatus('READY');
     const action = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'map' })],

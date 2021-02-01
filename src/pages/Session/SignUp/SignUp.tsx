@@ -94,14 +94,15 @@ class SignUp extends Component<Props, State> {
 
     if (name.valid && email.valid && password.valid && passwordCheck.valid) {
       Keyboard.dismiss();
-      signUp(
-        {
-          name: name.value,
-          email: email.value,
-          password: password.value,
-        },
-        navigation
-      );
+      // signUp(
+      //   {
+      //     name: name.value,
+      //     email: email.value,
+      //     password: password.value,
+      //   },
+      //   navigation
+      // );
+      navigation.navigate('createMeta');
     } else {
       this.setState(state =>
         produce(state, draft => {

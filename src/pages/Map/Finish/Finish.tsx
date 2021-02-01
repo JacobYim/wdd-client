@@ -234,14 +234,12 @@ class Finish extends PureComponent<Props, State> {
               {moment(walk.createdAt).format('YYYY년 MM월 DD일 dddd')}
             </Text>
           </View>
-          {user.email.length !== 0 && (
-            <TouchableOpacity
-              style={views.upload}
-              onPress={this.handleUpload}
-              activeOpacity={0.7}>
-              <Text style={texts.upload}>내 피드 올리기</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            style={views.upload}
+            onPress={this.handleUpload}
+            activeOpacity={0.7}>
+            <Text style={texts.upload}>내 피드 올리기</Text>
+          </TouchableOpacity>
         </SafeAreaView>
       </View>
     );

@@ -48,7 +48,8 @@ class CreateMeta extends PureComponent<Props, State> {
         gender,
         birth: moment(birth).format('YYYY.MM.DD'),
       };
-      createMeta(payload, navigation);
+      // createMeta(payload, navigation);
+      navigation.navigate('createDog');
     }
   };
 
